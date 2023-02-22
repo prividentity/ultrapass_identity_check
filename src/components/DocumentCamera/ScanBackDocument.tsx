@@ -23,7 +23,7 @@ const ScanBackDocument = ({
   const { scanBackDocument } = useScanBackDocument(handleBackSuccess) as any;
   const handleScanDocumentBack = async (e: boolean) => {
     onReadyCallback?.(e);
-    if(e){
+    if (e) {
       await scanBackDocument(canvasSize);
     }
   };

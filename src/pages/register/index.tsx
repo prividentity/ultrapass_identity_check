@@ -20,6 +20,13 @@ import STEPS from "./steps";
 import FullWidthTabs from "../../components/OptionsTab";
 import RegisterInputs from "../../components/Register";
 import Start from "../../components/Start";
+import Enroll from "../../components/Enroll";
+import VerifyAgeWithDatabase from "../../components/SignupComponents/VerifyAgeWithDatabase";
+import DatabaseConsent from "../../components/SignupComponents/DatabaseConsent";
+import AgeCheckDatabase from "../../components/SignupComponents/AgeCheckDatabase";
+import CannotVerify from "../../components/SignupComponents/CannotVerify";
+import VerifyAgeWithScan from "../../components/SignupComponents/VerifyAgeWithScan";
+import VerifyDriversLicense from "../../components/SignupComponents/VerifyDriversLicense";
 import DLScan from "../../components/DLScanning";
 
 interface props {
@@ -29,10 +36,20 @@ interface props {
 
 const Register = ({ theme, skin }: props) => {
   useWasm();
-  const [step, setStep] = useState(STEPS.DRIVERLICENSE);
+  const [step, setStep] = useState(STEPS.START);
   const [prevStep, setPrevStep] = useState(STEPS.START);
   const muiTheme = useTheme();
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
+
+  const navigateToUrl = (
+    url: string,
+    timeoutMilliseconds = 1000,
+    token = ""
+  ) => {
+    setTimeout(() => {
+      window.open(`${url}?token=${token}`, "_self");
+    }, timeoutMilliseconds);
+  };
 
   const _renderChildren = () => {
     switch (step as string) {
@@ -43,6 +60,31 @@ const Register = ({ theme, skin }: props) => {
             setPrevStep={setPrevStep}
             setStep={setStep}
             skin={skin}
+          />
+        );
+      case STEPS.PRE_REGISTER:
+        return (
+          <VerifyAgeWithDatabase
+            skin={skin}
+            setStep={setStep}
+            setPrevStep={setPrevStep}
+          />
+        );
+      case STEPS.REGISTER_CONSENT:
+        return (
+          <DatabaseConsent
+            theme={theme}
+            skin={skin}
+            setStep={setStep}
+            setPrevStep={setPrevStep}
+          />
+        );
+      case STEPS.PRE_REGISTER_FORM:
+        return (
+          <AgeCheckDatabase
+            theme={theme}
+            setPrevStep={setPrevStep}
+            setStep={setStep}
           />
         );
       case STEPS.REGISTER_FORM:
@@ -58,9 +100,36 @@ const Register = ({ theme, skin }: props) => {
         return <></>;
 
       case STEPS.CONSENT_FAIL:
-        return <></>;
+        return (
+          <CannotVerify
+            theme={theme}
+            skin={skin}
+            navigateToUrl={navigateToUrl}
+            setStep={setStep}
+            prevStep={prevStep}
+          />
+        );
+      case STEPS.PRE_ENROLL:
+        return (
+          <VerifyAgeWithScan
+            theme={theme}
+            skin={skin}
+            setPrevStep={setPrevStep}
+            setStep={setStep}
+          />
+        );
       case STEPS.ENROLL:
-        return <></>;
+        return (
+            <Enroll setStep={setStep} />
+        );
+      case STEPS.PRE_DRIVERLICENSE:
+        return (
+            <VerifyDriversLicense
+                skin={skin}
+                setStep={setStep}
+                setPrevStep={setPrevStep}
+            />
+        )
       case STEPS.DRIVERLICENSE:
         return <DLScan matchesSM={matchesSM} setStep={setStep} setPrevStep={setPrevStep} skin={skin} />;
       case STEPS.SWITCH_DEVICE:
@@ -76,7 +145,12 @@ const Register = ({ theme, skin }: props) => {
     <>
       {<Header theme={themeName} />}
       <div className="homePageWrapper">
-        <HomeModal handleClose={() => {console.log("CLOSE HERE")}} open={true}>
+        <HomeModal
+          handleClose={() => {
+            console.log("CLOSE HERE");
+          }}
+          open={true}
+        >
           {_renderChildren()}
         </HomeModal>
       </div>
