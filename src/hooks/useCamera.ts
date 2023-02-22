@@ -6,7 +6,8 @@ import { CameraFaceMode } from "@privateid/cryptonets-web-sdk-alpha/dist/types";
 
 const useCamera = (
   element = "userVideo",
-  requestFaceMode: CameraFaceMode = CameraFaceMode.front
+  requestFaceMode: CameraFaceMode = CameraFaceMode.front,
+  requireHD= false
 ): {
   init: () => Promise<void>;
   devices: Array<{ label: string; value: string }>;
@@ -37,7 +38,7 @@ const useCamera = (
         stream,
         errorMessage,
         capabilities,
-      } = await openCamera(element, false, null, requestFaceMode, resolution);
+      } = await openCamera(element, requireHD, null, requestFaceMode, resolution);
       setCameraFeatures({ settings, capabilities });
       setFaceMode(faceMode);
       console.log("hasError??", { status, errorMessage });

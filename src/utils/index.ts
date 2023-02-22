@@ -170,5 +170,5 @@ export const calculateAgeFromDate = (date: string | Date) => {
 
 export const createUserID = async () => {
   const encryptedText = await sha256(Date.now().toString());
-  return "UPT" + encryptedText;
+  return "INTERGALACTIC" + encryptedText;
 };

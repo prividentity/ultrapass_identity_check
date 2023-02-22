@@ -35,6 +35,7 @@ const useScanFrontDocument = (onSuccess: (e: any) => void) => {
     initializeCanvas?: any
   ) => {
     const canvasObj = canvasSize ? CANVAS_SIZE?.[canvasSize] : {};
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { result } = await isValidPhotoID(
       DocType.PHOTO_ID_FRONT,
       initializeCanvas || documentCallback,
