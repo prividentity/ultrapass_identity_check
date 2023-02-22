@@ -120,7 +120,8 @@ const DLScan = ({
       },
     };
 
-    const updateUserResult = await updateUser({ id, attributes: govId });
+    // @ts-ignores
+    const updateUserResult = await updateUser({ id, attributes: {govId: govId} });
     console.log('Update user result: ', updateUserResult);
 
     setIsUserVerify(true);
