@@ -99,7 +99,7 @@ const Start = ({
             variant="contained"
             color={'inherit'}
             style={styles.continueButton}
-            onClick={() => setStep(STEPS.PRE_REGISTER)}
+            onClick={() => setStep(STEPS.REGISTER_CONSENT)}
           >
             <Typography
               component="p"

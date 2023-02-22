@@ -12,7 +12,7 @@ import React, { useEffect, useState } from "react";
 import homeStyles from "../../styles/Home.module.css";
 import Camera from "../Camera";
 import { UserContext } from "../../context/UserContext";
-import { updateUser } from "@privateid/cryptonets-web-sdk-alpha";
+import { closeCamera, updateUser } from "@privateid/cryptonets-web-sdk-alpha";
 import shield from "../../assets/shield.png";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import STEPS from "../../pages/register/steps";
@@ -56,9 +56,16 @@ const Enroll = ({
     const updateRes = (await updateUser(params)) as any;
     if (updateRes.guid && updateRes.uuid) {
       setShowSuccess(true);
-      stopCamera();
+      // stopCamera();
+      await closeCamera(undefined);
+
+    
     }
-    setStep(STEPS.PRE_DRIVERLICENSE);
+    
+    await closeCamera(undefined);
+    setTimeout(()=>{
+      setStep(STEPS.DRIVERLICENSE);
+    },3000)
   };
   useEffect(() => {
     if (enrollGUID && enrollUUID) {
@@ -66,6 +73,10 @@ const Enroll = ({
     }
   }, [enrollStatus, enrollGUID, enrollUUID]);
 
+
+  const onCameraFail = async () =>{
+    setStep(STEPS.SWITCH_DEVICE);
+  }
   return (
     <Box position={"relative"} padding={"10px 10px"} mt={4} pr={"12px"}>
       {showSuccess && (
@@ -98,6 +109,7 @@ const Enroll = ({
           <Camera
             onReadyCallback={enrollUserOneFa}
             onSwitchCamera={enrollUserOneFa}
+            onCameraFail={onCameraFail}
             message={message}
           />
         </div>

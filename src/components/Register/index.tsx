@@ -66,30 +66,29 @@ const RegisterInputs = ({
   };
 
   const handleContinue = async () => {
-    // const validatePhone = (phone:string) =>
-    //   /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/.test(
-    //     phone
-    //   );
-    // console.log(validatePhone(phoneInput) && ssn4Ref?.current?.value.length === 4)
-    // if(validatePhone(phoneInput) && ssn4Ref?.current?.value.length === 4 ){
-    //     const inputSSN4 = ssn4Ref?.current?.value
-    //     setPhoneNumber(phoneInput);
-    //     setSSN4(inputSSN4);
-    //     const newID = await createUserID();
-    //     setId(newID);
-    //
-    //     const result:any = await createUser({
-    //         id: newID,
-    //         userConsent:true,
-    //         userConsentDate:(Date.now().toString()),
-    //         phone: phoneInput,
-    //         ssn4: inputSSN4,
-    //     })
-    //     if(result.user){
-    //         setStep(4)
-    //     }
-    // }
-    setStep(STEPS.PRE_ENROLL);
+    const validatePhone = (phone:string) =>
+      /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/.test(
+        phone
+      );
+    console.log(validatePhone(phoneInput) && ssn4Ref?.current?.value.length === 4)
+    if(validatePhone(phoneInput) && ssn4Ref?.current?.value.length === 4 ){
+        const inputSSN4 = ssn4Ref?.current?.value
+        setPhoneNumber(phoneInput);
+        setSSN4(inputSSN4);
+        const newID = await createUserID();
+        setId(newID);
+    
+        const result:any = await createUser({
+            id: newID,
+            userConsent:true,
+            userConsentDate:(Date.now().toString()),
+            phone: phoneInput,
+            ssn4: inputSSN4,
+        })
+        if(result.user){
+          setStep(STEPS.PRE_ENROLL);
+        }
+    }
   };
 
   const handlePhoneChange = (e: any) => {

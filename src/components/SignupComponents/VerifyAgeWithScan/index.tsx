@@ -37,7 +37,7 @@ const VerifyAgeWithScan = (props: props) => {
           sx={{ paddingTop: 4, paddingBottom: 2 }}
           className={classes.cardHeading}
         >
-          Verify your age with a selfie
+          Verify your identity with a selfie and driver license
         </Typography>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
