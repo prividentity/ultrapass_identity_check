@@ -37,13 +37,6 @@ interface ColorThemePalette extends PaletteOptions {
 }
 export const theme = createTheme({
   palette: {
-    // primary: {
-    //   main: "rgb(26, 118, 243)",
-    //   text: "white",
-    //   background: "#87ceeb",
-    //   mainBackground: "#000",
-    //   listText: "#000",
-    // },
     primary: {
       main: "rgb(255, 153, 0)",
       primaryColor: "rgb(255, 153, 0)",

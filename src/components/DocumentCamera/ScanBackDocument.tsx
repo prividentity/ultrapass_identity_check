@@ -39,6 +39,7 @@ const ScanBackDocument = ({
         onReadyCallback={handleScanDocumentBack}
         style={{ height: "unset" }}
         mode={"back"}
+        requireHD={true}
       ></Camera>
     </div>
   );

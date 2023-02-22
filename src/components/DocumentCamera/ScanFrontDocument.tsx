@@ -43,6 +43,7 @@ const ScanFrontDocument = ({
         onSwitchCamera={handleScanDLFront}
         style={{ height: "unset" }}
         mode={"back"}
+        requireHD={true}
       ></Camera>
     </div>
   );
