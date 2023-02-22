@@ -15,6 +15,7 @@ import { theme as Theme } from "../../theme";
 import { UserContext } from "../../context/UserContext";
 import { createUserID } from "../../utils";
 import { createUser } from "@privateid/cryptonets-web-sdk-alpha/dist/apiUtils";
+import STEPS from "../../pages/register/steps";
 
 const RegisterInputs = ({
   setStep,
@@ -78,7 +79,7 @@ const RegisterInputs = ({
             ssn4: inputSSN4,
         })
         if(result.user){
-            setStep(4)
+            setStep(STEPS.ENROLL)
         }
     }
     

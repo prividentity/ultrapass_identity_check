@@ -20,6 +20,7 @@ import STEPS from "./steps";
 import FullWidthTabs from "../../components/OptionsTab";
 import RegisterInputs from "../../components/Register";
 import Start from "../../components/Start";
+import DLScan from "../../components/DLScanning";
 
 interface props {
   theme: string;
@@ -28,7 +29,7 @@ interface props {
 
 const Register = ({ theme, skin }: props) => {
   useWasm();
-  const [step, setStep] = useState(STEPS.START);
+  const [step, setStep] = useState(STEPS.DRIVERLICENSE);
   const [prevStep, setPrevStep] = useState(STEPS.START);
   const muiTheme = useTheme();
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
@@ -61,7 +62,7 @@ const Register = ({ theme, skin }: props) => {
       case STEPS.ENROLL:
         return <></>;
       case STEPS.DRIVERLICENSE:
-        return <></>;
+        return <DLScan matchesSM={matchesSM} setStep={setStep} setPrevStep={setPrevStep} skin={skin} />;
       case STEPS.SWITCH_DEVICE:
         return <FullWidthTabs />;
       case STEPS.SUCCESS:

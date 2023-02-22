@@ -6,9 +6,11 @@ import useScanBackDocument from "../../hooks/useScanBackDocument";
 const ScanBackDocument = ({
   onSuccess,
   onReadyCallback,
+  onFailCallback,
 }: {
   onSuccess?: (e: any) => void;
   onReadyCallback?: (e: boolean) => void;
+  onFailCallback?: (e: boolean) => void;
 }) => {
   const [canvasSize, setCanvasSize] = useState();
   // useEffect(() => {

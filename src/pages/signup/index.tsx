@@ -1005,6 +1005,7 @@ const Signup = ({ theme, skin }: props) => {
                     <ScanFrontDocument
                       onSuccess={onFrontSuccess}
                       onReadyCallback={onCameraNotGranted}
+                      onFailCallback={(e:{ status: string | number; message: string; })=>{}}
                     />
                   )}
                 </Box>

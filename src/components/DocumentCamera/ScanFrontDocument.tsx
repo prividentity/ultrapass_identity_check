@@ -6,20 +6,25 @@ import Camera from "../Camera";
 const ScanFrontDocument = ({
   onSuccess,
   onReadyCallback,
+  onFailCallback,
 }: {
-  onSuccess?: (e: any) => void;
-  onReadyCallback?: (e: boolean) => void;
+  onSuccess: (e: any) => void;
+  onReadyCallback: (e: boolean) => void;
+  onFailCallback: (e: {
+    status: number | string;
+    message: string;
+  }) => void;
 }) => {
   const [canvasSize, setCanvasSize] = useState();
-  // useEffect(() => {
-  //   console.log('useeffect scan dl front')
-  //   handleScanDLFront();
-  // }, []);
+
   const handleFrontSuccess = (result?: any) => {
     onSuccess?.(result);
     console.log("FRONT SCAN DATA: ", result);
   };
-  const { scanFrontDocument } = useScanFrontDocument(handleFrontSuccess) as any;
+  const { scanFrontDocument } = useScanFrontDocument(
+    handleFrontSuccess,
+    onFailCallback
+  ) as any;
   const handleCallbackFromCanvasSizeChange = (size: any) => {
     setCanvasSize(size);
     setTimeout(async () => scanFrontDocument(size as any), 1000);

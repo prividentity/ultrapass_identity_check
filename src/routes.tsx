@@ -14,7 +14,7 @@ const themeName = skin || "primary";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home theme={themeName} skin={skin} />,
+    element: <Register theme={themeName} skin={skin} />,
   },
   {
     path: "/signup",
