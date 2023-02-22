@@ -15,6 +15,7 @@ import { theme as Theme } from "../../theme";
 import { UserContext } from "../../context/UserContext";
 import { createUserID } from "../../utils";
 import { createUser } from "@privateid/cryptonets-web-sdk-alpha/dist/apiUtils";
+import STEPS from "../../pages/register/steps";
 
 const RegisterInputs = ({
   setStep,
@@ -34,7 +35,7 @@ const RegisterInputs = ({
   const [phoneInput, setPhoneInput] = useState("");
 
   const ssn4Ref = useRef<HTMLFormElement | null>(null)
-  
+
   const context = useContext(UserContext);
 
   const {setPhoneNumber, setSSN4, setId} = context;
@@ -58,30 +59,30 @@ const RegisterInputs = ({
   }
 
   const handleContinue = async() =>{
-    const validatePhone = (phone:string) =>
-      /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/.test(
-        phone
-      );
-    console.log(validatePhone(phoneInput) && ssn4Ref?.current?.value.length === 4)
-    if(validatePhone(phoneInput) && ssn4Ref?.current?.value.length === 4 ){
-        const inputSSN4 = ssn4Ref?.current?.value
-        setPhoneNumber(phoneInput);
-        setSSN4(inputSSN4);
-        const newID = await createUserID();
-        setId(newID);
-
-        const result:any = await createUser({
-            id: newID,
-            userConsent:true,
-            userConsentDate:(Date.now().toString()),
-            phone: phoneInput,
-            ssn4: inputSSN4,
-        })
-        if(result.user){
-            setStep(4)
-        }
-    }
-    
+    // const validatePhone = (phone:string) =>
+    //   /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/.test(
+    //     phone
+    //   );
+    // console.log(validatePhone(phoneInput) && ssn4Ref?.current?.value.length === 4)
+    // if(validatePhone(phoneInput) && ssn4Ref?.current?.value.length === 4 ){
+    //     const inputSSN4 = ssn4Ref?.current?.value
+    //     setPhoneNumber(phoneInput);
+    //     setSSN4(inputSSN4);
+    //     const newID = await createUserID();
+    //     setId(newID);
+    //
+    //     const result:any = await createUser({
+    //         id: newID,
+    //         userConsent:true,
+    //         userConsentDate:(Date.now().toString()),
+    //         phone: phoneInput,
+    //         ssn4: inputSSN4,
+    //     })
+    //     if(result.user){
+    //         setStep(4)
+    //     }
+    // }
+      setStep(STEPS.PRE_ENROLL)
   }
 
   const handlePhoneChange = (e:any) => {

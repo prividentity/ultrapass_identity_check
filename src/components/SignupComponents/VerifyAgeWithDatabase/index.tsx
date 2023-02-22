@@ -7,19 +7,21 @@ import {
   useTheme,
 } from "@mui/material";
 import smallLock from "../../../assets/smallLock.png";
+import { theme as Theme } from "../../../theme";
 import { styles, useStyles } from "../../../pages/signup/styles";
+import STEPS from "../../../pages/register/steps";
 
 interface props {
-  theme: string;
   skin: string;
-  palette: { [key: string]: any };
-  setStep: (e: number) => void;
-  setPrevStep: (e: number) => void;
-  name: string;
+  setStep: (e: string) => void;
+  setPrevStep: (e: string) => void;
+  name?: string;
 }
 
 const VerifyAgeWithDatabase = (props: props) => {
-  const { theme, skin, palette, setStep, setPrevStep, name } = props;
+  const { skin, setStep, setPrevStep, name = "google" } = props;
+  const mainTheme = Theme;
+  const palette: { [key: string]: any } = mainTheme.palette;
   const muiTheme = useTheme();
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
   const classes = useStyles();
@@ -36,7 +38,7 @@ const VerifyAgeWithDatabase = (props: props) => {
           className={classes.cardHeading}
         >
           <img src={smallLock} alt="smallLock" className={classes.smallLock} />{" "}
-          ANONYMOUS AGE VERIFICATION
+          IDENTITY VERIFICATION
         </Typography>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
@@ -49,8 +51,7 @@ const VerifyAgeWithDatabase = (props: props) => {
           mt={3}
           color={"#333"}
         >
-          Use the Age Check <br />
-          Database to Verify Your Age
+            Verify Your Identity
         </Typography>
         <Typography
           component="p"
@@ -59,7 +60,7 @@ const VerifyAgeWithDatabase = (props: props) => {
           fontWeight={500}
           mt={5}
         >
-          AllpassTrust needs your personal details to validate your age. All
+          AllpassTrust needs your personal details to validate your identity. All
           personal details will be deleted immediately after processing. No
           images or personal details will be shared with {name}.
         </Typography>
@@ -77,9 +78,9 @@ const VerifyAgeWithDatabase = (props: props) => {
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
       <Button
         variant="contained"
-        color={theme as "inherit"}
+        color={"inherit"}
         style={styles.continueButton}
-        onClick={() => setStep(13)}
+        onClick={() => setStep(STEPS.REGISTER_CONSENT)}
       >
         <Typography
           component="p"
@@ -96,11 +97,11 @@ const VerifyAgeWithDatabase = (props: props) => {
       </Button>
       <Button
         variant="text"
-        color={theme as "inherit"}
+        color={"inherit"}
         style={styles.textButton}
         onClick={() => {
-          setStep(12);
-          setPrevStep(9);
+          setStep(STEPS.CONSENT_FAIL);
+          setPrevStep(STEPS.PRE_REGISTER);
         }}
       >
         <Typography

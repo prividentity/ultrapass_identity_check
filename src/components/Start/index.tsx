@@ -22,7 +22,7 @@ const Start = ({
     const classes = useStyles();
     const mainTheme = Theme;
     const palette: { [key: string]: any } = mainTheme.palette;
-  
+
     return(
         <>
         <Grid container alignItems="center" justifyContent={"center"}>
@@ -99,7 +99,7 @@ const Start = ({
             variant="contained"
             color={'inherit'}
             style={styles.continueButton}
-            onClick={() => setStep(STEPS.SWITCH_DEVICE)}
+            onClick={() => setStep(STEPS.PRE_REGISTER)}
           >
             <Typography
               component="p"

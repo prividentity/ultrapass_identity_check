@@ -58,6 +58,7 @@ const Enroll = ({
       setShowSuccess(true);
       stopCamera();
     }
+    setStep(STEPS.PRE_DRIVERLICENSE);
   };
   useEffect(() => {
     if (enrollGUID && enrollUUID) {

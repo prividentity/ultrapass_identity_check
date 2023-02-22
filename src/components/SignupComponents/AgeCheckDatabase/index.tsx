@@ -1,11 +1,12 @@
 import { Button, Divider, Grid, Typography } from "@mui/material";
 import smallLock from "../../../assets/smallLock.png";
 import { styles, useStyles } from "../../../pages/signup/styles";
+import STEPS from "../../../pages/register/steps";
 
 interface props {
   theme: string;
-  setPrevStep: (e: number) => void;
-  setStep: (e: number) => void;
+  setPrevStep: (e: string) => void;
+  setStep: (e: string) => void;
 }
 
 const AgeCheckDatabase = (props: props) => {
@@ -24,7 +25,7 @@ const AgeCheckDatabase = (props: props) => {
           className={classes.cardHeading}
         >
           <img src={smallLock} alt="smallLock" className={classes.smallLock} />{" "}
-          ANONYMOUS AGE VERIFICATION
+          IDENTITY VERIFICATION
         </Typography>
       </Grid>
       <Divider color="#000" />
@@ -37,8 +38,7 @@ const AgeCheckDatabase = (props: props) => {
           mt={3}
           color={"#333"}
         >
-          Use the Age Check <br />
-          Database to Verify Your Age
+          Verify your Identity
         </Typography>
         <Typography
           component="p"
@@ -48,7 +48,7 @@ const AgeCheckDatabase = (props: props) => {
           color={"#999"}
           mt={7}
         >
-          Please prepare to enter your <br /> Name, Birthday and Zipcode
+          Please prepare to enter your <br /> SSN and Phone Number
         </Typography>
       </Grid>
       <Divider color="#000" />
@@ -56,7 +56,7 @@ const AgeCheckDatabase = (props: props) => {
         variant="contained"
         color={theme as "inherit"}
         style={styles.continueButton}
-        onClick={() => setStep(10)}
+        onClick={() => setStep(STEPS.REGISTER_FORM)}
       >
         <Typography
           component="p"
@@ -76,8 +76,8 @@ const AgeCheckDatabase = (props: props) => {
         color={theme as "inherit"}
         style={styles.textButton}
         onClick={() => {
-          setStep(12);
-          setPrevStep(13);
+          setStep(STEPS.CONSENT_FAIL);
+          setPrevStep(STEPS.PRE_REGISTER_FORM);
         }}
       >
         <Typography
