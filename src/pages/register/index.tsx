@@ -20,7 +20,7 @@ import STEPS from "./steps";
 import FullWidthTabs from "../../components/OptionsTab";
 import RegisterInputs from "../../components/Register";
 import Start from "../../components/Start";
-
+import Enroll from "../../components/Enroll";
 interface props {
   theme: string;
   skin: string;
@@ -59,7 +59,11 @@ const Register = ({ theme, skin }: props) => {
       case STEPS.CONSENT_FAIL:
         return <></>;
       case STEPS.ENROLL:
-        return <></>;
+        return (
+          <>
+            <Enroll setStep={setStep} />
+          </>
+        );
       case STEPS.DRIVERLICENSE:
         return <></>;
       case STEPS.SWITCH_DEVICE:
@@ -75,7 +79,12 @@ const Register = ({ theme, skin }: props) => {
     <>
       {<Header theme={themeName} />}
       <div className="homePageWrapper">
-        <HomeModal handleClose={() => {console.log("CLOSE HERE")}} open={true}>
+        <HomeModal
+          handleClose={() => {
+            console.log("CLOSE HERE");
+          }}
+          open={true}
+        >
           {_renderChildren()}
         </HomeModal>
       </div>

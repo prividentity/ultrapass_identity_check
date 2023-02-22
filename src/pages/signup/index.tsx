@@ -1,26 +1,11 @@
-import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  Card,
-  Divider,
-  Grid,
-  LinearProgress,
-  List,
-  ListItem,
-  Typography,
-  useTheme,
-  useMediaQuery,
-  TextField as MuiTextField,
-} from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import smallLock from "../../assets/smallLock.png";
-import phoneImage from "../../assets/face-id.png";
-import shield from "../../assets/shield.png";
-import { styles, useStyles } from "./styles";
-import PredictAge from "../../components/PredictAge";
+import dayjs from "dayjs";
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import { theme as Theme, nameMap } from "../../theme";
+import smallLock from "../../assets/smallLock.png";
+import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
+
 import {
   calculateAgeFromDate,
   FAILURE,
@@ -31,8 +16,6 @@ import {
 } from "../../utils";
 import useEnrollOneFa from "../../hooks/useEnrollOneFa";
 import { useWasm } from "../../hooks";
-import ScanFrontDocument from "../../components/DocumentCamera/ScanFrontDocument";
-import ScanBackDocument from "../../components/DocumentCamera/ScanBackDocument";
 import { payload } from "../../interface";
 import {
   createUser,
@@ -43,44 +26,51 @@ import {
   verifyTokenApi,
 } from "../../services/api";
 import womenImg from "../../assets/Kimiko-S3.png";
-import DlFront from "../../assets/dl-front.png";
-import DlBack from "../../assets/Hand-DL-Back.png";
 import HomeModal from "../../components/Modal/homeModal";
 import useDelete from "../../hooks/useDelete";
 import { useSearchParams } from "react-router-dom";
 import useToast from "../../utils/useToast";
-import { CircularProgress } from "@mui/material";
-import MonthPicker from "../../components/DatePicker";
 import Header from "../../components/Header";
 import { headerVisible } from "../../theme";
-import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import FullWidthTabs from "../../components/OptionsTab";
-import dayjs from "dayjs";
 import useCameraPermissions from "../../hooks/useCameraPermissions";
+import VerifyIdentity from "../../components/SignupComponents/VerifyIdentity";
+import VerifyAgeWithScan from "../../components/SignupComponents/VerifyAgeWithScan";
+import FaceAgeScan from "../../components/SignupComponents/FaceAgeScan";
+import FaceUnlockForFree from "../../components/SignupComponents/FaceUnlockForFree";
+import CreateAccountConsent from "../../components/SignupComponents/CreateAccountConsent";
+import VerifyDriversLicense from "../../components/SignupComponents/VerifyDriversLicense";
+import DocumentScan from "../../components/SignupComponents/DocumentScan";
+import VerifyAgeWithDatabase from "../../components/SignupComponents/VerifyAgeWithDatabase";
+import DatabaseConsent from "../../components/SignupComponents/DatabaseConsent";
+import DatabaseInputs from "../../components/SignupComponents/DatabaseInputs";
+import CannotVerify from "../../components/SignupComponents/CannotVerify";
+import AgeCheckDatabase from "../../components/SignupComponents/AgeCheckDatabase";
+import usePredictOneFa from "../../hooks/usePredictOneFa";
+import {
+  Box,
+  Button,
+  Grid,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
+import { useStyles, styles } from "./styles";
 
 interface props {
   theme: string;
   skin: string;
 }
 
-// this text field will be smaller on mobile
-const TextField = styled(MuiTextField)(({ theme }) => ({
-  "& .MuiOutlinedInput-input": {
-    [theme.breakpoints.down("sm")]: {
-      height: "1.2rem",
-    },
-  },
-}));
-
 const Signup = ({ theme, skin }: props) => {
   useWasm();
   const localUser = JSON.parse(localStorage.getItem("user") || "{}");
-  const muiTheme = useTheme();
   const [searchParams] = useSearchParams();
   const skinQueryParam = searchParams.get("skin") as string;
   const name = nameMap[skinQueryParam || "up"] || skinQueryParam;
-
+  const muiTheme = useTheme();
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
+  const classes = useStyles();
   const { showToast } = useToast();
   const token = searchParams.get("token"); // "testCode"
   const overideAge = searchParams.get("age");
@@ -91,7 +81,7 @@ const Signup = ({ theme, skin }: props) => {
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(1);
   const [prevStep, setPrevStep] = useState(0);
-
+  const elementId = "userVideo";
   const [isScanning, setIsScanning] = useState(true);
   const [isUserVerify, setIsUserVerify] = useState(false);
   const [isBackScan, setIsBackScan] = useState(false);
@@ -99,8 +89,6 @@ const Signup = ({ theme, skin }: props) => {
   const [enrolling, setEnrolling] = useState(true);
   const [user, setUser] = useState({} as { uuid?: string; guid?: string });
   const [sessionData, setSessionData] = useState<any>({});
-
-  const classes = useStyles();
   const mainTheme = Theme;
   const palette: { [key: string]: any } = mainTheme.palette;
   const verifyToken = async () => {
@@ -207,12 +195,41 @@ const Signup = ({ theme, skin }: props) => {
   };
   // For Enroll
 
-  const onAgeChange = async (e?: number) => {
+  const handlePredictSuccess = async (result: any) => {
+    if (result?.PI?.uuid && result?.PI?.guid) {
+      setIsUserVerify(true);
+      setEnrolling(false);
+      setUser(result.PI);
+      const payload = {
+        guid: result?.PI?.guid,
+        uuid: result?.PI?.uuid,
+        token: token,
+      };
+      if (result?.PI?.guid && result?.PI?.uuid) {
+        const user: any = await createUser(payload);
+        const data: any = await verifyTokenApi(token);
+        if (data?.status === SUCCESS) {
+          setSessionData(data);
+          // localStorage.setItem("user", JSON.stringify(data));
+        }
+      }
+      setIsUserVerify(false);
+      stopCamera();
+    } else {
+      enrollUserOneFa();
+    }
+    console.log(result, "result");
+  };
+  const { predictUserOneFa } = usePredictOneFa(elementId, handlePredictSuccess);
+
+  const onAgeChange = async (e?: number, isRetry?: boolean) => {
+    predictUserOneFa();
     const roundedAge = Math.round(e || 0);
-    enrollUserOneFa();
     if (roundedAge) {
-      const response = await checkAgeFlow(roundedAge, 0);
-      setSessionData(response?.sessionInfo);
+      if (!isRetry) {
+        const response = await checkAgeFlow(roundedAge, 0);
+        setSessionData(response?.sessionInfo);
+      }
     }
   };
 
@@ -256,7 +273,7 @@ const Signup = ({ theme, skin }: props) => {
         setSessionData(response?.sessionInfo);
         // localStorage.setItem("user", JSON.stringify(response?.sessionInfo));
         setIsUserVerify(true);
-        await updateUser(e?.barcode_key_string, 1);
+        await updateUser(e?.barcodeHash128_string, 1);
         setIsUserVerify(false);
         stopCamera();
         setStep(5);
@@ -364,7 +381,7 @@ const Signup = ({ theme, skin }: props) => {
 
   const onCameraNotGranted = (e: boolean) => {
     if (!e) {
-      setStep(11);
+      setStep(15);
     }
   };
 
@@ -378,771 +395,146 @@ const Signup = ({ theme, skin }: props) => {
     switch (step as number) {
       case 1:
         return (
-          <>
-            <Grid container alignItems="center" justifyContent={"center"}>
-              <Typography
-                component="p"
-                textAlign="center"
-                fontSize={16}
-                fontWeight={900}
-                letterSpacing={"1px"}
-                sx={{ paddingTop: 3, paddingBottom: 2 }}
-                className={classes.cardHeading}
-              >
-                <img
-                  src={smallLock}
-                  alt="smallLock"
-                  className={classes.smallLock}
-                />{" "}
-                ANONYMOUS AGE VERIFICATION
-              </Typography>
-            </Grid>
-            {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
-            <Grid style={styles.cardGrid} className={classes.cardGridMobile}>
-              <Typography
-                component="p"
-                textAlign={matchesSM ? "center" : "left"}
-                fontSize={17}
-                fontWeight={700}
-                lineHeight={1.5}
-                mt={2}
-                className={classes.cardInnerHeading}
-              >
-                {name} partners with AllpassTrust for
-                <br /> secure, anonymous age verification.
-              </Typography>
-              <Typography
-                component="p"
-                textAlign={matchesSM ? "center" : "left"}
-                fontSize={17}
-                fontWeight={500}
-                mt={2}
-                className={classes.cardInnerHeading}
-              >
-                Get ready to take a selfie.
-                <br /> No images will leave your device.
-              </Typography>
-              <Typography
-                component="p"
-                textAlign={matchesSM ? "center" : "left"}
-                fontSize={14}
-                fontWeight={700}
-                mt={3}
-                color={"#333"}
-                className={classes.cardInnerText}
-              >
-                How AllpassTrust will verify your identity ?
-              </Typography>
-              <Typography
-                component="p"
-                textAlign={matchesSM ? "center" : "left"}
-                fontSize={13}
-                fontWeight={500}
-                mt={2}
-                className={classes.cardInnerText}
-              >
-                AllpassTrust will use your selfie to estimate your age. Your
-                image will be deleted immediately after processing. No images or
-                information will be shared with {name}. Data will be strictly
-                processed according to the AllpassTrust Privacy Policy. Learn
-                how AllpassTrust works.
-              </Typography>
-            </Grid>
-            <Grid>
-              {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
-              <Button
-                variant="contained"
-                color={theme as "inherit"}
-                style={styles.continueButton}
-                onClick={() => setStep(3)}
-              >
-                <Typography
-                  component="p"
-                  color={palette?.[skin]?.listText}
-                  textAlign="center"
-                  fontWeight={600}
-                  display="flex"
-                  alignItems="center"
-                  justifyContent={"center"}
-                  textTransform="capitalize"
-                >
-                  Agree and continue
-                </Typography>
-              </Button>
-              <Button
-                variant="text"
-                color={theme as "inherit"}
-                style={styles.textButton}
-                onClick={() => {
-                  setStep(12);
-                  setPrevStep(1);
-                }}
-              >
-                <Typography
-                  component="p"
-                  color={palette?.[skin]?.listText}
-                  textAlign="center"
-                  fontWeight={500}
-                  display="flex"
-                  alignItems="center"
-                  justifyContent={"center"}
-                  textTransform="capitalize"
-                  fontSize={14}
-                  className={classes.textButtonUnderline}
-                >
-                  No, I do not consent
-                </Typography>
-              </Button>
-            </Grid>
-          </>
+          <VerifyIdentity
+            theme={theme}
+            skin={skin}
+            palette={palette}
+            setStep={setStep}
+            setPrevStep={setPrevStep}
+            name={name}
+          />
         );
       case 3:
         return (
-          <>
-            <Grid container alignItems="center" justifyContent={"center"}>
-              <Typography
-                component="p"
-                textAlign="center"
-                fontSize={16}
-                fontWeight={900}
-                letterSpacing={"1px"}
-                sx={{ paddingTop: 4, paddingBottom: 2 }}
-                className={classes.cardHeading}
-              >
-                Verify your age with a selfie
-              </Typography>
-            </Grid>
-            {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
-            <Grid
-              container
-              alignItems={"center"}
-              justifyContent={"center"}
-              style={styles.cardGrid}
-              className={classes.cardGridMobile}
-            >
-              <img src={phoneImage} alt="scan" width={"180px"} />
-            </Grid>
-            {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
-            <Button
-              variant="contained"
-              color={theme as "inherit"}
-              style={styles.continueButton}
-              onClick={() => setStep(4)}
-            >
-              <Typography
-                component="p"
-                color={palette?.[skin]?.listText}
-                textAlign="center"
-                fontWeight={600}
-                display="flex"
-                alignItems="center"
-                justifyContent={"center"}
-                textTransform="capitalize"
-              >
-                Continue
-              </Typography>
-            </Button>
-            <Button
-              variant="text"
-              color={theme as "inherit"}
-              style={styles.textButton}
-              onClick={() => setStep(9)}
-            >
-              <Typography
-                component="p"
-                color={palette?.[skin]?.listText}
-                textAlign="center"
-                fontWeight={500}
-                display="flex"
-                alignItems="center"
-                justifyContent={"center"}
-                textTransform="capitalize"
-                fontSize={14}
-                className={classes.textButtonUnderline}
-              >
-                No, I do not consent
-              </Typography>
-            </Button>
-          </>
+          <VerifyAgeWithScan
+            theme={theme}
+            skin={skin}
+            palette={palette}
+            setStep={setStep}
+          />
         );
       case 4:
         return (
-          <>
-            <Box position={"relative"} padding={"10px 10px"} mt={4} pr={"12px"}>
-              {isUserVerify && (
-                <Box style={styles.overlayCamera as React.CSSProperties}>
-                  <img
-                    src={shield}
-                    alt="shield"
-                    style={styles.shield as React.CSSProperties}
-                  />
-                </Box>
-              )}
-              <Box className={classes.otherOptions}>
-                <Typography
-                  component="p"
-                  textAlign={matchesSM ? "center" : "left"}
-                  fontSize={15}
-                  fontWeight={500}
-                  mt={2}
-                  onClick={() => {
-                    setStep(14);
-                    stopCamera();
-                  }}
-                >
-                  <PhoneIphoneIcon /> Switch to other device
-                </Typography>
-              </Box>
-              <PredictAge
-                enrollAge={onAgeChange}
-                onReadyCallback={onCameraNotGranted}
-                message={enrollStatus}
-              />
-              <Box style={{ height: 50 }}>
-                <Box style={{ height: 14 }}>
-                  {enrollOneFaProgress > 0 && (
-                    <LinearProgress
-                      variant="determinate"
-                      value={enrollOneFaProgress}
-                    />
-                  )}
-                </Box>
-                {enrollOneFaProgress === 100 && enrolling ? (
-                  <Typography
-                    component="p"
-                    textAlign="center"
-                    fontSize={14}
-                    fontWeight={700}
-                    mt={1}
-                    mb={1}
-                    color={"#333"}
-                  >
-                    <CircularProgress style={styles.scanLoader} /> Verifying
-                    User, this might take some minutes…
-                  </Typography>
-                ) : null}
-              </Box>
-            </Box>
-          </>
+          <FaceAgeScan
+            setStep={setStep}
+            isUserVerify={isUserVerify}
+            stopCamera={stopCamera}
+            onAgeChange={onAgeChange}
+            onCameraNotGranted={onCameraNotGranted}
+            enrollStatus={enrollStatus}
+            enrollOneFaProgress={enrollOneFaProgress}
+            enrolling={enrolling}
+          />
         );
       case 5:
         return (
-          <>
-            <Grid container alignItems="center" justifyContent={"center"}>
-              <Typography
-                component="p"
-                textAlign="center"
-                fontSize={16}
-                fontWeight={900}
-                letterSpacing={"1px"}
-                sx={{ paddingTop: 3, paddingBottom: 2 }}
-                style={{ marginLeft: "-34px" }}
-                className={`${classes.cardHeading} cardHeadingNoMargin`}
-              >
-                <img
-                  src={smallLock}
-                  alt="smallLock"
-                  className={classes.smallLock}
-                />
-                FACE UNLOCK
-              </Typography>
-            </Grid>
-            {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
-            <Grid style={styles.cardGrid} className={classes.cardGridMobile}>
-              <Typography
-                component="p"
-                textAlign={matchesSM ? "center" : "left"}
-                fontSize={20}
-                fontWeight={900}
-                mt={3}
-                color={palette?.[skin]?.listText}
-              >
-                Enhance Your Experience
-              </Typography>
-              <Typography
-                component="p"
-                textAlign={matchesSM ? "center" : "left"}
-                fontSize={20}
-                fontWeight={500}
-                mt={0}
-                color={"#333"}
-              >
-                Sign up for Face Unlock for Free
-              </Typography>
-              <Typography
-                component="p"
-                textAlign={matchesSM ? "center" : "left"}
-                fontSize={16}
-                fontWeight={500}
-                mt={4}
-                color={"#333"}
-              >
-                Use your face to bypass age verification!
-                <br /> No images or personal information leave your device.
-                <br /> Certified to IEEE Standard for Biometric Privacy.
-              </Typography>
-              <Typography
-                component="p"
-                textAlign={matchesSM ? "center" : "left"}
-                fontSize={14}
-                fontWeight={500}
-                mt={4}
-                color={"#333"}
-              >
-                Learn how Face Unlock works
-              </Typography>
-            </Grid>
-            {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
-            <Button
-              variant="contained"
-              color={theme as "inherit"}
-              style={styles.continueButton}
-              onClick={() => setStep(6)}
-            >
-              <Typography
-                component="p"
-                color={palette?.[skin]?.listText}
-                textAlign="center"
-                fontWeight={600}
-                display="flex"
-                alignItems="center"
-                justifyContent={"center"}
-                textTransform="capitalize"
-              >
-                Accept and continue
-              </Typography>
-            </Button>
-            <Button
-              variant="text"
-              color={theme as "inherit"}
-              style={styles.textButton}
-              onClick={handleDelete}
-            >
-              <Typography
-                component="p"
-                color={palette?.[skin]?.listText}
-                textAlign="center"
-                fontWeight={500}
-                display="flex"
-                alignItems="center"
-                justifyContent={"center"}
-                textTransform="capitalize"
-                fontSize={13}
-                className={classes.textButtonUnderline}
-              >
-                No, I do not consent
-              </Typography>
-            </Button>
-          </>
+          <FaceUnlockForFree
+            theme={theme}
+            skin={skin}
+            palette={palette}
+            setStep={setStep}
+            handleDelete={handleDelete}
+          />
         );
       case 6:
         return (
-          <>
-            <Grid container alignItems="center" justifyContent={"center"}>
-              <Typography
-                component="p"
-                textAlign="center"
-                fontSize={16}
-                fontWeight={900}
-                letterSpacing={"1px"}
-                sx={{ paddingTop: 3, paddingBottom: 2 }}
-                className={classes.cardHeading}
-              >
-                <img
-                  src={smallLock}
-                  alt="smallLock"
-                  className={classes.smallLock}
-                />
-                FACE UNLOCK
-              </Typography>
-            </Grid>
-            {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
-            <Grid style={styles.cardGrid} className={classes.cardGridMobile}>
-              {isUserVerify && (
-                <Box style={styles.overlayCamera as React.CSSProperties}>
-                  <img
-                    src={shield}
-                    alt="shield"
-                    style={styles.shield as React.CSSProperties}
-                  />
-                </Box>
-              )}
-              <Typography
-                component="p"
-                textAlign="center"
-                fontSize={20}
-                fontWeight={900}
-                mt={3}
-                color={"#333"}
-              >
-                YES, CREATE MY ACCOUNT
-              </Typography>
-              <Card className={classes.consentCard}>
-                <List
-                  sx={{
-                    listStyleType: "disc",
-                    pl: 2,
-                  }}
-                >
-                  <ListItem className={classes.listText}>
-                    I acknowledge I am over 18 years of age, all information I
-                    provided is accurate, and I am prohibited from allowing any
-                    person under the age of 18 to access or use my account.
-                  </ListItem>
-                  <ListItem className={classes.listText}>
-                    I agree to enroll in Face Unlock using my facial biometrics.
-                    Each biometric is safely encrypted in compliance with the
-                    IEEE 2410-2021 Standard for Biometric Privacy, completely
-                    transformed into anonymized data and then deleted. Biometric
-                    information is never transmitted to, stored by or used by
-                    AllpassTrust. Only anonymized data is used to authenticate
-                    you.
-                  </ListItem>
-                  <ListItem className={classes.listText}>
-                    I have read the AllpassTrust Terms of Service and Privacy
-                    Policy.
-                  </ListItem>
-                </List>
-              </Card>
-            </Grid>
-            {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
-            <Button
-              variant="contained"
-              color={theme as "inherit"}
-              style={styles.continueButton}
-              onClick={() => {
-                setIsUserVerify(true);
-                localStorage.setItem("user", JSON.stringify(sessionData));
-                localStorage.setItem("uuid", JSON.stringify(user?.uuid));
-                navigateToUrl(sessionData?.successUrl);
-              }}
-            >
-              <Typography
-                component="p"
-                color={palette?.[skin]?.listText}
-                textAlign="center"
-                fontWeight={600}
-                display="flex"
-                alignItems="center"
-                justifyContent={"center"}
-                textTransform="capitalize"
-              >
-                Accept and finish
-              </Typography>
-            </Button>
-            <Button
-              variant="text"
-              color={theme as "inherit"}
-              style={styles.textButton}
-              onClick={handleDelete}
-            >
-              <Typography
-                component="p"
-                color={palette?.[skin]?.listText}
-                textAlign="center"
-                fontWeight={500}
-                display="flex"
-                alignItems="center"
-                justifyContent={"center"}
-                textTransform="capitalize"
-                fontSize={13}
-                className={classes.textButtonUnderline}
-              >
-                No, I do not consent
-              </Typography>
-            </Button>
-          </>
+          <CreateAccountConsent
+            theme={theme}
+            skin={skin}
+            palette={palette}
+            isUserVerify={isUserVerify}
+            handleDelete={handleDelete}
+            setIsUserVerify={setIsUserVerify}
+            sessionData={sessionData}
+            user={user}
+            navigateToUrl={navigateToUrl}
+          />
         );
       case 7:
         return (
-          <>
-            <Grid container alignItems="center" justifyContent={"center"}>
-              <Typography
-                component="p"
-                textAlign="center"
-                fontSize={16}
-                fontWeight={900}
-                letterSpacing={"1px"}
-                sx={{ paddingTop: 3, paddingBottom: 2 }}
-                className={classes.cardHeading}
-              >
-                <img
-                  src={smallLock}
-                  alt="smallLock"
-                  className={classes.smallLock}
-                />
-                ANONYMOUS AGE VERIFICATION
-              </Typography>
-            </Grid>
-            {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
-            <Grid style={styles.cardGrid} className={classes.cardGridMobile}>
-              <Typography
-                component="p"
-                textAlign="center"
-                fontSize={18}
-                fontWeight={700}
-                mt={3}
-                color={"#555"}
-              >
-                Use your Driver’s License
-                <br /> to verify your age
-              </Typography>
-              <Typography
-                component="p"
-                textAlign={matchesSM ? "center" : "center"}
-                fontSize={14}
-                fontWeight={500}
-                mt={5}
-              >
-                AllpassTrust needs to use your Driver’s License to validate your
-                age. All images and personal details remain on your device and
-                are deleted immediately after processing. No images or personal
-                details are shared with {name}.
-              </Typography>
-              <Typography
-                component="p"
-                textAlign={matchesSM ? "center" : "center"}
-                fontSize={12}
-                fontWeight={500}
-                mt={3}
-                mb={1}
-              >
-                Learn how AllpassTrust works
-              </Typography>
-            </Grid>
-            {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
-            <Button
-              variant="contained"
-              color={theme as "inherit"}
-              style={styles.continueButton}
-              onClick={() => setStep(8)}
-            >
-              <Typography
-                component="p"
-                color={palette?.[skin]?.listText}
-                textAlign="center"
-                fontWeight={600}
-                display="flex"
-                alignItems="center"
-                justifyContent={"center"}
-                textTransform="capitalize"
-              >
-                Accept and continue
-              </Typography>
-            </Button>
-            <Button
-              variant="text"
-              color={theme as "inherit"}
-              style={styles.textButton}
-              onClick={() => setStep(9)}
-            >
-              <Typography
-                component="p"
-                color={palette?.[skin]?.listText}
-                textAlign="center"
-                fontWeight={500}
-                display="flex"
-                alignItems="center"
-                justifyContent={"center"}
-                textTransform="capitalize"
-                fontSize={14}
-                className={classes.textButtonUnderline}
-              >
-                No, I do not consent
-              </Typography>
-            </Button>
-          </>
+          <VerifyDriversLicense
+            theme={theme}
+            skin={skin}
+            palette={palette}
+            setStep={setStep}
+            name={name}
+          />
         );
       case 8:
         return (
-          <>
-            <Grid container alignItems="center" justifyContent={"center"}>
-              <Typography
-                component="p"
-                textAlign="center"
-                fontSize={16}
-                fontWeight={900}
-                letterSpacing={"1px"}
-                sx={{ paddingTop: 3, paddingBottom: 2 }}
-                className={classes.cardHeading}
-              >
-                <img
-                  src={smallLock}
-                  alt="smallLock"
-                  className={classes.smallLock}
-                />
-                ANONYMOUS AGE VERIFICATION
-              </Typography>
-            </Grid>
-            {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
-            <Grid
-              style={styles.cardGrid}
-              className={`cardGridMobile overflowUnset`}
-            >
-              <Box position={"relative"}>
-                <Box position={"relative"}>
-                  <img
-                    src={isBackScan ? DlBack : DlFront}
-                    alt="DlFront"
-                    style={styles.DlFront as React.CSSProperties}
-                    className="DlBack"
-                  />
-                  {isUserVerify && (
-                    <Box style={styles.overlay as React.CSSProperties}>
-                      <img
-                        src={shield}
-                        alt="shield"
-                        style={styles.shield as React.CSSProperties}
-                      />
-                    </Box>
-                  )}
-                  {isBackScan ? (
-                    <ScanBackDocument
-                      onSuccess={onBackSuccess}
-                      onReadyCallback={onCameraNotGranted}
-                    />
-                  ) : (
-                    <ScanFrontDocument
-                      onSuccess={onFrontSuccess}
-                      onReadyCallback={onCameraNotGranted}
-                    />
-                  )}
-                </Box>
-              </Box>
-            </Grid>
-            <Box style={{ height: 106 }}>
-              {isScanning ? (
-                <Typography
-                  component="p"
-                  textAlign="center"
-                  fontSize={14}
-                  fontWeight={500}
-                  mt={1}
-                  mb={2}
-                >
-                  <CircularProgress style={styles.scanLoader} /> Scanning...
-                </Typography>
-              ) : null}
-
-              <Typography
-                component="p"
-                textAlign="center"
-                fontSize={14}
-                fontWeight={500}
-                mt={1}
-                mb={2}
-              >
-                {isBackScan
-                  ? "Place the back of the Driver’s License above"
-                  : "Place the front of the Driver’s License above"}
-              </Typography>
-            </Box>
-          </>
+          <DocumentScan
+            skin={skin}
+            palette={palette}
+            isBackScan={isBackScan}
+            isUserVerify={isUserVerify}
+            onBackSuccess={onBackSuccess}
+            onFrontSuccess={onFrontSuccess}
+            onCameraNotGranted={onCameraNotGranted}
+            isScanning={isScanning}
+          />
         );
       case 9:
         return (
-          <>
-            <Grid container alignItems="center" justifyContent={"center"}>
-              <Typography
-                component="p"
-                textAlign="center"
-                fontSize={16}
-                fontWeight={900}
-                letterSpacing={"1px"}
-                sx={{ paddingTop: 3, paddingBottom: 2 }}
-                className={classes.cardHeading}
-              >
-                <img
-                  src={smallLock}
-                  alt="smallLock"
-                  className={classes.smallLock}
-                />{" "}
-                ANONYMOUS AGE VERIFICATION
-              </Typography>
-            </Grid>
-            {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
-            <Grid style={styles.cardGrid} className={classes.cardGridMobile}>
-              <Typography
-                component="p"
-                textAlign="center"
-                fontSize={24}
-                fontWeight={700}
-                mt={3}
-                color={"#333"}
-              >
-                Use the Age Check <br />
-                Database to Verify Your Age
-              </Typography>
-              <Typography
-                component="p"
-                textAlign={matchesSM ? "center" : "left"}
-                fontSize={15}
-                fontWeight={500}
-                mt={5}
-              >
-                AllpassTrust needs your personal details to validate your age.
-                All personal details will be deleted immediately after
-                processing. No images or personal details will be shared with
-                {name}.
-              </Typography>
-              <Typography
-                component="p"
-                textAlign={matchesSM ? "center" : "left"}
-                fontSize={15}
-                fontWeight={500}
-                mt={3}
-                mb={1}
-              >
-                Learn how AllpassTrust works
-              </Typography>
-            </Grid>
-            {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
-            <Button
-              variant="contained"
-              color={theme as "inherit"}
-              style={styles.continueButton}
-              onClick={() => setStep(13)}
-            >
-              <Typography
-                component="p"
-                color={palette?.[skin]?.listText}
-                textAlign="center"
-                fontWeight={600}
-                display="flex"
-                alignItems="center"
-                justifyContent={"center"}
-                textTransform="capitalize"
-              >
-                Accept and continue
-              </Typography>
-            </Button>
-            <Button
-              variant="text"
-              color={theme as "inherit"}
-              style={styles.textButton}
-              onClick={() => {
-                setStep(12);
-                setPrevStep(9);
-              }}
-            >
-              <Typography
-                component="p"
-                color={palette?.[skin]?.listText}
-                textAlign="center"
-                fontWeight={500}
-                display="flex"
-                alignItems="center"
-                justifyContent={"center"}
-                textTransform="capitalize"
-                fontSize={14}
-                className={classes.textButtonUnderline}
-              >
-                No, I do not consent
-              </Typography>
-            </Button>
-          </>
+          <VerifyAgeWithDatabase
+            theme={theme}
+            skin={skin}
+            palette={palette}
+            setStep={setStep}
+            setPrevStep={setPrevStep}
+            name={name}
+          />
         );
       case 10:
+        return (
+          <DatabaseConsent
+            theme={theme}
+            skin={skin}
+            palette={palette}
+            setStep={setStep}
+            setPrevStep={setPrevStep}
+          />
+        );
+      case 11:
+        return (
+          <DatabaseInputs
+            theme={theme}
+            skin={skin}
+            palette={palette}
+            isUserVerify={isUserVerify}
+            onChange={onChange}
+            setEnrollData={setEnrollData}
+            enrollData={enrollData}
+            onContinue={onContinue}
+            loading={loading}
+          />
+        );
+      case 12:
+        return (
+          <CannotVerify
+            theme={theme}
+            skin={skin}
+            palette={palette}
+            sessionData={sessionData}
+            navigateToUrl={navigateToUrl}
+            setStep={setStep}
+            prevStep={prevStep}
+          />
+        );
+      case 13:
+        return (
+          <AgeCheckDatabase
+            theme={theme}
+            setPrevStep={setPrevStep}
+            setStep={setStep}
+          />
+        );
+      case 14:
+        return (
+          <>
+            <FullWidthTabs />
+          </>
+        );
+      case 15:
         return (
           <>
             <Grid container alignItems="center" justifyContent={"center"}>
@@ -1163,49 +555,62 @@ const Signup = ({ theme, skin }: props) => {
                 ANONYMOUS AGE VERIFICATION
               </Typography>
             </Grid>
-            {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
             <Grid style={styles.cardGrid} className={classes.cardGridMobile}>
+              {/* @ts-ignore  */}
+              <Box className={classes.allowCameraBox}>
+                <CameraAltIcon />
+              </Box>
+              <Typography
+                id="modal-modal-description"
+                sx={{ mt: 2 }}
+                color={palette?.[skin]?.listText}
+                textAlign="center"
+                fontWeight={700}
+                fontSize={22}
+              >
+                Camera permission needed
+              </Typography>
               <Typography
                 component="p"
-                textAlign="center"
-                fontSize={18}
-                fontWeight={700}
-                mt={2}
+                textAlign={"center"}
+                fontSize={16}
+                fontWeight={500}
                 color={"#333"}
+                mt={2}
               >
-                USER CONSENT
-              </Typography>
-              <Card className={classes.consentCard}>
-                <List
-                  sx={{
-                    listStyleType: "disc",
-                    pl: 2,
+                To update permissions, see the instructions{" "}
+                <span
+                  onClick={() =>
+                    window.open(
+                      "https://support.google.com/chrome/answer/2693767?co=GENIE.Platform%3DDesktop"
+                    )
+                  }
+                  style={{
+                    color: palette[skin]?.main,
+                    fontWeight: 700,
+                    cursor: "pointer",
                   }}
                 >
-                  <ListItem className={classes.listText}>
-                    I acknowledge I am over 18 years of age and all information
-                    I provided is accurate.
-                  </ListItem>
-                  <ListItem className={classes.listText}>
-                    AllpassTrust and our third-party enrollment and identity
-                    proofing service provider Central Account Management
-                    Services LLC and its contract providers may share, use and
-                    maintain the images and information you provide, and the
-                    information on file with other third-party service providers
-                    or governments, to further verify your age or identity, to
-                    protect against or prevent actual or potential fraud or
-                    unauthorized use of the Service for the duration of our
-                    business relationship.
-                  </ListItem>
-                  <ListItem className={classes.listText}>
-                    I have read and agreed to the AllpassTrust Terms of Service
-                    and Privacy Policy and Ultrapass Terms of Service and
-                    Privacy Policy.
-                  </ListItem>
-                </List>
-              </Card>
+                  here
+                </span>
+                .
+              </Typography>
             </Grid>
-            {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
+            {/* @ts-ignore  */}
+            <Box className={classes.otherOptionsBottom}>
+              <Typography
+                component="p"
+                textAlign={matchesSM ? "center" : "left"}
+                fontSize={15}
+                fontWeight={500}
+                mt={2}
+                onClick={() => {
+                  setStep(14);
+                }}
+              >
+                <PhoneIphoneIcon /> Switch to other device
+              </Typography>
+            </Box>
             <Button
               variant="contained"
               color={theme as "inherit"}
@@ -1214,333 +619,6 @@ const Signup = ({ theme, skin }: props) => {
             >
               <Typography
                 component="p"
-                color={palette?.[skin]?.listText}
-                textAlign="center"
-                fontWeight={600}
-                display="flex"
-                alignItems="center"
-                justifyContent={"center"}
-                textTransform="capitalize"
-              >
-                Accept and continue
-              </Typography>
-            </Button>
-            <Button
-              variant="text"
-              color={theme as "inherit"}
-              style={styles.textButton}
-              onClick={() => {
-                setStep(12);
-                setPrevStep(10);
-              }}
-            >
-              <Typography
-                component="p"
-                color={palette?.[skin]?.listText}
-                textAlign="center"
-                fontWeight={500}
-                display="flex"
-                alignItems="center"
-                justifyContent={"center"}
-                textTransform="capitalize"
-                fontSize={13}
-                className={classes.textButtonUnderline}
-              >
-                No, don’t verify
-              </Typography>
-            </Button>
-          </>
-        );
-      case 11:
-        return (
-          <>
-            <Grid container alignItems="center" justifyContent={"center"}>
-              <Typography
-                component="p"
-                textAlign="center"
-                fontSize={16}
-                fontWeight={900}
-                letterSpacing={"1px"}
-                sx={{ paddingTop: 3, paddingBottom: 2 }}
-                className={classes.cardHeading}
-              >
-                <img
-                  src={smallLock}
-                  alt="smallLock"
-                  className={classes.smallLock}
-                />
-                ANONYMOUS AGE VERIFICATION
-              </Typography>
-            </Grid>
-            {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
-            <Grid style={styles.cardGrid} className={classes.cardGridForm}>
-              <Box style={{ position: "relative" }}>
-                <Typography
-                  component="p"
-                  textAlign="center"
-                  fontSize={16}
-                  fontWeight={500}
-                  letterSpacing={"0.5px"}
-                  sx={{ paddingTop: 1, paddingBottom: 0 }}
-                >
-                  Use the Age Check Database to Verify Your Age
-                </Typography>
-                {isUserVerify && (
-                  <Box style={styles.overlay as React.CSSProperties}>
-                    <img
-                      src={shield}
-                      alt="shield"
-                      style={styles.shield as React.CSSProperties}
-                    />
-                  </Box>
-                )}
-                <Grid container direction="column" spacing={1}>
-                  <Grid item>
-                    <TextField
-                      fullWidth
-                      type="text"
-                      placeholder="First name"
-                      name="firstName"
-                      onChange={onChange}
-                    />
-                  </Grid>
-                  <Grid item>
-                    <TextField
-                      fullWidth
-                      type="text"
-                      placeholder="Last name"
-                      name="lastName"
-                      onChange={onChange}
-                    />
-                  </Grid>
-                  <Grid item container>
-                    <Box className="datePickerWrap" width="100%">
-                      <MonthPicker
-                        value={enrollData?.dob}
-                        setEnrollData={(newValue: any) => {
-                          setEnrollData({
-                            ...enrollData,
-                            dob: newValue,
-                          });
-                        }}
-                      />
-                    </Box>
-                  </Grid>
-                  <Grid item>
-                    <TextField
-                      fullWidth
-                      type="number"
-                      placeholder="SSN"
-                      name="ssn"
-                      onChange={onChange}
-                      value={enrollData?.ssn}
-                    />
-                  </Grid>
-                  <Grid item>
-                    <TextField
-                      fullWidth
-                      type="number"
-                      placeholder="Zipcode"
-                      name="zip"
-                      onChange={onChange}
-                      value={enrollData?.zip}
-                    />
-                  </Grid>
-                </Grid>
-              </Box>
-            </Grid>
-            {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
-            <Button
-              variant="contained"
-              color={theme as "inherit"}
-              style={styles.continueButton}
-              onClick={() => onContinue(true)}
-              disabled={loading}
-              className={classes.checkFlowContinueButton}
-            >
-              {loading ? (
-                <CircularProgress className={classes.homeLoader} />
-              ) : (
-                <Typography
-                  component="p"
-                  color={palette?.[skin]?.listText}
-                  textAlign="center"
-                  fontWeight={600}
-                  display="flex"
-                  alignItems="center"
-                  justifyContent={"center"}
-                  textTransform="capitalize"
-                >
-                  Verify and continue
-                </Typography>
-              )}
-            </Button>
-            {/* <Button
-              variant="text"
-              color={theme as "inherit"}
-              style={styles.textButton}
-              onClick={() => {
-                setStep(12);
-                setPrevStep(11);
-              }}
-            >
-              <Typography
-                component="p"
-                color={palette?.[skin]?.listText}
-                textAlign="center"
-                fontWeight={500}
-                display="flex"
-                alignItems="center"
-                justifyContent={"center"}
-                textTransform="capitalize"
-                fontSize={13}
-              >
-                No, don’t verify
-              </Typography>
-            </Button> */}
-          </>
-        );
-      case 12:
-        return (
-          <>
-            <Grid container alignItems="center" justifyContent={"center"}>
-              <Typography
-                component="p"
-                textAlign="center"
-                fontSize={16}
-                fontWeight={900}
-                letterSpacing={"1px"}
-                sx={{ paddingTop: 3, paddingBottom: 2 }}
-                className={classes.cardHeading}
-              >
-                <img
-                  src={smallLock}
-                  alt="smallLock"
-                  className={classes.smallLock}
-                />{" "}
-                ANONYMOUS AGE VERIFICATION
-              </Typography>
-            </Grid>
-            {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
-            <Grid style={styles.cardGrid} className={classes.cardGridMobile}>
-              <Typography
-                component="p"
-                textAlign="center"
-                fontSize={25}
-                fontWeight={700}
-                mt={4}
-              >
-                ARE YOU SURE <br />
-                YOU WANT TO EXIT?
-              </Typography>
-              <Typography
-                component="p"
-                textAlign="center"
-                fontSize={20}
-                fontWeight={500}
-                mt={7}
-              >
-                AllpassTrust cannot verify your age
-                <br /> without your consent.
-              </Typography>
-            </Grid>
-            {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
-            <Button
-              variant="contained"
-              color={theme as "inherit"}
-              style={styles.continueButton}
-              onClick={() => setStep(prevStep)}
-            >
-              <Typography
-                component="p"
-                color={palette?.[skin]?.listText}
-                textAlign="center"
-                fontWeight={600}
-                display="flex"
-                alignItems="center"
-                justifyContent={"center"}
-                textTransform="capitalize"
-              >
-                Back to consent
-              </Typography>
-            </Button>
-            <Button
-              variant="text"
-              color={theme as "inherit"}
-              style={styles.textButton}
-              onClick={() => navigateToUrl(sessionData?.failureUrl)}
-            >
-              <Typography
-                component="p"
-                color={palette?.[skin]?.listText}
-                textAlign="center"
-                fontWeight={500}
-                display="flex"
-                alignItems="center"
-                justifyContent={"center"}
-                textTransform="capitalize"
-                fontSize={14}
-                className={classes.textButtonUnderline}
-              >
-                Exit
-              </Typography>
-            </Button>
-          </>
-        );
-      case 13:
-        return (
-          <>
-            <Grid container alignItems="center" justifyContent={"center"}>
-              <Typography
-                component="p"
-                textAlign="center"
-                fontSize={16}
-                fontWeight={900}
-                letterSpacing={"1px"}
-                sx={{ paddingTop: 3, paddingBottom: 2 }}
-                className={classes.cardHeading}
-              >
-                <img
-                  src={smallLock}
-                  alt="smallLock"
-                  className={classes.smallLock}
-                />{" "}
-                ANONYMOUS AGE VERIFICATION
-              </Typography>
-            </Grid>
-            <Divider color="#000" />
-            <Grid style={styles.cardGrid} className={classes.cardGridMobile}>
-              <Typography
-                component="p"
-                textAlign="center"
-                fontSize={24}
-                fontWeight={700}
-                mt={3}
-                color={"#333"}
-              >
-                Use the Age Check <br />
-                Database to Verify Your Age
-              </Typography>
-              <Typography
-                component="p"
-                textAlign={"center"}
-                fontSize={22}
-                fontWeight={700}
-                color={"#999"}
-                mt={7}
-              >
-                Please prepare to enter your <br /> Name, Birthday and Zipcode
-              </Typography>
-            </Grid>
-            <Divider color="#000" />
-            <Button
-              variant="contained"
-              color={theme as "inherit"}
-              style={styles.continueButton}
-              onClick={() => setStep(10)}
-            >
-              <Typography
-                component="p"
                 color={`#000`}
                 textAlign="center"
                 fontWeight={600}
@@ -1549,39 +627,9 @@ const Signup = ({ theme, skin }: props) => {
                 justifyContent={"center"}
                 textTransform="capitalize"
               >
-                Accept and continue
+                Continue without camera
               </Typography>
             </Button>
-            <Button
-              variant="text"
-              color={theme as "inherit"}
-              style={styles.textButton}
-              onClick={() => {
-                setStep(12);
-                setPrevStep(13);
-              }}
-            >
-              <Typography
-                component="p"
-                color={`#000`}
-                textAlign="center"
-                fontWeight={500}
-                display="flex"
-                alignItems="center"
-                justifyContent={"center"}
-                textTransform="capitalize"
-                fontSize={14}
-                className={classes.textButtonUnderline}
-              >
-                No, I do not consent
-              </Typography>
-            </Button>
-          </>
-        );
-      case 14:
-        return (
-          <>
-            <FullWidthTabs />
           </>
         );
       default:
