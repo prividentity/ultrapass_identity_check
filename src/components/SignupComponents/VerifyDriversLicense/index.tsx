@@ -8,24 +8,21 @@ import {
 } from "@mui/material";
 import smallLock from "../../../assets/smallLock.png";
 import { styles, useStyles } from "../../../pages/signup/styles";
+import STEPS from "../../../pages/register/steps";
+import { theme as Theme } from "../../../theme";
 
 interface props {
-  theme: string;
   skin: string;
-  palette: { [key: string]: any };
-  setStep: (e: number) => void;
-  name: string;
+  setStep: (e: string) => void;
+  setPrevStep: (e: string) => void;
+  name?: string;
 }
 
 const VerifyDriversLicense = (props: props) => {
-  const {
-    theme,
-    skin,
-    palette,
-    setStep,
-    name
-  } = props;
+  const { skin, setStep, name = "google", setPrevStep } = props;
   const muiTheme = useTheme();
+  const mainTheme = Theme;
+  const palette: { [key: string]: any } = mainTheme.palette;
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
   const classes = useStyles();
   return (
@@ -41,7 +38,7 @@ const VerifyDriversLicense = (props: props) => {
           className={classes.cardHeading}
         >
           <img src={smallLock} alt="smallLock" className={classes.smallLock} />
-          ANONYMOUS AGE VERIFICATION
+          IDENTITY VERIFICATION
         </Typography>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
@@ -55,7 +52,7 @@ const VerifyDriversLicense = (props: props) => {
           color={"#555"}
         >
           Use your Driver’s License
-          <br /> to verify your age
+          <br /> to verify your identity
         </Typography>
         <Typography
           component="p"
@@ -64,10 +61,10 @@ const VerifyDriversLicense = (props: props) => {
           fontWeight={500}
           mt={5}
         >
-          AllpassTrust needs to use your Driver’s License to validate your age.
-          All images and personal details remain on your device and are deleted
-          immediately after processing. No images or personal details are shared
-          with {name}.
+          AllpassTrust needs to use your Driver’s License to validate your
+          identity. All images and personal details remain on your device and
+          are deleted immediately after processing. No images or personal
+          details are shared with {name}.
         </Typography>
         <Typography
           component="p"
@@ -83,9 +80,9 @@ const VerifyDriversLicense = (props: props) => {
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
       <Button
         variant="contained"
-        color={theme as "inherit"}
+        color={"inherit"}
         style={styles.continueButton}
-        onClick={() => setStep(8)}
+        onClick={() => setStep(STEPS.DRIVERLICENSE)}
       >
         <Typography
           component="p"
@@ -102,9 +99,12 @@ const VerifyDriversLicense = (props: props) => {
       </Button>
       <Button
         variant="text"
-        color={theme as "inherit"}
+        color={"inherit"}
         style={styles.textButton}
-        onClick={() => setStep(9)}
+        onClick={() => {
+          setStep(STEPS.CONSENT_FAIL);
+          setPrevStep(STEPS.PRE_DRIVERLICENSE);
+        }}
       >
         <Typography
           component="p"

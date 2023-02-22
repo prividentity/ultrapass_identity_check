@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import {
   convertCroppedImage,
   isValidPhotoID,
@@ -9,22 +9,23 @@ const useScanBackDocument = (onSuccess: (e: any) => void) => {
   const [scannedCodeData, setScannedCodeData] = useState({});
   const [isFound, setIsFound] = useState(false);
 
-  // Input image
+  // raw byte
   const [inputImageData, setInputImageData] = useState<any>(null);
-  const [inputImage, setInputImage] = useState(null);
+  const [croppedDocumentRaw, setCroppedDocumentRaw] = useState(null);
+  const [croppedBarcodeRaw, setCroppedBarcodeRaw] = useState(null);
 
-  // Cropped Document
-  const [croppedDocumentImageData, setCroppedDocumentImageData] =
-    useState(null);
-  const [croppedDocumentWidth, setCropedDocumentWidth] = useState(null);
-  const [croppedDocumentHeight, setCroppedDocumentHeight] = useState(null);
-  const [croppedDocumentImage, setCroppedDocumentImage] = useState(null);
-
-  // Cropped Barcode
-  const [croppedBarcodeImageData, setCroppedBarcodeImageData] = useState(null);
+  // image width
+  const [croppedDocumentWidth, setCroppedDocumentWidth] = useState(null);
   const [croppedBarcodeWidth, setCroppedBarcodeWidth] = useState(null);
+
+  // image height
+  const [croppedDocumentHeight, setCroppedDocumentHeight] = useState(null);
   const [croppedBarcodeHeight, setCroppedBarcodeHeight] = useState(null);
-  const [croppedBarcodeImage, setCroppedBarcodeImage] = useState(null);
+
+  // base64 image
+  const [inputImageBase64, setInputImageBase64] = useState(null);
+  const [croppedDocumentBase64, setCroppedDocumentBase64] = useState(null);
+  const [croppedBarcodeBase64, setCroppedBarcodeBase64] = useState(null);
 
   const [barcodeStatusCode, setBarcodeStatusCode] = useState(null);
 
@@ -32,125 +33,116 @@ const useScanBackDocument = (onSuccess: (e: any) => void) => {
     if (result.status === "WASM_RESPONSE") {
       setBarcodeStatusCode(result.returnValue.op_status);
       if (result.returnValue.op_status === 0) {
-        onSuccess(result.returnValue);
+        // onSuccess(result.returnValue);
+        setScannedCodeData(result.returnValue)
         const {
-          firstName,
-          middleName,
-          lastName,
-          dateOfBirth,
-          gender,
-          streetAddress1,
-          streetAddress2,
-          state,
-          city,
-          postCode,
-          issuingCountry,
           crop_doc_width,
           crop_doc_height,
           crop_barcode_width,
           crop_barcode_height,
         } = result.returnValue;
-        const finalResult = {
-          firstName,
-          middleName,
-          lastName,
-          dateOfBirth,
-          gender,
-          streetAddress1,
-          streetAddress2,
-          state,
-          city,
-          postCode,
-          issuingCountry,
-        };
-        setCropedDocumentWidth(crop_doc_width);
+        setCroppedDocumentWidth(crop_doc_width);
         setCroppedDocumentHeight(crop_doc_height);
         setCroppedBarcodeWidth(crop_barcode_width);
         setCroppedBarcodeHeight(crop_barcode_height);
         setIsFound(true);
-        setScannedCodeData(finalResult);
-        return finalResult;
+        return;
       } else {
-        setCropedDocumentWidth(null);
+        setCroppedDocumentWidth(null);
         setCroppedDocumentHeight(null);
         setCroppedBarcodeWidth(null);
         setCroppedBarcodeHeight(null);
       }
     }
-    setCroppedDocumentImageData(null);
-    setCroppedBarcodeImageData(null);
+    setCroppedBarcodeRaw(null);
+    setCroppedDocumentRaw(null);
     setInputImageData(null);
     scanBackDocument();
   };
 
-  const convertImageData = async (
+  const convertImageToBase64 = async (
     imageData: any,
     width: any,
     height: any,
-    setState: any
+    setState: SetStateAction<any>,
   ) => {
-    if (width * height * 4 === imageData.length) {
-      const convertedImage = await convertCroppedImage(
-        imageData,
-        width,
-        height
-      );
-      setState(convertedImage);
+    if (imageData.length === width * height * 4) {
+      const imageBase64 = await convertCroppedImage(imageData, width, height);
+      setState(imageBase64);
     }
   };
 
+  // Converting imageInput
+  useEffect(() => {
+    if (inputImageData && isFound) {
+      convertImageToBase64(
+        inputImageData?.data,
+        inputImageData?.width,
+        inputImageData?.height,
+        setInputImageBase64
+      );
+    }
+  }, [inputImageData, isFound]);
+
+  // Converting Cropped Document
   useEffect(() => {
     if (
       isFound &&
-      croppedDocumentImageData &&
+      croppedDocumentRaw &&
       croppedDocumentWidth &&
       croppedDocumentHeight
     ) {
-      convertImageData(
-        croppedDocumentImageData,
+      convertImageToBase64(
+        croppedDocumentRaw,
         croppedDocumentWidth,
         croppedDocumentHeight,
-        setCroppedDocumentImage
+        setCroppedDocumentBase64
       );
     }
-  }, [
-    isFound,
-    croppedDocumentImageData,
-    croppedDocumentWidth,
-    croppedDocumentHeight,
-  ]);
+  }, [croppedDocumentRaw, croppedDocumentWidth, croppedDocumentHeight, isFound]);
 
+  // Converting Cropped Barcode
+  useEffect(() => {
+    if (
+      croppedBarcodeRaw &&
+      croppedBarcodeWidth &&
+      croppedBarcodeHeight &&
+      isFound
+    ) {
+      convertImageToBase64(
+        croppedBarcodeRaw,
+        croppedBarcodeWidth,
+        croppedBarcodeHeight,
+        setCroppedBarcodeBase64
+      );
+    }
+  }, [croppedBarcodeRaw, croppedBarcodeWidth, croppedBarcodeHeight, isFound]);
+
+
+  // onSuccess Callback
   useEffect(() => {
     if (
       isFound &&
-      croppedBarcodeImageData &&
-      croppedBarcodeWidth &&
-      croppedBarcodeHeight
+      inputImageBase64 &&
+      croppedDocumentBase64 &&
+      croppedBarcodeBase64 &&
+      scannedCodeData
     ) {
-      convertImageData(
-        croppedBarcodeImageData,
-        croppedBarcodeWidth,
-        croppedBarcodeHeight,
-        setCroppedBarcodeImage
-      );
+      onSuccess({
+        inputImage: inputImageBase64,
+        croppedDocument: croppedDocumentBase64,
+        croppedBarcode: croppedBarcodeBase64,
+        barcodeData: scannedCodeData,
+      });
     }
   }, [
     isFound,
-    croppedBarcodeImageData,
-    croppedBarcodeWidth,
-    croppedBarcodeHeight,
+    inputImageBase64,
+    croppedDocumentBase64,
+    croppedBarcodeBase64,
+    scannedCodeData,
   ]);
 
-  useEffect(() => {
-    if (isFound && inputImageData) {
-      convertImageData(
-        inputImageData.data,
-        inputImageData.width,
-        inputImageData.height,
-        setInputImage
-      );
-    }
-  }, [isFound, inputImageData]);
 
   const scanBackDocument = async (canvasSize?: any) => {
     // if (canvasSize && canvasSize !== internalCanvasSize) {
@@ -170,8 +162,8 @@ const useScanBackDocument = (onSuccess: (e: any) => void) => {
         undefined,
         canvasObj
       )) as any;
-    setCroppedDocumentImageData(croppedDocument);
-    setCroppedBarcodeImageData(croppedBarcode);
+    setCroppedDocumentRaw(croppedDocument);
+    setCroppedBarcodeRaw(croppedBarcode);
     setInputImageData(imageData);
   };
 
@@ -179,8 +171,8 @@ const useScanBackDocument = (onSuccess: (e: any) => void) => {
     scanBackDocument,
     scannedCodeData,
     isFound,
-    croppedDocumentImage,
-    croppedBarcodeImage,
+    croppedDocumentBase64,
+    croppedBarcodeBase64,
     barcodeStatusCode,
   };
 };

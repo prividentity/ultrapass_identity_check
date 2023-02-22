@@ -8,17 +8,21 @@ import {
 } from "@mui/material";
 import phoneImage from "../../../assets/face-id.png";
 import { styles, useStyles } from "../../../pages/signup/styles";
+import { theme as Theme } from "../../../theme";
+import STEPS from "../../../pages/register/steps";
 
 interface props {
   theme: string;
   skin: string;
-  palette: { [key: string]: any };
-  setStep: (e: number) => void;
+  setPrevStep: (e: string) => void;
+  setStep: (e: string) => void;
 }
 
 const VerifyAgeWithScan = (props: props) => {
-  const { theme, skin, palette, setStep } = props;
+  const { skin, setStep, setPrevStep } = props;
   const muiTheme = useTheme();
+  const mainTheme = Theme;
+  const palette: { [key: string]: any } = mainTheme.palette;
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
   const classes = useStyles();
   return (
@@ -49,9 +53,9 @@ const VerifyAgeWithScan = (props: props) => {
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
       <Button
         variant="contained"
-        color={theme as "inherit"}
+        color={"inherit"}
         style={styles.continueButton}
-        onClick={() => setStep(4)}
+        onClick={() => setStep(STEPS.ENROLL)}
       >
         <Typography
           component="p"
@@ -68,9 +72,12 @@ const VerifyAgeWithScan = (props: props) => {
       </Button>
       <Button
         variant="text"
-        color={theme as "inherit"}
+        color={"inherit"}
         style={styles.textButton}
-        onClick={() => setStep(9)}
+        onClick={() => {
+          setStep(STEPS.CONSENT_FAIL);
+          setPrevStep(STEPS.PRE_ENROLL);
+        }}
       >
         <Typography
           component="p"

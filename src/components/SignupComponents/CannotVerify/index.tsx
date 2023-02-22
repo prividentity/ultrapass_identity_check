@@ -8,28 +8,27 @@ import {
 } from "@mui/material";
 import smallLock from "../../../assets/smallLock.png";
 import { styles, useStyles } from "../../../pages/signup/styles";
+import {theme as Theme} from "../../../theme";
 
 interface props {
   theme: string;
   skin: string;
-  palette: { [key: string]: any };
-  sessionData: { successUrl?: string; failureUrl?: string };
   navigateToUrl: (e: string) => void;
-  setStep: (e: number) => void;
-  prevStep: number;
+  setStep: (e: string) => void;
+  prevStep: string;
 }
 
 const CannotVerify = (props: props) => {
   const {
-    theme,
     skin,
-    palette,
-    sessionData,
     navigateToUrl,
     setStep,
     prevStep,
   } = props;
   const muiTheme = useTheme();
+
+  const mainTheme = Theme;
+  const palette: { [key: string]: any } = mainTheme.palette;
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
   const classes = useStyles();
   return (
@@ -45,7 +44,7 @@ const CannotVerify = (props: props) => {
           className={classes.cardHeading}
         >
           <img src={smallLock} alt="smallLock" className={classes.smallLock} />{" "}
-          ANONYMOUS AGE VERIFICATION
+          IDENTITY VERIFICATION
         </Typography>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
@@ -67,14 +66,14 @@ const CannotVerify = (props: props) => {
           fontWeight={500}
           mt={7}
         >
-          AllpassTrust cannot verify your age
+          AllpassTrust cannot verify your identity
           <br /> without your consent.
         </Typography>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
       <Button
         variant="contained"
-        color={theme as "inherit"}
+        color={"inherit"}
         style={styles.continueButton}
         onClick={() => setStep(prevStep)}
       >
@@ -93,9 +92,9 @@ const CannotVerify = (props: props) => {
       </Button>
       <Button
         variant="text"
-        color={theme as "inherit"}
+        color={"inherit"}
         style={styles.textButton}
-        onClick={() => navigateToUrl(sessionData?.failureUrl || '')}
+        onClick={() => navigateToUrl( 'someFailureUrl')}
       >
         <Typography
           component="p"
