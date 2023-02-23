@@ -1,5 +1,4 @@
 import React from "react";
-import { Grid } from "@mui/material";
 import { UserContext } from "../../context/UserContext";
 import RequestAddress from "../RequestAddress";
 import RequestSSN from "../RequestSsn/index";
@@ -7,7 +6,7 @@ import STEPS from "../../pages/register/steps";
 
 enum AdditionalRequirementsEnum {
   requestSSN9 = "requestSSN9",
-  requireResAddress = "requireResAddress",
+  requestResAddress = "requireResAddress",
   requestScanID = "requestScanID",
 }
 
@@ -24,17 +23,18 @@ const AdditionalRequirements = ({
   const [requirement, setRequirement] = React.useState(
     AdditionalRequirementsEnum.requestSSN9
   );
-  const { requestSSN9, requireResAddress, requestScanID } =
+  const { requestSSN9, requestResAddress, requestScanID } =
     context?.userStatus || {};
-
+   
+    console.log({ requestSSN9, requestResAddress, requestScanID });
   function getNextRequirement() {
     if (
       requirement === AdditionalRequirementsEnum.requestSSN9 &&
-      requireResAddress
+      requestResAddress
     ) {
-      return AdditionalRequirementsEnum.requireResAddress;
+      return AdditionalRequirementsEnum.requestResAddress;
     } else if (
-      requirement === AdditionalRequirementsEnum.requireResAddress &&
+      requirement === AdditionalRequirementsEnum.requestResAddress &&
       requestScanID
     ) {
       return AdditionalRequirementsEnum.requestScanID;
@@ -55,8 +55,8 @@ const AdditionalRequirements = ({
     if (requestSSN9) {
       return AdditionalRequirementsEnum.requestSSN9;
     }
-    if (requireResAddress) {
-      return AdditionalRequirementsEnum.requireResAddress;
+    if (requestResAddress) {
+      return AdditionalRequirementsEnum.requestResAddress;
     }
     if (requestScanID) {
       return AdditionalRequirementsEnum.requestScanID;
@@ -78,7 +78,7 @@ const AdditionalRequirements = ({
       />
     );
   }
-  if (requirement === AdditionalRequirementsEnum.requireResAddress) {
+  if (requirement === AdditionalRequirementsEnum.requestResAddress) {
     return (
       <RequestAddress
         setStep={setStep}

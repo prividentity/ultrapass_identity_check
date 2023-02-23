@@ -152,7 +152,11 @@ const RegisterInputs = ({
                   {...props}
                   inputRef={ref}
                   InputProps={{
-                    startAdornment: <PhoneIcon sx={{ pr: 1 }} />,
+                    startAdornment: <PhoneIcon sx={{ pr: 1 }} 
+                    />,
+                  }}
+                  inputProps={{
+                    maxLength: 15,
                   }}
                 />
               ))}

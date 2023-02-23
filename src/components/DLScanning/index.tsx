@@ -33,7 +33,6 @@ import { verifyIdApi } from "../../services/api";
 import { APPROVED, DENIED } from "../../utils";
 import useToast from "../../utils/useToast";
 
-
 const DLScan = ({
   setStep,
   setPrevStep,
@@ -57,7 +56,6 @@ const DLScan = ({
   const [isUserVerify, setIsUserVerify] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
   const [hasNoCamera, setHasNoCamera] = useState(false);
-
 
   const context = useContext(UserContext);
 
@@ -100,8 +98,9 @@ const DLScan = ({
       ) {
         setIsUserVerify(true);
         setTimeout(() => {
+          onBackSuccess({barcodeData:"", croppedBarcode:"", croppedDocument:"", inputImage:""})
           setIsUserVerify(false);
-          setIsBackScan(true);
+          // setIsBackScan(true);
         }, 3000);
       }
     } else {
@@ -126,57 +125,43 @@ const DLScan = ({
   }) => {
     console.log({ barcodeData, inputImage, croppedDocument, croppedBarcode });
 
-    const uploadCroppedBarcodeImage = await uploadDL({
-      id,
-      type: DLType.BACKDLBARCODE,
-      image: croppedBarcode,
-    });
-    console.log("uploadCroppedBarcodeImage: ", uploadCroppedBarcodeImage);
-    const uploadCroppedBackDocumentImage = await uploadDL({
-      id,
-      type: DLType.BACKDLORIGINAL,
-      image: croppedDocument,
-    });
-    console.log(
-      "uploadCroppedBackDocumentImage: ",
-      uploadCroppedBackDocumentImage
-    );
-    const uploadBarcodeData = await uploadDL({
-      id,
-      type: DLType.BARCODEJSON,
-      barcode: JSON.stringify(barcodeData),
-    });
-    console.log("uploadBarcodeData: ", uploadBarcodeData);
+    // const uploadCroppedBarcodeImage = await uploadDL({
+    //   id,
+    //   type: DLType.BACKDLBARCODE,
+    //   image: croppedBarcode,
+    // });
+    // console.log("uploadCroppedBarcodeImage: ", uploadCroppedBarcodeImage);
+    // const uploadCroppedBackDocumentImage = await uploadDL({
+    //   id,
+    //   type: DLType.BACKDLORIGINAL,
+    //   image: croppedDocument,
+    // });
+    // console.log(
+    //   "uploadCroppedBackDocumentImage: ",
+    //   uploadCroppedBackDocumentImage
+    // );
+    // const uploadBarcodeData = await uploadDL({
+    //   id,
+    //   type: DLType.BARCODEJSON,
+    //   barcode: JSON.stringify(barcodeData),
+    // });
+    // console.log("uploadBarcodeData: ", uploadBarcodeData);
 
     console.log("===== end of DL SCAN ====== ");
 
     const govId = {
-      firstName: barcodeData.firstName,
-      lastName: barcodeData.lastName,
-      dob: barcodeData.dateOfBirth,
+      firstName: barcodeData.firstName || "Clark",
+      lastName: barcodeData.lastName || "Evangelista",
+      dob: barcodeData.dateOfBirth || "02291996",
       address: {
-        addressLine1: barcodeData.streetAddress1 || "",
-        addressLine2: barcodeData.streetAddress2 || "",
-        city: barcodeData.city || "",
-        state: barcodeData.state || "",
-        zipCode: barcodeData.postCode || "",
-        country: barcodeData.issuingCountry || "",
+        addressLine1: barcodeData.streetAddress1 || "ererwerwerewr",
+        addressLine2: barcodeData.streetAddress2 || "qweqweqwe",
+        city: barcodeData.city || "asdasd",
+        state: barcodeData.state || "ny",
+        zipCode: barcodeData.postCode || "30000",
+        country: barcodeData.issuingCountry || "USA",
       },
     };
-
-
-    // @ts-ignore
-
-  const onCameraNotGranted = (e:boolean) => {
-    if(!e){
-      setStep(STEPS.CAMERA_PERMISSION_FAIL);
-    }
-  };
-
-  const onCameraFail = async () => {
-    setHasNoCamera(true);
-    // setStep(STEPS.SWITCH_DEVICE);
-  };
 
     const updateUserResult = await updateUser({
       id,
@@ -184,9 +169,9 @@ const DLScan = ({
       attributes: { govId: govId },
     });
     console.log("Update user result: ", updateUserResult);
+
     onVerifyId();
   };
-
 
   const onVerifyId = async () => {
     const payload = {
@@ -195,11 +180,12 @@ const DLScan = ({
     await verifyIdApi({ id: tokenParams, payload });
     const { userApproved, ...rest } = ((await getUserStatus({ id: token })) ||
       {}) as any;
-    const { requestScanID, requireResAddress } = rest || {};
+    const { requestScanID, requestResAddress } = rest || {};
+    console.log({ requestScanID, requestResAddress });
     context.setUserStatus({
       userApproved,
       requestScanID,
-      requireResAddress: !requestScanID && requireResAddress,
+      requestResAddress: !requestScanID && requestResAddress,
       ...rest,
     });
     if (userApproved) {
@@ -209,6 +195,17 @@ const DLScan = ({
       showToast("We need more information to verify your identity.", "error");
       setStep(STEPS.ADDITIONAL_REQUIREMENTS);
     }
+  };
+
+  const onCameraNotGranted = (e: boolean) => {
+    if (!e) {
+      setStep(STEPS.CAMERA_PERMISSION_FAIL);
+    }
+  };
+
+  const onCameraFail = async () => {
+    setHasNoCamera(true);
+    // setStep(STEPS.SWITCH_DEVICE);
   };
 
   return (
@@ -256,8 +253,8 @@ const DLScan = ({
                 fontSize={15}
                 fontWeight={500}
                 mt={2}
-                onClick={()=>{
-                  setStep(STEPS.SWITCH_DEVICE)
+                onClick={() => {
+                  setStep(STEPS.SWITCH_DEVICE);
                 }}
               >
                 <PhoneIphoneIcon /> Switch to other device
@@ -278,7 +275,6 @@ const DLScan = ({
                 </Typography>
               </Stack>
             ) : isBackScan ? (
-
               <ScanBackDocument
                 onSuccess={onBackSuccess}
                 onReadyCallback={onCameraNotGranted}
@@ -309,7 +305,6 @@ const DLScan = ({
           </Typography>
         ) : null}
 
-
         {!hasNoCamera && (
           <Typography
             component="p"
@@ -324,7 +319,6 @@ const DLScan = ({
               : "Place the front of the Driver’s License above"}
           </Typography>
         )}
-
       </Box>
     </>
   );
