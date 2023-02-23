@@ -33,28 +33,28 @@ const RequestSsn = ({
   const { showToast } = useToast();
   const palette: { [key: string]: any } = mainTheme.palette;
 
-  const ssn4Ref = useRef<HTMLFormElement | null>(null);
+  const ssn9Ref = useRef<HTMLFormElement | null>(null);
 
   const context = useContext(UserContext);
   const { id } = context;
-  const [showSSN4Error, setShowSSN4Error] = useState({
+  const [showSSN9Error, setShowSSN9Error] = useState({
     error: false,
     message: "",
   });
   const handleCheckSSN4Input = () => {
-    if (ssn4Ref?.current?.value.length < 4) {
-      setShowSSN4Error({ error: true, message: "SSN4 Must be 4 digits." });
+    if (ssn9Ref?.current?.value.length < 9) {
+      setShowSSN9Error({ error: true, message: "SSN9 Must be 9 digits." });
     }
   };
 
   const handleContinue = async () => {
-    if (ssn4Ref?.current?.value.length !== 4) {
-      showToast("Enter SSN4", "error");
-    } else if (ssn4Ref?.current?.value.length === 4) {
-      const inputSSN4 = ssn4Ref?.current?.value;
+    if (ssn9Ref?.current?.value.length !== 9) {
+      showToast("Enter SSN9", "error");
+    } else if (ssn9Ref?.current?.value.length === 9) {
+      const inputSSN9 = ssn9Ref?.current?.value;
       const updateUserResult: any = await updateUser({
         id,
-        attributes: { ssn9: inputSSN4 } as any,
+        attributes: { ssn9: inputSSN9 } as any,
       });
       if (updateUserResult?.level === "error") {
         showToast(updateUserResult?.message, "error");
@@ -96,14 +96,14 @@ const RequestSsn = ({
             label="SSN9"
             type="tel"
             placeholder="SSN9"
-            name="SSN4"
+            name="SSN9"
             InputProps={{
               startAdornment: <AccountBoxIcon sx={{ pr: 1 }} />,
             }}
             inputProps={{
-              maxLength: 4,
+              maxLength: 9,
             }}
-            inputRef={ssn4Ref}
+            inputRef={ssn9Ref}
             onBlur={handleCheckSSN4Input}
           />
         </Box>

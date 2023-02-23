@@ -38,30 +38,23 @@ const RequestAddress = ({
   const { showToast } = useToast();
   const [addressData, setAddressData] = useState<any>();
   const [state, setState] = useState<any>();
-  const [country, setCountry] = useState<any>();
   const palette: { [key: string]: any } = mainTheme.palette;
 
-  const ssn4Ref = useRef<HTMLFormElement | null>(null);
 
   const context = useContext(UserContext);
   const { id } = context;
-  const [showSSN4Error, setShowSSN4Error] = useState({
-    error: false,
-    message: "",
-  });
 
   const handleContinue = async () => {
     const address = {
       addressLine1: addressData?.addressLine1,
-      addressLine2: addressData?.addressLine2,
       city: addressData?.city,
-      state: state,
+      state,
       zipCode: addressData?.zipCode,
-      country: country,
+      country: "USA",
     };
     const updateUserResult: any = await updateUser({
       id,
-      attributes: address as any,
+      attributes: { govId: address } as any,
     });
     if (updateUserResult?.level === "error") {
       showToast(updateUserResult?.message, "error");
@@ -81,8 +74,6 @@ const RequestAddress = ({
     });
   };
 
-  console.log(addressData, "setAddressData", state);
-
   return (
     <>
       <Grid container alignItems="center" justifyContent={"center"}>
@@ -95,7 +86,7 @@ const RequestAddress = ({
           sx={{ paddingTop: 4, paddingBottom: 2 }}
           className={classes.cardHeading}
         >
-          PLEASE ENTER SSN9
+          PLEASE ENTER ADDRESS
         </Typography>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
@@ -106,22 +97,6 @@ const RequestAddress = ({
             id="outlined-basic"
             placeholder="Address Line 1"
             name="addressLine1"
-            inputProps={{
-              maxLength: 4,
-            }}
-            inputRef={ssn4Ref}
-            onChange={onChange}
-            className={classes.inputStyle}
-          />
-          <TextField
-            fullWidth
-            id="outlined-basic"
-            placeholder="Address Line 2"
-            name="addressLine2"
-            inputProps={{
-              maxLength: 4,
-            }}
-            inputRef={ssn4Ref}
             onChange={onChange}
             className={classes.inputStyle}
           />
@@ -130,10 +105,6 @@ const RequestAddress = ({
             id="outlined-basic"
             placeholder="City"
             name="city"
-            inputProps={{
-              maxLength: 4,
-            }}
-            inputRef={ssn4Ref}
             onChange={onChange}
             className={classes.inputStyle}
           />
@@ -154,27 +125,14 @@ const RequestAddress = ({
           <TextField
             fullWidth
             id="outlined-basic"
-            placeholder="ZipCode"
+            placeholder="Zip Code"
             name="zipCode"
             inputProps={{
-              maxLength: 4,
+              maxLength: 5,
             }}
-            inputRef={ssn4Ref}
             onChange={onChange}
             className={classes.inputStyle}
           />
-          <FormControl fullWidth style={{ marginTop: 10, marginBottom: 10 }}>
-            <InputLabel id="demo-simple-select-label">Country</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={country}
-              label="Country"
-              onChange={(e) => setCountry(e?.target?.value)}
-            >
-              <MenuItem value={"USA"}>USA</MenuItem>
-            </Select>
-          </FormControl>
         </Box>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
