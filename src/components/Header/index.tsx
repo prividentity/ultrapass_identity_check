@@ -64,19 +64,7 @@ const Header = (props: props) => {
           className="headerLogo"
         />
       );
-    } else {
-      return (
-        <img
-          src={logo}
-          alt=""
-          width={120}
-          height={35}
-          onClick={() => navigate("/")}
-          style={{ cursor: "pointer" }}
-          className="headerLogo"
-        />
-      );
-    }
+    } 
   };
 
   const onSignInClick = async () => {
