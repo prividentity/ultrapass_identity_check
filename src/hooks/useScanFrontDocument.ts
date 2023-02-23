@@ -20,11 +20,12 @@ const useScanFrontDocument = (
   }) => void,
   onFailCallback: ({
     status,
-    message
+    message,
   }: {
-    status: number | string;
+    status: string;
     message: string;
-  }) => void
+  }) => void,
+  userUUID: string
 ) => {
   const [isFound, setIsFound] = useState(false);
   const [resultStatus, setResultStatus] = useState(null);
@@ -69,18 +70,28 @@ const useScanFrontDocument = (
         cropped_face_width,
       } = result.returnValue;
       // onSuccess(result.returnValue);
-      setIsFound(true);
-      setResultStatus(predict_status);
-      setDocumentUUID(uuid);
-      setDocumentGUID(guid);
-      setCroppedDocumentWidth(cropped_doc_width);
-      setCroppedDocumentHeight(cropped_doc_height);
-      setCroppedMugshotWidth(cropped_face_width);
-      setCroppedMugshotHeight(cropped_face_height);
+
+      if (userUUID === uuid) {
+        setIsFound(true);
+        setResultStatus(predict_status);
+        setDocumentUUID(uuid);
+        setDocumentGUID(guid);
+        setCroppedDocumentWidth(cropped_doc_width);
+        setCroppedDocumentHeight(cropped_doc_height);
+        setCroppedMugshotWidth(cropped_face_width);
+        setCroppedMugshotHeight(cropped_face_height);
+      }
+      else{
+        onFailCallback({
+          status: "-100",
+          message: "Document UUID and Face UUID Does not match."
+        });
+        scanFrontDocument();
+      }
     } else {
       onFailCallback({
         status:
-          result.returnValue.op_status || result.returnValue.predict_status,
+          result.returnValue.op_status.toString() || result.returnValue.predict_status.toString(),
         message: result.returnValue.op_message,
       });
       scanFrontDocument();

@@ -86,6 +86,7 @@ const DocumentScan = (props: props) => {
                 onReadyCallback={onCameraNotGranted}
                 onFailCallback={()=>{}}
                 onCameraFail={()=>{}}
+                userUUID=""
               />
             )}
           </Box>

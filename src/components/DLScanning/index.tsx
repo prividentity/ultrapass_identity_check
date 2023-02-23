@@ -102,13 +102,13 @@ const DLScan = ({
           setIsBackScan(true);
         }, 3000);
       }
-    } else {
-      console.log("Scan Again");
-    }
+    } 
   };
 
-  const onFailScanFrontScan = (e: any) => {
-    console.log(e);
+  const onFailScanFrontScan = ( {status, message} : {status:string, message:string} ) => {
+    if(parseInt(status) === -100){
+      showToast(message, "error");
+    }
   };
 
   const onBackSuccess = async ({
@@ -289,6 +289,7 @@ const DLScan = ({
                 onReadyCallback={onCameraNotGranted}
                 onFailCallback={onFailScanFrontScan}
                 onCameraFail={onCameraFail}
+                userUUID={uuid}
               />
             )}
           </Box>
