@@ -155,23 +155,7 @@ const HomeComponent = ({ theme, skin }: props) => {
               )}
             </Grid>
           </Box>
-          <Box className={classes.buttonsBox}>
-            {/*<Select*/}
-            {/*  labelId="demo-simple-select-label"*/}
-            {/*  id="demo-simple-select"*/}
-            {/*  value={flow}*/}
-            {/*  onChange={handleChange}*/}
-            {/*  className={classes.flowdropDown}*/}
-            {/*>*/}
-            {/*  <MenuItem value={1}>*/}
-            {/*    Normal flow (Face scan, ID check, Credit check)*/}
-            {/*  </MenuItem>*/}
-            {/*  <MenuItem value={2}>Fail Face scan</MenuItem>*/}
-            {/*  <MenuItem value={4}>*/}
-            {/*    Fail Face scan, skip to database check*/}
-            {/*  </MenuItem>*/}
-            {/*  <MenuItem value={5}>Skip to database check</MenuItem>*/}
-            {/*</Select>*/}
+
             {matchesSM ? (
               <Button
                 style={styles.ageLearnMoreButton}
@@ -181,7 +165,7 @@ const HomeComponent = ({ theme, skin }: props) => {
                 Learn more
               </Button>
             ) : null}
-          </Box>
+          </Box> */}
         </Box>
       </Container>
     </>
