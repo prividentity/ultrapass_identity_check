@@ -134,14 +134,15 @@ const DLScan = ({
     console.log('Update user result: ', updateUserResult);
 
     setIsUserVerify(true);
-    setTimeout(()=>{
-      setStep(STEPS.SUCCESS)
-    },2000)
-    
+    onVerifyId();
+    // setTimeout(()=>{
+    //   setStep(STEPS.SUCCESS)
+    // },2000)
+
   }
 
   const onCameraNotGranted = () => {
-    
+    console.log('camera not granted')
   }
 
   const onVerifyId = async () => {
@@ -160,7 +161,7 @@ const DLScan = ({
       },2000)
     }
     console.log(result,'result150');
-    
+
   }
 
   return (
