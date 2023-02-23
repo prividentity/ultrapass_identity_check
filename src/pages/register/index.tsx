@@ -131,15 +131,18 @@ const Register = ({ theme, skin }: props) => {
           />
         );
       case STEPS.ENROLL:
-        return (
-            <Enroll setStep={setStep} />
-        );
+        return <Enroll setStep={setStep} />;
 
       case STEPS.CAMERA_PERMISSION_FAIL:
-        return(
-          <CameraPermissionFail matchesSM={matchesSM} setStep={setStep} skin={skin} setPrevStep={setPrevStep} />
-        )
-        
+        return (
+          <CameraPermissionFail
+            matchesSM={matchesSM}
+            setStep={setStep}
+            skin={skin}
+            setPrevStep={setPrevStep}
+          />
+        );
+
       case STEPS.DRIVERLICENSE:
         return (
           <DLScan

@@ -23,10 +23,9 @@ const AdditionalRequirements = ({
   const [requirement, setRequirement] = React.useState(
     AdditionalRequirementsEnum.requestSSN9
   );
-  const { requestSSN9, requestResAddress, requestScanID } =
-    context?.userStatus || {};
-   
-    console.log({ requestSSN9, requestResAddress, requestScanID });
+  const { requestSSN9, requestResAddress, requestScanID } = context.userStatus;
+
+  console.log({ requestSSN9, requestResAddress, requestScanID });
   function getNextRequirement() {
     if (
       requirement === AdditionalRequirementsEnum.requestSSN9 &&
@@ -68,6 +67,12 @@ const AdditionalRequirements = ({
     setRequirement(getFirstRequirement());
   }, []);
 
+  React.useEffect(() => {
+    if (requirement === AdditionalRequirementsEnum.requestScanID) {
+      setStep(STEPS.DRIVERLICENSE);
+    }
+  }, [requirement]);
+
   if (requirement === AdditionalRequirementsEnum.requestSSN9) {
     return (
       <RequestSSN
@@ -87,9 +92,6 @@ const AdditionalRequirements = ({
         onSuccess={handleSuccess}
       />
     );
-  }
-  if (requirement === AdditionalRequirementsEnum.requestScanID) {
-    setStep(STEPS.DRIVERLICENSE);
   }
 
   return <></>;
