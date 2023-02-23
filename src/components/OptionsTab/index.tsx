@@ -16,12 +16,9 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import QRCode from "react-qr-code";
 import Grid from "@mui/material/Grid";
-import {
-  Email as EmailIcon,
-  Phone as PhoneIcon,
-  ContentCopy,
-} from "@mui/icons-material";
+import { Email as EmailIcon, ContentCopy } from "@mui/icons-material";
 import { sendMessage } from "../../services/api";
+import PhoneInputComponent from "../PhoneInput";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -286,19 +283,3 @@ export default function FullWidthTabs() {
     </Grid>
   );
 }
-
-const PhoneInputComponent = (props: any, ref: React.Ref<HTMLInputElement>) => {
-  return (
-    <TextField
-      id="outlined-basic"
-      label="Phone"
-      inputRef={ref}
-      variant="outlined"
-      fullWidth
-      InputProps={{
-        endAdornment: <PhoneIcon />,
-      }}
-      {...props}
-    />
-  );
-};
