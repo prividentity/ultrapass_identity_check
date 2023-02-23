@@ -5,8 +5,6 @@ import {
   Container,
   Grid,
   Button,
-  Select,
-  MenuItem,
   CircularProgress,
   useTheme,
   useMediaQuery,
@@ -14,10 +12,9 @@ import {
 import { styles } from "../../pages/signup/styles";
 import { useNavigate } from "react-router";
 import { createVerificationSession } from "../../services/api";
-import { createSearchParams, useSearchParams } from "react-router-dom";
+import { createSearchParams } from "react-router-dom";
 import config from "../../config";
 import { useStyles } from "../../pages/home/styles";
-import { nameMap } from "../../theme";
 
 interface props {
   theme?: string;
@@ -26,17 +23,11 @@ interface props {
 const HomeComponent = ({ theme, skin }: props) => {
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const [loading, setLoading] = useState(false);
-  const [flow, setFlow] = useState(1);
+  const [flow] = useState(1);
   const navigate = useNavigate();
   const classes = useStyles();
   const muiTheme = useTheme();
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
-  const [searchParams] = useSearchParams();
-  const skinQueryParam = searchParams.get("skin") as string;
-  const name = nameMap[skinQueryParam || "up"] || skinQueryParam;
-  const handleChange = (e: any) => {
-    setFlow(e?.target?.value);
-  };
 
   const navigateToUrl = (url: string, token?: string) => {
     window.open(`${url}?token=${token}`, "_self");

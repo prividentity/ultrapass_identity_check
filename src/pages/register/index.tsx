@@ -29,7 +29,7 @@ interface props {
 }
 
 const Register = ({ theme, skin }: props) => {
-  useWasm();
+  // useWasm();
   const { showToast } = useToast();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();

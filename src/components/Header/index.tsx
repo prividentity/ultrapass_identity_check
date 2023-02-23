@@ -64,7 +64,7 @@ const Header = (props: props) => {
           className="headerLogo"
         />
       );
-    } 
+    }
   };
 
   const onSignInClick = async () => {

@@ -30,9 +30,9 @@ const Camera = ({
   const elementId = "userVideo";
   const { ready, init, device, devices } = useCamera(elementId, mode,requireHD, onCameraFail);
 
-  const isBack = isBackCamera(devices, device) || mode === "back";
-
   const [deviceId, setDeviceId] = useState(device);
+
+  const isBack = isBackCamera(devices, deviceId || device) || mode === "back";
   const [devicesList] = useState(devices);
   const isDocumentScan = [
     "useScanDocumentFront",
