@@ -26,7 +26,6 @@ import {
   uploadDL,
 } from "@privateid/cryptonets-web-sdk-alpha";
 import { DLType } from "@privateid/cryptonets-web-sdk-alpha/dist/types";
-import { useSearchParams } from "react-router-dom";
 import { verifyIdApi } from "../../services/api";
 import { APPROVED, DENIED } from "../../utils";
 import useToast from "../../utils/useToast";
@@ -37,15 +36,15 @@ const DLScan = ({
   skin,
   matchesSM,
   token,
+  tokenParams,
 }: {
   setStep: any;
   setPrevStep: any;
   skin: string;
   matchesSM: boolean;
   token: string;
+  tokenParams: string;
 }) => {
-  const [searchParams] = useSearchParams();
-  const tokenParams = searchParams.get("token") as string;
   const classes = useStyles();
   const { showToast } = useToast();
   const mainTheme = Theme;
@@ -159,17 +158,14 @@ const DLScan = ({
       },
     };
 
-    // @ts-ignores
+    // @ts-ignore
     const updateUserResult = await updateUser({
       id,
+      // @ts-ignore
       attributes: { govId: govId },
     });
     console.log("Update user result: ", updateUserResult);
-
-    setIsUserVerify(true);
-    setTimeout(() => {
-      setStep(STEPS.SUCCESS);
-    }, 2000);
+    onVerifyId();
   };
 
   const onCameraNotGranted = () => {};
@@ -181,47 +177,20 @@ const DLScan = ({
     await verifyIdApi({ id: tokenParams, payload });
     const { userApproved, ...rest } = ((await getUserStatus({ id: token })) ||
       {}) as any;
-    context.setUserStatus({ userApproved, ...rest });
+    const { requestScanID, requireResAddress } = rest || {};
+    context.setUserStatus({
+      userApproved,
+      requestScanID,
+      requireResAddress: !requestScanID && requireResAddress,
+      ...rest,
+    });
     if (userApproved) {
       showToast("You successfully completed your ID verification.", "success");
-      setTimeout(() => {
-        setStep(STEPS.SUCCESS);
-      }, 2000);
+      setStep(STEPS.SUCCESS);
     } else {
       showToast("We need more information to verify your identity.", "error");
-      setTimeout(() => {
-        setStep(STEPS.ADDITIONAL_REQUIREMENTS);
-      }, 2000);
+      setStep(STEPS.ADDITIONAL_REQUIREMENTS);
     }
-    // const status = result?.orchestrationStatus;
-    // if (result?.requestSSN9 && status === DENIED) {
-    //   // If SSN is required
-    //   showToast('SSN is required', "error");
-    //   setStep(STEPS.REQUEST_SSN);
-    // } else if (result?.userApproved && status === APPROVED) {
-    //   // If User is approved
-    //   showToast('You successfully completed your ID verification.', "success")
-    //   setTimeout(() => {
-    //     setStep(STEPS.SUCCESS);
-    //   }, 2000);
-    // } else if (result?.requestScanID && status === DENIED) {
-    //   // If User ID SCAN is required
-    //   showToast('ID SCAN is required', "error");
-    //   setTimeout(() => {
-    //     setStep(STEPS.DRIVERLICENSE);
-    //   }, 2000);
-    // } else if (result?.underAge && status === DENIED) {
-    //   // If User is underage
-    //   showToast('You are underage', "error");
-    //   setTimeout(() => {
-    //     setStep(STEPS.VERIFICATION_NOT_COMPLETED);
-    //   }, 2000);
-    // } else {
-    //   showToast(result?.data?.message, "error");
-    //   setTimeout(() => {
-    //     setStep(STEPS.VERIFICATION_NOT_COMPLETED);
-    //   }, 2000);
-    // }
   };
 
   return (

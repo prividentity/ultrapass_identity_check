@@ -27,7 +27,11 @@ const Camera = ({
   const { ready: wasmReady } = useWasm();
   const { isCameraGranted } = useCameraPermissions(onReadyCallback);
   const elementId = "userVideo";
-  const { ready, init, device, devices } = useCamera(elementId, mode,requireHD);
+  const { ready, init, device, devices } = useCamera(
+    elementId,
+    mode,
+    requireHD
+  );
   const isBack = isBackCamera(devices, device) || mode === "back";
 
   const [deviceId, setDeviceId] = useState(device);

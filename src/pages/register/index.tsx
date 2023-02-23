@@ -17,6 +17,10 @@ import Success from "../../components/Success";
 import VerificationNotCompleted from "../../components/VerificationNotCompleted";
 import RequestSsn from "../../components/RequestSsn";
 import AdditionalRequirements from "../../components/AdditionalRequirements";
+import { useSearchParams } from "react-router-dom";
+import useToast from "../../utils/useToast";
+import { verifyIdApi } from "../../services/api";
+import { APPROVED, DENIED } from "../../utils";
 
 interface props {
   theme: string;
@@ -25,7 +29,10 @@ interface props {
 
 const Register = ({ theme, skin }: props) => {
   useWasm();
+  const { showToast } = useToast();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const tokenParams = searchParams.get("token") as string;
   const [step, setStep] = useState(STEPS.START);
   const [prevStep, setPrevStep] = useState(STEPS.START);
   const [token, setToken] = useState("");
@@ -40,6 +47,38 @@ const Register = ({ theme, skin }: props) => {
     setTimeout(() => {
       window.open(`${url}?token=${token}`, "_self");
     }, timeoutMilliseconds);
+  };
+
+  const onVerifyId = async () => {
+    const payload = {
+      token: token,
+    };
+    const result: any = await verifyIdApi({ id: tokenParams, payload });
+    const status = result?.orchestrationStatus;
+    if (result?.requestSSN9 && status === DENIED) {
+      // If SSN is required
+      showToast("SSN is required", "error");
+      setStep(STEPS.REQUEST_SSN);
+    } else if (result?.userApproved && status === APPROVED) {
+      // If User is approved
+      showToast("You successfully completed your ID verification.", "success");
+
+      setStep(STEPS.SUCCESS);
+    } else if (result?.requestScanID && status === DENIED) {
+      // If User ID SCAN is required
+      showToast("ID SCAN is required", "error");
+
+      setStep(STEPS.DRIVERLICENSE);
+    } else if (result?.underAge && status === DENIED) {
+      // If User is underage
+      showToast("You are underage", "error");
+
+      setStep(STEPS.VERIFICATION_NOT_COMPLETED);
+    } else {
+      showToast(result?.data?.message, "error");
+
+      setStep(STEPS.VERIFICATION_NOT_COMPLETED);
+    }
   };
 
   const _renderChildren = () => {
@@ -127,6 +166,7 @@ const Register = ({ theme, skin }: props) => {
             setPrevStep={setPrevStep}
             skin={skin}
             token={token}
+            tokenParams={tokenParams}
           />
         );
       case STEPS.SWITCH_DEVICE:
@@ -137,7 +177,7 @@ const Register = ({ theme, skin }: props) => {
             matchesSM={matchesSM}
             setStep={setStep}
             skin={skin}
-            setToken={setToken}
+            onSuccess={onVerifyId}
           />
         );
       case STEPS.SUCCESS:
