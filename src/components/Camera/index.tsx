@@ -40,7 +40,10 @@ const Camera = ({
 
   useEffect(() => {
     if (!wasmReady) return;
-    if (!ready) init();
+    if (!ready) {
+      init();
+      return;
+    }
     if (isIOS && osVersion < 15) {
       console.log("Does not support old version of iOS os version 15 below.");
     } else if (isAndroid && osVersion < 11) {
@@ -54,6 +57,8 @@ const Camera = ({
     console.log("--- wasm status ", ready);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wasmReady, ready, isCameraGranted]);
+
+
 
   const handleSwitchCamera = async (e: any) => {
     setDeviceId(e.target.value);

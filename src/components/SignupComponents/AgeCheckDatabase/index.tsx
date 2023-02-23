@@ -77,7 +77,7 @@ const AgeCheckDatabase = (props: props) => {
         style={styles.textButton}
         onClick={() => {
           setStep(STEPS.CONSENT_FAIL);
-          setPrevStep(STEPS.PRE_REGISTER_FORM);
+          setPrevStep(STEPS.REGISTER_CONSENT);
         }}
       >
         <Typography

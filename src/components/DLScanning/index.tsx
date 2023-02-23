@@ -13,7 +13,6 @@ import { useStyles, styles } from "../../pages/register/styles";
 import { theme as Theme, theme } from "../../theme";
 
 import smallLock from "../../assets/smallLock.png";
-import { name } from "platform";
 import STEPS from "../../pages/register/steps";
 import ScanBackDocument from "../DocumentCamera/ScanBackDocument";
 import ScanFrontDocument from "../DocumentCamera/ScanFrontDocument";
@@ -24,18 +23,14 @@ import { UserContext } from "../../context/UserContext";
 import { updateUser, uploadDL } from "@privateid/cryptonets-web-sdk-alpha";
 import { DLType } from "@privateid/cryptonets-web-sdk-alpha/dist/types";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
+import { componentsParameterInterface } from "../../interface";
 
 const DLScan = ({
   setStep,
   setPrevStep,
   skin,
   matchesSM,
-}: {
-  setStep: any;
-  setPrevStep: any;
-  skin: string;
-  matchesSM: boolean;
-}) => {
+}: componentsParameterInterface) => {
   const classes = useStyles();
   const mainTheme = Theme;
   const palette: { [key: string]: any } = mainTheme.palette;
@@ -162,7 +157,11 @@ const DLScan = ({
     }, 2000);
   };
 
-  const onCameraNotGranted = () => {};
+  const onCameraNotGranted = (e:boolean) => {
+    if(!e){
+      setStep(STEPS.CAMERA_PERMISSION_FAIL);
+    }
+  };
 
   const onCameraFail = async () => {
     setHasNoCamera(true);

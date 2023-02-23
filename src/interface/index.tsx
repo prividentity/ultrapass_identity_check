@@ -33,3 +33,10 @@ export interface verificationSessionPayload {
   productGroupId?: string;
   customerIn?: boolean;
 }
+
+export interface componentsParameterInterface {
+    setStep: any;
+    setPrevStep: any;
+    skin: string;
+    matchesSM: boolean;
+}

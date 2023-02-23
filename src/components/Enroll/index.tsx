@@ -79,6 +79,15 @@ const Enroll = ({
     // setStep(STEPS.SWITCH_DEVICE);
     setHasNoCamera(true);
   };
+
+  const cameraPermissionCheckAndEnroll = (e: boolean) => {
+    if(e){
+      enrollUserOneFa();
+    }
+    else{
+      setStep(STEPS.CAMERA_PERMISSION_FAIL)
+    }
+  }
   return (
     <Box position={"relative"} padding={"10px 10px"} mt={4} pr={"12px"}>
       {showSuccess && (
@@ -115,7 +124,7 @@ const Enroll = ({
             </Stack>
           ) : (
             <Camera
-              onReadyCallback={enrollUserOneFa}
+              onReadyCallback={cameraPermissionCheckAndEnroll}
               onSwitchCamera={enrollUserOneFa}
               onCameraFail={onCameraFail}
               message={enrollStatus}

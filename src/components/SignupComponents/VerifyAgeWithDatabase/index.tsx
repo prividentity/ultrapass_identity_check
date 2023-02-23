@@ -101,7 +101,7 @@ const VerifyAgeWithDatabase = (props: props) => {
         style={styles.textButton}
         onClick={() => {
           setStep(STEPS.CONSENT_FAIL);
-          setPrevStep(STEPS.PRE_REGISTER);
+          setPrevStep(STEPS.REGISTER_CONSENT);
         }}
       >
         <Typography

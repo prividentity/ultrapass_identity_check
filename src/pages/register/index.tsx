@@ -28,6 +28,7 @@ import CannotVerify from "../../components/SignupComponents/CannotVerify";
 import VerifyAgeWithScan from "../../components/SignupComponents/VerifyAgeWithScan";
 import VerifyDriversLicense from "../../components/SignupComponents/VerifyDriversLicense";
 import DLScan from "../../components/DLScanning";
+import CameraPermissionFail from "../../components/CameraPermissionFail";
 
 interface props {
   theme: string;
@@ -62,14 +63,6 @@ const Register = ({ theme, skin }: props) => {
             skin={skin}
           />
         );
-      // case STEPS.PRE_REGISTER:
-      //   return (
-      //     <VerifyAgeWithDatabase
-      //       skin={skin}
-      //       setStep={setStep}
-      //       setPrevStep={setPrevStep}
-      //     />
-      //   );
       case STEPS.REGISTER_CONSENT:
         return (
           <DatabaseConsent
@@ -79,14 +72,6 @@ const Register = ({ theme, skin }: props) => {
             setPrevStep={setPrevStep}
           />
         );
-      // case STEPS.PRE_REGISTER_FORM:
-      //   return (
-      //     <AgeCheckDatabase
-      //       theme={theme}
-      //       setPrevStep={setPrevStep}
-      //       setStep={setStep}
-      //     />
-      //   );
       case STEPS.REGISTER_FORM:
         return (
           <RegisterInputs
@@ -96,9 +81,6 @@ const Register = ({ theme, skin }: props) => {
             skin={skin}
           />
         );
-      // case STEPS.CONSENT:
-      //   return <></>;
-
       case STEPS.CONSENT_FAIL:
         return (
           <CannotVerify
@@ -122,14 +104,11 @@ const Register = ({ theme, skin }: props) => {
         return (
             <Enroll setStep={setStep} />
         );
-      // case STEPS.PRE_DRIVERLICENSE:
-      //   return (
-      //       <VerifyDriversLicense
-      //           skin={skin}
-      //           setStep={setStep}
-      //           setPrevStep={setPrevStep}
-      //       />
-      //   )
+
+      case STEPS.CAMERA_PERMISSION_FAIL:
+        return(
+          <CameraPermissionFail matchesSM={matchesSM} setStep={setStep} skin={skin} setPrevStep={setPrevStep} />
+        )
       case STEPS.DRIVERLICENSE:
         return <DLScan matchesSM={matchesSM} setStep={setStep} setPrevStep={setPrevStep} skin={skin} />;
       case STEPS.SWITCH_DEVICE:

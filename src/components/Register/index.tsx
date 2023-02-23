@@ -17,18 +17,15 @@ import { UserContext } from "../../context/UserContext";
 import { createUserID } from "../../utils";
 import { createUser } from "@privateid/cryptonets-web-sdk-alpha/dist/apiUtils";
 import STEPS from "../../pages/register/steps";
+import { componentsParameterInterface } from "../../interface";
+import PhoneInput from "react-phone-number-input/input";
 
 const RegisterInputs = ({
   setStep,
   setPrevStep,
   skin,
   matchesSM,
-}: {
-  setStep: any;
-  setPrevStep: any;
-  skin: string;
-  matchesSM: boolean;
-}) => {
+}: componentsParameterInterface) => {
   const classes = useStyles();
   const mainTheme = Theme;
   const palette: { [key: string]: any } = mainTheme.palette;
@@ -66,28 +63,30 @@ const RegisterInputs = ({
   };
 
   const handleContinue = async () => {
-    const validatePhone = (phone:string) =>
+    const validatePhone = (phone: string) =>
       /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/.test(
         phone
       );
-    console.log(validatePhone(phoneInput) && ssn4Ref?.current?.value.length === 4)
-    if(validatePhone(phoneInput) && ssn4Ref?.current?.value.length === 4 ){
-        const inputSSN4 = ssn4Ref?.current?.value
-        setPhoneNumber(phoneInput);
-        setSSN4(inputSSN4);
-        const newID = await createUserID();
-        setId(newID);
-    
-        const result:any = await createUser({
-            id: newID,
-            userConsent:true,
-            userConsentDate:(Date.now().toString()),
-            phone: phoneInput,
-            ssn4: inputSSN4,
-        })
-        if(result.user){
-          setStep(STEPS.PRE_ENROLL);
-        }
+    console.log(
+      validatePhone(phoneInput) && ssn4Ref?.current?.value.length === 4
+    );
+    if (validatePhone(phoneInput) && ssn4Ref?.current?.value.length === 4) {
+      const inputSSN4 = ssn4Ref?.current?.value;
+      setPhoneNumber(phoneInput);
+      setSSN4(inputSSN4);
+      const newID = await createUserID();
+      setId(newID);
+
+      const result: any = await createUser({
+        id: newID,
+        userConsent: true,
+        userConsentDate: Date.now().toString(),
+        phone: phoneInput,
+        ssn4: inputSSN4,
+      });
+      if (result.user) {
+        setStep(STEPS.PRE_ENROLL);
+      }
     }
   };
 
@@ -118,8 +117,8 @@ const RegisterInputs = ({
         style={styles.cardGrid}
         className={classes.cardGridMobile}
       >
-        <Box width={"100%"} >
-          <TextField
+        <Box width={"100%"}>
+          {/* <TextField
             fullWidth
             id="outlined-basic"
             label="Mobile Number"
@@ -135,7 +134,19 @@ const RegisterInputs = ({
             value={phoneInput}
             onChange={handlePhoneChange}
             sx={{
-              pb:2
+              pb: 2,
+            }}
+          /> */}
+
+          <PhoneInput
+            value={phoneInput}
+            autoFocus
+            defaultCountry="US"
+            onChange={(value: string) => setPhoneInput(value as string)}
+            inputComponent={React.forwardRef(PhoneInputComponent)}
+            sx={{pb:4}}
+            inputProps={{
+              maxLength: 15,
             }}
           />
 
@@ -183,3 +194,19 @@ const RegisterInputs = ({
 };
 
 export default RegisterInputs;
+
+const PhoneInputComponent = (props: any, ref: React.Ref<HTMLInputElement>) => {
+  return (
+    <TextField
+      id="outlined-basic"
+      label="Phone"
+      inputRef={ref}
+      variant="outlined"
+      fullWidth
+      InputProps={{
+        startAdornment: <PhoneIcon sx={{pr:1}}/>,
+      }}
+      {...props}
+    />
+  );
+};
