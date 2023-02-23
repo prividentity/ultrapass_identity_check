@@ -22,7 +22,6 @@ import DlBack from "../../assets/Hand-DL-Back.png";
 import { UserContext } from "../../context/UserContext";
 import { updateUser, uploadDL } from "@privateid/cryptonets-web-sdk-alpha";
 import { DLType } from "@privateid/cryptonets-web-sdk-alpha/dist/types";
-import { useSearchParams } from "react-router-dom";
 import { verifyIdApi } from "../../services/api";
 import { APPROVED, DENIED } from "../../utils";
 import useToast from "../../utils/useToast";
@@ -32,16 +31,16 @@ const DLScan = ({
   setPrevStep,
   skin,
   matchesSM,
-  token
+  token,
+  tokenParams
 }: {
   setStep: any;
   setPrevStep: any;
   skin: string;
   matchesSM: boolean;
   token: string;
+  tokenParams: string;
 }) => {
-  const [searchParams] = useSearchParams();
-  const tokenParams = searchParams.get("token") as string;
   const classes = useStyles();
   const { showToast } = useToast();
   const mainTheme = Theme;

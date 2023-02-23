@@ -303,4 +303,8 @@ export const useStyles = makeStyles((theme: any) => ({
       padding: "10px 16px !important",
     },
   },
+  inputStyle: {
+    marginBottom: '10px !important',
+    marginTop: '10px !important',
+  },
 }));

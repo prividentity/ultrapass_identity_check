@@ -13,9 +13,7 @@ import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import { useStyles, styles } from "../../pages/signup/styles";
 import { theme as Theme } from "../../theme";
 import { UserContext } from "../../context/UserContext";
-import {
-  updateUser,
-} from "@privateid/cryptonets-web-sdk-alpha/dist/apiUtils";
+import { updateUser } from "@privateid/cryptonets-web-sdk-alpha/dist/apiUtils";
 import STEPS from "../../pages/register/steps";
 import useToast from "../../utils/useToast";
 
@@ -23,12 +21,12 @@ const RequestSsn = ({
   setStep,
   skin,
   matchesSM,
-  setToken,
+  onVerifyId,
 }: {
   setStep: any;
   skin: string;
   matchesSM: boolean;
-  setToken: (e: string) => void;
+  onVerifyId: () => void
 }) => {
   const classes = useStyles();
   const mainTheme = Theme;
@@ -56,14 +54,14 @@ const RequestSsn = ({
       const inputSSN4 = ssn4Ref?.current?.value;
       const updateUserResult: any = await updateUser({
         id,
-        attributes: { ssn4: inputSSN4 },
+        attributes: { ssn9: inputSSN4 } as any,
       });
       if (updateUserResult?.level === "error") {
         showToast(updateUserResult?.message, "error");
       } else {
         setTimeout(() => {
-            setStep(STEPS.SUCCESS);
-          }, 2000);
+          onVerifyId();
+        }, 2000);
       }
     }
   };
@@ -80,7 +78,7 @@ const RequestSsn = ({
           sx={{ paddingTop: 4, paddingBottom: 2 }}
           className={classes.cardHeading}
         >
-          PLEASE ENTER SSN4
+          PLEASE ENTER SSN9
         </Typography>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
@@ -95,9 +93,9 @@ const RequestSsn = ({
           <TextField
             fullWidth
             id="outlined-basic"
-            label="SSN4"
+            label="SSN9"
             type="tel"
-            placeholder="SSN4"
+            placeholder="SSN9"
             name="SSN4"
             InputProps={{
               startAdornment: <AccountBoxIcon sx={{ pr: 1 }} />,
