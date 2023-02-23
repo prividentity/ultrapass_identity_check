@@ -118,7 +118,7 @@ const Enroll = ({
               onReadyCallback={enrollUserOneFa}
               onSwitchCamera={enrollUserOneFa}
               onCameraFail={onCameraFail}
-              message={message}
+              message={enrollStatus}
             />
           )}
         </div>

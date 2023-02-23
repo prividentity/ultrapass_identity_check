@@ -17,6 +17,7 @@ const useEnrollOneFa = (
   const [enrollUUID, setEnrollUUID] = useState(null);
 
   let tries = 0;
+  let showError = false;
 
   const enrollUserOneFa = async () => {
     setFaceDetected(false);
@@ -80,13 +81,15 @@ const useEnrollOneFa = (
         setProgress(result.progress);
         break;
       case "INVALID_FACE":
-        if (enrollStatus && enrollStatus?.length > 0) {
-          wait(1500);
-          setEnrollStatus(getDisplayedMessage(result.result));
-        } else {
-          setEnrollStatus(getDisplayedMessage(result.result));
+        if (!showError){
+          showError= true;
+          setEnrollStatus(result.message);
+          setFaceDetected(false);
+          setTimeout(()=>{
+            showError = false;
+          },500)
         }
-
+        setEnrollStatus(result.message);
         setFaceDetected(false);
         break;
       case "ENROLLING":
