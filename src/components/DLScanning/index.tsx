@@ -20,7 +20,7 @@ import shield from "../../assets/shield.png";
 import DlFront from "../../assets/dl-front.png";
 import DlBack from "../../assets/Hand-DL-Back.png";
 import { UserContext } from "../../context/UserContext";
-import { uploadDL } from "@privateid/cryptonets-web-sdk-alpha";
+import { updateUser, uploadDL } from "@privateid/cryptonets-web-sdk-alpha";
 import { DLType } from "@privateid/cryptonets-web-sdk-alpha/dist/types";
 
 const DLScan = ({
@@ -41,13 +41,16 @@ const DLScan = ({
   const [isUserVerify, setIsUserVerify] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
 
+
   const context = useContext(UserContext);
 
   const { id, uuid } = context;
 
-  const onSuccessFrontScan = async (result: any) => {
-    if (result.uuid === uuid) {
-      const { inputImage, croppedDocumentImage, croppedMugshotImage } = result;
+  const onSuccessFrontScan = async (result: {croppedDocument:string, croppedMugshot: string, inputImage:string, documentUUID:string}) => {
+    const { inputImage, croppedDocument, croppedMugshot, documentUUID } = result;
+    console.log({ inputImage, croppedDocument, croppedMugshot, documentUUID })
+    // if(documentUUID){
+    if (documentUUID === uuid) {
       const uploadImageInput = await uploadDL({
         id,
         type: DLType.FRONTDLORIGINAL,
@@ -57,13 +60,13 @@ const DLScan = ({
       const uploadCroppedDocumentImage = await uploadDL({
         id,
         type: DLType.FRONTDLCROPPED,
-        image: croppedDocumentImage,
+        image: croppedDocument,
       });
       console.log("uploadCroppedDocumentImage: ", uploadCroppedDocumentImage);
       const uploadCroppedMugshotImage = await uploadDL({
         id,
         type: DLType.FRONTDLHEADSHOT,
-        image: croppedMugshotImage,
+        image: croppedMugshot,
       });
       console.log("uploadCroppedMugshotImage: ", uploadCroppedMugshotImage);
 
@@ -72,27 +75,64 @@ const DLScan = ({
         uploadCroppedDocumentImage &&
         uploadCroppedMugshotImage
       ) {
-        //setShowSuccess(true);
+        setIsUserVerify(true);
         setTimeout(() => {
-          // setShowSuccess(false);
+          setIsUserVerify(false);
           setIsBackScan(true);
-        }, 4000);
-      }
+        }, 3000);
+     }
     } else {
       console.log("Scan Again");
     }
   };
 
-  const onFailScanFrontScan = () =>{
-
+  const onFailScanFrontScan = (e:any) =>{
+    console.log(e);
   }
 
-  const onBackSuccess = () =>{
+  const onBackSuccess = async({barcodeData, inputImage, croppedDocument, croppedBarcode} : {barcodeData:any, inputImage:string, croppedDocument:string, croppedBarcode:string}) =>{
+    console.log({barcodeData, inputImage, croppedDocument, croppedBarcode});
 
+    const uploadCroppedBarcodeImage = await uploadDL({ id, type: DLType.BACKDLBARCODE, image: croppedBarcode });
+    console.log('uploadCroppedBarcodeImage: ', uploadCroppedBarcodeImage);
+    const uploadCroppedBackDocumentImage = await uploadDL({
+      id,
+      type: DLType.BACKDLORIGINAL,
+      image: croppedDocument,
+    });
+    console.log('uploadCroppedBackDocumentImage: ', uploadCroppedBackDocumentImage);
+    const uploadBarcodeData = await uploadDL({ id, type: DLType.BARCODEJSON, barcode: JSON.stringify(barcodeData) });
+    console.log('uploadBarcodeData: ', uploadBarcodeData);
+
+    console.log('===== end of DL SCAN ====== ');
+
+    const govId = {
+      firstName: barcodeData.firstName,
+      lastName: barcodeData.lastName,
+      dob: barcodeData.dateOfBirth,
+      address: {
+        addressLine1: barcodeData.streetAddress1 || '',
+        addressLine2: barcodeData.streetAddress2 || '',
+        city: barcodeData.city || '',
+        state: barcodeData.state || '',
+        zipCode: barcodeData.postCode || '',
+        country: barcodeData.issuingCountry || '',
+      },
+    };
+
+    // @ts-ignores
+    const updateUserResult = await updateUser({ id, attributes: {govId: govId} });
+    console.log('Update user result: ', updateUserResult);
+
+    setIsUserVerify(true);
+    setTimeout(()=>{
+      setStep(STEPS.SUCCESS)
+    },2000)
+    
   }
 
   const onCameraNotGranted = () => {
-
+    
   }
 
   return (
@@ -130,6 +170,8 @@ const DLScan = ({
                 />
               </Box>
             )}
+
+
             {isBackScan ? (
               <ScanBackDocument
                 onSuccess={onBackSuccess}
@@ -139,6 +181,7 @@ const DLScan = ({
               <ScanFrontDocument
                 onSuccess={onSuccessFrontScan}
                 onReadyCallback={onCameraNotGranted}
+                onFailCallback={onFailScanFrontScan}
               />
             )}
           </Box>

@@ -17,7 +17,12 @@ export const UserContext = createContext({
     guid: '',
     setGUID: (guid:string) => {},
     currentStatus: '',
-    setCurrentStatus: (status:any) => {}
+    setCurrentStatus: (status:any) => {},
+    successURL:'',
+    setSuccessURL: (successURL:string) => {},
+    failURL:'',
+    setFailURL: (failURL:string) => {},
+
 });
 
 const UserContextProvider = ({children}: {children:React.ReactNode}) =>{
@@ -29,6 +34,8 @@ const UserContextProvider = ({children}: {children:React.ReactNode}) =>{
     const [uuid, setUUID] = useState('');
     const [guid, setGUID] = useState('');
     const [currentStatus, setCurrentStatus] = useState('');
+    const [successURL, setSuccessURL] = useState('');
+    const [failURL, setFailURL] = useState('');
     return(
         <UserContext.Provider value={{
             id,
@@ -46,7 +53,11 @@ const UserContextProvider = ({children}: {children:React.ReactNode}) =>{
             guid,
             setGUID,
             currentStatus,
-            setCurrentStatus
+            setCurrentStatus,
+            successURL,
+            setSuccessURL,
+            failURL,
+            setFailURL,
         }}>
             {children}
         </UserContext.Provider>

@@ -11,17 +11,20 @@ import {
 } from "@mui/material";
 import smallLock from "../../../assets/smallLock.png";
 import { styles, useStyles } from "../../../pages/signup/styles";
+import { theme as Theme } from "../../../theme";
+import STEPS from "../../../pages/register/steps";
 
 interface props {
   theme: string;
   skin: string;
-  palette: { [key: string]: any };
-  setStep: (e: number) => void;
-  setPrevStep: (e: number) => void;
+  setStep: (e: string) => void;
+  setPrevStep: (e: string) => void;
 }
 
 const DatabaseConsent = (props: props) => {
-  const { theme, skin, palette, setStep, setPrevStep } = props;
+  const { skin, setStep, setPrevStep } = props;
+  const mainTheme = Theme;
+  const palette: { [key: string]: any } = mainTheme.palette;
   const muiTheme = useTheme();
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
   const classes = useStyles();
@@ -38,7 +41,7 @@ const DatabaseConsent = (props: props) => {
           className={classes.cardHeading}
         >
           <img src={smallLock} alt="smallLock" className={classes.smallLock} />
-          ANONYMOUS AGE VERIFICATION
+          IDENTITY VERIFICATION
         </Typography>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
@@ -84,9 +87,9 @@ const DatabaseConsent = (props: props) => {
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
       <Button
         variant="contained"
-        color={theme as "inherit"}
+        color={"inherit"}
         style={styles.continueButton}
-        onClick={() => setStep(11)}
+        onClick={() => setStep(STEPS.REGISTER_FORM)}
       >
         <Typography
           component="p"
@@ -103,11 +106,11 @@ const DatabaseConsent = (props: props) => {
       </Button>
       <Button
         variant="text"
-        color={theme as "inherit"}
+        color={"inherit"}
         style={styles.textButton}
         onClick={() => {
-          setStep(12);
-          setPrevStep(10);
+          setStep(STEPS.CONSENT_FAIL);
+          setPrevStep(STEPS.REGISTER_CONSENT);
         }}
       >
         <Typography

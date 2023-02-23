@@ -60,14 +60,14 @@ const HomeComponent = ({ theme, skin }: props) => {
     switch (flow) {
       case 1:
         return navigate({
-          pathname: "/signup",
+          pathname: "/register",
           search: createSearchParams({
             token: token || "",
           }).toString(),
         });
       case 2:
         return navigate({
-          pathname: "/signup",
+          pathname: "/register",
           search: createSearchParams({
             token: token || "",
             age: "18",
@@ -75,7 +75,7 @@ const HomeComponent = ({ theme, skin }: props) => {
         });
       case 3:
         return navigate({
-          pathname: "/signup",
+          pathname: "/register",
           search: createSearchParams({
             token: token || "",
             age: "16",
@@ -83,7 +83,7 @@ const HomeComponent = ({ theme, skin }: props) => {
         });
       case 4:
         return navigate({
-          pathname: "/signup",
+          pathname: "/register",
           search: createSearchParams({
             token: token || "",
             ageCreditCheck: "true",
@@ -92,7 +92,7 @@ const HomeComponent = ({ theme, skin }: props) => {
 
       case 5:
         return navigate({
-          pathname: "/signup",
+          pathname: "/register",
           search: createSearchParams({
             token: token || "",
             step: "9",
