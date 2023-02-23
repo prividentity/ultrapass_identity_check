@@ -98,14 +98,8 @@ const DLScan = ({
       ) {
         setIsUserVerify(true);
         setTimeout(() => {
-          onBackSuccess({
-            barcodeData: "",
-            croppedBarcode: "",
-            croppedDocument: "",
-            inputImage: "",
-          });
           setIsUserVerify(false);
-          // setIsBackScan(true);
+          setIsBackScan(true);
         }, 3000);
       }
     } else {
@@ -130,41 +124,41 @@ const DLScan = ({
   }) => {
     console.log({ barcodeData, inputImage, croppedDocument, croppedBarcode });
 
-    // const uploadCroppedBarcodeImage = await uploadDL({
-    //   id,
-    //   type: DLType.BACKDLBARCODE,
-    //   image: croppedBarcode,
-    // });
-    // console.log("uploadCroppedBarcodeImage: ", uploadCroppedBarcodeImage);
-    // const uploadCroppedBackDocumentImage = await uploadDL({
-    //   id,
-    //   type: DLType.BACKDLORIGINAL,
-    //   image: croppedDocument,
-    // });
-    // console.log(
-    //   "uploadCroppedBackDocumentImage: ",
-    //   uploadCroppedBackDocumentImage
-    // );
-    // const uploadBarcodeData = await uploadDL({
-    //   id,
-    //   type: DLType.BARCODEJSON,
-    //   barcode: JSON.stringify(barcodeData),
-    // });
-    // console.log("uploadBarcodeData: ", uploadBarcodeData);
+    const uploadCroppedBarcodeImage = await uploadDL({
+      id,
+      type: DLType.BACKDLBARCODE,
+      image: croppedBarcode,
+    });
+    console.log("uploadCroppedBarcodeImage: ", uploadCroppedBarcodeImage);
+    const uploadCroppedBackDocumentImage = await uploadDL({
+      id,
+      type: DLType.BACKDLORIGINAL,
+      image: croppedDocument,
+    });
+    console.log(
+      "uploadCroppedBackDocumentImage: ",
+      uploadCroppedBackDocumentImage
+    );
+    const uploadBarcodeData = await uploadDL({
+      id,
+      type: DLType.BARCODEJSON,
+      barcode: JSON.stringify(barcodeData),
+    });
+    console.log("uploadBarcodeData: ", uploadBarcodeData);
 
     console.log("===== end of DL SCAN ====== ");
 
     const govId = {
-      firstName: barcodeData.firstName || "Clark",
-      lastName: barcodeData.lastName || "Evangelista",
-      dob: barcodeData.dateOfBirth || "02291996",
+      firstName: barcodeData.firstName,
+      lastName: barcodeData.lastName,
+      dob: barcodeData.dateOfBirth,
       address: {
-        addressLine1: barcodeData.streetAddress1 || "ererwerwerewr",
-        addressLine2: barcodeData.streetAddress2 || "qweqweqwe",
-        city: barcodeData.city || "asdasd",
-        state: barcodeData.state || "ny",
-        zipCode: barcodeData.postCode || "30000",
-        country: barcodeData.issuingCountry || "USA",
+        addressLine1: barcodeData.streetAddress1,
+        addressLine2: barcodeData.streetAddress2,
+        city: barcodeData.city,
+        state: barcodeData.state,
+        zipCode: barcodeData.postCode,
+        country: barcodeData.issuingCountry,
       },
     };
 
