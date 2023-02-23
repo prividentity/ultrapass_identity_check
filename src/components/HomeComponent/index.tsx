@@ -111,26 +111,22 @@ const HomeComponent = ({ theme, skin }: props) => {
             component="h2"
             color={`${theme}.text`}
             fontSize={52}
-            fontWeight={700}
+            fontWeight={500}
             lineHeight={"60px"}
             letterSpacing={"1px"}
             className={classes.homeHeading}
           >
-            SELECT YOUR <br /> {name.toLocaleUpperCase()} EXPERIENCE
+            Private Verified Identity
           </Typography>
           <Typography
             component="p"
             color={`${theme}.text`}
-            fontSize={16}
+            fontSize={18}
             fontWeight={500}
             className={classes.homeSubHeading}
             mt={2}
           >
-            Sign up for free to enjoy all of the perks that come with a {name}{" "}
-            membership.
-            <br />
-            Better yet, level up and join {name} Premium for the ultimate
-            experience!
+            Protect privacy with Cryptonets FHE
           </Typography>
           <Box pt={5} className={classes.buttonsGrid}>
             <Grid container alignItems="center" className={classes.buttonsWrap}>
@@ -145,7 +141,7 @@ const HomeComponent = ({ theme, skin }: props) => {
                 {loading ? (
                   <CircularProgress className={classes.homeLoader} />
                 ) : (
-                  `I'm over 18 `
+                  `Verify me`
                 )}
               </Button>
               {matchesSM ? null : (
@@ -154,69 +150,12 @@ const HomeComponent = ({ theme, skin }: props) => {
                   sx={{ textTransform: "unset" }}
                   className={classes.buttonsWrapButton}
                 >
-                  Learn more
+                  Go for a test drive!
                 </Button>
               )}
             </Grid>
           </Box>
-          <Box pt={0}>
-            <Grid container alignItems="center" className={classes.buttonsWrap}>
-              {matchesSM ? (
-                <Button
-                  sx={{
-                    textTransform: "unset",
-                    paddingTop: "0px",
-                    height: 53,
-                    alignItems: "flex-start",
-                  }}
-                  variant="contained"
-                  style={styles.ageVerifiedButton}
-                  disabled={loading}
-                  className={classes.buttonsWrapButton}
-                >
-                  Sign in with {name}
-                  <p>Content Partners and Models</p>
-                </Button>
-              ) : (
-                <Button
-                  sx={{ textTransform: "unset" }}
-                  variant="contained"
-                  style={styles.ageVerifiedButton}
-                  disabled={loading}
-                  className={classes.buttonsWrapButton}
-                >
-                  Sign in with {name}
-                </Button>
-              )}
 
-              {matchesSM ? null : (
-                <Button
-                  style={styles.ageLearnMoreButton}
-                  sx={{ textTransform: "unset" }}
-                  className={classes.buttonsWrapButton}
-                >
-                  Content Partners and Models
-                </Button>
-              )}
-            </Grid>
-          </Box>
-          {/* <Box className={classes.buttonsBox}>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={flow}
-              onChange={handleChange}
-              className={classes.flowdropDown}
-            >
-              <MenuItem value={1}>
-                Normal flow (Face scan, ID check, Credit check)
-              </MenuItem>
-              <MenuItem value={2}>Fail Face scan</MenuItem>
-              <MenuItem value={4}>
-                Fail Face scan, skip to database check
-              </MenuItem>
-              <MenuItem value={5}>Skip to database check</MenuItem>
-            </Select>
             {matchesSM ? (
               <Button
                 style={styles.ageLearnMoreButton}

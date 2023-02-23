@@ -60,7 +60,7 @@ const AgeCheckDatabase = (props: props) => {
       >
         <Typography
           component="p"
-          color={`#000`}
+          color={`#fff`}
           textAlign="center"
           fontWeight={600}
           display="flex"

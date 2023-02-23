@@ -59,7 +59,7 @@ const HomeModal = (props: props) => {
               src={logoDark}
               alt=""
               width={130}
-              height={45}
+              height={35}
               className={classes.modalBoxLogo}
             />
           )}

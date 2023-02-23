@@ -117,7 +117,7 @@ export const styles = {
     margin: "0 20px 5px 0",
     minWidth: 300,
     border: `3px solid ${palette[skin]?.main}`,
-    color: palette[skin]?.listText,
+    color: palette[skin]?.text,
   },
   ageLearnMoreButton: {
     color: "#ccc",
@@ -302,5 +302,9 @@ export const useStyles = makeStyles((theme: any) => ({
       fontSize: "12px !important",
       padding: "10px 16px !important",
     },
+  },
+  inputStyle: {
+    marginBottom: '10px !important',
+    marginTop: '10px !important',
   },
 }));

@@ -39,9 +39,8 @@ const ScanBackDocument = ({
         handleCanvasSizeChange={handleCallbackFromCanvasSizeChange}
         onSwitchCamera={handleScanDocumentBack}
         onReadyCallback={handleScanDocumentBack}
-        style={{ height: "unset" }}
         mode={"back"}
-        requireHD={true}
+        requireHD={false}
       ></Camera>
     </div>
   );

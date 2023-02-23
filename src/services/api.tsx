@@ -86,3 +86,13 @@ export const verifyTokenApi = async (id: any) => {
     return err;
   }
 };
+
+
+export const verifyIdApi = async ({ id, payload }: any) => {
+  try {
+    const result = await identityAPI.post(`/verify-id/${id}`, payload);
+    return result;
+  } catch (err) {
+    return err;
+  }
+};

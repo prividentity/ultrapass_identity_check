@@ -1,8 +1,7 @@
-import React,{useState} from 'react';
 import { Button, Divider, Grid, Typography } from '@mui/material';
 
 import { useStyles, styles } from "../../pages/register/styles";
-import { theme as Theme, theme } from "../../theme";
+import { theme as Theme } from "../../theme";
 
 import smallLock from "../../assets/smallLock.png";
 import { name } from 'platform';
@@ -48,20 +47,20 @@ const Start = ({
           <Typography
             component="p"
             textAlign={matchesSM ? "center" : "left"}
-            fontSize={17}
-            fontWeight={700}
+            fontSize={20}
+            fontWeight={900}
             lineHeight={1.5}
             mt={2}
             className={classes.cardInnerHeading}
           >
-            {name} partners with AllpassTrust for
+            {name} partners with Ultrapass for
             <br /> secure, identity verification.
           </Typography>
           <Typography
             component="p"
             textAlign={matchesSM ? "center" : "left"}
             fontSize={17}
-            fontWeight={500}
+            fontWeight={700}
             mt={2}
             className={classes.cardInnerHeading}
           >
@@ -76,7 +75,7 @@ const Start = ({
             color={"#333"}
             className={classes.cardInnerText}
           >
-            How AllpassTrust will verify your identity ?
+            How Ultrapass will verify your identity ?
           </Typography>
           <Typography
             component="p"
@@ -86,11 +85,11 @@ const Start = ({
             mt={2}
             className={classes.cardInnerText}
           >
-            AllpassTrust will use your selfie to check your identity. Your
+            Ultrapass will use your selfie to check your identity. Your
             image will be deleted immediately after processing. No images or
             information will be shared with {name}. Data will be strictly
-            processed according to the AllpassTrust Privacy Policy. Learn
-            how AllpassTrust works.
+            processed according to the Ultrapass Privacy Policy. Learn
+            how Ultrapass works.
           </Typography>
         </Grid>
         <Grid>
@@ -103,7 +102,7 @@ const Start = ({
           >
             <Typography
               component="p"
-              color={palette?.[skin]?.listText}
+              color={palette?.[skin]?.text}
               textAlign="center"
               fontWeight={600}
               display="flex"
