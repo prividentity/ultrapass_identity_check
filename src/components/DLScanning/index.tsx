@@ -22,19 +22,28 @@ import DlBack from "../../assets/Hand-DL-Back.png";
 import { UserContext } from "../../context/UserContext";
 import { updateUser, uploadDL } from "@privateid/cryptonets-web-sdk-alpha";
 import { DLType } from "@privateid/cryptonets-web-sdk-alpha/dist/types";
+import { useSearchParams } from "react-router-dom";
+import { verifyIdApi } from "../../services/api";
+import { USER_INFORMATION_NOT_COMPLETE } from "../../utils";
+import useToast from "../../utils/useToast";
 
 const DLScan = ({
   setStep,
   setPrevStep,
   skin,
   matchesSM,
+  token
 }: {
   setStep: any;
   setPrevStep: any;
   skin: string;
   matchesSM: boolean;
+  token: string;
 }) => {
+  const [searchParams] = useSearchParams();
+  const tokenParams = searchParams.get("token") as string;
   const classes = useStyles();
+  const { showToast } = useToast();
   const mainTheme = Theme;
   const palette: { [key: string]: any } = mainTheme.palette;
   const [isBackScan, setIsBackScan] = useState(false);
@@ -135,6 +144,25 @@ const DLScan = ({
     
   }
 
+  const onVerifyId = async () => {
+    const payload = {
+      token: token
+    }
+    const result: any = await verifyIdApi({ id: tokenParams, payload });
+    if (result?.data?.message === USER_INFORMATION_NOT_COMPLETE) {
+      showToast(result?.data?.message, "error")
+      setTimeout(()=>{
+        setStep(STEPS.VERIFICATION_NOT_COMPLETED)
+      },2000)
+    } else {
+      setTimeout(()=>{
+        setStep(STEPS.SUCCESS)
+      },2000)
+    }
+    console.log(result,'result150');
+    
+  }
+
   return (
     <>
       <Grid container alignItems="center" justifyContent={"center"}>
@@ -213,6 +241,7 @@ const DLScan = ({
             ? "Place the back of the Driver’s License above"
             : "Place the front of the Driver’s License above"}
         </Typography>
+        {/* <button onClick={() => onVerifyId()}>submit</button> */}
       </Box>
     </>
   );

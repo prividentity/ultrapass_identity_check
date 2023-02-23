@@ -172,3 +172,5 @@ export const createUserID = async () => {
   const encryptedText = await sha256(Date.now().toString());
   return "INTERGALACTIC" + encryptedText;
 };
+
+export const USER_INFORMATION_NOT_COMPLETE = 'User Information is not complete'

@@ -23,10 +23,12 @@ const RegisterInputs = ({
   setStep,
   skin,
   matchesSM,
+  setToken
 }: {
   setStep: any;
   skin: string;
   matchesSM: boolean;
+  setToken: (e: string) => void;
 }) => {
   const classes = useStyles();
   const mainTheme = Theme;
@@ -92,6 +94,7 @@ const RegisterInputs = ({
         ssn4: inputSSN4,
       });
       if (result.user) {
+        setToken(result?.user?.customerId)
         setStep(STEPS.PRE_ENROLL);
       }
     }

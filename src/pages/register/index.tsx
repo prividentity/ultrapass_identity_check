@@ -13,6 +13,8 @@ import CannotVerify from "../../components/SignupComponents/CannotVerify";
 import VerifyAgeWithScan from "../../components/SignupComponents/VerifyAgeWithScan";
 import DLScan from "../../components/DLScanning";
 import { useNavigate } from "react-router";
+import Success from "../../components/Success";
+import VerificationNotCompleted from "../../components/VerificationNotCompleted";
 
 interface props {
   theme: string;
@@ -24,6 +26,7 @@ const Register = ({ theme, skin }: props) => {
   const navigate = useNavigate();
   const [step, setStep] = useState(STEPS.START);
   const [prevStep, setPrevStep] = useState(STEPS.START);
+  const [token, setToken] = useState("");
   const muiTheme = useTheme();
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
 
@@ -79,6 +82,7 @@ const Register = ({ theme, skin }: props) => {
             matchesSM={matchesSM}
             setStep={setStep}
             skin={skin}
+            setToken={setToken}
           />
         );
       // case STEPS.CONSENT:
@@ -120,12 +124,15 @@ const Register = ({ theme, skin }: props) => {
             setStep={setStep}
             setPrevStep={setPrevStep}
             skin={skin}
+            token={token}
           />
         );
       case STEPS.SWITCH_DEVICE:
         return <FullWidthTabs />;
       case STEPS.SUCCESS:
-        return <></>;
+        return <Success matchesSM={matchesSM} setStep={setStep} skin={skin} />;
+      case STEPS.VERIFICATION_NOT_COMPLETED:
+        return <VerificationNotCompleted matchesSM={matchesSM} setStep={setStep} skin={skin} />;
       default:
     }
   };

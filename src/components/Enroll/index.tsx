@@ -57,14 +57,14 @@ const Enroll = ({
     if (updateRes.guid && updateRes.uuid) {
       setShowSuccess(true);
       // stopCamera();
-      await closeCamera(undefined);
-
-    
+      setTimeout(async () => {
+        await closeCamera(undefined);
+      }, 1000)
     }
-    
-    await closeCamera(undefined);
-    setTimeout(()=>{
+
+    setTimeout(async ()=>{
       setStep(STEPS.DRIVERLICENSE);
+      await closeCamera(undefined);
     },3000)
   };
   useEffect(() => {

@@ -2,8 +2,8 @@ const config = {
   clientConfig: {
     successUrl: "https://pornhub.com",
     failureUrl: "https://disney.com",
-    type: "AGE",
-    productGroupId: "mindgeektesting",
+    type: "IDENTITY",
+    productGroupId: "intergalactic",
   },
 };
 
