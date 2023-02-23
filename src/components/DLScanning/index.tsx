@@ -98,7 +98,12 @@ const DLScan = ({
       ) {
         setIsUserVerify(true);
         setTimeout(() => {
-          onBackSuccess({barcodeData:"", croppedBarcode:"", croppedDocument:"", inputImage:""})
+          onBackSuccess({
+            barcodeData: "",
+            croppedBarcode: "",
+            croppedDocument: "",
+            inputImage: "",
+          });
           setIsUserVerify(false);
           // setIsBackScan(true);
         }, 3000);
@@ -180,7 +185,7 @@ const DLScan = ({
     await verifyIdApi({ id: tokenParams, payload });
     const { userApproved, ...rest } = ((await getUserStatus({ id: token })) ||
       {}) as any;
-    const { requestScanID, requestResAddress } = rest || {};
+    const { requestScanID, requestResAddress, requestSSN9 } = rest || {};
     console.log({ requestScanID, requestResAddress });
     context.setUserStatus({
       userApproved,
@@ -192,8 +197,12 @@ const DLScan = ({
       showToast("You successfully completed your ID verification.", "success");
       setStep(STEPS.SUCCESS);
     } else {
-      showToast("We need more information to verify your identity.", "error");
-      setStep(STEPS.ADDITIONAL_REQUIREMENTS);
+      if (requestScanID || requestResAddress || requestSSN9) {
+        showToast("We need more information to verify your identity.", "error");
+        setStep(STEPS.ADDITIONAL_REQUIREMENTS);
+      } else {
+        setStep(STEPS.VERIFICATION_NOT_COMPLETED);
+      }
     }
   };
 
