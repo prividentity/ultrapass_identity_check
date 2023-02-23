@@ -200,7 +200,7 @@ const HomeComponent = ({ theme, skin }: props) => {
               )}
             </Grid>
           </Box>
-          <Box className={classes.buttonsBox}>
+          {/* <Box className={classes.buttonsBox}>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -226,7 +226,7 @@ const HomeComponent = ({ theme, skin }: props) => {
                 Learn more
               </Button>
             ) : null}
-          </Box>
+          </Box> */}
         </Box>
       </Container>
     </>

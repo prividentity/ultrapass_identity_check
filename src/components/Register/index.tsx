@@ -8,8 +8,8 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState, useRef, useContext } from "react";
-import "react-phone-input-2/lib/material.css";
 import PhoneIcon from "@mui/icons-material/Phone";
+import Input from "react-phone-number-input/input";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import { useStyles, styles } from "../../pages/signup/styles";
 import { theme as Theme } from "../../theme";
@@ -19,6 +19,7 @@ import { createUser } from "@privateid/cryptonets-web-sdk-alpha/dist/apiUtils";
 import STEPS from "../../pages/register/steps";
 import { componentsParameterInterface } from "../../interface";
 import PhoneInput from "react-phone-number-input/input";
+import PhoneInputComponent from "../PhoneInput";
 
 const RegisterInputs = ({
   setStep,
@@ -91,8 +92,7 @@ const RegisterInputs = ({
   };
 
   const handlePhoneChange = (e: any) => {
-    const input = e.target.value;
-    setPhoneInput(input);
+    setPhoneInput(e);
   };
   return (
     <>
@@ -118,29 +118,29 @@ const RegisterInputs = ({
         className={classes.cardGridMobile}
       >
         <Box width={"100%"}>
-          {/* <TextField
-            fullWidth
-            id="outlined-basic"
-            label="Mobile Number"
-            type="tel"
-            placeholder="Mobile Number"
-            name="Mobile Number"
-            InputProps={{
-              startAdornment: <PhoneIcon sx={{ pr: 1 }} />,
-            }}
-            inputProps={{
-              maxLength: 12,
-            }}
-            value={phoneInput}
-            onChange={handlePhoneChange}
-            sx={{
-              pb: 2,
-            }}
-          /> */}
+          <Grid container pb={2}>
+            <Input
+              style={{ width: "100%" }}
+              value={phoneInput}
+              autoFocus
+              country="US"
+              onChange={handlePhoneChange}
+              inputComponent={React.forwardRef((props, ref) => (
+                <PhoneInputComponent
+                  {...props}
+                  inputRef={ref}
+                  InputProps={{
+                    startAdornment: <PhoneIcon sx={{ pr: 1 }} />,
+                  }}
+                />
+              ))}
+            />
+          </Grid>
 
-          <PhoneInput
+          {/* <PhoneInput
             value={phoneInput}
             autoFocus
+            country="US"
             defaultCountry="US"
             onChange={(value: string) => setPhoneInput(value as string)}
             inputComponent={React.forwardRef(PhoneInputComponent)}
@@ -148,7 +148,7 @@ const RegisterInputs = ({
             inputProps={{
               maxLength: 15,
             }}
-          />
+          />  */}
 
           <TextField
             fullWidth
@@ -195,18 +195,18 @@ const RegisterInputs = ({
 
 export default RegisterInputs;
 
-const PhoneInputComponent = (props: any, ref: React.Ref<HTMLInputElement>) => {
-  return (
-    <TextField
-      id="outlined-basic"
-      label="Phone"
-      inputRef={ref}
-      variant="outlined"
-      fullWidth
-      InputProps={{
-        startAdornment: <PhoneIcon sx={{pr:1}}/>,
-      }}
-      {...props}
-    />
-  );
-};
+// const PhoneInputComponent = (props: any, ref: React.Ref<HTMLInputElement>) => {
+//   return (
+//     <TextField
+//       id="outlined-basic"
+//       label="Phone"
+//       inputRef={ref}
+//       variant="outlined"
+//       fullWidth
+//       InputProps={{
+//         startAdornment: <PhoneIcon sx={{pr:1}}/>,
+//       }}
+//       {...props}
+//     />
+//   );
+// };

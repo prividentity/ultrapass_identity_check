@@ -18,4 +18,4 @@ const PhoneInputComponent = (props: any, ref: React.Ref<HTMLInputElement>) => {
   );
 };
 
-export default React.forwardRef(PhoneInputComponent);
+export default PhoneInputComponent;
