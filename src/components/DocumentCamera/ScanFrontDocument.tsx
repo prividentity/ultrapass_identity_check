@@ -7,13 +7,12 @@ const ScanFrontDocument = ({
   onSuccess,
   onReadyCallback,
   onFailCallback,
+  onCameraFail,
 }: {
   onSuccess: (e: any) => void;
   onReadyCallback: (e: boolean) => void;
-  onFailCallback: (e: {
-    status: number | string;
-    message: string;
-  }) => void;
+  onFailCallback: (e: { status: number | string; message: string }) => void;
+  onCameraFail: (e: any) => void;
 }) => {
   const [canvasSize, setCanvasSize] = useState();
 
@@ -46,6 +45,8 @@ const ScanFrontDocument = ({
         // currentAction={"useScanDocumentFront"}
         onReadyCallback={handleScanDLFront}
         onSwitchCamera={handleScanDLFront}
+        onCameraFail={onCameraFail}
+        style={{ height: "unset" }}
         mode={"back"}
         requireHD={false}
       ></Camera>

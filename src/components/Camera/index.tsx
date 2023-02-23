@@ -22,16 +22,14 @@ const Camera = ({
   message,
   onReadyCallback = () => {},
   onSwitchCamera = () => {},
+  onCameraFail = () => {},
   requireHD = false,
 }: any) => {
   const { ready: wasmReady } = useWasm();
   const { isCameraGranted } = useCameraPermissions(onReadyCallback);
   const elementId = "userVideo";
-  const { ready, init, device, devices } = useCamera(
-    elementId,
-    mode,
-    requireHD
-  );
+  const { ready, init, device, devices } = useCamera(elementId, mode,requireHD, onCameraFail);
+
   const isBack = isBackCamera(devices, device) || mode === "back";
 
   const [deviceId, setDeviceId] = useState(device);
@@ -43,7 +41,10 @@ const Camera = ({
 
   useEffect(() => {
     if (!wasmReady) return;
-    if (!ready) init();
+    if (!ready) {
+      init();
+      return;
+    }
     if (isIOS && osVersion < 15) {
       console.log("Does not support old version of iOS os version 15 below.");
     } else if (isAndroid && osVersion < 11) {
@@ -57,6 +58,8 @@ const Camera = ({
     console.log("--- wasm status ", ready);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wasmReady, ready, isCameraGranted]);
+
+
 
   const handleSwitchCamera = async (e: any) => {
     setDeviceId(e.target.value);
@@ -112,8 +115,7 @@ const Camera = ({
             className="mainCameraSelectWrap"
           >
             <label style={{ color: "#000", paddingRight: 5 }}>
-              {" "}
-              Select Camera:{" "}
+              Select Camera:
             </label>
             {/* <select
               value={deviceId || device}

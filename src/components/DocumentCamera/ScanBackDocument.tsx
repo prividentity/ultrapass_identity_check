@@ -7,15 +7,15 @@ const ScanBackDocument = ({
   onSuccess,
   onReadyCallback,
   onFailCallback,
+  onCameraFail,
 }: {
   onSuccess?: (e: any) => void;
   onReadyCallback?: (e: boolean) => void;
   onFailCallback?: (e: boolean) => void;
+  onCameraFail?: (e: any) => void;
 }) => {
   const [canvasSize, setCanvasSize] = useState();
-  // useEffect(() => {
-  //   handleScanDocumentBack();
-  // }, []);
+
   // Scan Document Back
   const handleBackSuccess = (result: any) => {
     onSuccess?.(result);
@@ -34,11 +34,13 @@ const ScanBackDocument = ({
   };
 
   return (
-    <div id="canvasInput" className={`${styles.container} documentCamera`}>
+    <div id="canvasInput" className={`${styles.container} documentCamera`}>     
       <Camera
         handleCanvasSizeChange={handleCallbackFromCanvasSizeChange}
         onSwitchCamera={handleScanDocumentBack}
         onReadyCallback={handleScanDocumentBack}
+        onCameraFail={onCameraFail}
+        style={{ height: "unset" }}
         mode={"back"}
         requireHD={false}
       ></Camera>

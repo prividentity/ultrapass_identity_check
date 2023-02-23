@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import React, { useState, useRef, useContext } from "react";
 import PhoneIcon from "@mui/icons-material/Phone";
-import PhoneInput from "react-phone-number-input";
 import Input from "react-phone-number-input/input";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import { useStyles, styles } from "../../pages/signup/styles";
@@ -18,7 +17,11 @@ import { UserContext } from "../../context/UserContext";
 import { createUserID } from "../../utils";
 import { createUser } from "@privateid/cryptonets-web-sdk-alpha/dist/apiUtils";
 import STEPS from "../../pages/register/steps";
+
+import { componentsParameterInterface } from "../../interface";
+import PhoneInput from "react-phone-number-input/input";
 import useToast from "../../utils/useToast";
+
 import PhoneInputComponent from "../PhoneInput";
 
 
@@ -33,6 +36,7 @@ const RegisterInputs = ({
   matchesSM: boolean;
   setToken: (e: string) => void;
 }) => {
+
   const classes = useStyles();
   const mainTheme = Theme;
   const { showToast } = useToast();
@@ -200,3 +204,19 @@ const RegisterInputs = ({
 };
 
 export default RegisterInputs;
+
+// const PhoneInputComponent = (props: any, ref: React.Ref<HTMLInputElement>) => {
+//   return (
+//     <TextField
+//       id="outlined-basic"
+//       label="Phone"
+//       inputRef={ref}
+//       variant="outlined"
+//       fullWidth
+//       InputProps={{
+//         startAdornment: <PhoneIcon sx={{pr:1}}/>,
+//       }}
+//       {...props}
+//     />
+//   );
+// };

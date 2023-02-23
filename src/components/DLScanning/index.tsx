@@ -5,6 +5,7 @@ import {
   CircularProgress,
   Divider,
   Grid,
+  Stack,
   Typography,
 } from "@mui/material";
 
@@ -12,7 +13,6 @@ import { useStyles, styles } from "../../pages/register/styles";
 import { theme as Theme, theme } from "../../theme";
 
 import smallLock from "../../assets/smallLock.png";
-import { name } from "platform";
 import STEPS from "../../pages/register/steps";
 import ScanBackDocument from "../DocumentCamera/ScanBackDocument";
 import ScanFrontDocument from "../DocumentCamera/ScanFrontDocument";
@@ -26,9 +26,13 @@ import {
   uploadDL,
 } from "@privateid/cryptonets-web-sdk-alpha";
 import { DLType } from "@privateid/cryptonets-web-sdk-alpha/dist/types";
+
+import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
+import { componentsParameterInterface } from "../../interface";
 import { verifyIdApi } from "../../services/api";
 import { APPROVED, DENIED } from "../../utils";
 import useToast from "../../utils/useToast";
+
 
 const DLScan = ({
   setStep,
@@ -52,6 +56,8 @@ const DLScan = ({
   const [isBackScan, setIsBackScan] = useState(false);
   const [isUserVerify, setIsUserVerify] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
+  const [hasNoCamera, setHasNoCamera] = useState(false);
+
 
   const context = useContext(UserContext);
 
@@ -158,7 +164,20 @@ const DLScan = ({
       },
     };
 
+
     // @ts-ignore
+
+  const onCameraNotGranted = (e:boolean) => {
+    if(!e){
+      setStep(STEPS.CAMERA_PERMISSION_FAIL);
+    }
+  };
+
+  const onCameraFail = async () => {
+    setHasNoCamera(true);
+    // setStep(STEPS.SWITCH_DEVICE);
+  };
+
     const updateUserResult = await updateUser({
       id,
       // @ts-ignore
@@ -168,7 +187,6 @@ const DLScan = ({
     onVerifyId();
   };
 
-  const onCameraNotGranted = () => {};
 
   const onVerifyId = async () => {
     const payload = {
@@ -213,12 +231,14 @@ const DLScan = ({
       <Grid style={styles.cardGrid} className={`cardGridMobile overflowUnset`}>
         <Box position={"relative"}>
           <Box position={"relative"}>
-            <img
-              src={isBackScan ? DlBack : DlFront}
-              alt="DlFront"
-              style={styles.DlFront as React.CSSProperties}
-              className="DlBack"
-            />
+            {!hasNoCamera && (
+              <img
+                src={isBackScan ? DlBack : DlFront}
+                alt="DlFront"
+                style={styles.DlFront as React.CSSProperties}
+                className="DlBack"
+              />
+            )}
             {isUserVerify && (
               <Box style={styles.overlay as React.CSSProperties}>
                 <img
@@ -229,16 +249,47 @@ const DLScan = ({
               </Box>
             )}
 
-            {isBackScan ? (
+            <Box className={classes.otherDevice}>
+              <Typography
+                component="p"
+                textAlign={"left"}
+                fontSize={15}
+                fontWeight={500}
+                mt={2}
+                onClick={()=>{
+                  setStep(STEPS.SWITCH_DEVICE)
+                }}
+              >
+                <PhoneIphoneIcon /> Switch to other device
+              </Typography>
+            </Box>
+            {hasNoCamera ? (
+              <Stack
+                width={"100%"}
+                height={"400px"}
+                justifyContent={"center"}
+                alignItems={"center"}
+              >
+                <Typography variant="h5" color={"#000000"}>
+                  No Camera Detected.
+                </Typography>
+                <Typography variant="subtitle1" color={"#000000"}>
+                  Please switch device.
+                </Typography>
+              </Stack>
+            ) : isBackScan ? (
+
               <ScanBackDocument
                 onSuccess={onBackSuccess}
                 onReadyCallback={onCameraNotGranted}
+                onCameraFail={onCameraFail}
               />
             ) : (
               <ScanFrontDocument
                 onSuccess={onSuccessFrontScan}
                 onReadyCallback={onCameraNotGranted}
                 onFailCallback={onFailScanFrontScan}
+                onCameraFail={onCameraFail}
               />
             )}
           </Box>
@@ -258,19 +309,22 @@ const DLScan = ({
           </Typography>
         ) : null}
 
-        <Typography
-          component="p"
-          textAlign="center"
-          fontSize={14}
-          fontWeight={500}
-          mt={1}
-          mb={2}
-        >
-          {isBackScan
-            ? "Place the back of the Driver’s License above"
-            : "Place the front of the Driver’s License above"}
-        </Typography>
-        {/* <button onClick={() => onVerifyId()}>submit</button> */}
+
+        {!hasNoCamera && (
+          <Typography
+            component="p"
+            textAlign="center"
+            fontSize={14}
+            fontWeight={500}
+            mt={1}
+            mb={2}
+          >
+            {isBackScan
+              ? "Place the back of the Driver’s License above"
+              : "Place the front of the Driver’s License above"}
+          </Typography>
+        )}
+
       </Box>
     </>
   );

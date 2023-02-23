@@ -153,7 +153,7 @@ export const styles = {
     zIndex: 999999,
     left: "-69px",
     width: "250px",
-    top: "41px",
+    top: "90px",
   },
 };
 
@@ -303,6 +303,57 @@ export const useStyles = makeStyles((theme: any) => ({
       padding: "10px 16px !important",
     },
   },
+  otherDevice: {
+    position: "relative",
+    "& p": {
+      cursor: "pointer",
+      color: palette[skin]?.main,
+      marginLeft: -4,
+    },
+    "& p:hover": {
+      textDecoration: "underline",
+    },
+    "& svg": {
+      position: "relative",
+      top: 6.5,
+      color: palette[skin]?.main,
+      width: "21px",
+    },
+  },
+  allowCameraBox: {
+    width: '50px',
+    height: '50px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    boxShadow: '0px 0px 14px -5px #000',
+    borderRadius: '10px',
+    marginTop: '10px',
+    margin: '10px auto',
+  },
+  otherOptionsBottom: {
+    position: "unset",
+    display: "flex",
+    justifyContent: "center",
+    paddingBottom: 0,
+    "& p": {
+      cursor: "pointer",
+      color: palette[skin]?.main,
+      marginLeft: 0,
+      marginTop: 0,
+    },
+    "& p:hover": {
+      textDecoration: "underline",
+    },
+    "& svg": {
+      position: "relative",
+      top: 6.5,
+      color: palette[skin]?.main,
+      width: "21px",
+    },
+    [theme.breakpoints.between("xs", "sm")]: {
+      top: -38,
+    },
   checkIcon: {
     color: palette[skin]?.main,
     fontSize: '61px !important',
@@ -316,5 +367,6 @@ export const useStyles = makeStyles((theme: any) => ({
     margin: '0 auto !important',
     display: 'block !important',
     marginTop: '30px !important',
+
   }
 }));
