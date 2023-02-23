@@ -1,25 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { ThemeProvider } from "@mui/material/styles";
+import { SnackbarProvider } from "notistack";
+import { RouterProvider } from "react-router-dom";
+import { localThemes, theme, backgroundImages } from "./theme";
+import "./App.css";
+import router from "./routes";
+import UserContextProvider from "./context/UserContext";
 
 function App() {
+  const skin = localThemes?.includes(
+    window?.location?.search?.split("skin=")[1]
+  )
+    ? window?.location?.search?.split("skin=")[1]
+    : "primary";
+  const backgroundImage: { [key: string]: any } = backgroundImages;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <UserContextProvider>
+      <SnackbarProvider maxSnack={3}>
+        <ThemeProvider theme={theme}>
+          {backgroundImage?.[skin] && (
+            <img
+              src={backgroundImage?.[skin]}
+              alt=""
+              width={"100%"}
+              height={"100%"}
+              className="googleBackground"
+            />
+          )}
+          <RouterProvider router={router} />
+        </ThemeProvider>
+      </SnackbarProvider>
+    </UserContextProvider>
   );
 }
 

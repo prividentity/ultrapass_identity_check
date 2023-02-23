@@ -1,0 +1,66 @@
+import { localThemes, theme as Theme } from "../../theme";
+import { makeStyles } from "@mui/styles";
+const mainTheme = Theme;
+const palette: { [key: string]: any } = mainTheme.palette;
+const skin = localThemes?.includes(window?.location?.search?.split("skin=")[1])
+  ? window?.location?.search?.split("skin=")[1]
+  : "primary";
+
+export const styles = {
+  shield: {
+    width: "217px",
+    zIndex: 9999999,
+  },
+  overlayCamera: {
+    zIndex: "9999999",
+    position: "absolute",
+    left: 0,
+    top: "56px",
+    width: "100%",
+    height: "82%",
+    backgroundColor: "rgba(251, 251, 251, 0.5)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+};
+export const useStyles = makeStyles((theme: any) => ({
+  otherOptions: {
+    position: "absolute",
+    top: -35,
+    "& p": {
+      cursor: "pointer",
+      color: palette[skin]?.main,
+      marginLeft: -4,
+    },
+    "& p:hover": {
+      textDecoration: "underline",
+    },
+    "& svg": {
+      position: "relative",
+      top: 6.5,
+      color: palette[skin]?.main,
+      width: "21px",
+    },
+    [theme.breakpoints.between("xs", "sm")]: {
+      top: -38,
+    },
+  },
+  otherDevice: {
+    position: "relative",
+    "& p": {
+      cursor: "pointer",
+      color: palette[skin]?.main,
+      marginLeft: -4,
+    },
+    "& p:hover": {
+      textDecoration: "underline",
+    },
+    "& svg": {
+      position: "relative",
+      top: 6.5,
+      color: palette[skin]?.main,
+      width: "21px",
+    },
+  },
+}));

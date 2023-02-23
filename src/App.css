@@ -1,38 +1,170 @@
-.App {
+body {
+  font-family: "Lato", sans-serif;
+  background-color: #0b0b0b;
+  background-image: url("./assets/dark-bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.MuiLinearProgress-colorPrimary {
+  height: 14px !important;
+  border-radius: 10px !important;
+}
+
+.homePageWrapper {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  /* background-image: url("./assets/dark-bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover; */
+  width: 100%;
+}
+
+.homeSidebarImg {
+  position: fixed;
+  right: -9rem;
+  max-width: 800px;
+  height: 800px;
+  bottom: 0px;
+}
+
+.homeSidebarImg img {
+  width: 100%;
+  height: 100%;
+}
+
+.documentCamera .videoCamera {
+  height: 343px !important;
+}
+
+.MuiLinearProgress-bar {
+  background-color: green !important;
+}
+.MuiLinearProgress-root {
+  background-color: rgb(0 128 0 / 20%) !important;
+}
+
+.green-border {
+  border: 3px solid #2ba24c;
+  height: 187px;
+  width: 165px;
+  position: absolute;
+  right: 5rem;
+  bottom: 27rem;
+  z-index: 1;
+}
+
+.green-border p {
+  color: #2ba24c;
+  margin: 0px;
+  position: absolute;
+  bottom: -27px;
+  left: 0;
+  width: 100%;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.datePickerWrap > div {
+  width: 100%;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.videoCamera {
+  /* border: 4px solid green !important; */
+  width: 100% !important;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.AgeItem {
+  transition: all 0.5s;
+  justify-content: center !important;
+}
+.AgeItem:last-child {
+  border: none !important;
+}
+.AgeItem:hover {
+  background-color: #ff9900 !important;
+  color: #fff !important;
+}
+
+.overlayLoader {
+  position: absolute;
+  width: 100.6%;
+  left: 0px;
+  top: 0px;
+  height: 80%;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  border-radius: 10px;
+}
+.overlayLoader span {
+  color: #fff !important;
 }
 
-.App-link {
-  color: #61dafb;
+.cameraSelect {
+  width: 76% !important;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.cameraSelect .MuiSelect-select {
+  padding: 10px 13px !important;
+  padding-right: 36px !important;
+}
+
+.overflowUnset {
+  overflow: unset !important;
+}
+
+.googleBackground {
+  position: absolute;
+  z-index: 1;
+}
+
+@media only screen and (max-width: 767px) {
+  .homeSidebarImg {
+    display: none;
   }
-  to {
-    transform: rotate(360deg);
+  .green-border {
+    display: none;
+  }
+  br {
+    content: "";
+  }
+  .cameraSelect {
+    width: 234px !important;
+  }
+  .cameraSelect .MuiSelect-select {
+    padding: 4px 13px !important;
+  }
+  .mainCameraSelectWrap {
+    margin-bottom: 5px !important;
+    margin-top: 8px !important;
+  }
+  .cardHeadingNoMargin {
+    margin-left: 0px !important;
+  }
+  .headerLogo {
+    width: 100px;
+    height: 30px;
+  }
+  .homePageWrapper {
+    height: unset;
+    padding-top: 80px;
+  }
+  body {
+    background-attachment: fixed;
+  }
+}
+
+@media only screen and (max-width: 1400px) {
+  .homeSidebarImg {
+    height: 650px;
+  }
+  .green-border {
+    right: 1rem;
+    bottom: 21rem;
   }
 }
