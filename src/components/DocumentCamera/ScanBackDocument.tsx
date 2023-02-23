@@ -40,7 +40,7 @@ const ScanBackDocument = ({
         onSwitchCamera={handleScanDocumentBack}
         onReadyCallback={handleScanDocumentBack}
         mode={"back"}
-        requireHD={true}
+        requireHD={false}
       ></Camera>
     </div>
   );

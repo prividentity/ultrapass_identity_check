@@ -1,7 +1,7 @@
 const config = {
   clientConfig: {
-    successUrl: "https://pornhub.com",
-    failureUrl: "https://disney.com",
+    successUrl: "/",
+    failureUrl: "https://cams2.devel.private.id",
     type: "IDENTITY",
     productGroupId: "intergalactic",
   },
