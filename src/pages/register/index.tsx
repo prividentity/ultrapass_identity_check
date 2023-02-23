@@ -15,6 +15,7 @@ import DLScan from "../../components/DLScanning";
 import { useNavigate } from "react-router";
 import Success from "../../components/Success";
 import VerificationNotCompleted from "../../components/VerificationNotCompleted";
+import RequestSsn from "../../components/RequestSsn";
 
 interface props {
   theme: string;
@@ -129,10 +130,25 @@ const Register = ({ theme, skin }: props) => {
         );
       case STEPS.SWITCH_DEVICE:
         return <FullWidthTabs />;
+      case STEPS.REQUEST_SSN:
+        return (
+          <RequestSsn
+            matchesSM={matchesSM}
+            setStep={setStep}
+            skin={skin}
+            setToken={setToken}
+          />
+        );
       case STEPS.SUCCESS:
         return <Success matchesSM={matchesSM} setStep={setStep} skin={skin} />;
       case STEPS.VERIFICATION_NOT_COMPLETED:
-        return <VerificationNotCompleted matchesSM={matchesSM} setStep={setStep} skin={skin} />;
+        return (
+          <VerificationNotCompleted
+            matchesSM={matchesSM}
+            setStep={setStep}
+            skin={skin}
+          />
+        );
       default:
     }
   };

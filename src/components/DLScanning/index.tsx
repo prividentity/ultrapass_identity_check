@@ -154,13 +154,14 @@ const DLScan = ({
       setTimeout(()=>{
         setStep(STEPS.VERIFICATION_NOT_COMPLETED)
       },2000)
+    } else if (result?.data?.message === 'SSN') {
+      showToast(result?.data?.message, "error")
+      setStep(STEPS.REQUEST_SSN)
     } else {
       setTimeout(()=>{
         setStep(STEPS.SUCCESS)
       },2000)
     }
-    console.log(result,'result150');
-    
   }
 
   return (
