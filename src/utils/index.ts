@@ -173,4 +173,5 @@ export const createUserID = async () => {
   return "INTERGALACTIC" + encryptedText;
 };
 
-export const USER_INFORMATION_NOT_COMPLETE = 'User Information is not complete'
+export const DENIED = 'Denied'
+export const APPROVED = 'Approved'

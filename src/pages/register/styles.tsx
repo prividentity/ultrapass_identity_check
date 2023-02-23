@@ -303,4 +303,18 @@ export const useStyles = makeStyles((theme: any) => ({
       padding: "10px 16px !important",
     },
   },
+  checkIcon: {
+    color: palette[skin]?.main,
+    fontSize: '61px !important',
+    margin: '0 auto !important',
+    display: 'block !important',
+    marginTop: '30px !important',
+  },
+  errorIcon: {
+    color: 'red',
+    fontSize: '61px !important',
+    margin: '0 auto !important',
+    display: 'block !important',
+    marginTop: '30px !important',
+  }
 }));

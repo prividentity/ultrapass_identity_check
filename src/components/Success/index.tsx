@@ -2,6 +2,7 @@ import { Button, Divider, Grid, Typography } from "@mui/material";
 import { useStyles, styles } from "../../pages/register/styles";
 import { theme as Theme } from "../../theme";
 import { useNavigate } from "react-router";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const Success = ({
   setStep,
@@ -34,9 +35,10 @@ const Success = ({
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
       <Grid style={styles.cardGrid} className={classes.cardGridMobile}>
+        <CheckCircleIcon className={classes.checkIcon} />
         <Typography
           component="p"
-          textAlign={matchesSM ? "center" : "left"}
+          textAlign={ "center"}
           fontSize={20}
           fontWeight={900}
           lineHeight={1.5}
