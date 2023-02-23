@@ -46,7 +46,6 @@ const ScanFrontDocument = ({
         // currentAction={"useScanDocumentFront"}
         onReadyCallback={handleScanDLFront}
         onSwitchCamera={handleScanDLFront}
-        style={{ height: "unset" }}
         mode={"back"}
         requireHD={true}
       ></Camera>

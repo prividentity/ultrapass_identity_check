@@ -117,7 +117,7 @@ export const styles = {
     margin: "0 20px 5px 0",
     minWidth: 300,
     border: `3px solid ${palette[skin]?.main}`,
-    color: palette[skin]?.listText,
+    color: palette[skin]?.text,
   },
   ageLearnMoreButton: {
     color: "#ccc",

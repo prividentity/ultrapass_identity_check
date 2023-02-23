@@ -187,7 +187,7 @@ const DLScan = ({
           </Box>
         </Box>
       </Grid>
-      <Box style={{ height: 106 }}>
+      <Box style={{ height: 70 }}>
         {isScanning ? (
           <Typography
             component="p"

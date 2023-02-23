@@ -66,28 +66,30 @@ const RegisterInputs = ({
   };
 
   const handleContinue = async () => {
-    const validatePhone = (phone:string) =>
+    const validatePhone = (phone: string) =>
       /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/.test(
         phone
       );
-    console.log(validatePhone(phoneInput) && ssn4Ref?.current?.value.length === 4)
-    if(validatePhone(phoneInput) && ssn4Ref?.current?.value.length === 4 ){
-        const inputSSN4 = ssn4Ref?.current?.value
-        setPhoneNumber(phoneInput);
-        setSSN4(inputSSN4);
-        const newID = await createUserID();
-        setId(newID);
-    
-        const result:any = await createUser({
-            id: newID,
-            userConsent:true,
-            userConsentDate:(Date.now().toString()),
-            phone: phoneInput,
-            ssn4: inputSSN4,
-        })
-        if(result.user){
-          setStep(STEPS.PRE_ENROLL);
-        }
+    console.log(
+      validatePhone(phoneInput) && ssn4Ref?.current?.value.length === 4
+    );
+    if (validatePhone(phoneInput) && ssn4Ref?.current?.value.length === 4) {
+      const inputSSN4 = ssn4Ref?.current?.value;
+      setPhoneNumber(phoneInput);
+      setSSN4(inputSSN4);
+      const newID = await createUserID();
+      setId(newID);
+
+      const result: any = await createUser({
+        id: newID,
+        userConsent: true,
+        userConsentDate: Date.now().toString(),
+        phone: phoneInput,
+        ssn4: inputSSN4,
+      });
+      if (result.user) {
+        setStep(STEPS.PRE_ENROLL);
+      }
     }
   };
 
@@ -118,7 +120,7 @@ const RegisterInputs = ({
         style={styles.cardGrid}
         className={classes.cardGridMobile}
       >
-        <Box width={"100%"} >
+        <Box width={"100%"}>
           <TextField
             fullWidth
             id="outlined-basic"
@@ -135,7 +137,7 @@ const RegisterInputs = ({
             value={phoneInput}
             onChange={handlePhoneChange}
             sx={{
-              pb:2
+              pb: 2,
             }}
           />
 
@@ -158,26 +160,27 @@ const RegisterInputs = ({
         </Box>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
-
-      <Button
-        variant="contained"
-        color={"inherit"}
-        style={styles.continueButton}
-        onClick={handleContinue}
-      >
-        <Typography
-          component="p"
-          color={palette?.[skin]?.listText}
-          textAlign="center"
-          fontWeight={600}
-          display="flex"
-          alignItems="center"
-          justifyContent={"center"}
-          textTransform="capitalize"
+      <Box mb={"52px"}>
+        <Button
+          variant="contained"
+          color={"inherit"}
+          style={styles.continueButton}
+          onClick={handleContinue}
         >
-          Continue
-        </Typography>
-      </Button>
+          <Typography
+            component="p"
+            color={palette?.[skin]?.text}
+            textAlign="center"
+            fontWeight={600}
+            display="flex"
+            alignItems="center"
+            justifyContent={"center"}
+            textTransform="capitalize"
+          >
+            Continue
+          </Typography>
+        </Button>
+      </Box>
     </>
   );
 };

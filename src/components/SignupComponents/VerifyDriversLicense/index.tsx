@@ -86,7 +86,7 @@ const VerifyDriversLicense = (props: props) => {
       >
         <Typography
           component="p"
-          color={palette?.[skin]?.listText}
+          color={palette?.[skin]?.text}
           textAlign="center"
           fontWeight={600}
           display="flex"

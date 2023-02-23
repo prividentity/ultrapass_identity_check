@@ -37,9 +37,21 @@ interface ColorThemePalette extends PaletteOptions {
 }
 export const theme = createTheme({
   palette: {
+    // primary: {
+    //   main: "rgb(255, 153, 0)",
+    //   primaryColor: "rgb(255, 153, 0)",
+    //   primaryColorHover: "#cebe95",
+    //   primaryColorActive: "#8e7e55",
+    //   secondaryColor: "#000",
+    //   background: "#7f7f82",
+    //   bg: "#7f7f82",
+    //   text: "#fff",
+    //   mainBackground: "#000",
+    //   listText: "#000",
+    // },
     primary: {
-      main: "rgb(255, 153, 0)",
-      primaryColor: "rgb(255, 153, 0)",
+      main: "#3ebe5f",
+      primaryColor: "#3ebe5f",
       primaryColorHover: "#cebe95",
       primaryColorActive: "#8e7e55",
       secondaryColor: "#000",

@@ -37,7 +37,7 @@ const Header = (props: props) => {
   const [searchParams] = useSearchParams();
   const matchesSM =
     useMediaQuery(muiTheme.breakpoints.down("sm")) &&
-    window?.location?.pathname === "/signup";
+    window?.location?.pathname === "/register";
   const Logos: { [key: string]: any } = logos;
   const skinQueryParam = searchParams.get("skin") as string;
   const skin = localThemes?.includes(skinQueryParam) ? skinQueryParam : "up";
@@ -50,7 +50,7 @@ const Header = (props: props) => {
   const renderHeaderImage = () => {
     const isAtHomePage =
       window.location.pathname === "/" ||
-      window?.location?.pathname === "/signup" ||
+      window?.location?.pathname === "/register" ||
       window?.location?.pathname === "/signin";
     if (isAtHomePage) {
       return (
@@ -58,7 +58,7 @@ const Header = (props: props) => {
           src={!matchesSM ? Logos?.[skin].dark : Logos?.[skin].light}
           alt=""
           width={120}
-          height={40}
+          height={35}
           onClick={() => navigate("/")}
           style={{ cursor: "pointer" }}
           className="headerLogo"
@@ -70,7 +70,7 @@ const Header = (props: props) => {
           src={logo}
           alt=""
           width={120}
-          height={40}
+          height={35}
           onClick={() => navigate("/")}
           style={{ cursor: "pointer" }}
           className="headerLogo"
@@ -92,7 +92,7 @@ const Header = (props: props) => {
     const result: any = await createVerificationSession(payload);
     if (result?.token) {
       navigate({
-        pathname: "/signup",
+        pathname: "/register",
         search: createSearchParams({
           token: result?.token || "",
           step: step || "",
@@ -103,7 +103,7 @@ const Header = (props: props) => {
 
   let wrapper =
     window.location.pathname === "/" ||
-    window?.location?.pathname === "/signup" ||
+    window?.location?.pathname === "/register" ||
     window?.location?.pathname === "/signin"
       ? styles.homeBar
       : styles.appBar;
@@ -149,7 +149,7 @@ const Header = (props: props) => {
           {renderHeaderImage()}
           <Grid container alignItems="center" justifyContent={"flex-end"}>
             {window.location.pathname === "/" ||
-            window?.location?.pathname === "/signup" ||
+            window?.location?.pathname === "/register" ||
             window?.location?.pathname === "/signin" ? (
               <img
                 src={matchesSM ? logoBlack : logo}
@@ -237,7 +237,7 @@ const Header = (props: props) => {
               <>
                 {" "}
                 {window.location.pathname === "/" ||
-                window?.location?.pathname === "/signup" ? (
+                window?.location?.pathname === "/register" ? (
                   <Button
                     color={theme as "inherit"}
                     variant="contained"
