@@ -20,24 +20,44 @@ import shield from "../../assets/shield.png";
 import DlFront from "../../assets/dl-front.png";
 import DlBack from "../../assets/Hand-DL-Back.png";
 import { UserContext } from "../../context/UserContext";
-import { updateUser, uploadDL } from "@privateid/cryptonets-web-sdk-alpha";
+import {
+  getUserStatus,
+  updateUser,
+  uploadDL,
+} from "@privateid/cryptonets-web-sdk-alpha";
 import { DLType } from "@privateid/cryptonets-web-sdk-alpha/dist/types";
+
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import { componentsParameterInterface } from "../../interface";
+import { verifyIdApi } from "../../services/api";
+import { APPROVED, DENIED } from "../../utils";
+import useToast from "../../utils/useToast";
+
 
 const DLScan = ({
   setStep,
   setPrevStep,
   skin,
   matchesSM,
-}: componentsParameterInterface) => {
+  token,
+  tokenParams,
+}: {
+  setStep: any;
+  setPrevStep: any;
+  skin: string;
+  matchesSM: boolean;
+  token: string;
+  tokenParams: string;
+}) => {
   const classes = useStyles();
+  const { showToast } = useToast();
   const mainTheme = Theme;
   const palette: { [key: string]: any } = mainTheme.palette;
   const [isBackScan, setIsBackScan] = useState(false);
   const [isUserVerify, setIsUserVerify] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
   const [hasNoCamera, setHasNoCamera] = useState(false);
+
 
   const context = useContext(UserContext);
 
@@ -144,18 +164,8 @@ const DLScan = ({
       },
     };
 
-    // @ts-ignores
-    const updateUserResult = await updateUser({
-      id,
-      attributes: { govId: govId },
-    });
-    console.log("Update user result: ", updateUserResult);
 
-    setIsUserVerify(true);
-    setTimeout(() => {
-      setStep(STEPS.SUCCESS);
-    }, 2000);
-  };
+    // @ts-ignore
 
   const onCameraNotGranted = (e:boolean) => {
     if(!e){
@@ -166,6 +176,39 @@ const DLScan = ({
   const onCameraFail = async () => {
     setHasNoCamera(true);
     // setStep(STEPS.SWITCH_DEVICE);
+  };
+
+    const updateUserResult = await updateUser({
+      id,
+      // @ts-ignore
+      attributes: { govId: govId },
+    });
+    console.log("Update user result: ", updateUserResult);
+    onVerifyId();
+  };
+
+
+  const onVerifyId = async () => {
+    const payload = {
+      token: token,
+    };
+    await verifyIdApi({ id: tokenParams, payload });
+    const { userApproved, ...rest } = ((await getUserStatus({ id: token })) ||
+      {}) as any;
+    const { requestScanID, requireResAddress } = rest || {};
+    context.setUserStatus({
+      userApproved,
+      requestScanID,
+      requireResAddress: !requestScanID && requireResAddress,
+      ...rest,
+    });
+    if (userApproved) {
+      showToast("You successfully completed your ID verification.", "success");
+      setStep(STEPS.SUCCESS);
+    } else {
+      showToast("We need more information to verify your identity.", "error");
+      setStep(STEPS.ADDITIONAL_REQUIREMENTS);
+    }
   };
 
   return (
@@ -235,6 +278,7 @@ const DLScan = ({
                 </Typography>
               </Stack>
             ) : isBackScan ? (
+
               <ScanBackDocument
                 onSuccess={onBackSuccess}
                 onReadyCallback={onCameraNotGranted}
@@ -251,7 +295,7 @@ const DLScan = ({
           </Box>
         </Box>
       </Grid>
-      <Box style={{ height: 106 }}>
+      <Box style={{ height: 70 }}>
         {isScanning ? (
           <Typography
             component="p"
@@ -264,6 +308,7 @@ const DLScan = ({
             <CircularProgress style={styles.scanLoader} /> Scanning...
           </Typography>
         ) : null}
+
 
         {!hasNoCamera && (
           <Typography
@@ -279,6 +324,7 @@ const DLScan = ({
               : "Place the front of the Driver’s License above"}
           </Typography>
         )}
+
       </Box>
     </>
   );

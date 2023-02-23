@@ -60,14 +60,17 @@ const Enroll = ({
     const updateRes = (await updateUser(params)) as any;
     if (updateRes.guid && updateRes.uuid) {
       setShowSuccess(true);
-      // stopCamera();
-      await closeCamera(undefined);
+      stopCamera();
+      setTimeout(async () => {
+        setStep(STEPS.DRIVERLICENSE);
+      }, 1000);
     }
 
-    await closeCamera(undefined);
-    setTimeout(() => {
-      setStep(STEPS.DRIVERLICENSE);
-    }, 3000);
+    // setTimeout(async ()=>{
+
+    // await closeCamera(undefined);
+    // },3000)
+
   };
   useEffect(() => {
     if (enrollGUID && enrollUUID) {
@@ -88,6 +91,7 @@ const Enroll = ({
       setStep(STEPS.CAMERA_PERMISSION_FAIL)
     }
   }
+
   return (
     <Box position={"relative"} padding={"10px 10px"} mt={4} pr={"12px"}>
       {showSuccess && (

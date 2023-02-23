@@ -66,7 +66,7 @@ const CannotVerify = (props: props) => {
           fontWeight={500}
           mt={7}
         >
-          AllpassTrust cannot verify your identity
+          Ultrapass cannot verify your identity
           <br /> without your consent.
         </Typography>
       </Grid>
@@ -79,7 +79,7 @@ const CannotVerify = (props: props) => {
       >
         <Typography
           component="p"
-          color={palette?.[skin]?.listText}
+          color={palette?.[skin]?.text}
           textAlign="center"
           fontWeight={600}
           display="flex"

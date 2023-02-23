@@ -117,7 +117,7 @@ export const styles = {
     margin: "0 20px 5px 0",
     minWidth: 300,
     border: `3px solid ${palette[skin]?.main}`,
-    color: palette[skin]?.listText,
+    color: palette[skin]?.text,
   },
   ageLearnMoreButton: {
     color: "#ccc",
@@ -354,5 +354,19 @@ export const useStyles = makeStyles((theme: any) => ({
     [theme.breakpoints.between("xs", "sm")]: {
       top: -38,
     },
+  checkIcon: {
+    color: palette[skin]?.main,
+    fontSize: '61px !important',
+    margin: '0 auto !important',
+    display: 'block !important',
+    marginTop: '30px !important',
+  },
+  errorIcon: {
+    color: 'red',
+    fontSize: '61px !important',
+    margin: '0 auto !important',
+    display: 'block !important',
+    marginTop: '30px !important',
+
   }
 }));

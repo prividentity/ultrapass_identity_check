@@ -29,6 +29,7 @@ const Camera = ({
   const { isCameraGranted } = useCameraPermissions(onReadyCallback);
   const elementId = "userVideo";
   const { ready, init, device, devices } = useCamera(elementId, mode,requireHD, onCameraFail);
+
   const isBack = isBackCamera(devices, device) || mode === "back";
 
   const [deviceId, setDeviceId] = useState(device);

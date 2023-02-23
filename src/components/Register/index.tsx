@@ -17,18 +17,29 @@ import { UserContext } from "../../context/UserContext";
 import { createUserID } from "../../utils";
 import { createUser } from "@privateid/cryptonets-web-sdk-alpha/dist/apiUtils";
 import STEPS from "../../pages/register/steps";
+
 import { componentsParameterInterface } from "../../interface";
 import PhoneInput from "react-phone-number-input/input";
+import useToast from "../../utils/useToast";
+
 import PhoneInputComponent from "../PhoneInput";
+
 
 const RegisterInputs = ({
   setStep,
-  setPrevStep,
   skin,
   matchesSM,
-}: componentsParameterInterface) => {
+  setToken,
+}: {
+  setStep: any;
+  skin: string;
+  matchesSM: boolean;
+  setToken: (e: string) => void;
+}) => {
+
   const classes = useStyles();
   const mainTheme = Theme;
+  const { showToast } = useToast();
   const palette: { [key: string]: any } = mainTheme.palette;
 
   const [phoneInput, setPhoneInput] = useState("");
@@ -71,7 +82,16 @@ const RegisterInputs = ({
     console.log(
       validatePhone(phoneInput) && ssn4Ref?.current?.value.length === 4
     );
-    if (validatePhone(phoneInput) && ssn4Ref?.current?.value.length === 4) {
+
+    if (!validatePhone(phoneInput)) {
+      showToast("Enter mobile number", "error");
+    } else if (ssn4Ref?.current?.value.length !== 4) {
+      showToast("Enter SSN4", "error");
+    } else if (
+      validatePhone(phoneInput) &&
+      ssn4Ref?.current?.value.length === 4
+    ) {
+
       const inputSSN4 = ssn4Ref?.current?.value;
       setPhoneNumber(phoneInput);
       setSSN4(inputSSN4);
@@ -86,6 +106,7 @@ const RegisterInputs = ({
         ssn4: inputSSN4,
       });
       if (result.user) {
+        setToken(result?.user?.customerId);
         setStep(STEPS.PRE_ENROLL);
       }
     }
@@ -118,6 +139,7 @@ const RegisterInputs = ({
         className={classes.cardGridMobile}
       >
         <Box width={"100%"}>
+
           <Grid container pb={2}>
             <Input
               style={{ width: "100%" }}
@@ -136,19 +158,6 @@ const RegisterInputs = ({
               ))}
             />
           </Grid>
-
-          {/* <PhoneInput
-            value={phoneInput}
-            autoFocus
-            country="US"
-            defaultCountry="US"
-            onChange={(value: string) => setPhoneInput(value as string)}
-            inputComponent={React.forwardRef(PhoneInputComponent)}
-            sx={{pb:4}}
-            inputProps={{
-              maxLength: 15,
-            }}
-          />  */}
 
           <TextField
             fullWidth
@@ -169,26 +178,27 @@ const RegisterInputs = ({
         </Box>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
-
-      <Button
-        variant="contained"
-        color={"inherit"}
-        style={styles.continueButton}
-        onClick={handleContinue}
-      >
-        <Typography
-          component="p"
-          color={palette?.[skin]?.listText}
-          textAlign="center"
-          fontWeight={600}
-          display="flex"
-          alignItems="center"
-          justifyContent={"center"}
-          textTransform="capitalize"
+      <Box mb={"52px"}>
+        <Button
+          variant="contained"
+          color={"inherit"}
+          style={styles.continueButton}
+          onClick={handleContinue}
         >
-          Continue
-        </Typography>
-      </Button>
+          <Typography
+            component="p"
+            color={palette?.[skin]?.text}
+            textAlign="center"
+            fontWeight={600}
+            display="flex"
+            alignItems="center"
+            justifyContent={"center"}
+            textTransform="capitalize"
+          >
+            Continue
+          </Typography>
+        </Button>
+      </Box>
     </>
   );
 };

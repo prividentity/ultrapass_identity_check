@@ -1,18 +1,5 @@
-import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  Card,
-  Divider,
-  Grid,
-  LinearProgress,
-  List,
-  ListItem,
-  Typography,
-  useTheme,
-  useMediaQuery,
-  TextField as MuiTextField,
-} from "@mui/material";
+import { useState } from "react";
+import { useTheme, useMediaQuery } from "@mui/material";
 import { useWasm } from "../../hooks";
 import HomeModal from "../../components/Modal/homeModal";
 import Header from "../../components/Header";
@@ -21,14 +8,20 @@ import FullWidthTabs from "../../components/OptionsTab";
 import RegisterInputs from "../../components/Register";
 import Start from "../../components/Start";
 import Enroll from "../../components/Enroll";
-import VerifyAgeWithDatabase from "../../components/SignupComponents/VerifyAgeWithDatabase";
 import DatabaseConsent from "../../components/SignupComponents/DatabaseConsent";
-import AgeCheckDatabase from "../../components/SignupComponents/AgeCheckDatabase";
 import CannotVerify from "../../components/SignupComponents/CannotVerify";
 import VerifyAgeWithScan from "../../components/SignupComponents/VerifyAgeWithScan";
-import VerifyDriversLicense from "../../components/SignupComponents/VerifyDriversLicense";
 import DLScan from "../../components/DLScanning";
 import CameraPermissionFail from "../../components/CameraPermissionFail";
+import { useNavigate } from "react-router";
+import Success from "../../components/Success";
+import VerificationNotCompleted from "../../components/VerificationNotCompleted";
+import RequestSsn from "../../components/RequestSsn";
+import AdditionalRequirements from "../../components/AdditionalRequirements";
+import { useSearchParams } from "react-router-dom";
+import useToast from "../../utils/useToast";
+import { verifyIdApi } from "../../services/api";
+import { APPROVED, DENIED } from "../../utils";
 
 interface props {
   theme: string;
@@ -37,8 +30,13 @@ interface props {
 
 const Register = ({ theme, skin }: props) => {
   useWasm();
+  const { showToast } = useToast();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const tokenParams = searchParams.get("token") as string;
   const [step, setStep] = useState(STEPS.START);
   const [prevStep, setPrevStep] = useState(STEPS.START);
+  const [token, setToken] = useState("");
   const muiTheme = useTheme();
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
 
@@ -50,6 +48,38 @@ const Register = ({ theme, skin }: props) => {
     setTimeout(() => {
       window.open(`${url}?token=${token}`, "_self");
     }, timeoutMilliseconds);
+  };
+
+  const onVerifyId = async () => {
+    const payload = {
+      token: token,
+    };
+    const result: any = await verifyIdApi({ id: tokenParams, payload });
+    const status = result?.orchestrationStatus;
+    if (result?.requestSSN9 && status === DENIED) {
+      // If SSN is required
+      showToast("SSN is required", "error");
+      setStep(STEPS.REQUEST_SSN);
+    } else if (result?.userApproved && status === APPROVED) {
+      // If User is approved
+      showToast("You successfully completed your ID verification.", "success");
+
+      setStep(STEPS.SUCCESS);
+    } else if (result?.requestScanID && status === DENIED) {
+      // If User ID SCAN is required
+      showToast("ID SCAN is required", "error");
+
+      setStep(STEPS.DRIVERLICENSE);
+    } else if (result?.underAge && status === DENIED) {
+      // If User is underage
+      showToast("You are underage", "error");
+
+      setStep(STEPS.VERIFICATION_NOT_COMPLETED);
+    } else {
+      showToast(result?.data?.message, "error");
+
+      setStep(STEPS.VERIFICATION_NOT_COMPLETED);
+    }
   };
 
   const _renderChildren = () => {
@@ -77,8 +107,8 @@ const Register = ({ theme, skin }: props) => {
           <RegisterInputs
             matchesSM={matchesSM}
             setStep={setStep}
-            setPrevStep={setPrevStep}
             skin={skin}
+            setToken={setToken}
           />
         );
       case STEPS.CONSENT_FAIL:
@@ -109,12 +139,47 @@ const Register = ({ theme, skin }: props) => {
         return(
           <CameraPermissionFail matchesSM={matchesSM} setStep={setStep} skin={skin} setPrevStep={setPrevStep} />
         )
+        
       case STEPS.DRIVERLICENSE:
-        return <DLScan matchesSM={matchesSM} setStep={setStep} setPrevStep={setPrevStep} skin={skin} />;
+        return (
+          <DLScan
+            matchesSM={matchesSM}
+            setStep={setStep}
+            setPrevStep={setPrevStep}
+            skin={skin}
+            token={token}
+            tokenParams={tokenParams}
+          />
+        );
       case STEPS.SWITCH_DEVICE:
         return <FullWidthTabs />;
+      case STEPS.REQUEST_SSN:
+        return (
+          <RequestSsn
+            matchesSM={matchesSM}
+            setStep={setStep}
+            skin={skin}
+            onSuccess={onVerifyId}
+          />
+        );
       case STEPS.SUCCESS:
-        return <></>;
+        return <Success matchesSM={matchesSM} setStep={setStep} skin={skin} />;
+      case STEPS.VERIFICATION_NOT_COMPLETED:
+        return (
+          <VerificationNotCompleted
+            matchesSM={matchesSM}
+            setStep={setStep}
+            skin={skin}
+          />
+        );
+      case STEPS.ADDITIONAL_REQUIREMENTS:
+        return (
+          <AdditionalRequirements
+            matchesSM={matchesSM}
+            setStep={setStep}
+            skin={skin}
+          />
+        );
       default:
     }
   };
@@ -126,7 +191,7 @@ const Register = ({ theme, skin }: props) => {
       <div className="homePageWrapper">
         <HomeModal
           handleClose={() => {
-            console.log("CLOSE HERE");
+            navigate("/");
           }}
           open={true}
         >
