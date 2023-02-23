@@ -3,7 +3,7 @@ import React, { createContext, useState } from "react";
 const defaultUserStatus = {
   requestSSN9: false,
   requestScanID: false,
-  requireResAddress: false,
+  requestResAddress: false,
 };
 
 export const UserContext = createContext({

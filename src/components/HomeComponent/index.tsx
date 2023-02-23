@@ -165,7 +165,6 @@ const HomeComponent = ({ theme, skin }: props) => {
                 Learn more
               </Button>
             ) : null}
-          </Box> */}
         </Box>
       </Container>
     </>
