@@ -22,12 +22,13 @@ const Camera = ({
   message,
   onReadyCallback = () => {},
   onSwitchCamera = () => {},
+  onCameraFail = () => {},
   requireHD = false,
 }: any) => {
   const { ready: wasmReady } = useWasm();
   const { isCameraGranted } = useCameraPermissions(onReadyCallback);
   const elementId = "userVideo";
-  const { ready, init, device, devices } = useCamera(elementId, mode,requireHD);
+  const { ready, init, device, devices } = useCamera(elementId, mode,requireHD, onCameraFail);
   const isBack = isBackCamera(devices, device) || mode === "back";
 
   const [deviceId, setDeviceId] = useState(device);
@@ -108,8 +109,7 @@ const Camera = ({
             className="mainCameraSelectWrap"
           >
             <label style={{ color: "#000", paddingRight: 5 }}>
-              {" "}
-              Select Camera:{" "}
+              Select Camera:
             </label>
             {/* <select
               value={deviceId || device}

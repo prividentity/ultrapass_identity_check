@@ -46,4 +46,21 @@ export const useStyles = makeStyles((theme: any) => ({
       top: -38,
     },
   },
+  otherDevice: {
+    position: "relative",
+    "& p": {
+      cursor: "pointer",
+      color: palette[skin]?.main,
+      marginLeft: -4,
+    },
+    "& p:hover": {
+      textDecoration: "underline",
+    },
+    "& svg": {
+      position: "relative",
+      top: 6.5,
+      color: palette[skin]?.main,
+      width: "21px",
+    },
+  },
 }));

@@ -6,6 +6,7 @@ import {
   Typography,
   useTheme,
   useMediaQuery,
+  Stack,
 } from "@mui/material";
 import { useStyles, styles } from "./styles";
 import React, { useEffect, useState } from "react";
@@ -35,6 +36,9 @@ const Enroll = ({
   const { id, setGUID, setUUID } = context;
   const [enrolling, setEnrolling] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+
+  const [hasNoCamera, setHasNoCamera] = useState(false);
+
   const {
     enrollUserOneFa,
     progress: enrollOneFaProgress,
@@ -58,14 +62,12 @@ const Enroll = ({
       setShowSuccess(true);
       // stopCamera();
       await closeCamera(undefined);
-
-    
     }
-    
+
     await closeCamera(undefined);
-    setTimeout(()=>{
+    setTimeout(() => {
       setStep(STEPS.DRIVERLICENSE);
-    },3000)
+    }, 3000);
   };
   useEffect(() => {
     if (enrollGUID && enrollUUID) {
@@ -73,10 +75,10 @@ const Enroll = ({
     }
   }, [enrollStatus, enrollGUID, enrollUUID]);
 
-
-  const onCameraFail = async () =>{
-    setStep(STEPS.SWITCH_DEVICE);
-  }
+  const onCameraFail = async () => {
+    // setStep(STEPS.SWITCH_DEVICE);
+    setHasNoCamera(true);
+  };
   return (
     <Box position={"relative"} padding={"10px 10px"} mt={4} pr={"12px"}>
       {showSuccess && (
@@ -106,12 +108,19 @@ const Enroll = ({
 
       <>
         <div id="canvasInput" className={homeStyles.container}>
-          <Camera
-            onReadyCallback={enrollUserOneFa}
-            onSwitchCamera={enrollUserOneFa}
-            onCameraFail={onCameraFail}
-            message={message}
-          />
+          {hasNoCamera ? (
+            <Stack width={"100%"} height={"400px"} justifyContent={"center"} alignItems={"center"}>
+              <Typography variant="h5" color={"#000000"}>No Camera Detected.</Typography>
+              <Typography variant="subtitle1" color={"#000000"}>Please switch device.</Typography>
+            </Stack>
+          ) : (
+            <Camera
+              onReadyCallback={enrollUserOneFa}
+              onSwitchCamera={enrollUserOneFa}
+              onCameraFail={onCameraFail}
+              message={message}
+            />
+          )}
         </div>
         <Box style={{ height: 50 }}>
           <Box style={{ height: 14 }}>

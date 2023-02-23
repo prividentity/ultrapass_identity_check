@@ -153,7 +153,7 @@ export const styles = {
     zIndex: 999999,
     left: "-69px",
     width: "250px",
-    top: "41px",
+    top: "90px",
   },
 };
 
@@ -301,6 +301,23 @@ export const useStyles = makeStyles((theme: any) => ({
     [theme.breakpoints.between("xs", "sm")]: {
       fontSize: "12px !important",
       padding: "10px 16px !important",
+    },
+  },
+  otherDevice: {
+    position: "relative",
+    "& p": {
+      cursor: "pointer",
+      color: palette[skin]?.main,
+      marginLeft: -4,
+    },
+    "& p:hover": {
+      textDecoration: "underline",
+    },
+    "& svg": {
+      position: "relative",
+      top: 6.5,
+      color: palette[skin]?.main,
+      width: "21px",
     },
   },
 }));

@@ -85,6 +85,7 @@ const DocumentScan = (props: props) => {
                 onSuccess={onFrontSuccess}
                 onReadyCallback={onCameraNotGranted}
                 onFailCallback={()=>{}}
+                onCameraFail={()=>{}}
               />
             )}
           </Box>
