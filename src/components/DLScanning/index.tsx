@@ -20,7 +20,11 @@ import shield from "../../assets/shield.png";
 import DlFront from "../../assets/dl-front.png";
 import DlBack from "../../assets/Hand-DL-Back.png";
 import { UserContext } from "../../context/UserContext";
-import { updateUser, uploadDL } from "@privateid/cryptonets-web-sdk-alpha";
+import {
+  getUserStatus,
+  updateUser,
+  uploadDL,
+} from "@privateid/cryptonets-web-sdk-alpha";
 import { DLType } from "@privateid/cryptonets-web-sdk-alpha/dist/types";
 import { useSearchParams } from "react-router-dom";
 import { verifyIdApi } from "../../services/api";
@@ -32,7 +36,7 @@ const DLScan = ({
   setPrevStep,
   skin,
   matchesSM,
-  token
+  token,
 }: {
   setStep: any;
   setPrevStep: any;
@@ -50,14 +54,19 @@ const DLScan = ({
   const [isUserVerify, setIsUserVerify] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
 
-
   const context = useContext(UserContext);
 
   const { id, uuid } = context;
 
-  const onSuccessFrontScan = async (result: {croppedDocument:string, croppedMugshot: string, inputImage:string, documentUUID:string}) => {
-    const { inputImage, croppedDocument, croppedMugshot, documentUUID } = result;
-    console.log({ inputImage, croppedDocument, croppedMugshot, documentUUID })
+  const onSuccessFrontScan = async (result: {
+    croppedDocument: string;
+    croppedMugshot: string;
+    inputImage: string;
+    documentUUID: string;
+  }) => {
+    const { inputImage, croppedDocument, croppedMugshot, documentUUID } =
+      result;
+    console.log({ inputImage, croppedDocument, croppedMugshot, documentUUID });
     // if(documentUUID){
     if (documentUUID === uuid) {
       const uploadImageInput = await uploadDL({
@@ -89,96 +98,131 @@ const DLScan = ({
           setIsUserVerify(false);
           setIsBackScan(true);
         }, 3000);
-     }
+      }
     } else {
       console.log("Scan Again");
     }
   };
 
-  const onFailScanFrontScan = (e:any) =>{
+  const onFailScanFrontScan = (e: any) => {
     console.log(e);
-  }
+  };
 
-  const onBackSuccess = async({barcodeData, inputImage, croppedDocument, croppedBarcode} : {barcodeData:any, inputImage:string, croppedDocument:string, croppedBarcode:string}) =>{
-    console.log({barcodeData, inputImage, croppedDocument, croppedBarcode});
+  const onBackSuccess = async ({
+    barcodeData,
+    inputImage,
+    croppedDocument,
+    croppedBarcode,
+  }: {
+    barcodeData: any;
+    inputImage: string;
+    croppedDocument: string;
+    croppedBarcode: string;
+  }) => {
+    console.log({ barcodeData, inputImage, croppedDocument, croppedBarcode });
 
-    const uploadCroppedBarcodeImage = await uploadDL({ id, type: DLType.BACKDLBARCODE, image: croppedBarcode });
-    console.log('uploadCroppedBarcodeImage: ', uploadCroppedBarcodeImage);
+    const uploadCroppedBarcodeImage = await uploadDL({
+      id,
+      type: DLType.BACKDLBARCODE,
+      image: croppedBarcode,
+    });
+    console.log("uploadCroppedBarcodeImage: ", uploadCroppedBarcodeImage);
     const uploadCroppedBackDocumentImage = await uploadDL({
       id,
       type: DLType.BACKDLORIGINAL,
       image: croppedDocument,
     });
-    console.log('uploadCroppedBackDocumentImage: ', uploadCroppedBackDocumentImage);
-    const uploadBarcodeData = await uploadDL({ id, type: DLType.BARCODEJSON, barcode: JSON.stringify(barcodeData) });
-    console.log('uploadBarcodeData: ', uploadBarcodeData);
+    console.log(
+      "uploadCroppedBackDocumentImage: ",
+      uploadCroppedBackDocumentImage
+    );
+    const uploadBarcodeData = await uploadDL({
+      id,
+      type: DLType.BARCODEJSON,
+      barcode: JSON.stringify(barcodeData),
+    });
+    console.log("uploadBarcodeData: ", uploadBarcodeData);
 
-    console.log('===== end of DL SCAN ====== ');
+    console.log("===== end of DL SCAN ====== ");
 
     const govId = {
       firstName: barcodeData.firstName,
       lastName: barcodeData.lastName,
       dob: barcodeData.dateOfBirth,
       address: {
-        addressLine1: barcodeData.streetAddress1 || '',
-        addressLine2: barcodeData.streetAddress2 || '',
-        city: barcodeData.city || '',
-        state: barcodeData.state || '',
-        zipCode: barcodeData.postCode || '',
-        country: barcodeData.issuingCountry || '',
+        addressLine1: barcodeData.streetAddress1 || "",
+        addressLine2: barcodeData.streetAddress2 || "",
+        city: barcodeData.city || "",
+        state: barcodeData.state || "",
+        zipCode: barcodeData.postCode || "",
+        country: barcodeData.issuingCountry || "",
       },
     };
 
     // @ts-ignores
-    const updateUserResult = await updateUser({ id, attributes: {govId: govId} });
-    console.log('Update user result: ', updateUserResult);
+    const updateUserResult = await updateUser({
+      id,
+      attributes: { govId: govId },
+    });
+    console.log("Update user result: ", updateUserResult);
 
     setIsUserVerify(true);
-    setTimeout(()=>{
-      setStep(STEPS.SUCCESS)
-    },2000)
-    
-  }
+    setTimeout(() => {
+      setStep(STEPS.SUCCESS);
+    }, 2000);
+  };
 
-  const onCameraNotGranted = () => {
-    
-  }
+  const onCameraNotGranted = () => {};
 
   const onVerifyId = async () => {
     const payload = {
-      token: token
-    }
-    const result: any = await verifyIdApi({ id: tokenParams, payload });
-    const status = result?.orchestrationStatus;
-    if (result?.requestSSN9 && status === DENIED) {
-      // If SSN is required
-      showToast('SSN is required', "error");
-      setStep(STEPS.REQUEST_SSN);
-    } else if (result?.userApproved && status === APPROVED) {
-      // If User is approved
-      showToast('You successfully completed your ID verification.', "success")
+      token: token,
+    };
+    await verifyIdApi({ id: tokenParams, payload });
+    const { userApproved, ...rest } = ((await getUserStatus({ id: token })) ||
+      {}) as any;
+    context.setUserStatus({ userApproved, ...rest });
+    if (userApproved) {
+      showToast("You successfully completed your ID verification.", "success");
       setTimeout(() => {
         setStep(STEPS.SUCCESS);
       }, 2000);
-    } else if (result?.requestScanID && status === DENIED) {
-      // If User ID SCAN is required
-      showToast('ID SCAN is required', "error");
-      setTimeout(() => {
-        setStep(STEPS.DRIVERLICENSE);
-      }, 2000);
-    } else if (result?.underAge && status === DENIED) {
-      // If User is underage
-      showToast('You are underage', "error");
-      setTimeout(() => {
-        setStep(STEPS.VERIFICATION_NOT_COMPLETED);
-      }, 2000);
     } else {
-      showToast(result?.data?.message, "error");
+      showToast("We need more information to verify your identity.", "error");
       setTimeout(() => {
-        setStep(STEPS.VERIFICATION_NOT_COMPLETED);
+        setStep(STEPS.ADDITIONAL_REQUIREMENTS);
       }, 2000);
     }
-  }
+    // const status = result?.orchestrationStatus;
+    // if (result?.requestSSN9 && status === DENIED) {
+    //   // If SSN is required
+    //   showToast('SSN is required', "error");
+    //   setStep(STEPS.REQUEST_SSN);
+    // } else if (result?.userApproved && status === APPROVED) {
+    //   // If User is approved
+    //   showToast('You successfully completed your ID verification.', "success")
+    //   setTimeout(() => {
+    //     setStep(STEPS.SUCCESS);
+    //   }, 2000);
+    // } else if (result?.requestScanID && status === DENIED) {
+    //   // If User ID SCAN is required
+    //   showToast('ID SCAN is required', "error");
+    //   setTimeout(() => {
+    //     setStep(STEPS.DRIVERLICENSE);
+    //   }, 2000);
+    // } else if (result?.underAge && status === DENIED) {
+    //   // If User is underage
+    //   showToast('You are underage', "error");
+    //   setTimeout(() => {
+    //     setStep(STEPS.VERIFICATION_NOT_COMPLETED);
+    //   }, 2000);
+    // } else {
+    //   showToast(result?.data?.message, "error");
+    //   setTimeout(() => {
+    //     setStep(STEPS.VERIFICATION_NOT_COMPLETED);
+    //   }, 2000);
+    // }
+  };
 
   return (
     <>
@@ -215,7 +259,6 @@ const DLScan = ({
                 />
               </Box>
             )}
-
 
             {isBackScan ? (
               <ScanBackDocument

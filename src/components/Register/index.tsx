@@ -8,7 +8,6 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState, useRef, useContext } from "react";
-import "react-phone-input-2/lib/material.css";
 import PhoneIcon from "@mui/icons-material/Phone";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import { useStyles, styles } from "../../pages/signup/styles";
@@ -23,7 +22,7 @@ const RegisterInputs = ({
   setStep,
   skin,
   matchesSM,
-  setToken
+  setToken,
 }: {
   setStep: any;
   skin: string;
@@ -75,11 +74,14 @@ const RegisterInputs = ({
     console.log(
       validatePhone(phoneInput) && ssn4Ref?.current?.value.length === 4
     );
-    if(!validatePhone(phoneInput)) {
-      showToast('Enter mobile number', "error")
+    if (!validatePhone(phoneInput)) {
+      showToast("Enter mobile number", "error");
     } else if (ssn4Ref?.current?.value.length !== 4) {
-      showToast('Enter SSN4', "error")
-    } else if (validatePhone(phoneInput) && ssn4Ref?.current?.value.length === 4) {
+      showToast("Enter SSN4", "error");
+    } else if (
+      validatePhone(phoneInput) &&
+      ssn4Ref?.current?.value.length === 4
+    ) {
       const inputSSN4 = ssn4Ref?.current?.value;
       setPhoneNumber(phoneInput);
       setSSN4(inputSSN4);
@@ -94,7 +96,7 @@ const RegisterInputs = ({
         ssn4: inputSSN4,
       });
       if (result.user) {
-        setToken(result?.user?.customerId)
+        setToken(result?.user?.customerId);
         setStep(STEPS.PRE_ENROLL);
       }
     }

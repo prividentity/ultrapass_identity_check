@@ -16,6 +16,7 @@ import { useNavigate } from "react-router";
 import Success from "../../components/Success";
 import VerificationNotCompleted from "../../components/VerificationNotCompleted";
 import RequestSsn from "../../components/RequestSsn";
+import AdditionalRequirements from "../../components/AdditionalRequirements";
 
 interface props {
   theme: string;
@@ -144,6 +145,14 @@ const Register = ({ theme, skin }: props) => {
       case STEPS.VERIFICATION_NOT_COMPLETED:
         return (
           <VerificationNotCompleted
+            matchesSM={matchesSM}
+            setStep={setStep}
+            skin={skin}
+          />
+        );
+      case STEPS.ADDITIONAL_REQUIREMENTS:
+        return (
+          <AdditionalRequirements
             matchesSM={matchesSM}
             setStep={setStep}
             skin={skin}

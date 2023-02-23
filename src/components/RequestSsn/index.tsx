@@ -8,7 +8,6 @@ import {
   Typography,
 } from "@mui/material";
 import { useState, useRef, useContext } from "react";
-import "react-phone-input-2/lib/material.css";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import { useStyles, styles } from "../../pages/signup/styles";
 import { theme as Theme } from "../../theme";
