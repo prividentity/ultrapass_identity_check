@@ -24,7 +24,7 @@ import { updateUser, uploadDL } from "@privateid/cryptonets-web-sdk-alpha";
 import { DLType } from "@privateid/cryptonets-web-sdk-alpha/dist/types";
 import { useSearchParams } from "react-router-dom";
 import { verifyIdApi } from "../../services/api";
-import { USER_INFORMATION_NOT_COMPLETE } from "../../utils";
+import { APPROVED, DENIED } from "../../utils";
 import useToast from "../../utils/useToast";
 
 const DLScan = ({
@@ -149,18 +149,34 @@ const DLScan = ({
       token: token
     }
     const result: any = await verifyIdApi({ id: tokenParams, payload });
-    if (result?.data?.message === USER_INFORMATION_NOT_COMPLETE) {
-      showToast(result?.data?.message, "error")
-      setTimeout(()=>{
-        setStep(STEPS.VERIFICATION_NOT_COMPLETED)
-      },2000)
-    } else if (result?.data?.message === 'SSN') {
-      showToast(result?.data?.message, "error")
-      setStep(STEPS.REQUEST_SSN)
+    const status = result?.orchestrationStatus;
+    if (result?.requestSSN9 && status === DENIED) {
+      // If SSN is required
+      showToast('SSN is required', "error");
+      setStep(STEPS.REQUEST_SSN);
+    } else if (result?.userApproved && status === APPROVED) {
+      // If User is approved
+      showToast('You successfully completed your ID verification.', "success")
+      setTimeout(() => {
+        setStep(STEPS.SUCCESS);
+      }, 2000);
+    } else if (result?.requestScanID && status === DENIED) {
+      // If User ID SCAN is required
+      showToast('ID SCAN is required', "error");
+      setTimeout(() => {
+        setStep(STEPS.DRIVERLICENSE);
+      }, 2000);
+    } else if (result?.underAge && status === DENIED) {
+      // If User is underage
+      showToast('You are underage', "error");
+      setTimeout(() => {
+        setStep(STEPS.VERIFICATION_NOT_COMPLETED);
+      }, 2000);
     } else {
-      setTimeout(()=>{
-        setStep(STEPS.SUCCESS)
-      },2000)
+      showToast(result?.data?.message, "error");
+      setTimeout(() => {
+        setStep(STEPS.VERIFICATION_NOT_COMPLETED);
+      }, 2000);
     }
   }
 
