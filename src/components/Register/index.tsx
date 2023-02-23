@@ -17,20 +17,20 @@ import { UserContext } from "../../context/UserContext";
 import { createUserID } from "../../utils";
 import { createUser } from "@privateid/cryptonets-web-sdk-alpha/dist/apiUtils";
 import STEPS from "../../pages/register/steps";
+import useToast from "../../utils/useToast";
 
 const RegisterInputs = ({
   setStep,
-  setPrevStep,
   skin,
   matchesSM,
 }: {
   setStep: any;
-  setPrevStep: any;
   skin: string;
   matchesSM: boolean;
 }) => {
   const classes = useStyles();
   const mainTheme = Theme;
+  const { showToast } = useToast();
   const palette: { [key: string]: any } = mainTheme.palette;
 
   const [phoneInput, setPhoneInput] = useState("");
@@ -73,7 +73,11 @@ const RegisterInputs = ({
     console.log(
       validatePhone(phoneInput) && ssn4Ref?.current?.value.length === 4
     );
-    if (validatePhone(phoneInput) && ssn4Ref?.current?.value.length === 4) {
+    if(!validatePhone(phoneInput)) {
+      showToast('Enter mobile number', "error")
+    } else if (ssn4Ref?.current?.value.length !== 4) {
+      showToast('Enter SSN4', "error")
+    } else if (validatePhone(phoneInput) && ssn4Ref?.current?.value.length === 4) {
       const inputSSN4 = ssn4Ref?.current?.value;
       setPhoneNumber(phoneInput);
       setSSN4(inputSSN4);

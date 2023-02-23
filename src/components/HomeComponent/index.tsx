@@ -111,26 +111,22 @@ const HomeComponent = ({ theme, skin }: props) => {
             component="h2"
             color={`${theme}.text`}
             fontSize={52}
-            fontWeight={700}
+            fontWeight={500}
             lineHeight={"60px"}
             letterSpacing={"1px"}
             className={classes.homeHeading}
           >
-            SELECT YOUR <br /> {name.toLocaleUpperCase()} EXPERIENCE
+            Private Verified Identity 
           </Typography>
           <Typography
             component="p"
             color={`${theme}.text`}
-            fontSize={16}
+            fontSize={18}
             fontWeight={500}
             className={classes.homeSubHeading}
             mt={2}
           >
-            Sign up for free to enjoy all of the perks that come with a {name}{" "}
-            membership.
-            <br />
-            Better yet, level up and join {name} Premium for the ultimate
-            experience!
+            Protect privacy with Cryptonets FHE
           </Typography>
           <Box pt={5} className={classes.buttonsGrid}>
             <Grid container alignItems="center" className={classes.buttonsWrap}>
@@ -145,7 +141,7 @@ const HomeComponent = ({ theme, skin }: props) => {
                 {loading ? (
                   <CircularProgress className={classes.homeLoader} />
                 ) : (
-                  `I'm over 18 `
+                  `Verify me`
                 )}
               </Button>
               {matchesSM ? null : (
@@ -154,62 +150,12 @@ const HomeComponent = ({ theme, skin }: props) => {
                   sx={{ textTransform: "unset" }}
                   className={classes.buttonsWrapButton}
                 >
-                  Learn more
-                </Button>
-              )}
-            </Grid>
-          </Box>
-          <Box pt={0}>
-            <Grid container alignItems="center" className={classes.buttonsWrap}>
-              {matchesSM ? (
-                <Button
-                  sx={{
-                    textTransform: "unset",
-                    paddingTop: "0px",
-                    height: 53,
-                    alignItems: "flex-start",
-                  }}
-                  variant="contained"
-                  style={styles.ageVerifiedButton}
-                  disabled={loading}
-                  className={classes.buttonsWrapButton}
-                >
-                  Sign in with {name}
-                  <p>Content Partners and Models</p>
-                </Button>
-              ) : (
-                <Button
-                  sx={{ textTransform: "unset" }}
-                  variant="contained"
-                  style={styles.ageVerifiedButton}
-                  disabled={loading}
-                  className={classes.buttonsWrapButton}
-                >
-                  Sign in with {name}
-                </Button>
-              )}
-
-              {matchesSM ? null : (
-                <Button
-                  style={styles.ageLearnMoreButton}
-                  sx={{ textTransform: "unset" }}
-                  className={classes.buttonsWrapButton}
-                >
-                  Content Partners and Models
+                  Go for a test drive!
                 </Button>
               )}
             </Grid>
           </Box>
           <Box className={classes.buttonsBox}>
-            <Button
-              sx={{ textTransform: "unset" }}
-              variant="contained"
-              style={styles.ageVerifiedButton}
-              disabled={loading}
-              className={`${classes.buttonsWrapButton} ${classes.redTubeButton}`}
-            >
-              Sign in with Redtube
-            </Button>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"

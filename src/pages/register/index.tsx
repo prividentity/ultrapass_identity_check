@@ -78,7 +78,6 @@ const Register = ({ theme, skin }: props) => {
           <RegisterInputs
             matchesSM={matchesSM}
             setStep={setStep}
-            setPrevStep={setPrevStep}
             skin={skin}
           />
         );
