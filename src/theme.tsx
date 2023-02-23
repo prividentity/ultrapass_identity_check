@@ -162,7 +162,7 @@ export const logos = {
   fanduel: fanduelLogo,
   up: {
     dark: logoDarkUp,
-    light: logoLightUp,
+    light: logoDarkUp,
   },
   mg: {
     dark: logoDarkMg,

@@ -57,8 +57,7 @@ const Header = (props: props) => {
         <img
           src={!matchesSM ? Logos?.[skin].dark : Logos?.[skin].light}
           alt=""
-          width={120}
-          height={35}
+          width={140}
           onClick={() => navigate("/")}
           style={{ cursor: "pointer" }}
           className="headerLogo"
@@ -136,7 +135,7 @@ const Header = (props: props) => {
         <Toolbar>
           {renderHeaderImage()}
           <Grid container alignItems="center" justifyContent={"flex-end"}>
-            {window.location.pathname === "/" ||
+            {/* {window.location.pathname === "/" ||
             window?.location?.pathname === "/register" ||
             window?.location?.pathname === "/signin" ? (
               <img
@@ -147,7 +146,7 @@ const Header = (props: props) => {
                 style={styles.homelogo}
                 className="headerLogo"
               />
-            ) : null}
+            ) : null} */}
           </Grid>
           <Grid
             container

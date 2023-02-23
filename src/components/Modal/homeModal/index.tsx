@@ -55,13 +55,14 @@ const HomeModal = (props: props) => {
           className={classes.cardInner}
         >
           {matchesSM ? null : (
-            <img
-              src={logoDark}
-              alt=""
-              width={130}
-              height={35}
-              className={classes.modalBoxLogo}
-            />
+            <div style={{ backgroundColor: "#ffffff" }}>
+              <img
+                src={logoDark}
+                alt=""
+                width={130}
+                className={classes.modalBoxLogo}
+              />
+            </div>
           )}
           <CloseIcon className={classes.closeIcon} onClick={handleClose} />
           <CardContent className={classes.cardChild} style={{ padding: 0 }}>
