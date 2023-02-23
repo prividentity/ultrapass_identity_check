@@ -201,15 +201,6 @@ const HomeComponent = ({ theme, skin }: props) => {
             </Grid>
           </Box>
           <Box className={classes.buttonsBox}>
-            <Button
-              sx={{ textTransform: "unset" }}
-              variant="contained"
-              style={styles.ageVerifiedButton}
-              disabled={loading}
-              className={`${classes.buttonsWrapButton} ${classes.redTubeButton}`}
-            >
-              Sign in with Redtube
-            </Button>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
