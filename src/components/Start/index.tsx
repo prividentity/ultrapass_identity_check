@@ -49,19 +49,8 @@ const Start = ({
           mt={2}
           className={classes.cardInnerHeading}
         >
-          Station Casinos partners with CentralAMS
-          <br /> Ultrapass
-        </Typography>
-        <Typography
-          component="p"
-          textAlign={matchesSM ? "center" : "left"}
-          fontSize={16}
-          fontWeight={700}
-          lineHeight={1.5}
-          mt={0}
-          className={classes.cardInnerHeading}
-        >
-          for secure, private verified identity. 
+          Station Casinos partners with CentralAMS Ultrapass for secure, private
+          verified identity.
         </Typography>
         <Typography
           component="p"
@@ -71,7 +60,8 @@ const Start = ({
           mt={2}
           className={classes.cardInnerHeading}
         >
-          Get ready to take a selfie<br /> and scan your Driver License.
+          Get ready to take a selfie
+          <br /> and scan your Driver License.
         </Typography>
         <Typography
           component="p"
@@ -82,7 +72,7 @@ const Start = ({
           color={"#333"}
           className={classes.cardInnerText}
         >
-          How Ultrapass will verify your identity ?
+          How will CentralAMS Ultrapass verify your identity?
         </Typography>
         <Typography
           component="p"
@@ -92,10 +82,10 @@ const Start = ({
           mt={0}
           className={classes.cardInnerText}
         >
-          Ultrapass will use your selfie to check your identity. Your image will
-          be deleted immediately after processing. No images or information will
-          be shared with {name}. Data will be strictly processed according to
-          the Ultrapass Privacy Policy. Learn how Ultrapass works.
+          CentralAMS Ultrapass will use your selfie and Photo ID to check your
+          identity. CentralAMS will check third-party and data providers and
+          governments to prevent fraud. Data will be strictly processed
+          according to the CentralAMS Privacy Policy.
         </Typography>
       </Grid>
       <Grid>
