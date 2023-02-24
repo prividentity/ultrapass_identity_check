@@ -132,7 +132,7 @@ const RegisterInputs = ({
           sx={{ paddingTop: 4, paddingBottom: 2 }}
           className={classes.cardHeading}
         >
-          PLEASE ENTER REQUIRED INFORMATION
+          CONFIRM YOUR IDENTITY
         </Typography>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}

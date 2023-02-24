@@ -3,6 +3,7 @@ import { useStyles, styles } from "../../pages/register/styles";
 import { theme as Theme } from "../../theme";
 import { useNavigate } from "react-router";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { useEffect } from "react";
 
 const Success = ({
   setStep,
@@ -18,6 +19,11 @@ const Success = ({
   const mainTheme = Theme;
   const palette: { [key: string]: any } = mainTheme.palette;
 
+  useEffect(() => {
+    setTimeout(() => {
+      navigate("/")
+    }, 2000)
+  }, [])
   return (
     <>
       <Grid container alignItems="center" justifyContent={"center"}>
@@ -48,9 +54,9 @@ const Success = ({
           You successfully completed your ID verification.
         </Typography>
       </Grid>
-      <Grid style={{ marginBottom: 50 }}>
-        {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
-        <Button
+      <Grid style={{ marginBottom: 50, height: 45 }}>
+        {/* {!matchesSM && <Divider color={palette?.[skin]?.listText} />} */}
+        {/* <Button
           variant="contained"
           color={"inherit"}
           style={styles.continueButton}
@@ -68,7 +74,7 @@ const Success = ({
           >
             Continue
           </Typography>
-        </Button>
+        </Button> */}
       </Grid>
     </>
   );
