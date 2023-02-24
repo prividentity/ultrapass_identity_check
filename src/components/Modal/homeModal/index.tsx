@@ -49,6 +49,7 @@ const HomeModal = (props: props) => {
       fullScreen={true}
     >
       <Box
+        mt={matchesSM ? 0 : 3}
         className={classes.homeModalCover}
         sx={{ position: "relative", flexDirection: "column" }}
       >

@@ -61,30 +61,30 @@ const useCamera = (
       onCameraFail(); 
       console.log("Error Message", e);
     }
-    // const setCameraFocus = async () => {
-    //   try {
-    //     const video = document.getElementById("userVideo") as any;
-    //     const mediaStream = video.srcObject;
-    //     const track = await mediaStream.getTracks()[0];
-    //     const capabilities = track.getCapabilities();
-    //     if (typeof capabilities.focusDistance !== "undefined") {
-    //       await track.applyConstraints({
-    //         advanced: [
-    //           {
-    //             focusMode: capabilities.focusMode.includes("continuous")
-    //               ? "continuous"
-    //               : "manual",
-    //             focusDistance: Math.min(capabilities.focusDistance.max, 100),
-    //           },
-    //         ],
-    //       });
-    //     }
-    //   } catch (e) {
-    //     // eslint-disable-next-line no-console
-    //     console.log(e);
-    //   }
-    // };
-    // await setCameraFocus();
+    const setCameraFocus = async () => {
+      try {
+        const video = document.getElementById("userVideo") as any;
+        const mediaStream = video.srcObject;
+        const track = await mediaStream.getTracks()[0];
+        const capabilities = track.getCapabilities();
+        if (typeof capabilities.focusDistance !== "undefined") {
+          await track.applyConstraints({
+            advanced: [
+              {
+                focusMode: capabilities.focusMode.includes("continuous")
+                  ? "continuous"
+                  : "manual",
+                focusDistance: Math.min(capabilities.focusDistance.max, 100),
+              },
+            ],
+          });
+        }
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.log(e);
+      }
+    };
+    await setCameraFocus();
   };
 
   return {
