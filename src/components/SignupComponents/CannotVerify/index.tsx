@@ -44,7 +44,7 @@ const CannotVerify = (props: props) => {
           className={classes.cardHeading}
         >
           <img src={smallLock} alt="smallLock" className={classes.smallLock} />{" "}
-          IDENTITY VERIFICATION
+          VERIFIED IDENTITY
         </Typography>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
@@ -66,7 +66,7 @@ const CannotVerify = (props: props) => {
           fontWeight={500}
           mt={7}
         >
-          Ultrapass cannot verify your identity
+          Station Casinos cannot verify your identity
           <br /> without your consent.
         </Typography>
       </Grid>

@@ -60,7 +60,7 @@ const VerifyAgeWithDatabase = (props: props) => {
           fontWeight={500}
           mt={5}
         >
-          AllpassTrust needs your personal details to validate your identity. All
+          Ultrapass needs your personal details to validate your identity. All
           personal details will be deleted immediately after processing. No
           images or personal details will be shared with {name}.
         </Typography>
@@ -72,7 +72,7 @@ const VerifyAgeWithDatabase = (props: props) => {
           mt={3}
           mb={1}
         >
-          Learn how AllpassTrust works
+          Learn how Ultrapass works
         </Typography>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}

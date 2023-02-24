@@ -95,11 +95,11 @@ const CreateAccountConsent = (props: props) => {
               biometric is safely encrypted in compliance with the IEEE
               2410-2021 Standard for Biometric Privacy, completely transformed
               into anonymized data and then deleted. Biometric information is
-              never transmitted to, stored by or used by AllpassTrust. Only
+              never transmitted to, stored by or used by Ultrapass. Only
               anonymized data is used to authenticate you.
             </ListItem>
             <ListItem className={classes.listText}>
-              I have read the AllpassTrust Terms of Service and Privacy Policy.
+              I have read the Ultrapass Terms of Service and Privacy Policy.
             </ListItem>
           </List>
         </Card>

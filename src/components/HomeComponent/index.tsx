@@ -108,23 +108,23 @@ const HomeComponent = ({ theme, skin }: props) => {
               letterSpacing={"1px"}
               className={classes.homeHeading}
             >
-              Private Verified Identity
+              CAMS UltraPass ID
             </Typography>
             <Typography
               component="p"
               color={`${theme}.text`}
-              fontSize={18}
+              fontSize={30}
               fontWeight={500}
               className={classes.homeSubHeading}
-              mt={2}
+              mt={0}
             >
-              Protect privacy with Cryptonets FHE
+              Private Verified Identity
             </Typography>
           </Box>
           <Box pt={5} className={classes.buttonsGrid}>
-            <Grid container alignItems="center" className={classes.buttonsWrap}>
+            <Grid alignItems="center" className={classes.buttonsWrap}>
               <Button
-                sx={{ textTransform: "unset", opacity: loading ? 0.8 : 1 }}
+                sx={{ textTransform: "unset", opacity: loading ? 0.8 : 1, marginBottom: "0px !important"}}
                 variant="contained"
                 style={styles.ageVerifiedButton}
                 onClick={() => createVerification()}
@@ -140,7 +140,7 @@ const HomeComponent = ({ theme, skin }: props) => {
               {matchesSM ? null : (
                 <Button
                   style={styles.ageLearnMoreButton}
-                  sx={{ textTransform: "unset" }}
+                  sx={{ textTransform: "unset", textAlign: "center", width: 300 }}
                   className={classes.buttonsWrapButton}
                 >
                   Go for a test drive!

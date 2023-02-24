@@ -150,8 +150,7 @@ const Register = ({ theme, skin }: props) => {
             setStep={setStep}
             setPrevStep={setPrevStep}
             skin={skin}
-            token={token}
-            tokenParams={tokenParams}
+            onVerifyId={onVerifyId}
           />
         );
       case STEPS.SWITCH_DEVICE:
@@ -163,6 +162,7 @@ const Register = ({ theme, skin }: props) => {
             setStep={setStep}
             skin={skin}
             onSuccess={onVerifyId}
+            setPrevStep={setPrevStep}
           />
         );
       case STEPS.SUCCESS:
@@ -181,6 +181,8 @@ const Register = ({ theme, skin }: props) => {
             matchesSM={matchesSM}
             setStep={setStep}
             skin={skin}
+            setPrevStep={setPrevStep}
+            onVerifyId={onVerifyId}
           />
         );
       default:

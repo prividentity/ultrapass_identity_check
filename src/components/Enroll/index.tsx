@@ -21,6 +21,7 @@ import shield from "../../assets/shield.png";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import STEPS from "../../pages/register/steps";
 import { stopCamera } from "../../utils";
+import SpinnerLoader from "../SpinnerLoader";
 
 const Enroll = ({
   onReadyCallback,
@@ -39,7 +40,6 @@ const Enroll = ({
   const classes = useStyles();
   const context = React.useContext(UserContext);
   const { id, setGUID, setUUID } = context;
-  const [enrolling, setEnrolling] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const mainTheme = Theme;
   const palette: { [key: string]: any } = mainTheme.palette;
@@ -66,8 +66,8 @@ const Enroll = ({
     const updateRes = (await updateUser(params)) as any;
     if (updateRes.guid && updateRes.uuid) {
       setShowSuccess(true);
-      stopCamera();
       setTimeout(async () => {
+        stopCamera();
         setStep(STEPS.DRIVERLICENSE);
       }, 1000);
     }
@@ -112,32 +112,20 @@ const Enroll = ({
         </Typography>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
-      <Box position={"relative"} padding={"10px 10px"} mt={2} pr={"12px"}>
-        {showSuccess && (
+      <Box position={"relative"} padding={"10px 10px"} mt={0} pr={"12px"}>
+        {(showSuccess || (enrollOneFaProgress === 100)) && (
           <Box style={styles.overlayCamera as React.CSSProperties}>
-            <img
-              src={shield}
-              alt="shield"
-              style={styles.shield as React.CSSProperties}
-            />
+            {showSuccess ? (
+              <img
+                src={shield}
+                alt="shield"
+                style={styles.shield as React.CSSProperties}
+              />
+            ) : (
+              <SpinnerLoader />
+            )}
           </Box>
         )}
-        <Box className={classes.otherOptions}>
-          <Typography
-            component="p"
-            textAlign={matchesSM ? "center" : "left"}
-            fontSize={15}
-            fontWeight={500}
-            mt={2}
-            onClick={() => {
-              setStep(STEPS.SWITCH_DEVICE);
-              stopCamera();
-            }}
-          >
-            <PhoneIphoneIcon /> Switch to other device
-          </Typography>
-        </Box>
-
         <>
           <div id="canvasInput" className={homeStyles.container}>
             {hasNoCamera ? (
@@ -163,6 +151,21 @@ const Enroll = ({
               />
             )}
           </div>
+          <Box className={classes.otherOptions}>
+            <Typography
+              component="p"
+              textAlign={matchesSM ? "center" : "left"}
+              fontSize={15}
+              fontWeight={500}
+              mt={2}
+              onClick={() => {
+                setStep(STEPS.SWITCH_DEVICE);
+                stopCamera();
+              }}
+            >
+              <PhoneIphoneIcon /> Switch to other device
+            </Typography>
+          </Box>
           <Box style={{ height: 50 }}>
             <Box style={{ height: 14 }}>
               {enrollOneFaProgress > 0 && (
@@ -172,7 +175,7 @@ const Enroll = ({
                 />
               )}
             </Box>
-            {enrollOneFaProgress === 100 && enrolling ? (
+            {enrollOneFaProgress === 100 ? (
               <Typography
                 align="center"
                 fontSize={14}
@@ -181,7 +184,7 @@ const Enroll = ({
                 mb={1}
                 display={"flex"}
                 alignItems="center"
-                justifyContent={'center'}
+                justifyContent={"center"}
               >
                 <CircularProgress className={classes.progressBar} /> Verifying
                 User, this might take some minutes…

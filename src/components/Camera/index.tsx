@@ -12,6 +12,7 @@ import {
   WIDTH_TO_STANDARDS,
 } from "../../utils";
 import useCameraPermissions from "../../hooks/useCameraPermissions";
+import { useStyles } from "./styles";
 
 const Camera = ({
   children,
@@ -28,6 +29,7 @@ const Camera = ({
   const { ready: wasmReady } = useWasm();
   const { isCameraGranted } = useCameraPermissions(onReadyCallback);
   const elementId = "userVideo";
+  const classes = useStyles()
   const { ready, init, device, devices } = useCamera(elementId, mode,requireHD, onCameraFail);
 
   const [deviceId, setDeviceId] = useState(device);
@@ -173,6 +175,9 @@ const Camera = ({
           <span> {message} </span>
         </div>
       )}
+      {
+        ready ? <div className={classes.documentBarCodeOverlay} /> : null
+      }
       <video
         id="userVideo"
         className={`
