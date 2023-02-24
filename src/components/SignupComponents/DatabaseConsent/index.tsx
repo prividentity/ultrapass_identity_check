@@ -41,7 +41,7 @@ const DatabaseConsent = (props: props) => {
           className={classes.cardHeading}
         >
           <img src={smallLock} alt="smallLock" className={classes.smallLock} />
-          IDENTITY VERIFICATION
+          VERIFIED IDENTITY
         </Typography>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}

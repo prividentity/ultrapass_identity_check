@@ -26,12 +26,12 @@ export const styles = {
 };
 export const useStyles = makeStyles((theme: any) => ({
   otherOptions: {
-    position: "absolute",
-    top: -35,
+    margin: "0px !important",
     "& p": {
       cursor: "pointer",
       color: palette[skin]?.main,
-      marginLeft: -4,
+      margin: "0px !important",
+      marginLeft: "-4px !important",
     },
     "& p:hover": {
       textDecoration: "underline",
