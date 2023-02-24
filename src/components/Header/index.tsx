@@ -106,7 +106,7 @@ const Header = (props: props) => {
       const payload = {
         token: user?.token,
       };
-      onDeleteUser(uuid);
+      onDeleteUser(uuid || user?.uuid);
       deleteUserApi(payload as any);
       showToast("Deleted Successfully", "success");
       localStorage.removeItem("user");

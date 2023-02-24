@@ -66,7 +66,7 @@ const Signin = ({ theme, skin }: props) => {
     if (result?.token) {
       stopCamera();
       navigate({
-        pathname: "/signup",
+        pathname: "/register",
         search: createSearchParams({
           token: result?.token || "",
         }).toString(),
