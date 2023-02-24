@@ -35,9 +35,9 @@ export const useStyles = makeStyles((theme: any) => ({
   },
   modalBoxLogo: {
     left: "50%",
-    top: -17,
+    top: -26,
     transform: "translate(-50%)",
-    boxShadow: "5px 7px 4px rgb(56, 56, 56 , 0.44)",
+    boxShadow: "5px 7px 4px rgb(56, 56, 56 , 0.2)",
     position: "absolute",
     backgroundColor: "#fffdfd",
     padding: "5px 8px",

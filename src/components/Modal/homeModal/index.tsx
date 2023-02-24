@@ -49,6 +49,7 @@ const HomeModal = (props: props) => {
       fullScreen={true}
     >
       <Box
+        mt={matchesSM ? 0 : 3}
         className={classes.homeModalCover}
         sx={{ position: "relative", flexDirection: "column" }}
       >
@@ -62,7 +63,7 @@ const HomeModal = (props: props) => {
                 src={centralLogo}
                 alt=""
                 width={100}
-                height={30}
+                height={40}
                 className={classes.modalBoxLogo}
               />
             </div>
