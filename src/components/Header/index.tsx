@@ -102,17 +102,15 @@ const Header = (props: props) => {
   };
 
   const onDeleteAccount = () => {
-    if (uuid) {
-      const payload = {
-        token: user?.token,
-      };
-      onDeleteUser(uuid || user?.uuid);
-      deleteUserApi(payload as any);
-      showToast("Deleted Successfully", "success");
-      localStorage.removeItem("user");
-      localStorage.removeItem("uuid");
-      navigate("/");
-    }
+    const payload = {
+      guid: user?.guid,
+    };
+    onDeleteUser(uuid || user?.uuid);
+    deleteUserApi(payload as any);
+    showToast("Deleted Successfully", "success");
+    localStorage.removeItem("user");
+    localStorage.removeItem("uuid");
+    navigate("/");
   };
 
   const useDeleteCallback = (deleteStatus: any) => {
