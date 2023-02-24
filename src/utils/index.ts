@@ -173,8 +173,8 @@ export const createUserID = async () => {
   return "INTERGALACTIC" + encryptedText;
 };
 
-export const DENIED = 'Denied'
-export const APPROVED = 'Approved'
+export const DENIED = "Denied";
+export const APPROVED = "Approved";
 
 export const states = [
   { name: "Alabama", abbreviation: "AL" },
@@ -226,5 +226,25 @@ export const states = [
   { name: "Washington", abbreviation: "WA" },
   { name: "West Virginia", abbreviation: "WV" },
   { name: "Wisconsin", abbreviation: "WI" },
-  { name: "Wyoming", abbreviation: "WY" }
+  { name: "Wyoming", abbreviation: "WY" },
 ];
+
+export enum AdditionalRequirementsEnum {
+  requestSSN9 = "requestSSN9",
+  requestResAddress = "requireResAddress",
+  requestScanID = "requestScanID",
+}
+
+export function getStatusFromUser(user: any) {
+  const { userApproved, requestScanID, requestResAddress, requestSSN9 } = user;
+  if (userApproved === true) {
+    return SUCCESS;
+  } else if (requestResAddress || requestSSN9 || requestScanID) {
+    return REQUIRES_INPUT;
+  }
+  return FAILURE;
+}
+
+export const navigateToUrl = (url: string, token?: string) => {
+  window.open(`${url}?token=${token}`, "_self");
+};

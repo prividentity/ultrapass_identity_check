@@ -3,29 +3,31 @@ import { UserContext } from "../../context/UserContext";
 import RequestAddress from "../RequestAddress";
 import RequestSSN from "../RequestSsn/index";
 import STEPS from "../../pages/register/steps";
-
-enum AdditionalRequirementsEnum {
-  requestSSN9 = "requestSSN9",
-  requestResAddress = "requireResAddress",
-  requestScanID = "requestScanID",
-}
+import { AdditionalRequirementsEnum } from "../../utils";
+import { verifyIdApi } from "../../services/api";
+import useToast from "../../utils/useToast";
 
 const AdditionalRequirements = ({
   matchesSM,
   setStep,
   skin,
+  token,
+  verificationSessionToken,
+  handleRequirementsComplete,
 }: {
   matchesSM: boolean;
   setStep: any;
   skin: string;
+  token: string;
+  verificationSessionToken: string;
+  handleRequirementsComplete: () => void;
 }) => {
   const context = React.useContext(UserContext);
   const [requirement, setRequirement] = React.useState(
     AdditionalRequirementsEnum.requestSSN9
   );
   const { requestSSN9, requestResAddress, requestScanID } = context.userStatus;
-
-  console.log({ requestSSN9, requestResAddress, requestScanID });
+  const { showToast } = useToast();
   function getNextRequirement() {
     if (
       requirement === AdditionalRequirementsEnum.requestSSN9 &&
@@ -42,10 +44,15 @@ const AdditionalRequirements = ({
     return null;
   }
 
-  function handleSuccess() {
+  async function handleSuccess() {
     const nextRequirement = getNextRequirement();
+
     if (!nextRequirement) {
-      alert("No more requirements");
+      if (!token || !verificationSessionToken) {
+        showToast("Missing Required Data", "error");
+        return;
+      }
+      handleRequirementsComplete();
     } else {
       setRequirement(nextRequirement);
     }

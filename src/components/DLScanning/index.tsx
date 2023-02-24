@@ -30,7 +30,7 @@ import { DLType } from "@privateid/cryptonets-web-sdk-alpha/dist/types";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import { componentsParameterInterface } from "../../interface";
 import { verifyIdApi } from "../../services/api";
-import { APPROVED, DENIED } from "../../utils";
+import { REQUIRES_INPUT, SUCCESS, getStatusFromUser } from "../../utils";
 import useToast from "../../utils/useToast";
 
 const DLScan = ({
@@ -40,6 +40,7 @@ const DLScan = ({
   matchesSM,
   token,
   tokenParams,
+  onSuccess,
 }: {
   setStep: any;
   setPrevStep: any;
@@ -47,6 +48,7 @@ const DLScan = ({
   matchesSM: boolean;
   token: string;
   tokenParams: string;
+  onSuccess?: () => void;
 }) => {
   const classes = useStyles();
   const { showToast } = useToast();
@@ -102,11 +104,17 @@ const DLScan = ({
           setIsBackScan(true);
         }, 3000);
       }
-    } 
+    }
   };
 
-  const onFailScanFrontScan = ( {status, message} : {status:string, message:string} ) => {
-    if(parseInt(status) === -100){
+  const onFailScanFrontScan = ({
+    status,
+    message,
+  }: {
+    status: string;
+    message: string;
+  }) => {
+    if (parseInt(status) === -100) {
       showToast(message, "error");
     }
   };
@@ -169,35 +177,7 @@ const DLScan = ({
     });
     console.log("Update user result: ", updateUserResult);
 
-    onVerifyId();
-  };
-
-  const onVerifyId = async () => {
-    const payload = {
-      token: token,
-    };
-    await verifyIdApi({ id: tokenParams, payload });
-    const { userApproved, ...rest } = ((await getUserStatus({ id: token })) ||
-      {}) as any;
-    const { requestScanID, requestResAddress, requestSSN9 } = rest || {};
-    console.log({ requestScanID, requestResAddress });
-    context.setUserStatus({
-      userApproved,
-      requestScanID,
-      requestResAddress: !requestScanID && requestResAddress,
-      ...rest,
-    });
-    if (userApproved) {
-      showToast("You successfully completed your ID verification.", "success");
-      setStep(STEPS.SUCCESS);
-    } else {
-      if (requestScanID || requestResAddress || requestSSN9) {
-        showToast("We need more information to verify your identity.", "error");
-        setStep(STEPS.ADDITIONAL_REQUIREMENTS);
-      } else {
-        setStep(STEPS.VERIFICATION_NOT_COMPLETED);
-      }
-    }
+    onSuccess && onSuccess();
   };
 
   const onCameraNotGranted = (e: boolean) => {
