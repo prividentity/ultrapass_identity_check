@@ -49,6 +49,7 @@ const DLScan = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
   const [hasNoCamera, setHasNoCamera] = useState(false);
+  const [isBarcodeScan, setIsBarcodeScan] = useState(false);
 
   const context = useContext(UserContext);
 
