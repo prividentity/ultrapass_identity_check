@@ -40,7 +40,8 @@ export const useStyles = makeStyles((theme: any) => ({
     boxShadow: "5px 7px 4px rgb(56, 56, 56 , 0.44)",
     position: "absolute",
     backgroundColor: "#fffdfd",
-    padding: "5px 8px"
+    padding: "5px 8px",
+    borderRadius: 5,
   },
   cardInner: {
     width: 500,

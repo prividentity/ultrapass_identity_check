@@ -2,6 +2,7 @@
 import {
   Box,
   Button,
+  CircularProgress,
   Divider,
   Grid,
   TextField,
@@ -40,6 +41,8 @@ const RegisterInputs = ({
   const classes = useStyles();
   const mainTheme = Theme;
   const { showToast } = useToast();
+  const [loader, setLoader] = useState(false);
+  const [autoFocus, setAutoFocus] = useState(true);
   const palette: { [key: string]: any } = mainTheme.palette;
 
   const [phoneInput, setPhoneInput] = useState("");
@@ -75,6 +78,7 @@ const RegisterInputs = ({
   };
 
   const handleContinue = async () => {
+    setAutoFocus(false)
     const validatePhone = (phone: string) =>
       /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/.test(
         phone
@@ -91,7 +95,7 @@ const RegisterInputs = ({
       validatePhone(phoneInput) &&
       ssn4Ref?.current?.value.length === 4
     ) {
-
+      setLoader(true);
       const inputSSN4 = ssn4Ref?.current?.value;
       setPhoneNumber(phoneInput);
       setSSN4(inputSSN4);
@@ -109,6 +113,7 @@ const RegisterInputs = ({
         setToken(result?.user?.customerId);
         setStep(STEPS.PRE_ENROLL);
       }
+      setLoader(false);
     }
   };
 
@@ -139,12 +144,11 @@ const RegisterInputs = ({
         className={classes.cardGridMobile}
       >
         <Box width={"100%"}>
-
           <Grid container pb={2}>
             <Input
               style={{ width: "100%" }}
               value={phoneInput}
-              autoFocus
+              autoFocus={autoFocus}
               country="US"
               onChange={handlePhoneChange}
               inputComponent={React.forwardRef((props, ref) => (
@@ -152,11 +156,10 @@ const RegisterInputs = ({
                   {...props}
                   inputRef={ref}
                   InputProps={{
-                    startAdornment: <PhoneIcon sx={{ pr: 1 }} 
-                    />,
+                    startAdornment: <PhoneIcon sx={{ pr: 1 }} />,
                   }}
                   inputProps={{
-                    maxLength: 15,
+                    maxLength: 16,
                   }}
                 />
               ))}
@@ -188,6 +191,7 @@ const RegisterInputs = ({
           color={"inherit"}
           style={styles.continueButton}
           onClick={handleContinue}
+          type="submit"
         >
           <Typography
             component="p"
@@ -199,7 +203,11 @@ const RegisterInputs = ({
             justifyContent={"center"}
             textTransform="capitalize"
           >
-            Continue
+            {loader ? (
+              <CircularProgress className={classes.scanLoader} />
+            ) : (
+              "Continue"
+            )}
           </Typography>
         </Button>
       </Box>
