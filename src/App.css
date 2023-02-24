@@ -156,6 +156,12 @@ body {
   body {
     background-attachment: fixed;
   }
+  .homeComponent{
+    height: calc(100vh - 160px);
+  }
+  .homeComponent > div{
+    height: 100%;
+  }
 }
 
 @media only screen and (max-width: 1400px) {

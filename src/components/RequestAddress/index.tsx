@@ -1,5 +1,6 @@
 /* eslint-disable */
 import {
+  Autocomplete,
   Box,
   Button,
   Divider,
@@ -106,18 +107,13 @@ const RequestAddress = ({
             className={classes.inputStyle}
           />
           <FormControl fullWidth style={{ marginTop: 10, marginBottom: 10 }}>
-            <InputLabel id="demo-simple-select-label">State</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={state}
-              label="State"
-              onChange={(e) => setState(e?.target?.value)}
-            >
-              {states?.map((state: any) => (
-                <MenuItem value={state?.abbreviation}>{state?.name}</MenuItem>
-              ))}
-            </Select>
+            <Autocomplete
+              id="combo-box-demo"
+              options={states}
+              fullWidth
+              renderInput={(params) => <TextField {...params} label="State" />}
+              onChange={(i, e) => setState(e?.abbreviation)}
+            />
           </FormControl>
           <TextField
             fullWidth
