@@ -240,6 +240,11 @@ body {
   .homeComponent > div {
     height: 100%;
   }
+  .centralLogo{
+    width: 90px;
+    margin-left: auto;
+    height: 35px;
+  }
 }
 
 @media only screen and (max-width: 1400px) {

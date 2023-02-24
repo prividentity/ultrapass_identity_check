@@ -35,8 +35,8 @@ export interface verificationSessionPayload {
 }
 
 export interface componentsParameterInterface {
-    setStep: any;
-    setPrevStep: any;
-    skin: string;
-    matchesSM: boolean;
+  setStep: any;
+  setPrevStep: any;
+  skin: string;
+  matchesSM: boolean;
 }

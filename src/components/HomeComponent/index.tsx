@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -15,6 +15,8 @@ import { createVerificationSession } from "../../services/api";
 import { createSearchParams } from "react-router-dom";
 import config from "../../config";
 import { useStyles } from "../../pages/home/styles";
+import { getStatusFromUser, navigateToUrl } from "../../utils";
+import { SUCCESS, FAILURE } from "../../utils";
 
 interface props {
   theme?: string;
@@ -29,12 +31,8 @@ const HomeComponent = ({ theme, skin }: props) => {
   const muiTheme = useTheme();
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
 
-  const navigateToUrl = (url: string, token?: string) => {
-    window.open(`${url}?token=${token}`, "_self");
-  };
-
   const createVerification = async () => {
-    if (user?._id || user?.token) {
+    if (user?._id && user?.token) {
       navigateToUrl(user?.successUrl, user?.token);
       return;
     }
@@ -94,6 +92,50 @@ const HomeComponent = ({ theme, skin }: props) => {
         break;
     }
   };
+
+  function renderVerificationButton() {
+    const userStatus = getStatusFromUser(user || {});
+    if (userStatus === SUCCESS) {
+      return (
+        <Button
+          sx={{ textTransform: "unset", opacity: 0.8 }}
+          variant="contained"
+          style={styles.ageVerifiedButton}
+          className={classes.buttonsWrapButton}
+        >
+          {"You are verified"}
+        </Button>
+      );
+    } else if (userStatus === FAILURE && user._id) {
+      return (
+        <Button
+          sx={{ textTransform: "unset", opacity: 0.8 }}
+          variant="contained"
+          style={styles.ageFailedButton}
+          className={classes.buttonsWrapButton}
+        >
+          {"Verification Failed"}
+        </Button>
+      );
+    } else {
+      return (
+        <Button
+          sx={{ textTransform: "unset", opacity: loading ? 0.8 : 1 }}
+          variant="contained"
+          style={styles.ageVerifiedButton}
+          onClick={() => createVerification()}
+          disabled={loading}
+          className={classes.buttonsWrapButton}
+        >
+          {loading ? (
+            <CircularProgress className={classes.homeLoader} />
+          ) : (
+            "Verify me"
+          )}
+        </Button>
+      );
+    }
+  }
   return (
     <>
       <Container maxWidth="xl">
@@ -122,21 +164,8 @@ const HomeComponent = ({ theme, skin }: props) => {
             </Typography>
           </Box>
           <Box pt={5} className={classes.buttonsGrid}>
-            <Grid alignItems="center" className={classes.buttonsWrap}>
-              <Button
-                sx={{ textTransform: "unset", opacity: loading ? 0.8 : 1, marginBottom: "0px !important"}}
-                variant="contained"
-                style={styles.ageVerifiedButton}
-                onClick={() => createVerification()}
-                disabled={loading}
-                className={classes.buttonsWrapButton}
-              >
-                {loading ? (
-                  <CircularProgress className={classes.homeLoader} />
-                ) : (
-                  `Verify me`
-                )}
-              </Button>
+            <Grid container alignItems="center" className={classes.buttonsWrap}>
+              {renderVerificationButton()}
               {matchesSM ? null : (
                 <Button
                   style={styles.ageLearnMoreButton}

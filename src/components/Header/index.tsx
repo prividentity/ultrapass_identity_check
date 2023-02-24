@@ -106,7 +106,7 @@ const Header = (props: props) => {
       const payload = {
         token: user?.token,
       };
-      onDeleteUser(uuid);
+      onDeleteUser(uuid || user?.uuid);
       deleteUserApi(payload as any);
       showToast("Deleted Successfully", "success");
       localStorage.removeItem("user");
@@ -144,7 +144,7 @@ const Header = (props: props) => {
                 width={80}
                 height={40}
                 style={styles.homelogo}
-                className="headerLogo"
+                className="headerLogo centralLogo"
               />
             ) : null}
           </Grid>

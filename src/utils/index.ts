@@ -173,8 +173,8 @@ export const createUserID = async () => {
   return "INTERGALACTIC" + encryptedText;
 };
 
-export const DENIED = 'Denied'
-export const APPROVED = 'Approved'
+export const DENIED = "Denied";
+export const APPROVED = "Approved";
 
 export const formatPhoneInput = (value: string, previousValue?: string) => {
   if (!value) {
@@ -198,7 +198,7 @@ export const formatPhoneInput = (value: string, previousValue?: string) => {
 };
 
 export const states = [
-  { label: "Alabama", abbreviation: "AL" },
+{ label: "Alabama", abbreviation: "AL" },
   { label: "Alaska", abbreviation: "AK" },
   { label: "Arizona", abbreviation: "AZ" },
   { label: "Arkansas", abbreviation: "AR" },
@@ -249,3 +249,24 @@ export const states = [
   { label: "Wisconsin", abbreviation: "WI" },
   { label: "Wyoming", abbreviation: "WY" }
 ];
+
+export enum AdditionalRequirementsEnum {
+  requestSSN9 = "requestSSN9",
+  requestResAddress = "requireResAddress",
+  requestScanID = "requestScanID",
+}
+
+export function getStatusFromUser(user: any) {
+  const { userApproved, requestScanID, requestResAddress, requestSSN9 } = user;
+  if (userApproved === true) {
+    return SUCCESS;
+  } else if (requestResAddress || requestSSN9 || requestScanID) {
+    return REQUIRES_INPUT;
+  }
+  return FAILURE;
+}
+
+export const navigateToUrl = (url: string, token?: string) => {
+  window.open(`${url}?token=${token}`, "_self");
+};
+

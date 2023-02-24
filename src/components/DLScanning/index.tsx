@@ -28,16 +28,14 @@ import SpinnerLoader from "../SpinnerLoader";
 
 const DLScan = ({
   setStep,
-  setPrevStep,
   skin,
   matchesSM,
-  onVerifyId,
+  onSuccess,
 }: {
   setStep: any;
-  setPrevStep: any;
   skin: string;
   matchesSM: boolean;
-  onVerifyId: () => void;
+  onSuccess: () => void;
 }) => {
   const classes = useStyles();
   const { showToast } = useToast();
@@ -172,7 +170,7 @@ const DLScan = ({
     });
     console.log("Update user result: ", updateUserResult);
 
-    onVerifyId();
+    onSuccess && onSuccess();
   };
 
   const onCameraNotGranted = (e: boolean) => {
@@ -260,22 +258,8 @@ const DLScan = ({
             )}
           </Box>
         </Box>
-        <Box className={classes.otherDevice}>
-          <Typography
-            component="p"
-            textAlign={"left"}
-            fontSize={15}
-            fontWeight={500}
-            mt={0}
-            onClick={() => {
-              setStep(STEPS.SWITCH_DEVICE);
-            }}
-          >
-            <PhoneIphoneIcon /> Switch to other device
-          </Typography>
-        </Box>
       </Grid>
-      <Box style={{ height: 70 }}>
+      <Box style={{ height: 84 }} className={classes.scanBottomBox}>
         {isScanning ? (
           <Typography
             component="p"
@@ -298,11 +282,28 @@ const DLScan = ({
             mt={1}
             mb={2}
           >
-            {isBarcodeScan ? "Place the bar code in the safe area" : isBackScan
+            {isBarcodeScan
+              ? "Place the bar code in the safe area"
+              : isBackScan
               ? "Place the BACK of your ID towards the camera"
               : "Place the FRONT of your ID towards the camera"}
           </Typography>
         )}
+
+        <Box className={classes.otherDevice} pl={3} mb={1}>
+          <Typography
+            component="p"
+            textAlign={"left"}
+            fontSize={15}
+            fontWeight={500}
+            mt={0}
+            onClick={() => {
+              setStep(STEPS.SWITCH_DEVICE);
+            }}
+          >
+            <PhoneIphoneIcon /> Switch to other device
+          </Typography>
+        </Box>
       </Box>
     </>
   );
