@@ -299,8 +299,8 @@ const DLScan = ({
             mb={2}
           >
             {isBackScan
-              ? "Place the back of the Driver’s License above"
-              : "Place the front of the Driver’s License above"}
+              ? "Place the BACK of your ID towards the camera"
+              : "Place the FRONT of your ID towards the camera"}
           </Typography>
         )}
       </Box>

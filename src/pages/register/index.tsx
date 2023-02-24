@@ -127,7 +127,7 @@ const Register = ({ theme, skin }: props) => {
           />
         );
       case STEPS.ENROLL:
-        return <Enroll setStep={setStep} />;
+        return <Enroll setStep={setStep} skin={skin} />;
 
       case STEPS.CAMERA_PERMISSION_FAIL:
         return (
