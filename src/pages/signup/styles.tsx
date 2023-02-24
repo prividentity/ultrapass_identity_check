@@ -316,4 +316,14 @@ export const useStyles = makeStyles((theme: any) => ({
     marginBottom: "10px !important",
     marginTop: "10px !important",
   },
+  scanLoader: {
+    width: "22px !important",
+    height: "22px !important",
+    marginBottom: "2px",
+    marginRight: "0px",
+    color: `${palette[skin]?.text} !important`,
+    [theme.breakpoints.between("xs", "sm")]: {
+      color: `${palette[skin]?.text} !important`
+    }
+  },
 }));

@@ -24,7 +24,7 @@ export const useStyles = makeStyles((theme: any) => ({
       textAlign: "center",
       padding: "10px 8px",
       paddingBottom: "0px",
-      marginTop: '0px !important',
+      marginTop: "0px !important",
       marginBottom: "4rem !important",
     },
   },
@@ -41,7 +41,7 @@ export const useStyles = makeStyles((theme: any) => ({
   },
   buttonsWrapButton: {
     fontWeight: "500 !important",
-    marginBottom: '12px !important',
+    marginBottom: "12px !important",
     [theme.breakpoints.between("xs", "sm")]: {
       marginRight: "0 !important",
       width: "100%",
@@ -55,7 +55,7 @@ export const useStyles = makeStyles((theme: any) => ({
         margin: 0,
         fontSize: 12,
       },
-    }
+    },
   },
   flowdropDown: {
     width: "288px",
@@ -82,17 +82,29 @@ export const useStyles = makeStyles((theme: any) => ({
     width: "35px  !important",
   },
   buttonsBox: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '200px',
+    display: "flex",
+    flexDirection: "column",
+    width: "200px",
     [theme.breakpoints.between("xs", "sm")]: {
       width: "100%",
     },
   },
   redTubeButton: {
     backgroundColor: "#b70000 !important",
-    borderColor:  "#b70000 !important",
+    borderColor: "#b70000 !important",
     color: `${palette[skin]?.text} !important`,
-    boxShadow: 'unset !important'
-  }
+    boxShadow: "unset !important",
+  },
+  mainWrap: {
+    [theme.breakpoints.between("xs", "sm")]: {
+      height: "100%",
+      display: "flex",
+      flexDirection: "column",
+    },
+  },
+  innerWrap: {
+    [theme.breakpoints.between("xs", "sm")]: {
+      flex: 1,
+    },
+  },
 }));

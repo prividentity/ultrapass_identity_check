@@ -12,7 +12,7 @@ const Home = ({ theme, skin }: props) => {
   return (
     <>
       {headerVisible?.includes(skin) && <Header theme={themeName} />}
-      <div className="homePageWrapper">
+      <div className="homePageWrapper homeComponent">
         <HomeComponent theme={theme} skin={skin} />
         <div className="homeSidebarImg">
           <img src={womenImg} alt="women" />

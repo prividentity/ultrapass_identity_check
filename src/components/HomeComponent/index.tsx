@@ -139,28 +139,30 @@ const HomeComponent = ({ theme, skin }: props) => {
   return (
     <>
       <Container maxWidth="xl">
-        <Box>
-          <Typography
-            component="h2"
-            color={`${theme}.text`}
-            fontSize={52}
-            fontWeight={500}
-            lineHeight={"60px"}
-            letterSpacing={"1px"}
-            className={classes.homeHeading}
-          >
-            Private Verified Identity
-          </Typography>
-          <Typography
-            component="p"
-            color={`${theme}.text`}
-            fontSize={18}
-            fontWeight={500}
-            className={classes.homeSubHeading}
-            mt={2}
-          >
-            Protect privacy with Cryptonets FHE
-          </Typography>
+        <Box className={classes.mainWrap}>
+          <Box className={classes.innerWrap}>
+            <Typography
+              component="h2"
+              color={`${theme}.text`}
+              fontSize={52}
+              fontWeight={500}
+              lineHeight={"60px"}
+              letterSpacing={"1px"}
+              className={classes.homeHeading}
+            >
+              Private Verified Identity
+            </Typography>
+            <Typography
+              component="p"
+              color={`${theme}.text`}
+              fontSize={18}
+              fontWeight={500}
+              className={classes.homeSubHeading}
+              mt={2}
+            >
+              Protect privacy with Cryptonets FHE
+            </Typography>
+          </Box>
           <Box pt={5} className={classes.buttonsGrid}>
             <Grid container alignItems="center" className={classes.buttonsWrap}>
               {renderVerificationButton()}

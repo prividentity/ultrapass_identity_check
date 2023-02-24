@@ -62,7 +62,7 @@ export const useStyles = makeStyles((theme: any) => ({
       margin: "0 20px 5px 0",
       minWidth: 300,
       border: `3px solid ${palette[skin]?.main} !important`,
-      color: `${palette[skin]?.listText} !important`,
+      color: `${palette[skin]?.text} !important`,
     },
   },
   scanLoader: {
