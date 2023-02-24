@@ -65,6 +65,9 @@ const RegisterInputs = ({
     if (ssn4Ref?.current?.value.length < 4) {
       setShowSSN4Error({ error: true, message: "SSN4 Must be 4 digits." });
     }
+    else{
+      setShowSSN4Error({ error: false, message: "" });
+    }
   };
 
   const [showPhoneError, setShowPhoneError] = useState({
@@ -73,7 +76,10 @@ const RegisterInputs = ({
   });
   const handleCheckPhoneInput = () => {
     if (phoneInput.length < 10) {
-      setShowSSN4Error({ error: true, message: "SSN4 Must be 4 digits." });
+      setShowPhoneError({ error: true, message: "Invalid Phone Number." });
+    }
+    else{
+      setShowPhoneError({ error: false, message: "" });
     }
   };
 
@@ -151,6 +157,13 @@ const RegisterInputs = ({
               autoFocus={autoFocus}
               country="US"
               onChange={handlePhoneChange}
+              // onBlur={handleCheckPhoneInput}
+              helperText={showPhoneError.error? showPhoneError.message :""}
+              sx={{
+                "& .MuiFormHelperText-contained": {
+                  color:"red"
+                }
+              }}
               inputComponent={React.forwardRef((props, ref) => (
                 <PhoneInputComponent
                   {...props}
@@ -181,6 +194,13 @@ const RegisterInputs = ({
             }}
             inputRef={ssn4Ref}
             onBlur={handleCheckSSN4Input}
+            color={showSSN4Error.error? "error":"primary"}
+            helperText={showSSN4Error.error? showSSN4Error.message :""}
+            sx={{
+              "& .MuiFormHelperText-contained": {
+                color:"red"
+              }
+            }}
           />
         </Box>
       </Grid>

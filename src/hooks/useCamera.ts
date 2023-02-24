@@ -74,7 +74,7 @@ const useCamera = (
                 focusMode: capabilities.focusMode.includes("continuous")
                   ? "continuous"
                   : "manual",
-                focusDistance: 100,
+                focusDistance: Math.min(capabilities.focusDistance.max, 100),
               },
             ],
           });
