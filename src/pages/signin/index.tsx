@@ -7,6 +7,7 @@ import homeStyles from "../../styles/Home.module.css";
 import {
   ERROR,
   FAILURE,
+  getStatusFromUser,
   isAndroid,
   isIOS,
   osVersion,
@@ -76,38 +77,38 @@ const Signin = ({ theme, skin }: props) => {
   const themeName = skin || "primary";
   const [step, setStep] = useState(0);
   const [isUserVerify, setIsUserVerify] = useState(false);
-  const [sessionData, setSessionData] = useState<any>();
-  const retryTimes = step === 1 ? 12 : 3
+  const retryTimes = step === 1 ? 12 : 3;
 
   useEffect(() => {
-    if (user?._id && !sessionData) {
+    if (user?._id) {
       stopCamera();
       navigate("/");
     }
   }, [user]);
 
-  const verifyToken = async (e: string) => {
-    const result: any = await verifyTokenApi(e);
-    localStorage.setItem("user", JSON.stringify(result || "{}"));
-    setSessionData(result);
+  const nextStep = (userParam: any) => {
+    const user = userParam || JSON.parse(localStorage.getItem("user") || "{}");
+    if (!user._id) return;
+    const userStatus = getStatusFromUser(user);
+    console.log(userStatus, "user status\n", user, "user\n");
     setIsUserVerify(false);
     stopCamera();
-    if (result?.status === SUCCESS) {
-      showToast("Logged in Successfully", "success");
-      navigate("/");
-      // navigateToUrl(result?.successUrl, result?.token);
-    } else if (result?.status === FAILURE) {
-      showToast("invalid token", "error");
-      navigate("/");
-    } else if (result?.status === REQUIRES_INPUT) {
-      setStep(7);
-    } else {
-      navigate("/");
-    }
-  };
+    switch (userStatus) {
+      case SUCCESS:
+        showToast("Logged in Successfully", "success");
+        navigate("/");
+        break;
+      case REQUIRES_INPUT:
+        setStep(7);
+        break;
 
-  const navigateToUrl = (url: string, token?: string) => {
-    window.open(`${url}?token=${token}`, "_self");
+      default:
+        showToast(
+          "You have not successfully completed your verification",
+          "error"
+        );
+        navigate("/");
+    }
   };
 
   const handlePredictSuccess = async (result: any) => {
@@ -116,7 +117,7 @@ const Signin = ({ theme, skin }: props) => {
         setInitialPredict(false);
         return step === 1 ? createVerification() : setStep(1);
       case 0: {
-        localStorage.setItem("uuid", JSON.stringify(result?.PI?.uuid || "{}"));
+        localStorage.setItem("uuid", JSON.stringify(result?.PI?.uuid || {}));
         const payload = {
           guid: result?.PI?.guid,
         };
@@ -126,9 +127,9 @@ const Signin = ({ theme, skin }: props) => {
           return createVerification();
         } else {
           setIsUserVerify(true);
-          if (data?.token) {
-            return verifyToken(data?.token);
-          }
+          console.log(data, "get user data\n");
+          localStorage.setItem("user", JSON.stringify(data?.userData || {}));
+          nextStep(data?.userData);
         }
         return false;
       }
@@ -139,7 +140,11 @@ const Signin = ({ theme, skin }: props) => {
     }
   };
 
-  const { predictUserOneFa } = usePredictOneFa(elementId, handlePredictSuccess, retryTimes);
+  const { predictUserOneFa } = usePredictOneFa(
+    elementId,
+    handlePredictSuccess,
+    retryTimes
+  );
 
   const _renderChildren = () => {
     switch (step as number) {

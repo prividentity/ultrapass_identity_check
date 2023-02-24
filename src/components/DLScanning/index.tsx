@@ -31,16 +31,14 @@ import SpinnerLoader from "../SpinnerLoader";
 
 const DLScan = ({
   setStep,
-  setPrevStep,
   skin,
   matchesSM,
-  onVerifyId
+  onSuccess,
 }: {
   setStep: any;
-  setPrevStep: any;
   skin: string;
   matchesSM: boolean;
-  onVerifyId: () => void;
+  onSuccess: () => void;
 }) => {
   const classes = useStyles();
   const { showToast } = useToast();
@@ -174,7 +172,7 @@ const DLScan = ({
     });
     console.log("Update user result: ", updateUserResult);
 
-    onVerifyId();
+    onSuccess && onSuccess();
   };
 
   const onCameraNotGranted = (e: boolean) => {

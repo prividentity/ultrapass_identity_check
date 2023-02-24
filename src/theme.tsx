@@ -52,6 +52,7 @@ export const theme = createTheme({
     primary: {
       main: "#3ebe5f",
       primaryColor: "#3ebe5f",
+      error: "#ff0000",
       primaryColorHover: "#cebe95",
       primaryColorActive: "#8e7e55",
       secondaryColor: "#000",

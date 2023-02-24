@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useTheme, useMediaQuery } from "@mui/material";
-import { useWasm } from "../../hooks";
+
 import HomeModal from "../../components/Modal/homeModal";
 import Header from "../../components/Header";
 import STEPS from "./steps";
@@ -16,12 +16,13 @@ import CameraPermissionFail from "../../components/CameraPermissionFail";
 import { useNavigate } from "react-router";
 import Success from "../../components/Success";
 import VerificationNotCompleted from "../../components/VerificationNotCompleted";
-import RequestSsn from "../../components/RequestSsn";
+import { UserContext } from "../../context/UserContext";
 import AdditionalRequirements from "../../components/AdditionalRequirements";
 import { useSearchParams } from "react-router-dom";
 import useToast from "../../utils/useToast";
 import { verifyIdApi } from "../../services/api";
-import { APPROVED, DENIED } from "../../utils";
+import { SUCCESS, REQUIRES_INPUT, getStatusFromUser } from "../../utils";
+import { getUserStatus } from "@privateid/cryptonets-web-sdk-alpha";
 
 interface props {
   theme: string;
@@ -31,6 +32,7 @@ interface props {
 const Register = ({ theme, skin }: props) => {
   // useWasm();
   const { showToast } = useToast();
+  const context = useContext(UserContext);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const tokenParams = searchParams.get("token") as string;
@@ -54,30 +56,24 @@ const Register = ({ theme, skin }: props) => {
     const payload = {
       token: token,
     };
-    const result: any = await verifyIdApi({ id: tokenParams, payload });
-    const status = result?.orchestrationStatus;
-    if (result?.requestSSN9 && status === DENIED) {
-      // If SSN is required
-      showToast("SSN is required", "error");
-      setStep(STEPS.REQUEST_SSN);
-    } else if (result?.userApproved && status === APPROVED) {
-      // If User is approved
+    await verifyIdApi({ id: tokenParams, payload });
+    const { userApproved, ...rest } = ((await getUserStatus({ id: token })) ||
+      {}) as any;
+    const { requestScanID, requestResAddress } = rest || {};
+    context.setUserStatus({
+      userApproved,
+      requestScanID,
+      requestResAddress: !requestScanID && requestResAddress,
+      ...rest,
+    });
+    const status = getStatusFromUser({ userApproved, ...rest });
+    if (status === SUCCESS) {
       showToast("You successfully completed your ID verification.", "success");
-
       setStep(STEPS.SUCCESS);
-    } else if (result?.requestScanID && status === DENIED) {
-      // If User ID SCAN is required
-      showToast("ID SCAN is required", "error");
-
-      setStep(STEPS.DRIVERLICENSE);
-    } else if (result?.underAge && status === DENIED) {
-      // If User is underage
-      showToast("You are underage", "error");
-
-      setStep(STEPS.VERIFICATION_NOT_COMPLETED);
+    } else if (status === REQUIRES_INPUT) {
+      showToast("We need more information to verify your identity.", "error");
+      setStep(STEPS.ADDITIONAL_REQUIREMENTS);
     } else {
-      showToast(result?.data?.message, "error");
-
       setStep(STEPS.VERIFICATION_NOT_COMPLETED);
     }
   };
@@ -148,23 +144,12 @@ const Register = ({ theme, skin }: props) => {
           <DLScan
             matchesSM={matchesSM}
             setStep={setStep}
-            setPrevStep={setPrevStep}
             skin={skin}
-            onVerifyId={onVerifyId}
+            onSuccess={onVerifyId}
           />
         );
       case STEPS.SWITCH_DEVICE:
         return <FullWidthTabs />;
-      case STEPS.REQUEST_SSN:
-        return (
-          <RequestSsn
-            matchesSM={matchesSM}
-            setStep={setStep}
-            skin={skin}
-            onSuccess={onVerifyId}
-            setPrevStep={setPrevStep}
-          />
-        );
       case STEPS.SUCCESS:
         return <Success matchesSM={matchesSM} setStep={setStep} skin={skin} />;
       case STEPS.VERIFICATION_NOT_COMPLETED:
@@ -182,7 +167,7 @@ const Register = ({ theme, skin }: props) => {
             setStep={setStep}
             skin={skin}
             setPrevStep={setPrevStep}
-            onVerifyId={onVerifyId}
+            handleRequirementsComplete={onVerifyId}
           />
         );
       default:
