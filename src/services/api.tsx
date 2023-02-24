@@ -5,7 +5,7 @@ import { MessagePayload } from "../interface";
 
 export const sendMessage = async (payload: MessagePayload) => {
   try {
-    const result = await cryptonetsAPI.post(`node/user/communicate`, payload);
+    const result = await cryptonetsAPI.post(`/user/communicate`, payload);
     return result;
   } catch (err) {
     console.log(err);
@@ -16,7 +16,7 @@ export const sendMessage = async (payload: MessagePayload) => {
 export const createUser = async (payload: any) => {
   try {
     const result = await cryptonetsAPI.post(
-      `node/ultrapassage/create`,
+      `/ultrapassage/create`,
       payload
     );
     return result;
@@ -27,7 +27,7 @@ export const createUser = async (payload: any) => {
 
 export const getUser = async (payload: any) => {
   try {
-    const result = await cryptonetsAPI.post(`node/ultrapassage/get`, payload);
+    const result = await cryptonetsAPI.post(`/ultrapassage/get`, payload);
     return result;
   } catch (err) {
     return err;
@@ -37,7 +37,7 @@ export const getUser = async (payload: any) => {
 export const updateUserApi = async (payload: updatePayload) => {
   try {
     const result = await cryptonetsAPI.post(
-      `node/ultrapassage/update`,
+      `/ultrapassage/update`,
       payload
     );
     return result;
@@ -49,7 +49,7 @@ export const updateUserApi = async (payload: updatePayload) => {
 export const deleteUserApi = async (payload: updatePayload) => {
   try {
     const result = await cryptonetsAPI.post(
-      `node/ultrapassage/delete`,
+      `/ultrapassage/delete`,
       payload
     );
     return result;
