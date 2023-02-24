@@ -62,7 +62,7 @@ const HomeModal = (props: props) => {
                 src={centralLogo}
                 alt=""
                 width={100}
-                height={30}
+                height={40}
                 className={classes.modalBoxLogo}
               />
             </div>
