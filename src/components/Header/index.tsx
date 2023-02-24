@@ -144,7 +144,7 @@ const Header = (props: props) => {
                 width={80}
                 height={40}
                 style={styles.homelogo}
-                className="headerLogo"
+                className="headerLogo centralLogo"
               />
             ) : null}
           </Grid>
