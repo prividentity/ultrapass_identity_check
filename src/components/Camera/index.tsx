@@ -25,6 +25,7 @@ const Camera = ({
   onSwitchCamera = () => {},
   onCameraFail = () => {},
   requireHD = false,
+  isBarCodeScan = false
 }: any) => {
   const { ready: wasmReady } = useWasm();
   const { isCameraGranted } = useCameraPermissions(onReadyCallback);
@@ -176,7 +177,7 @@ const Camera = ({
         </div>
       )}
       {
-        ready ? <div className={classes.documentBarCodeOverlay} /> : null
+        ready && isBarCodeScan ? <div className={classes.documentBarCodeOverlay} /> : null
       }
       <video
         id="userVideo"

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../../styles/Home.module.css";
 import Camera from "../Camera";
 import useScanBackDocument from "../../hooks/useScanBackDocument";
@@ -8,11 +8,13 @@ const ScanBackDocument = ({
   onReadyCallback,
   onFailCallback,
   onCameraFail,
+  isBarcodeScan
 }: {
   onSuccess?: (e: any) => void;
   onReadyCallback?: (e: boolean) => void;
   onFailCallback?: (e: boolean) => void;
   onCameraFail?: (e: any) => void;
+  isBarcodeScan?: (e: boolean) => void;
 }) => {
   const [canvasSize, setCanvasSize] = useState();
 
@@ -20,7 +22,7 @@ const ScanBackDocument = ({
   const handleBackSuccess = (result: any) => {
     onSuccess?.(result);
   };
-  const { scanBackDocument } = useScanBackDocument(handleBackSuccess) as any;
+  const { scanBackDocument, recallCount } = useScanBackDocument(handleBackSuccess) as any;
   const handleScanDocumentBack = async (e: boolean) => {
     onReadyCallback?.(e);
     if (e) {
@@ -33,6 +35,10 @@ const ScanBackDocument = ({
     setTimeout(async () => scanBackDocument(size), 1000);
   };
 
+  useEffect(() => {
+    isBarcodeScan?.(recallCount > 15)
+  }, [recallCount])
+
   return (
     <div id="canvasInput" className={`${styles.container} documentCamera`}>     
       <Camera
@@ -43,6 +49,7 @@ const ScanBackDocument = ({
         style={{ height: "unset" }}
         mode={"back"}
         requireHD={false}
+        isBarCodeScan={recallCount > 15 && true}
       ></Camera>
     </div>
   );

@@ -5,6 +5,7 @@ import {
 } from "@privateid/cryptonets-web-sdk-alpha";
 import { CANVAS_SIZE } from "../utils";
 
+let recallCount = 0
 const useScanBackDocument = (onSuccess: (e: any) => void) => {
   const [scannedCodeData, setScannedCodeData] = useState({});
   const [isFound, setIsFound] = useState(false);
@@ -148,6 +149,7 @@ const useScanBackDocument = (onSuccess: (e: any) => void) => {
     // if (canvasSize && canvasSize !== internalCanvasSize) {
     //   internalCanvasSize = canvasSize;
     // }
+    recallCount++
     const canvasObj = canvasSize
       ? CANVAS_SIZE?.[canvasSize as any]
       : // : internalCanvasSize
@@ -174,6 +176,7 @@ const useScanBackDocument = (onSuccess: (e: any) => void) => {
     croppedDocumentBase64,
     croppedBarcodeBase64,
     barcodeStatusCode,
+    recallCount
   };
 };
 

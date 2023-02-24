@@ -19,10 +19,7 @@ import shield from "../../assets/shield.png";
 import DlFront from "../../assets/dl-front.png";
 import DlBack from "../../assets/Hand-DL-Back.png";
 import { UserContext } from "../../context/UserContext";
-import {
-  updateUser,
-  uploadDL,
-} from "@privateid/cryptonets-web-sdk-alpha";
+import { updateUser, uploadDL } from "@privateid/cryptonets-web-sdk-alpha";
 import { DLType } from "@privateid/cryptonets-web-sdk-alpha/dist/types";
 
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
@@ -34,7 +31,7 @@ const DLScan = ({
   setPrevStep,
   skin,
   matchesSM,
-  onVerifyId
+  onVerifyId,
 }: {
   setStep: any;
   setPrevStep: any;
@@ -51,6 +48,7 @@ const DLScan = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
   const [hasNoCamera, setHasNoCamera] = useState(false);
+  const [isBarcodeScan, setIsBarcodeScan] = useState(false);
 
   const context = useContext(UserContext);
 
@@ -249,6 +247,7 @@ const DLScan = ({
                 onSuccess={onBackSuccess}
                 onReadyCallback={onCameraNotGranted}
                 onCameraFail={onCameraFail}
+                isBarcodeScan={setIsBarcodeScan}
               />
             ) : (
               <ScanFrontDocument
@@ -299,7 +298,7 @@ const DLScan = ({
             mt={1}
             mb={2}
           >
-            {isBackScan
+            {isBarcodeScan ? "Place the bar code in the safe area" : isBackScan
               ? "Place the BACK of your ID towards the camera"
               : "Place the FRONT of your ID towards the camera"}
           </Typography>
