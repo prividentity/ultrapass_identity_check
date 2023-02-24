@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import {
   Box,
-  Button,
   CircularProgress,
   Divider,
   Grid,
@@ -10,7 +9,7 @@ import {
 } from "@mui/material";
 
 import { useStyles, styles } from "../../pages/register/styles";
-import { theme as Theme, theme } from "../../theme";
+import { theme as Theme } from "../../theme";
 
 import smallLock from "../../assets/smallLock.png";
 import STEPS from "../../pages/register/steps";
@@ -21,16 +20,12 @@ import DlFront from "../../assets/dl-front.png";
 import DlBack from "../../assets/Hand-DL-Back.png";
 import { UserContext } from "../../context/UserContext";
 import {
-  getUserStatus,
   updateUser,
   uploadDL,
 } from "@privateid/cryptonets-web-sdk-alpha";
 import { DLType } from "@privateid/cryptonets-web-sdk-alpha/dist/types";
 
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
-import { componentsParameterInterface } from "../../interface";
-import { verifyIdApi } from "../../services/api";
-import { APPROVED, DENIED } from "../../utils";
 import useToast from "../../utils/useToast";
 import SpinnerLoader from "../SpinnerLoader";
 
@@ -39,15 +34,13 @@ const DLScan = ({
   setPrevStep,
   skin,
   matchesSM,
-  token,
-  tokenParams,
+  onVerifyId
 }: {
   setStep: any;
   setPrevStep: any;
   skin: string;
   matchesSM: boolean;
-  token: string;
-  tokenParams: string;
+  onVerifyId: () => void;
 }) => {
   const classes = useStyles();
   const { showToast } = useToast();
@@ -182,34 +175,6 @@ const DLScan = ({
     console.log("Update user result: ", updateUserResult);
 
     onVerifyId();
-  };
-
-  const onVerifyId = async () => {
-    const payload = {
-      token: token,
-    };
-    await verifyIdApi({ id: tokenParams, payload });
-    const { userApproved, ...rest } = ((await getUserStatus({ id: token })) ||
-      {}) as any;
-    const { requestScanID, requestResAddress, requestSSN9 } = rest || {};
-    console.log({ requestScanID, requestResAddress });
-    context.setUserStatus({
-      userApproved,
-      requestScanID,
-      requestResAddress: !requestScanID && requestResAddress,
-      ...rest,
-    });
-    if (userApproved) {
-      showToast("You successfully completed your ID verification.", "success");
-      setStep(STEPS.SUCCESS);
-    } else {
-      if (requestScanID || requestResAddress || requestSSN9) {
-        showToast("We need more information to verify your identity.", "error");
-        setStep(STEPS.ADDITIONAL_REQUIREMENTS);
-      } else {
-        setStep(STEPS.VERIFICATION_NOT_COMPLETED);
-      }
-    }
   };
 
   const onCameraNotGranted = (e: boolean) => {

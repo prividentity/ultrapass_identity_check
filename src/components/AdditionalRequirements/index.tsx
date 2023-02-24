@@ -14,12 +14,14 @@ const AdditionalRequirements = ({
   matchesSM,
   setStep,
   skin,
-  setPrevStep
+  setPrevStep,
+  onVerifyId
 }: {
   matchesSM: boolean;
   setStep: any;
   skin: string;
   setPrevStep: (e: string) => void; 
+  onVerifyId: () => void;
 }) => {
   const context = React.useContext(UserContext);
   const [requirement, setRequirement] = React.useState(
@@ -47,7 +49,7 @@ const AdditionalRequirements = ({
   function handleSuccess() {
     const nextRequirement = getNextRequirement();
     if (!nextRequirement) {
-      alert("No more requirements");
+      onVerifyId();
     } else {
       setRequirement(nextRequirement);
     }
