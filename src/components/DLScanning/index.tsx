@@ -102,11 +102,17 @@ const DLScan = ({
           setIsBackScan(true);
         }, 3000);
       }
-    } 
+    }
   };
 
-  const onFailScanFrontScan = ( {status, message} : {status:string, message:string} ) => {
-    if(parseInt(status) === -100){
+  const onFailScanFrontScan = ({
+    status,
+    message,
+  }: {
+    status: string;
+    message: string;
+  }) => {
+    if (parseInt(status) === -100) {
       showToast(message, "error");
     }
   };
@@ -249,20 +255,6 @@ const DLScan = ({
               </Box>
             )}
 
-            <Box className={classes.otherDevice}>
-              <Typography
-                component="p"
-                textAlign={"left"}
-                fontSize={15}
-                fontWeight={500}
-                mt={2}
-                onClick={() => {
-                  setStep(STEPS.SWITCH_DEVICE);
-                }}
-              >
-                <PhoneIphoneIcon /> Switch to other device
-              </Typography>
-            </Box>
             {hasNoCamera ? (
               <Stack
                 width={"100%"}
@@ -293,6 +285,20 @@ const DLScan = ({
               />
             )}
           </Box>
+        </Box>
+        <Box className={classes.otherDevice}>
+          <Typography
+            component="p"
+            textAlign={"left"}
+            fontSize={15}
+            fontWeight={500}
+            mt={0}
+            onClick={() => {
+              setStep(STEPS.SWITCH_DEVICE);
+            }}
+          >
+            <PhoneIphoneIcon /> Switch to other device
+          </Typography>
         </Box>
       </Grid>
       <Box style={{ height: 70 }}>

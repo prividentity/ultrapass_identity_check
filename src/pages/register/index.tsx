@@ -163,6 +163,7 @@ const Register = ({ theme, skin }: props) => {
             setStep={setStep}
             skin={skin}
             onSuccess={onVerifyId}
+            setPrevStep={setPrevStep}
           />
         );
       case STEPS.SUCCESS:
@@ -181,6 +182,7 @@ const Register = ({ theme, skin }: props) => {
             matchesSM={matchesSM}
             setStep={setStep}
             skin={skin}
+            setPrevStep={setPrevStep}
           />
         );
       default:
