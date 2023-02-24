@@ -119,6 +119,15 @@ export const styles = {
     border: `3px solid ${palette[skin]?.main}`,
     color: palette[skin]?.text,
   },
+  ageFailedButton: {
+    fontSize: 20,
+    backgroundColor: palette[skin]?.error,
+    boxShadow: `0px 0px 20px -7px ${palette[skin]?.error}`,
+    margin: "0 20px 5px 0",
+    minWidth: 300,
+    border: `3px solid ${palette[skin]?.error}`,
+    color: palette[skin]?.text,
+  },
   ageLearnMoreButton: {
     color: "#ccc",
     fontSize: 20,
@@ -304,8 +313,8 @@ export const useStyles = makeStyles((theme: any) => ({
     },
   },
   inputStyle: {
-    marginBottom: '10px !important',
-    marginTop: '10px !important',
+    marginBottom: "10px !important",
+    marginTop: "10px !important",
   },
   scanLoader: {
     width: "22px !important",

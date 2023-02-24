@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router";
 import logo from "../../assets/logo.png";
-import logoBlack from "../../assets/apt-logo-black.png";
+import logoBlack from "../../assets/centralLogo.png";
 import { styles, useStyles } from "./styles";
 import useDelete from "../../hooks/useDelete";
 import { createVerificationSession, deleteUserApi } from "../../services/api";
@@ -135,18 +135,18 @@ const Header = (props: props) => {
         <Toolbar>
           {renderHeaderImage()}
           <Grid container alignItems="center" justifyContent={"flex-end"}>
-            {/* {window.location.pathname === "/" ||
+            {window.location.pathname === "/" ||
             window?.location?.pathname === "/register" ||
             window?.location?.pathname === "/signin" ? (
               <img
-                src={matchesSM ? logoBlack : logo}
+                src={matchesSM ? logoBlack : logoBlack}
                 alt=""
-                width={120}
+                width={80}
                 height={40}
                 style={styles.homelogo}
                 className="headerLogo"
               />
-            ) : null} */}
+            ) : null}
           </Grid>
           <Grid
             container
