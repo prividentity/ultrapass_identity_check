@@ -32,6 +32,7 @@ import { componentsParameterInterface } from "../../interface";
 import { verifyIdApi } from "../../services/api";
 import { APPROVED, DENIED } from "../../utils";
 import useToast from "../../utils/useToast";
+import SpinnerLoader from "../SpinnerLoader";
 
 const DLScan = ({
   setStep,
@@ -54,6 +55,7 @@ const DLScan = ({
   const palette: { [key: string]: any } = mainTheme.palette;
   const [isBackScan, setIsBackScan] = useState(false);
   const [isUserVerify, setIsUserVerify] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
   const [hasNoCamera, setHasNoCamera] = useState(false);
 
@@ -96,11 +98,15 @@ const DLScan = ({
         uploadCroppedDocumentImage &&
         uploadCroppedMugshotImage
       ) {
-        setIsUserVerify(true);
+        setIsLoading(true);
         setTimeout(() => {
+          setIsUserVerify(true);
+        }, 2000);
+        setTimeout(() => {
+          setIsLoading(false);
           setIsUserVerify(false);
           setIsBackScan(true);
-        }, 3000);
+        }, 4000);
       }
     }
   };
@@ -245,13 +251,17 @@ const DLScan = ({
                 className="DlBack"
               />
             )}
-            {isUserVerify && (
+            {isLoading && (
               <Box style={styles.overlay as React.CSSProperties}>
-                <img
-                  src={shield}
-                  alt="shield"
-                  style={styles.shield as React.CSSProperties}
-                />
+                {isUserVerify ? (
+                  <img
+                    src={shield}
+                    alt="shield"
+                    style={styles.shield as React.CSSProperties}
+                  />
+                ) : (
+                  <SpinnerLoader />
+                )}
               </Box>
             )}
 
