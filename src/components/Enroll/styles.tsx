@@ -26,12 +26,12 @@ export const styles = {
 };
 export const useStyles = makeStyles((theme: any) => ({
   otherOptions: {
-    position: "absolute",
-    top: -35,
+    margin: "0px !important",
     "& p": {
       cursor: "pointer",
       color: palette[skin]?.main,
-      marginLeft: -4,
+      margin: "0px !important",
+      marginLeft: "-4px !important",
     },
     "& p:hover": {
       textDecoration: "underline",
@@ -63,4 +63,16 @@ export const useStyles = makeStyles((theme: any) => ({
       width: "21px",
     },
   },
+  cardHeading: {
+    [theme.breakpoints.between("xs", "sm")]: {
+      fontSize: "14px !important",
+      paddingTop: "25px !important",
+      paddingBottom: "10px !important",
+    },
+  },
+  progressBar: {
+    width: "25px !important",
+    height: "25px !important",
+    marginRight: "10px !important",
+  }
 }));

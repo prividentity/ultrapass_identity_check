@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import {
   Box,
-  Button,
   CircularProgress,
   Divider,
   Grid,
@@ -10,7 +9,7 @@ import {
 } from "@mui/material";
 
 import { useStyles, styles } from "../../pages/register/styles";
-import { theme as Theme, theme } from "../../theme";
+import { theme as Theme } from "../../theme";
 
 import smallLock from "../../assets/smallLock.png";
 import STEPS from "../../pages/register/steps";
@@ -21,32 +20,25 @@ import DlFront from "../../assets/dl-front.png";
 import DlBack from "../../assets/Hand-DL-Back.png";
 import { UserContext } from "../../context/UserContext";
 import {
-  getUserStatus,
   updateUser,
   uploadDL,
 } from "@privateid/cryptonets-web-sdk-alpha";
 import { DLType } from "@privateid/cryptonets-web-sdk-alpha/dist/types";
 
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
-import { componentsParameterInterface } from "../../interface";
-import { verifyIdApi } from "../../services/api";
-import { APPROVED, DENIED } from "../../utils";
 import useToast from "../../utils/useToast";
+import SpinnerLoader from "../SpinnerLoader";
 
 const DLScan = ({
   setStep,
-  setPrevStep,
   skin,
   matchesSM,
-  token,
-  tokenParams,
+  onSuccess,
 }: {
   setStep: any;
-  setPrevStep: any;
   skin: string;
   matchesSM: boolean;
-  token: string;
-  tokenParams: string;
+  onSuccess: () => void;
 }) => {
   const classes = useStyles();
   const { showToast } = useToast();
@@ -54,8 +46,10 @@ const DLScan = ({
   const palette: { [key: string]: any } = mainTheme.palette;
   const [isBackScan, setIsBackScan] = useState(false);
   const [isUserVerify, setIsUserVerify] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
   const [hasNoCamera, setHasNoCamera] = useState(false);
+  const [isBarcodeScan, setIsBarcodeScan] = useState(false);
 
   const context = useContext(UserContext);
 
@@ -96,19 +90,29 @@ const DLScan = ({
         uploadCroppedDocumentImage &&
         uploadCroppedMugshotImage
       ) {
-        setIsUserVerify(true);
+        setIsLoading(true);
         setTimeout(() => {
+          setIsUserVerify(true);
+        }, 2000);
+        setTimeout(() => {
+          setIsLoading(false);
           setIsUserVerify(false);
           setIsBackScan(true);
-        }, 3000);
+        }, 4000);
       }
-    } else {
-      console.log("Scan Again");
     }
   };
 
-  const onFailScanFrontScan = (e: any) => {
-    console.log(e);
+  const onFailScanFrontScan = ({
+    status,
+    message,
+  }: {
+    status: string;
+    message: string;
+  }) => {
+    if (parseInt(status) === -100) {
+      showToast(message, "error");
+    }
   };
 
   const onBackSuccess = async ({
@@ -169,35 +173,15 @@ const DLScan = ({
     });
     console.log("Update user result: ", updateUserResult);
 
-    onVerifyId();
-  };
-
-  const onVerifyId = async () => {
-    const payload = {
-      token: token,
-    };
-    await verifyIdApi({ id: tokenParams, payload });
-    const { userApproved, ...rest } = ((await getUserStatus({ id: token })) ||
-      {}) as any;
-    const { requestScanID, requestResAddress, requestSSN9 } = rest || {};
-    console.log({ requestScanID, requestResAddress });
-    context.setUserStatus({
-      userApproved,
-      requestScanID,
-      requestResAddress: !requestScanID && requestResAddress,
-      ...rest,
-    });
-    if (userApproved) {
-      showToast("You successfully completed your ID verification.", "success");
-      setStep(STEPS.SUCCESS);
-    } else {
-      if (requestScanID || requestResAddress || requestSSN9) {
-        showToast("We need more information to verify your identity.", "error");
-        setStep(STEPS.ADDITIONAL_REQUIREMENTS);
-      } else {
-        setStep(STEPS.VERIFICATION_NOT_COMPLETED);
-      }
-    }
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsUserVerify(true);
+    }, 2000)
+    setTimeout(() => {
+      setIsLoading(false);
+      setIsUserVerify(false);
+      onSuccess && onSuccess();
+    }, 4000)
   };
 
   const onCameraNotGranted = (e: boolean) => {
@@ -239,30 +223,20 @@ const DLScan = ({
                 className="DlBack"
               />
             )}
-            {isUserVerify && (
+            {isLoading && (
               <Box style={styles.overlay as React.CSSProperties}>
-                <img
-                  src={shield}
-                  alt="shield"
-                  style={styles.shield as React.CSSProperties}
-                />
+                {isUserVerify ? (
+                  <img
+                    src={shield}
+                    alt="shield"
+                    style={styles.shield as React.CSSProperties}
+                  />
+                ) : (
+                  <SpinnerLoader />
+                )}
               </Box>
             )}
 
-            <Box className={classes.otherDevice}>
-              <Typography
-                component="p"
-                textAlign={"left"}
-                fontSize={15}
-                fontWeight={500}
-                mt={2}
-                onClick={() => {
-                  setStep(STEPS.SWITCH_DEVICE);
-                }}
-              >
-                <PhoneIphoneIcon /> Switch to other device
-              </Typography>
-            </Box>
             {hasNoCamera ? (
               <Stack
                 width={"100%"}
@@ -289,12 +263,13 @@ const DLScan = ({
                 onReadyCallback={onCameraNotGranted}
                 onFailCallback={onFailScanFrontScan}
                 onCameraFail={onCameraFail}
+                userUUID={uuid}
               />
             )}
           </Box>
         </Box>
       </Grid>
-      <Box style={{ height: 70 }}>
+      <Box style={{ height: 84 }} className={classes.scanBottomBox}>
         {isScanning ? (
           <Typography
             component="p"
@@ -317,11 +292,28 @@ const DLScan = ({
             mt={1}
             mb={2}
           >
-            {isBackScan
-              ? "Place the back of the Driver’s License above"
-              : "Place the front of the Driver’s License above"}
+            {isBarcodeScan
+              ? "Place the bar code in the safe area"
+              : isBackScan
+              ? "Place the BACK of your ID towards the camera"
+              : "Place the FRONT of your ID towards the camera"}
           </Typography>
         )}
+
+        <Box className={classes.otherDevice} pl={3} mb={1}>
+          <Typography
+            component="p"
+            textAlign={"left"}
+            fontSize={15}
+            fontWeight={500}
+            mt={0}
+            onClick={() => {
+              setStep(STEPS.SWITCH_DEVICE);
+            }}
+          >
+            <PhoneIphoneIcon /> Switch to other device
+          </Typography>
+        </Box>
       </Box>
     </>
   );

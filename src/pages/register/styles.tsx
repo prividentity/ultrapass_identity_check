@@ -369,4 +369,18 @@ export const useStyles = makeStyles((theme: any) => ({
     display: "block !important",
     marginTop: "30px !important",
   },
+  scanBottomBox: {
+    [theme.breakpoints.between("xs", "sm")]: {
+      height: "33% !important",
+      flexDirection: "column",
+      display: "flex",
+    },
+    "& > div": {
+      [theme.breakpoints.between("xs", "sm")]: {
+        flex: 1,
+        display: "flex",
+        alignItems: " flex-end",
+      },
+    },
+  },
 }));

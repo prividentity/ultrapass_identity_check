@@ -173,58 +173,100 @@ export const createUserID = async () => {
   return "INTERGALACTIC" + encryptedText;
 };
 
-export const DENIED = 'Denied'
-export const APPROVED = 'Approved'
+export const DENIED = "Denied";
+export const APPROVED = "Approved";
+
+export const formatPhoneInput = (value: string, previousValue?: string) => {
+  if (!value) {
+    return value;
+  }
+  const currentValue = value.replace(/[^\d]/g, '');
+  const cvLength = currentValue.length;
+
+  if (!previousValue || value.length > previousValue.length) {
+    if (cvLength < 4) {
+      return currentValue;
+    }
+    if (cvLength < 7) {
+      return `${currentValue.slice(0, 3)} - ${currentValue.slice(3)}`;
+    }
+    return `${currentValue.slice(0, 3)}-${currentValue.slice(
+      3,
+      5,
+    )}-${currentValue.slice(5, 9)}`;
+  }
+};
 
 export const states = [
-  { name: "Alabama", abbreviation: "AL" },
-  { name: "Alaska", abbreviation: "AK" },
-  { name: "Arizona", abbreviation: "AZ" },
-  { name: "Arkansas", abbreviation: "AR" },
-  { name: "California", abbreviation: "CA" },
-  { name: "Colorado", abbreviation: "CO" },
-  { name: "Connecticut", abbreviation: "CT" },
-  { name: "Delaware", abbreviation: "DE" },
-  { name: "Florida", abbreviation: "FL" },
-  { name: "Georgia", abbreviation: "GA" },
-  { name: "Hawaii", abbreviation: "HI" },
-  { name: "Idaho", abbreviation: "ID" },
-  { name: "Illinois", abbreviation: "IL" },
-  { name: "Indiana", abbreviation: "IN" },
-  { name: "Iowa", abbreviation: "IA" },
-  { name: "Kansas", abbreviation: "KS" },
-  { name: "Kentucky", abbreviation: "KY" },
-  { name: "Louisiana", abbreviation: "LA" },
-  { name: "Maine", abbreviation: "ME" },
-  { name: "Maryland", abbreviation: "MD" },
-  { name: "Massachusetts", abbreviation: "MA" },
-  { name: "Michigan", abbreviation: "MI" },
-  { name: "Minnesota", abbreviation: "MN" },
-  { name: "Mississippi", abbreviation: "MS" },
-  { name: "Missouri", abbreviation: "MO" },
-  { name: "Montana", abbreviation: "MT" },
-  { name: "Nebraska", abbreviation: "NE" },
-  { name: "Nevada", abbreviation: "NV" },
-  { name: "New Hampshire", abbreviation: "NH" },
-  { name: "New Jersey", abbreviation: "NJ" },
-  { name: "New Mexico", abbreviation: "NM" },
-  { name: "New York", abbreviation: "NY" },
-  { name: "North Carolina", abbreviation: "NC" },
-  { name: "North Dakota", abbreviation: "ND" },
-  { name: "Ohio", abbreviation: "OH" },
-  { name: "Oklahoma", abbreviation: "OK" },
-  { name: "Oregon", abbreviation: "OR" },
-  { name: "Pennsylvania", abbreviation: "PA" },
-  { name: "Rhode Island", abbreviation: "RI" },
-  { name: "South Carolina", abbreviation: "SC" },
-  { name: "South Dakota", abbreviation: "SD" },
-  { name: "Tennessee", abbreviation: "TN" },
-  { name: "Texas", abbreviation: "TX" },
-  { name: "Utah", abbreviation: "UT" },
-  { name: "Vermont", abbreviation: "VT" },
-  { name: "Virginia", abbreviation: "VA" },
-  { name: "Washington", abbreviation: "WA" },
-  { name: "West Virginia", abbreviation: "WV" },
-  { name: "Wisconsin", abbreviation: "WI" },
-  { name: "Wyoming", abbreviation: "WY" }
+{ label: "Alabama", abbreviation: "AL" },
+  { label: "Alaska", abbreviation: "AK" },
+  { label: "Arizona", abbreviation: "AZ" },
+  { label: "Arkansas", abbreviation: "AR" },
+  { label: "California", abbreviation: "CA" },
+  { label: "Colorado", abbreviation: "CO" },
+  { label: "Connecticut", abbreviation: "CT" },
+  { label: "Delaware", abbreviation: "DE" },
+  { label: "Florida", abbreviation: "FL" },
+  { label: "Georgia", abbreviation: "GA" },
+  { label: "Hawaii", abbreviation: "HI" },
+  { label: "Idaho", abbreviation: "ID" },
+  { label: "Illinois", abbreviation: "IL" },
+  { label: "Indiana", abbreviation: "IN" },
+  { label: "Iowa", abbreviation: "IA" },
+  { label: "Kansas", abbreviation: "KS" },
+  { label: "Kentucky", abbreviation: "KY" },
+  { label: "Louisiana", abbreviation: "LA" },
+  { label: "Maine", abbreviation: "ME" },
+  { label: "Maryland", abbreviation: "MD" },
+  { label: "Massachusetts", abbreviation: "MA" },
+  { label: "Michigan", abbreviation: "MI" },
+  { label: "Minnesota", abbreviation: "MN" },
+  { label: "Mississippi", abbreviation: "MS" },
+  { label: "Missouri", abbreviation: "MO" },
+  { label: "Montana", abbreviation: "MT" },
+  { label: "Nebraska", abbreviation: "NE" },
+  { label: "Nevada", abbreviation: "NV" },
+  { label: "New Hampshire", abbreviation: "NH" },
+  { label: "New Jersey", abbreviation: "NJ" },
+  { label: "New Mexico", abbreviation: "NM" },
+  { label: "New York", abbreviation: "NY" },
+  { label: "North Carolina", abbreviation: "NC" },
+  { label: "North Dakota", abbreviation: "ND" },
+  { label: "Ohio", abbreviation: "OH" },
+  { label: "Oklahoma", abbreviation: "OK" },
+  { label: "Oregon", abbreviation: "OR" },
+  { label: "Pennsylvania", abbreviation: "PA" },
+  { label: "Rhode Island", abbreviation: "RI" },
+  { label: "South Carolina", abbreviation: "SC" },
+  { label: "South Dakota", abbreviation: "SD" },
+  { label: "Tennessee", abbreviation: "TN" },
+  { label: "Texas", abbreviation: "TX" },
+  { label: "Utah", abbreviation: "UT" },
+  { label: "Vermont", abbreviation: "VT" },
+  { label: "Virginia", abbreviation: "VA" },
+  { label: "Washington", abbreviation: "WA" },
+  { label: "West Virginia", abbreviation: "WV" },
+  { label: "Wisconsin", abbreviation: "WI" },
+  { label: "Wyoming", abbreviation: "WY" }
 ];
+
+export enum AdditionalRequirementsEnum {
+  requestSSN9 = "requestSSN9",
+  requestResAddress = "requireResAddress",
+  requestScanID = "requestScanID",
+}
+
+export function getStatusFromUser(user: any) {
+  const { userApproved, requestScanID, requestResAddress, requestSSN9 } = user;
+  if (userApproved === true) {
+    return SUCCESS;
+  } else if (requestResAddress || requestSSN9 || requestScanID) {
+    return REQUIRES_INPUT;
+  }
+  return FAILURE;
+}
+
+export const navigateToUrl = (url: string, token?: string) => {
+  window.open(`${url}?token=${token}`, "_self");
+};
+

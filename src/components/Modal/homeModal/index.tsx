@@ -11,6 +11,8 @@ import {
   useTheme,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import stationLogo from "../../../assets/stations.png";
+import centralLogo from "../../../assets/centralLogo.png";
 import { useStyles } from "./styles";
 import { localThemes, logos } from "../../../theme";
 import { useSearchParams } from "react-router-dom";
@@ -55,13 +57,15 @@ const HomeModal = (props: props) => {
           className={classes.cardInner}
         >
           {matchesSM ? null : (
-            <img
-              src={logoDark}
-              alt=""
-              width={130}
-              height={35}
-              className={classes.modalBoxLogo}
-            />
+            <div style={{ backgroundColor: "#ffffff" }}>
+              <img
+                src={centralLogo}
+                alt=""
+                width={100}
+                height={30}
+                className={classes.modalBoxLogo}
+              />
+            </div>
           )}
           <CloseIcon className={classes.closeIcon} onClick={handleClose} />
           <CardContent className={classes.cardChild} style={{ padding: 0 }}>

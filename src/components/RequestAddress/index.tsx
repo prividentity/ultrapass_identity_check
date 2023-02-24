@@ -1,5 +1,6 @@
 /* eslint-disable */
 import {
+  Autocomplete,
   Box,
   Button,
   Divider,
@@ -26,11 +27,13 @@ const RequestAddress = ({
   skin,
   matchesSM,
   onSuccess,
+  setPrevStep
 }: {
   setStep: any;
   skin: string;
   matchesSM: boolean;
   onSuccess: () => void;
+  setPrevStep: (e: string) => void;
 }) => {
   const classes = useStyles();
   const mainTheme = Theme;
@@ -88,6 +91,20 @@ const RequestAddress = ({
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
       <Grid style={styles.cardGrid} className={classes.cardGridMobile}>
+        <Typography
+          component="p"
+          textAlign={matchesSM ? "center" : "left"}
+          fontSize={16}
+          fontWeight={500}
+          lineHeight={1.5}
+          mt={1}
+          className={classes.cardInnerHeading}
+          mb={0}
+        >
+          We are only able to process residential addresses.
+          <br />
+          Please try again with your home address.
+        </Typography>
         <Box width={"100%"}>
           <TextField
             fullWidth
@@ -100,30 +117,33 @@ const RequestAddress = ({
           <TextField
             fullWidth
             id="outlined-basic"
+            placeholder="Address Line 2"
+            name="addressLine2"
+            onChange={onChange}
+            className={classes.inputStyle}
+          />
+          <TextField
+            fullWidth
+            id="outlined-basic"
             placeholder="City"
             name="city"
             onChange={onChange}
             className={classes.inputStyle}
           />
           <FormControl fullWidth style={{ marginTop: 10, marginBottom: 10 }}>
-            <InputLabel id="demo-simple-select-label">State</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={state}
-              label="State"
-              onChange={(e) => setState(e?.target?.value)}
-            >
-              {states?.map((state: any) => (
-                <MenuItem value={state?.abbreviation}>{state?.name}</MenuItem>
-              ))}
-            </Select>
+            <Autocomplete
+              id="combo-box-demo"
+              options={states}
+              fullWidth
+              renderInput={(params) => <TextField {...params} label="State or province" />}
+              onChange={(i, e) => setState(e?.abbreviation)}
+            />
           </FormControl>
           <TextField
             fullWidth
             id="outlined-basic"
             placeholder="Zip Code"
-            name="zipCode"
+            name="ZIP or postal code"
             inputProps={{
               maxLength: 5,
             }}
@@ -133,7 +153,7 @@ const RequestAddress = ({
         </Box>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
-      <Box mb={"52px"}>
+      <Box>
         <Button
           variant="contained"
           color={"inherit"}
@@ -151,6 +171,30 @@ const RequestAddress = ({
             textTransform="capitalize"
           >
             Continue
+          </Typography>
+        </Button>
+        <Button
+          variant="text"
+          color={"inherit"}
+          style={styles.textButton}
+          onClick={() => {
+            setStep(STEPS.CONSENT_FAIL);
+            setPrevStep?.(STEPS.ADDITIONAL_REQUIREMENTS);
+          }}
+        >
+          <Typography
+            component="p"
+            color={palette?.[skin]?.listText}
+            textAlign="center"
+            fontWeight={500}
+            display="flex"
+            alignItems="center"
+            justifyContent={"center"}
+            textTransform="capitalize"
+            fontSize={14}
+            className={classes.textButtonUnderline}
+          >
+            No, I do not consent
           </Typography>
         </Button>
       </Box>

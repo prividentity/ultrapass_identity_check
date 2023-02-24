@@ -39,6 +39,9 @@ export const useStyles = makeStyles((theme: any) => ({
     transform: "translate(-50%)",
     boxShadow: "5px 7px 4px rgb(56, 56, 56 , 0.44)",
     position: "absolute",
+    backgroundColor: "#fffdfd",
+    padding: "5px 8px",
+    borderRadius: 5,
   },
   cardInner: {
     width: 500,

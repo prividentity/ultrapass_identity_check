@@ -2,6 +2,7 @@
 import {
   Box,
   Button,
+  CircularProgress,
   Divider,
   Grid,
   TextField,
@@ -24,7 +25,6 @@ import useToast from "../../utils/useToast";
 
 import PhoneInputComponent from "../PhoneInput";
 
-
 const RegisterInputs = ({
   setStep,
   skin,
@@ -36,10 +36,11 @@ const RegisterInputs = ({
   matchesSM: boolean;
   setToken: (e: string) => void;
 }) => {
-
   const classes = useStyles();
   const mainTheme = Theme;
   const { showToast } = useToast();
+  const [loader, setLoader] = useState(false);
+  const [autoFocus, setAutoFocus] = useState(true);
   const palette: { [key: string]: any } = mainTheme.palette;
 
   const [phoneInput, setPhoneInput] = useState("");
@@ -62,6 +63,9 @@ const RegisterInputs = ({
     if (ssn4Ref?.current?.value.length < 4) {
       setShowSSN4Error({ error: true, message: "SSN4 Must be 4 digits." });
     }
+    else{
+      setShowSSN4Error({ error: false, message: "" });
+    }
   };
 
   const [showPhoneError, setShowPhoneError] = useState({
@@ -70,11 +74,15 @@ const RegisterInputs = ({
   });
   const handleCheckPhoneInput = () => {
     if (phoneInput.length < 10) {
-      setShowSSN4Error({ error: true, message: "SSN4 Must be 4 digits." });
+      setShowPhoneError({ error: true, message: "Invalid Phone Number." });
+    }
+    else{
+      setShowPhoneError({ error: false, message: "" });
     }
   };
 
   const handleContinue = async () => {
+    setAutoFocus(false);
     const validatePhone = (phone: string) =>
       /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/.test(
         phone
@@ -91,7 +99,7 @@ const RegisterInputs = ({
       validatePhone(phoneInput) &&
       ssn4Ref?.current?.value.length === 4
     ) {
-
+      setLoader(true);
       const inputSSN4 = ssn4Ref?.current?.value;
       setPhoneNumber(phoneInput);
       setSSN4(inputSSN4);
@@ -109,6 +117,7 @@ const RegisterInputs = ({
         setToken(result?.user?.customerId);
         setStep(STEPS.PRE_ENROLL);
       }
+      setLoader(false);
     }
   };
 
@@ -127,36 +136,52 @@ const RegisterInputs = ({
           sx={{ paddingTop: 4, paddingBottom: 2 }}
           className={classes.cardHeading}
         >
-          PLEASE ENTER REQUIRED INFORMATION
+          VERIFIED IDENTITY
         </Typography>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
       <Grid
-        container
-        alignItems={"center"}
-        justifyContent={"center"}
         style={styles.cardGrid}
         className={classes.cardGridMobile}
       >
+        <Typography
+            component="p"
+            textAlign={'center'}
+            fontSize={16}
+            fontWeight={700}
+            lineHeight={1.5}
+            mt={3}
+            mb={5}
+            className={classes.cardInnerHeading}
+          >
+            PLEASE ENTER YOUR PERSONAL DETAILS
+          </Typography>
         <Box width={"100%"}>
-
+          
           <Grid container pb={2}>
             <Input
               style={{ width: "100%" }}
               value={phoneInput}
-              autoFocus
+              autoFocus={autoFocus}
               country="US"
               onChange={handlePhoneChange}
+              // onBlur={handleCheckPhoneInput}
+              helperText={showPhoneError.error? showPhoneError.message :""}
+              sx={{
+                "& .MuiFormHelperText-contained": {
+                  color:"red"
+                }
+              }}
+              placeholder="Mobile number"
               inputComponent={React.forwardRef((props, ref) => (
                 <PhoneInputComponent
                   {...props}
                   inputRef={ref}
                   InputProps={{
-                    startAdornment: <PhoneIcon sx={{ pr: 1 }} 
-                    />,
+                    startAdornment: <PhoneIcon sx={{ pr: 1 }} />,
                   }}
                   inputProps={{
-                    maxLength: 15,
+                    maxLength: 16,
                   }}
                 />
               ))}
@@ -168,7 +193,7 @@ const RegisterInputs = ({
             id="outlined-basic"
             label="SSN4"
             type="tel"
-            placeholder="SSN4"
+            placeholder="SSN4 – Social Security Number"
             name="SSN4"
             InputProps={{
               startAdornment: <AccountBoxIcon sx={{ pr: 1 }} />,
@@ -178,6 +203,13 @@ const RegisterInputs = ({
             }}
             inputRef={ssn4Ref}
             onBlur={handleCheckSSN4Input}
+            color={showSSN4Error.error? "error":"primary"}
+            helperText={showSSN4Error.error? showSSN4Error.message :""}
+            sx={{
+              "& .MuiFormHelperText-contained": {
+                color:"red"
+              }
+            }}
           />
         </Box>
       </Grid>
@@ -188,6 +220,7 @@ const RegisterInputs = ({
           color={"inherit"}
           style={styles.continueButton}
           onClick={handleContinue}
+          type="submit"
         >
           <Typography
             component="p"
@@ -199,7 +232,11 @@ const RegisterInputs = ({
             justifyContent={"center"}
             textTransform="capitalize"
           >
-            Continue
+            {loader ? (
+              <CircularProgress className={classes.scanLoader} />
+            ) : (
+              "Continue"
+            )}
           </Typography>
         </Button>
       </Box>

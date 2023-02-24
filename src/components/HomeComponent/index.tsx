@@ -1,12 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Typography,
   Container,
   Grid,
   Button,
-  Select,
-  MenuItem,
   CircularProgress,
   useTheme,
   useMediaQuery,
@@ -14,10 +12,11 @@ import {
 import { styles } from "../../pages/signup/styles";
 import { useNavigate } from "react-router";
 import { createVerificationSession } from "../../services/api";
-import { createSearchParams, useSearchParams } from "react-router-dom";
+import { createSearchParams } from "react-router-dom";
 import config from "../../config";
 import { useStyles } from "../../pages/home/styles";
-import { nameMap } from "../../theme";
+import { getStatusFromUser, navigateToUrl } from "../../utils";
+import { SUCCESS, FAILURE } from "../../utils";
 
 interface props {
   theme?: string;
@@ -26,24 +25,14 @@ interface props {
 const HomeComponent = ({ theme, skin }: props) => {
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const [loading, setLoading] = useState(false);
-  const [flow, setFlow] = useState(1);
+  const [flow] = useState(1);
   const navigate = useNavigate();
   const classes = useStyles();
   const muiTheme = useTheme();
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
-  const [searchParams] = useSearchParams();
-  const skinQueryParam = searchParams.get("skin") as string;
-  const name = nameMap[skinQueryParam || "up"] || skinQueryParam;
-  const handleChange = (e: any) => {
-    setFlow(e?.target?.value);
-  };
-
-  const navigateToUrl = (url: string, token?: string) => {
-    window.open(`${url}?token=${token}`, "_self");
-  };
 
   const createVerification = async () => {
-    if (user?._id || user?.token) {
+    if (user?._id && user?.token) {
       navigateToUrl(user?.successUrl, user?.token);
       return;
     }
@@ -103,51 +92,84 @@ const HomeComponent = ({ theme, skin }: props) => {
         break;
     }
   };
+
+  function renderVerificationButton() {
+    const userStatus = getStatusFromUser(user || {});
+    if (userStatus === SUCCESS) {
+      return (
+        <Button
+          sx={{ textTransform: "unset", opacity: 0.8 }}
+          variant="contained"
+          style={styles.ageVerifiedButton}
+          className={classes.buttonsWrapButton}
+        >
+          {"You are verified"}
+        </Button>
+      );
+    } else if (userStatus === FAILURE && user._id) {
+      return (
+        <Button
+          sx={{ textTransform: "unset", opacity: 0.8 }}
+          variant="contained"
+          style={styles.ageFailedButton}
+          className={classes.buttonsWrapButton}
+        >
+          {"Verification Failed"}
+        </Button>
+      );
+    } else {
+      return (
+        <Button
+          sx={{ textTransform: "unset", opacity: loading ? 0.8 : 1 }}
+          variant="contained"
+          style={styles.ageVerifiedButton}
+          onClick={() => createVerification()}
+          disabled={loading}
+          className={classes.buttonsWrapButton}
+        >
+          {loading ? (
+            <CircularProgress className={classes.homeLoader} />
+          ) : (
+            "Verify me"
+          )}
+        </Button>
+      );
+    }
+  }
   return (
     <>
       <Container maxWidth="xl">
-        <Box>
-          <Typography
-            component="h2"
-            color={`${theme}.text`}
-            fontSize={52}
-            fontWeight={500}
-            lineHeight={"60px"}
-            letterSpacing={"1px"}
-            className={classes.homeHeading}
-          >
-            Private Verified Identity
-          </Typography>
-          <Typography
-            component="p"
-            color={`${theme}.text`}
-            fontSize={18}
-            fontWeight={500}
-            className={classes.homeSubHeading}
-            mt={2}
-          >
-            Protect privacy with Cryptonets FHE
-          </Typography>
+        <Box className={classes.mainWrap}>
+          <Box className={classes.innerWrap}>
+            <Typography
+              component="h2"
+              color={`${theme}.text`}
+              fontSize={52}
+              fontWeight={500}
+              lineHeight={"60px"}
+              letterSpacing={"1px"}
+              className={classes.homeHeading}
+            >
+              CAMS UltraPass ID
+            </Typography>
+            <Typography
+              component="p"
+              color={`${theme}.text`}
+              fontSize={30}
+              fontWeight={500}
+              className={classes.homeSubHeading}
+              mt={0}
+            >
+              Private Verified Identity
+            </Typography>
+          </Box>
           <Box pt={5} className={classes.buttonsGrid}>
             <Grid container alignItems="center" className={classes.buttonsWrap}>
-              <Button
-                sx={{ textTransform: "unset", opacity: loading ? 0.8 : 1 }}
-                variant="contained"
-                style={styles.ageVerifiedButton}
-                onClick={() => createVerification()}
-                disabled={loading}
-                className={classes.buttonsWrapButton}
-              >
-                {loading ? (
-                  <CircularProgress className={classes.homeLoader} />
-                ) : (
-                  `Verify me`
-                )}
-              </Button>
+              {renderVerificationButton()}
               {matchesSM ? null : (
                 <Button
                   style={styles.ageLearnMoreButton}
-                  sx={{ textTransform: "unset" }}
+                  sx={{ textTransform: "unset", textAlign: "center", width: 300 }}
                   className={classes.buttonsWrapButton}
                 >
                   Go for a test drive!
@@ -156,15 +178,15 @@ const HomeComponent = ({ theme, skin }: props) => {
             </Grid>
           </Box>
 
-            {matchesSM ? (
-              <Button
-                style={styles.ageLearnMoreButton}
-                sx={{ textTransform: "unset" }}
-                className={classes.buttonsWrapButton}
-              >
-                Learn more
-              </Button>
-            ) : null}
+          {matchesSM ? (
+            <Button
+              style={styles.ageLearnMoreButton}
+              sx={{ textTransform: "unset" }}
+              className={classes.buttonsWrapButton}
+            >
+              Learn more
+            </Button>
+          ) : null}
         </Box>
       </Container>
     </>

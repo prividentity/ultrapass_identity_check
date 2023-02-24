@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router";
 import logo from "../../assets/logo.png";
-import logoBlack from "../../assets/apt-logo-black.png";
+import logoBlack from "../../assets/centralLogo.png";
 import { styles, useStyles } from "./styles";
 import useDelete from "../../hooks/useDelete";
 import { createVerificationSession, deleteUserApi } from "../../services/api";
@@ -57,14 +57,13 @@ const Header = (props: props) => {
         <img
           src={!matchesSM ? Logos?.[skin].dark : Logos?.[skin].light}
           alt=""
-          width={120}
-          height={35}
+          width={140}
           onClick={() => navigate("/")}
           style={{ cursor: "pointer" }}
           className="headerLogo"
         />
       );
-    } 
+    }
   };
 
   const onSignInClick = async () => {
@@ -103,17 +102,15 @@ const Header = (props: props) => {
   };
 
   const onDeleteAccount = () => {
-    if (uuid) {
-      const payload = {
-        token: user?.token,
-      };
-      onDeleteUser(uuid);
-      deleteUserApi(payload as any);
-      showToast("Deleted Successfully", "success");
-      localStorage.removeItem("user");
-      localStorage.removeItem("uuid");
-      navigate("/");
-    }
+    const payload = {
+      guid: user?.guid,
+    };
+    onDeleteUser(uuid || user?.uuid);
+    deleteUserApi(payload as any);
+    showToast("Deleted Successfully", "success");
+    localStorage.removeItem("user");
+    localStorage.removeItem("uuid");
+    navigate("/");
   };
 
   const useDeleteCallback = (deleteStatus: any) => {
@@ -140,12 +137,12 @@ const Header = (props: props) => {
             window?.location?.pathname === "/register" ||
             window?.location?.pathname === "/signin" ? (
               <img
-                src={matchesSM ? logoBlack : logo}
+                src={matchesSM ? logoBlack : logoBlack}
                 alt=""
-                width={120}
+                width={80}
                 height={40}
                 style={styles.homelogo}
-                className="headerLogo"
+                className="headerLogo centralLogo"
               />
             ) : null}
           </Grid>

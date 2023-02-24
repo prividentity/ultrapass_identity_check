@@ -61,7 +61,7 @@ const VerifyDriversLicense = (props: props) => {
           fontWeight={500}
           mt={5}
         >
-          AllpassTrust needs to use your Driver’s License to validate your
+          Ultrapass needs to use your Driver’s License to validate your
           identity. All images and personal details remain on your device and
           are deleted immediately after processing. No images or personal
           details are shared with {name}.
@@ -74,7 +74,7 @@ const VerifyDriversLicense = (props: props) => {
           mt={3}
           mb={1}
         >
-          Learn how AllpassTrust works
+          Learn how Ultrapass works
         </Typography>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}

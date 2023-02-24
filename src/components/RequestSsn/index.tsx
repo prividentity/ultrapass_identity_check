@@ -15,14 +15,17 @@ import { UserContext } from "../../context/UserContext";
 import { updateUser } from "@privateid/cryptonets-web-sdk-alpha/dist/apiUtils";
 import STEPS from "../../pages/register/steps";
 import useToast from "../../utils/useToast";
+import { formatPhoneInput } from "../../utils";
 
 const RequestSsn = ({
   setStep,
   skin,
   matchesSM,
   onSuccess,
+  setPrevStep
 }: {
   setStep: any;
+  setPrevStep?: (e: string) => void;
   skin: string;
   matchesSM: boolean;
   onSuccess: () => void;
@@ -30,6 +33,7 @@ const RequestSsn = ({
   const classes = useStyles();
   const mainTheme = Theme;
   const { showToast } = useToast();
+  const [ssn, setSnn] = useState("");
   const palette: { [key: string]: any } = mainTheme.palette;
 
   const ssn9Ref = useRef<HTMLFormElement | null>(null);
@@ -45,11 +49,12 @@ const RequestSsn = ({
       setShowSSN9Error({ error: true, message: "SSN9 Must be 9 digits." });
     }
   };
-
+  console.log(ssn9Ref?.current?.value,'ssn9Ref?.current?.value');
+  
   const handleContinue = async () => {
-    if (ssn9Ref?.current?.value.length !== 9) {
+    if (ssn9Ref?.current?.value.length !== 11) {
       showToast("Enter SSN9", "error");
-    } else if (ssn9Ref?.current?.value.length === 9) {
+    } else if (ssn9Ref?.current?.value.length === 11) {
       const inputSSN9 = ssn9Ref?.current?.value;
       const updateUserResult: any = await updateUser({
         id,
@@ -63,7 +68,6 @@ const RequestSsn = ({
       }
     }
   };
-
   return (
     <>
       <Grid container alignItems="center" justifyContent={"center"}>
@@ -88,6 +92,19 @@ const RequestSsn = ({
         className={classes.cardGridMobile}
       >
         <Box width={"100%"}>
+          <Typography
+            component="p"
+            textAlign={matchesSM ? "center" : "left"}
+            fontSize={16}
+            fontWeight={500}
+            lineHeight={1.5}
+            mt={0}
+            className={classes.cardInnerHeading}
+            mb={3}
+          >
+            We were unable to find your record. <br />
+            Please try again with your full social security number.
+          </Typography>
           <TextField
             fullWidth
             id="outlined-basic"
@@ -99,15 +116,17 @@ const RequestSsn = ({
               startAdornment: <AccountBoxIcon sx={{ pr: 1 }} />,
             }}
             inputProps={{
-              maxLength: 9,
+              // maxLength: 9,
             }}
+            onChange={(e) => setSnn(e?.target?.value)}
+            value={formatPhoneInput(ssn)}
             inputRef={ssn9Ref}
             onBlur={handleCheckSSN4Input}
           />
         </Box>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
-      <Box mb={"52px"}>
+      <Box>
         <Button
           variant="contained"
           color={"inherit"}
@@ -125,6 +144,30 @@ const RequestSsn = ({
             textTransform="capitalize"
           >
             Continue
+          </Typography>
+        </Button>
+        <Button
+          variant="text"
+          color={"inherit"}
+          style={styles.textButton}
+          onClick={() => {
+            setStep(STEPS.CONSENT_FAIL);
+            setPrevStep?.(STEPS.REQUEST_SSN);
+          }}
+        >
+          <Typography
+            component="p"
+            color={palette?.[skin]?.listText}
+            textAlign="center"
+            fontWeight={500}
+            display="flex"
+            alignItems="center"
+            justifyContent={"center"}
+            textTransform="capitalize"
+            fontSize={14}
+            className={classes.textButtonUnderline}
+          >
+            No, I do not consent
           </Typography>
         </Button>
       </Box>
