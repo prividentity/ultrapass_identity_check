@@ -173,7 +173,15 @@ const DLScan = ({
     });
     console.log("Update user result: ", updateUserResult);
 
-    onSuccess && onSuccess();
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsUserVerify(true);
+    }, 2000)
+    setTimeout(() => {
+      setIsLoading(false);
+      setIsUserVerify(false);
+      onSuccess && onSuccess();
+    }, 4000)
   };
 
   const onCameraNotGranted = (e: boolean) => {
