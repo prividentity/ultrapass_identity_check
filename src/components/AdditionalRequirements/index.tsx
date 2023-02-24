@@ -4,7 +4,6 @@ import RequestAddress from "../RequestAddress";
 import RequestSSN from "../RequestSsn/index";
 import STEPS from "../../pages/register/steps";
 import { AdditionalRequirementsEnum } from "../../utils";
-import { verifyIdApi } from "../../services/api";
 import useToast from "../../utils/useToast";
 
 const AdditionalRequirements = ({
