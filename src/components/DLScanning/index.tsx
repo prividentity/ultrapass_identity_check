@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import {
   Box,
-  Button,
   CircularProgress,
   Divider,
   Grid,
@@ -10,7 +9,7 @@ import {
 } from "@mui/material";
 
 import { useStyles, styles } from "../../pages/register/styles";
-import { theme as Theme, theme } from "../../theme";
+import { theme as Theme } from "../../theme";
 
 import smallLock from "../../assets/smallLock.png";
 import STEPS from "../../pages/register/steps";
@@ -21,34 +20,25 @@ import DlFront from "../../assets/dl-front.png";
 import DlBack from "../../assets/Hand-DL-Back.png";
 import { UserContext } from "../../context/UserContext";
 import {
-  getUserStatus,
   updateUser,
   uploadDL,
 } from "@privateid/cryptonets-web-sdk-alpha";
 import { DLType } from "@privateid/cryptonets-web-sdk-alpha/dist/types";
 
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
-import { componentsParameterInterface } from "../../interface";
-import { verifyIdApi } from "../../services/api";
-import { REQUIRES_INPUT, SUCCESS, getStatusFromUser } from "../../utils";
 import useToast from "../../utils/useToast";
+import SpinnerLoader from "../SpinnerLoader";
 
 const DLScan = ({
   setStep,
-  setPrevStep,
   skin,
   matchesSM,
-  token,
-  tokenParams,
   onSuccess,
 }: {
   setStep: any;
-  setPrevStep: any;
   skin: string;
   matchesSM: boolean;
-  token: string;
-  tokenParams: string;
-  onSuccess?: () => void;
+  onSuccess: () => void;
 }) => {
   const classes = useStyles();
   const { showToast } = useToast();
@@ -56,6 +46,7 @@ const DLScan = ({
   const palette: { [key: string]: any } = mainTheme.palette;
   const [isBackScan, setIsBackScan] = useState(false);
   const [isUserVerify, setIsUserVerify] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
   const [hasNoCamera, setHasNoCamera] = useState(false);
 
@@ -98,11 +89,15 @@ const DLScan = ({
         uploadCroppedDocumentImage &&
         uploadCroppedMugshotImage
       ) {
-        setIsUserVerify(true);
+        setIsLoading(true);
         setTimeout(() => {
+          setIsUserVerify(true);
+        }, 2000);
+        setTimeout(() => {
+          setIsLoading(false);
           setIsUserVerify(false);
           setIsBackScan(true);
-        }, 3000);
+        }, 4000);
       }
     }
   };
@@ -219,30 +214,20 @@ const DLScan = ({
                 className="DlBack"
               />
             )}
-            {isUserVerify && (
+            {isLoading && (
               <Box style={styles.overlay as React.CSSProperties}>
-                <img
-                  src={shield}
-                  alt="shield"
-                  style={styles.shield as React.CSSProperties}
-                />
+                {isUserVerify ? (
+                  <img
+                    src={shield}
+                    alt="shield"
+                    style={styles.shield as React.CSSProperties}
+                  />
+                ) : (
+                  <SpinnerLoader />
+                )}
               </Box>
             )}
 
-            <Box className={classes.otherDevice}>
-              <Typography
-                component="p"
-                textAlign={"left"}
-                fontSize={15}
-                fontWeight={500}
-                mt={2}
-                onClick={() => {
-                  setStep(STEPS.SWITCH_DEVICE);
-                }}
-              >
-                <PhoneIphoneIcon /> Switch to other device
-              </Typography>
-            </Box>
             {hasNoCamera ? (
               <Stack
                 width={"100%"}
@@ -273,6 +258,20 @@ const DLScan = ({
               />
             )}
           </Box>
+        </Box>
+        <Box className={classes.otherDevice}>
+          <Typography
+            component="p"
+            textAlign={"left"}
+            fontSize={15}
+            fontWeight={500}
+            mt={0}
+            onClick={() => {
+              setStep(STEPS.SWITCH_DEVICE);
+            }}
+          >
+            <PhoneIphoneIcon /> Switch to other device
+          </Typography>
         </Box>
       </Grid>
       <Box style={{ height: 70 }}>

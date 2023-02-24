@@ -144,23 +144,12 @@ const Register = ({ theme, skin }: props) => {
           <DLScan
             matchesSM={matchesSM}
             setStep={setStep}
-            setPrevStep={setPrevStep}
             skin={skin}
-            token={token}
-            tokenParams={tokenParams}
+            onSuccess={onVerifyId}
           />
         );
       case STEPS.SWITCH_DEVICE:
         return <FullWidthTabs />;
-      // case STEPS.REQUEST_SSN:
-      //   return (
-      //     <RequestSsn
-      //       matchesSM={matchesSM}
-      //       setStep={setStep}
-      //       skin={skin}
-      //       onSuccess={onVerifyId}
-      //     />
-      //   );
       case STEPS.SUCCESS:
         return <Success matchesSM={matchesSM} setStep={setStep} skin={skin} />;
       case STEPS.VERIFICATION_NOT_COMPLETED:
@@ -177,6 +166,7 @@ const Register = ({ theme, skin }: props) => {
             matchesSM={matchesSM}
             setStep={setStep}
             skin={skin}
+            setPrevStep={setPrevStep}
             handleRequirementsComplete={onVerifyId}
           />
         );

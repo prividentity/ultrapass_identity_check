@@ -25,7 +25,6 @@ import useToast from "../../utils/useToast";
 
 import PhoneInputComponent from "../PhoneInput";
 
-
 const RegisterInputs = ({
   setStep,
   skin,
@@ -37,7 +36,6 @@ const RegisterInputs = ({
   matchesSM: boolean;
   setToken: (e: string) => void;
 }) => {
-
   const classes = useStyles();
   const mainTheme = Theme;
   const { showToast } = useToast();
@@ -65,6 +63,9 @@ const RegisterInputs = ({
     if (ssn4Ref?.current?.value.length < 4) {
       setShowSSN4Error({ error: true, message: "SSN4 Must be 4 digits." });
     }
+    else{
+      setShowSSN4Error({ error: false, message: "" });
+    }
   };
 
   const [showPhoneError, setShowPhoneError] = useState({
@@ -73,12 +74,15 @@ const RegisterInputs = ({
   });
   const handleCheckPhoneInput = () => {
     if (phoneInput.length < 10) {
-      setShowSSN4Error({ error: true, message: "SSN4 Must be 4 digits." });
+      setShowPhoneError({ error: true, message: "Invalid Phone Number." });
+    }
+    else{
+      setShowPhoneError({ error: false, message: "" });
     }
   };
 
   const handleContinue = async () => {
-    setAutoFocus(false)
+    setAutoFocus(false);
     const validatePhone = (phone: string) =>
       /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/.test(
         phone
@@ -132,18 +136,28 @@ const RegisterInputs = ({
           sx={{ paddingTop: 4, paddingBottom: 2 }}
           className={classes.cardHeading}
         >
-          CONFIRM YOUR IDENTITY
+          VERIFIED IDENTITY
         </Typography>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
       <Grid
-        container
-        alignItems={"center"}
-        justifyContent={"center"}
         style={styles.cardGrid}
         className={classes.cardGridMobile}
       >
+        <Typography
+            component="p"
+            textAlign={'center'}
+            fontSize={16}
+            fontWeight={700}
+            lineHeight={1.5}
+            mt={3}
+            mb={5}
+            className={classes.cardInnerHeading}
+          >
+            PLEASE ENTER YOUR PERSONAL DETAILS
+          </Typography>
         <Box width={"100%"}>
+          
           <Grid container pb={2}>
             <Input
               style={{ width: "100%" }}
@@ -151,6 +165,14 @@ const RegisterInputs = ({
               autoFocus={autoFocus}
               country="US"
               onChange={handlePhoneChange}
+              // onBlur={handleCheckPhoneInput}
+              helperText={showPhoneError.error? showPhoneError.message :""}
+              sx={{
+                "& .MuiFormHelperText-contained": {
+                  color:"red"
+                }
+              }}
+              placeholder="Mobile number"
               inputComponent={React.forwardRef((props, ref) => (
                 <PhoneInputComponent
                   {...props}
@@ -171,7 +193,7 @@ const RegisterInputs = ({
             id="outlined-basic"
             label="SSN4"
             type="tel"
-            placeholder="SSN4"
+            placeholder="SSN4 – Social Security Number"
             name="SSN4"
             InputProps={{
               startAdornment: <AccountBoxIcon sx={{ pr: 1 }} />,
@@ -181,6 +203,13 @@ const RegisterInputs = ({
             }}
             inputRef={ssn4Ref}
             onBlur={handleCheckSSN4Input}
+            color={showSSN4Error.error? "error":"primary"}
+            helperText={showSSN4Error.error? showSSN4Error.message :""}
+            sx={{
+              "& .MuiFormHelperText-contained": {
+                color:"red"
+              }
+            }}
           />
         </Box>
       </Grid>

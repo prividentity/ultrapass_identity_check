@@ -150,17 +150,17 @@ const HomeComponent = ({ theme, skin }: props) => {
               letterSpacing={"1px"}
               className={classes.homeHeading}
             >
-              Private Verified Identity
+              CAMS UltraPass ID
             </Typography>
             <Typography
               component="p"
               color={`${theme}.text`}
-              fontSize={18}
+              fontSize={30}
               fontWeight={500}
               className={classes.homeSubHeading}
-              mt={2}
+              mt={0}
             >
-              Protect privacy with Cryptonets FHE
+              Private Verified Identity
             </Typography>
           </Box>
           <Box pt={5} className={classes.buttonsGrid}>
@@ -169,7 +169,7 @@ const HomeComponent = ({ theme, skin }: props) => {
               {matchesSM ? null : (
                 <Button
                   style={styles.ageLearnMoreButton}
-                  sx={{ textTransform: "unset" }}
+                  sx={{ textTransform: "unset", textAlign: "center", width: 300 }}
                   className={classes.buttonsWrapButton}
                 >
                   Go for a test drive!

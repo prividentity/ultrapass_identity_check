@@ -12,11 +12,13 @@ const AdditionalRequirements = ({
   setStep,
   skin,
   handleRequirementsComplete,
+  setPrevStep,
 }: {
   matchesSM: boolean;
   setStep: any;
   skin: string;
   handleRequirementsComplete: () => void;
+  setPrevStep: (e: string) => void;
 }) => {
   const context = React.useContext(UserContext);
   const [requirement, setRequirement] = React.useState(
@@ -79,6 +81,7 @@ const AdditionalRequirements = ({
         skin={skin}
         matchesSM={matchesSM}
         onSuccess={handleSuccess}
+        setPrevStep={setPrevStep}
       />
     );
   }
@@ -89,6 +92,7 @@ const AdditionalRequirements = ({
         skin={skin}
         matchesSM={matchesSM}
         onSuccess={handleSuccess}
+        setPrevStep={setPrevStep}
       />
     );
   }

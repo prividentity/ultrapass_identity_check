@@ -6,6 +6,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import smallLock from "../../../assets/smallLock.png";
 import phoneImage from "../../../assets/face-id.png";
 import { styles, useStyles } from "../../../pages/signup/styles";
 import { theme as Theme } from "../../../theme";
@@ -37,17 +38,30 @@ const VerifyAgeWithScan = (props: props) => {
           sx={{ paddingTop: 4, paddingBottom: 2 }}
           className={classes.cardHeading}
         >
-          CONFIRM YOUR IDENTITY
+          <img src={smallLock} alt="smallLock" className={classes.smallLock} />{" "}
+          VERIFIED IDENTITY
         </Typography>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
       <Grid
         container
         alignItems={"center"}
-        justifyContent={"center"}
+        // justifyContent={"center"}
+        flexDirection={"column"}
         style={styles.cardGrid}
         className={classes.cardGridMobile}
       >
+        <Typography
+          component="p"
+          textAlign="center"
+          fontSize={16}
+          fontWeight={500}
+          mt={2}
+          color={"#333"}
+          mb={2}
+        >
+          Ge ready to take a selfie and <br />scan your driver’s license
+        </Typography>
         <img src={phoneImage} alt="scan" width={"180px"} />
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
