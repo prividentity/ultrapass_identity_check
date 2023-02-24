@@ -259,22 +259,8 @@ const DLScan = ({
             )}
           </Box>
         </Box>
-        <Box className={classes.otherDevice}>
-          <Typography
-            component="p"
-            textAlign={"left"}
-            fontSize={15}
-            fontWeight={500}
-            mt={0}
-            onClick={() => {
-              setStep(STEPS.SWITCH_DEVICE);
-            }}
-          >
-            <PhoneIphoneIcon /> Switch to other device
-          </Typography>
-        </Box>
       </Grid>
-      <Box style={{ height: 70 }}>
+      <Box style={{ height: 84 }} className={classes.scanBottomBox}>
         {isScanning ? (
           <Typography
             component="p"
@@ -297,11 +283,28 @@ const DLScan = ({
             mt={1}
             mb={2}
           >
-            {isBackScan
+            {isBarcodeScan
+              ? "Place the bar code in the safe area"
+              : isBackScan
               ? "Place the BACK of your ID towards the camera"
               : "Place the FRONT of your ID towards the camera"}
           </Typography>
         )}
+
+        <Box className={classes.otherDevice} pl={3} mb={1}>
+          <Typography
+            component="p"
+            textAlign={"left"}
+            fontSize={15}
+            fontWeight={500}
+            mt={0}
+            onClick={() => {
+              setStep(STEPS.SWITCH_DEVICE);
+            }}
+          >
+            <PhoneIphoneIcon /> Switch to other device
+          </Typography>
+        </Box>
       </Box>
     </>
   );
