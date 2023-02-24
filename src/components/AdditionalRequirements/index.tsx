@@ -11,15 +11,11 @@ const AdditionalRequirements = ({
   matchesSM,
   setStep,
   skin,
-  token,
-  verificationSessionToken,
   handleRequirementsComplete,
 }: {
   matchesSM: boolean;
   setStep: any;
   skin: string;
-  token: string;
-  verificationSessionToken: string;
   handleRequirementsComplete: () => void;
 }) => {
   const context = React.useContext(UserContext);
@@ -48,10 +44,6 @@ const AdditionalRequirements = ({
     const nextRequirement = getNextRequirement();
 
     if (!nextRequirement) {
-      if (!token || !verificationSessionToken) {
-        showToast("Missing Required Data", "error");
-        return;
-      }
       handleRequirementsComplete();
     } else {
       setRequirement(nextRequirement);

@@ -177,8 +177,6 @@ const Register = ({ theme, skin }: props) => {
             matchesSM={matchesSM}
             setStep={setStep}
             skin={skin}
-            token={token}
-            verificationSessionToken={tokenParams}
             handleRequirementsComplete={onVerifyId}
           />
         );
