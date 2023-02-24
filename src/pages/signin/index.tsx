@@ -107,6 +107,8 @@ const Signin = ({ theme, skin }: props) => {
           "You have not successfully completed your verification",
           "error"
         );
+        localStorage.removeItem("user");
+        localStorage.removeItem("uuid");
         navigate("/");
     }
   };
@@ -127,7 +129,6 @@ const Signin = ({ theme, skin }: props) => {
           return createVerification();
         } else {
           setIsUserVerify(true);
-          console.log(data, "get user data\n");
           localStorage.setItem("user", JSON.stringify(data?.userData || {}));
           nextStep(data?.userData);
         }

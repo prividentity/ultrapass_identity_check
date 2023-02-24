@@ -11,7 +11,8 @@ import {
   useTheme,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import stationLogo from '../../../assets/stations.png'
+import stationLogo from "../../../assets/stations.png";
+import centralLogo from "../../../assets/centralLogo.png";
 import { useStyles } from "./styles";
 import { localThemes, logos } from "../../../theme";
 import { useSearchParams } from "react-router-dom";
@@ -58,7 +59,7 @@ const HomeModal = (props: props) => {
           {matchesSM ? null : (
             <div style={{ backgroundColor: "#ffffff" }}>
               <img
-                src={stationLogo}
+                src={centralLogo}
                 alt=""
                 width={120}
                 height={30}
