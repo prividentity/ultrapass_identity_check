@@ -108,7 +108,7 @@ const HomeComponent = ({ theme, skin }: props) => {
               letterSpacing={"1px"}
               className={classes.homeHeading}
             >
-              CAMS UltraPass<br /> ID
+              CAMS UltraPass ID
             </Typography>
             <Typography
               component="p"
@@ -118,10 +118,10 @@ const HomeComponent = ({ theme, skin }: props) => {
               className={classes.homeSubHeading}
               mt={0}
             >
-              Private Verified<br /> Identity
+              Private Verified Identity
             </Typography>
           </Box>
-          <Box pt={3} className={classes.buttonsGrid}>
+          <Box pt={5} className={classes.buttonsGrid}>
             <Grid alignItems="center" className={classes.buttonsWrap}>
               <Button
                 sx={{ textTransform: "unset", opacity: loading ? 0.8 : 1, marginBottom: "0px !important"}}

@@ -68,7 +68,7 @@ const DatabaseConsent = (props: props) => {
               provided is accurate.
             </ListItem>
             <ListItem className={classes.listText}>
-              AllpassTrust and our third-party enrollment and identity proofing
+              Ultrapass and our third-party enrollment and identity proofing
               service provider Central Account Management Services LLC and its
               contract providers may share, use and maintain the images and
               information you provide, and the information on file with other
@@ -78,7 +78,7 @@ const DatabaseConsent = (props: props) => {
               duration of our business relationship.
             </ListItem>
             <ListItem className={classes.listText}>
-              I have read and agreed to the AllpassTrust Terms of Service and
+              I have read and agreed to the Ultrapass Terms of Service and
               Privacy Policy and Ultrapass Terms of Service and Privacy Policy.
             </ListItem>
           </List>

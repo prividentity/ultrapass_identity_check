@@ -50,7 +50,7 @@ const VerifyIdentity = (props: props) => {
           mt={2}
           className={classes.cardInnerHeading}
         >
-          {name} partners with AllpassTrust for
+          {name} partners with Ultrapass for
           <br /> secure, anonymous age verification.
         </Typography>
         <Typography
@@ -73,7 +73,7 @@ const VerifyIdentity = (props: props) => {
           color={"#333"}
           className={classes.cardInnerText}
         >
-          How AllpassTrust will verify your identity ?
+          How Ultrapass will verify your identity ?
         </Typography>
         <Typography
           component="p"
@@ -83,10 +83,10 @@ const VerifyIdentity = (props: props) => {
           mt={2}
           className={classes.cardInnerText}
         >
-          AllpassTrust will use your selfie to estimate your age. Your image
+          Ultrapass will use your selfie to estimate your age. Your image
           will be deleted immediately after processing. No images or information
           will be shared with {name}. Data will be strictly processed according
-          to the AllpassTrust Privacy Policy. Learn how AllpassTrust works.
+          to the Ultrapass Privacy Policy. Learn how Ultrapass works.
         </Typography>
       </Grid>
       <Grid>
