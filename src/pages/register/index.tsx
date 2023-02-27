@@ -73,14 +73,21 @@ const Register = ({ theme, skin }: props) => {
       ...rest,
     });
     const status = getStatusFromUser({ userApproved, ...rest });
+    const session = context.verificationSession;
     if (status === SUCCESS) {
       showToast("You successfully completed your ID verification.", "success");
-      setStep(STEPS.SUCCESS);
+      if (session.successUrl) {
+        window.location.href = session.successUrl;
+      }
     } else if (status === REQUIRES_INPUT) {
       showToast("We need more information to verify your identity.", "error");
       setStep(STEPS.ADDITIONAL_REQUIREMENTS);
     } else {
-      setStep(STEPS.VERIFICATION_NOT_COMPLETED);
+      showToast("Your ID verification was not completed.", "error");
+      if (session.failureUrl) {
+        window.location.href = session.failureUrl;
+      }
+      // setStep(STEPS.VERIFICATION_NOT_COMPLETED);
     }
   };
 
