@@ -66,8 +66,9 @@ const Enroll = ({
     const updateRes = (await updateUser(params)) as any;
     if (updateRes.guid && updateRes.uuid) {
       setShowSuccess(true);
+      // stopCamera();
+      await closeCamera(undefined);
       setTimeout(async () => {
-        stopCamera();
         setStep(STEPS.DRIVERLICENSE);
       }, 1000);
     }
