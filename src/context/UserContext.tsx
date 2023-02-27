@@ -31,6 +31,11 @@ export const UserContext = createContext({
   setUserStatus: (userStatus: any) => {},
   verifyAttempts: 0,
   setVerifyAttempts: (userStatus: number) => {},
+  verificationSession: {
+    successUrl: "",
+    failureUrl: "",
+  },
+  setVerificationSession: (verificationSession: any) => {},
 });
 
 const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
@@ -46,6 +51,8 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [failURL, setFailURL] = useState("");
   const [userStatus, setUserStatus] = useState(defaultUserStatus);
   const [verifyAttempts, setVerifyAttempts] = useState(0);
+  const [verificationSession, setVerificationSession] = useState<any>({});
+
   return (
     <UserContext.Provider
       value={{
@@ -73,6 +80,8 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
         userStatus,
         verifyAttempts,
         setVerifyAttempts,
+        verificationSession,
+        setVerificationSession,
       }}
     >
       {children}

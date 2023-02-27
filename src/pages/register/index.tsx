@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useTheme, useMediaQuery } from "@mui/material";
 
 import HomeModal from "../../components/Modal/homeModal";
@@ -20,7 +20,7 @@ import { UserContext } from "../../context/UserContext";
 import AdditionalRequirements from "../../components/AdditionalRequirements";
 import { useSearchParams } from "react-router-dom";
 import useToast from "../../utils/useToast";
-import { verifyIdApi } from "../../services/api";
+import { verifyIdApi, verifyTokenApi } from "../../services/api";
 import { SUCCESS, REQUIRES_INPUT, getStatusFromUser } from "../../utils";
 import { getUserStatus } from "@privateid/cryptonets-web-sdk-alpha";
 
@@ -42,6 +42,12 @@ const Register = ({ theme, skin }: props) => {
   const muiTheme = useTheme();
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
 
+  useEffect(() => {
+    if (!tokenParams) return;
+    verifyTokenApi(tokenParams).then((res) => {
+      context.setVerificationSession(res);
+    });
+  }, [tokenParams]);
   const navigateToUrl = (
     url: string,
     timeoutMilliseconds = 1000,

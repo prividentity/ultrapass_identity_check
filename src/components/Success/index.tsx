@@ -2,8 +2,10 @@ import { Button, Divider, Grid, Typography } from "@mui/material";
 import { useStyles, styles } from "../../pages/register/styles";
 import { theme as Theme } from "../../theme";
 import { useNavigate } from "react-router";
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { useEffect } from "react";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { useEffect, useContext } from "react";
+import { UserContext } from "../../context/UserContext";
+import { getStatusFromUser, SUCCESS } from "../../utils";
 
 const Success = ({
   setStep,
@@ -17,13 +19,18 @@ const Success = ({
   const navigate = useNavigate();
   const classes = useStyles();
   const mainTheme = Theme;
+  const context = useContext(UserContext);
   const palette: { [key: string]: any } = mainTheme.palette;
 
   useEffect(() => {
     setTimeout(() => {
-      navigate("/")
-    }, 2000)
-  }, [])
+      const status = getStatusFromUser(window.localStorage.getItem("user"));
+      const { successUrl } = context.verificationSession;
+      if (successUrl && status === SUCCESS) {
+        window.location.href = successUrl;
+      }
+    }, 2000);
+  }, []);
   return (
     <>
       <Grid container alignItems="center" justifyContent={"center"}>
@@ -44,7 +51,7 @@ const Success = ({
         <CheckCircleIcon className={classes.checkIcon} />
         <Typography
           component="p"
-          textAlign={ "center"}
+          textAlign={"center"}
           fontSize={20}
           fontWeight={900}
           lineHeight={1.5}
