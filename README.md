@@ -5,6 +5,9 @@ These pages are built with React.js, Material UI, TypeScript.
 
 The repository also contains code examples for React.js and Node.js/Express that demonstrate how to call these pre-built web pages and perform identity verification.
 
+The [env.example](env.example) file contains the environment variables that are need to configure the application. Add your API key
+under REACT_APP_API_KEY.
+
 To customize the verification session for your specific use case, you can update the configuration in [src/config.ts](src/config.ts). This file contains the configuration used to create the verification session and can be adjusted as needed.
 
 ## Testcases
