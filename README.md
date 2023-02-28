@@ -15,6 +15,11 @@ https://docs.google.com/document/d/1uY8ByiiWvXWRNp02wtQAoJqqINNoRR9p2M9znsApV3Q/
 
 ### Frontend
 
+#### Install dependencies
+```javascript
+npm i react
+```
+
 ```javascript
 import React from 'react';
 
@@ -31,6 +36,11 @@ export default IdentityVerificationButton;
 ```
 
 ### Backend
+
+#### Install dependencies
+```javascript
+npm i express @privateid/cryptonets-web-sdk
+```
 
 ```javascript
 import express from "express";
