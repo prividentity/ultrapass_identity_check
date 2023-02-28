@@ -1,4 +1,4 @@
-# Identity Verification - PreBuilt Webpage for IGA
+# Verified Identity - PreBuilt Webpage for IGA
 
 This repository includes the front-end code for pre-built web pages used in the Identity Verification module, which can be accessed at https://cams.ultrapass.id/. 
 These pages are built with React.js, Material UI, TypeScript.
