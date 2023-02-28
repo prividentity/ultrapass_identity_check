@@ -15,6 +15,7 @@ https://docs.google.com/document/d/1uY8ByiiWvXWRNp02wtQAoJqqINNoRR9p2M9znsApV3Q/
 ```javascript
 function IdentityVerificationButton() {
   const handleVerify = () => {
+    // this is going to be a POST request to your server(example down below)
     await fetch("https://my-server.com/session", { method: "POST" });
   };
 
