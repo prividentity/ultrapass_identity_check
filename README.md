@@ -13,6 +13,8 @@ https://docs.google.com/document/d/1uY8ByiiWvXWRNp02wtQAoJqqINNoRR9p2M9znsApV3Q/
 ### Frontend
 
 ```javascript
+import React from 'react';
+
 function IdentityVerificationButton() {
   const handleVerify = () => {
     // this is going to be a POST request to your server(example down below)
@@ -21,6 +23,8 @@ function IdentityVerificationButton() {
 
   return <button onClick={handleVerify}>Verify your identity</button>;
 }
+
+export default IdentityVerificationButton;
 ```
 
 ### Backend
