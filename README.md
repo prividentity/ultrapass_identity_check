@@ -45,7 +45,8 @@ app.post("/session", (req, res) => {
     // The type of session to create. Can be "IDENTITY" or "AGE"
     type: "IDENTITY",
     //(This is the API value for the product group associated with this session)
-    productGroupId: "process.env.MY_PRODUCT_GROUP_ID",
+    // We already have test product group built on the orchestration layer with an ID of intergalactic 
+    productGroupId: "process.env.MY_PRODUCT_GROUP_ID" || "intergalactic",
   });
   //result will be an object with the following structure {
   // url:”https://cams.ultrapass.id?token=1223”
