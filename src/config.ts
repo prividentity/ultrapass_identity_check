@@ -1,7 +1,7 @@
 const config = {
   clientConfig: {
-    successUrl: "/",
-    failureUrl: "https://cams2.devel.private.id",
+    successUrl: "www.success.com",
+    failureUrl: "www.failure.com",
     type: "IDENTITY",
     productGroupId: "intergalactic",
   },

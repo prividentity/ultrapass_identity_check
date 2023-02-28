@@ -1,46 +1,49 @@
-# Getting Started with Create React App
+# Identity Verification
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This repository contains the frontend code for the prebuilt web pages used in the Identity Verification module, which is deployed at https://cams.ultrapass.id/. Additionally, we provide sample React.js and Node.js/Express code that can be used to call the prebuilt web pages in this repository and perform identity verification.
 
-## Available Scripts
+## Code examples
 
-In the project directory, you can run:
+### Frontend
 
-### `npm start`
+```javascript
+function IdentityVerificationButton() {
+  const handleVerify = () => {
+    await fetch("https://my-server.com/session", { method: "POST" });
+  };
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+  return <button onClick={handleVerify}>Verify your identity</button>;
+}
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Backend
 
-### `npm test`
+```javascript
+import express from "express";
+import { createVerificationSession } from "@privateid/cryptonets-web-sdk";
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+const app = express();
+const PORT = process.env.PORT;
 
-### `npm run build`
+app.post("/session", (req, res) => {
+  const result = await createVerificationSession({
+    //(The URL to redirect to on success),
+    successUrl: "https://www.success.com",
+    // (The URL to redirect to on failure),
+    failureUrl: "https://www.failure.com",
+    // The type of session to create. Can be "IDENTITY" or "AGE"
+    type: "IDENTITY",
+    //(This is the API value for the product group associated with this session)
+    productGroupId: "process.env.MY_PRODUCT_GROUP_ID",
+  });
+  //result will be an object with the following structure {
+  // url:”https://cams.ultrapass.id?token=1223”
+  // }
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+  res.redirect(result.url);
+});
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+```

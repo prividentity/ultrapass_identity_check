@@ -1,8 +1,11 @@
+import { useEffect, useContext } from "react";
 import { Button, Divider, Grid, Typography } from "@mui/material";
 import { useStyles, styles } from "../../pages/register/styles";
 import { theme as Theme } from "../../theme";
 import { useNavigate } from "react-router";
 import ErrorIcon from "@mui/icons-material/Error";
+import { getStatusFromUser, SUCCESS } from "../../utils";
+import { UserContext } from "../../context/UserContext";
 
 const VerificationNotCompleted = ({
   setStep,
@@ -17,6 +20,16 @@ const VerificationNotCompleted = ({
   const classes = useStyles();
   const mainTheme = Theme;
   const palette: { [key: string]: any } = mainTheme.palette;
+  const context = useContext(UserContext);
+  useEffect(() => {
+    setTimeout(() => {
+      const status = getStatusFromUser(window.localStorage.getItem("user"));
+      const { successUrl } = context.verificationSession;
+      if (successUrl && status === SUCCESS) {
+        window.location.href = successUrl;
+      }
+    }, 2000);
+  }, []);
 
   return (
     <>
