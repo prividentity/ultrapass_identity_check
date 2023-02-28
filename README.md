@@ -1,6 +1,8 @@
 # Identity Verification(IGA)
 
-This repository includes the front-end code for pre-built web pages used in the Identity Verification module, which can be accessed at https://cams.ultrapass.id/. The repository also contains code examples for React.js and Node.js/Express that demonstrate how to call these pre-built web pages and perform identity verification.
+This repository includes the front-end code for pre-built web pages used in the Identity Verification module, which can be accessed at https://cams.ultrapass.id/. These pages are built with React.js, Material UI, TypeScript.
+
+The repository also contains code examples for React.js and Node.js/Express that demonstrate how to call these pre-built web pages and perform identity verification.
 
 To customize the verification session for your specific use case, you can update the configuration in [src/config.ts](src/config.ts). This file contains the configuration used to create the verification session and can be adjusted as needed.
 
