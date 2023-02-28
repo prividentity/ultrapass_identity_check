@@ -8,9 +8,11 @@ This repository contains the frontend code for the prebuilt web pages used in th
 
 ```javascript
 function IdentityVerificationButton(){
+
 const handleVerify = ()=>{
 await fetch("https://my-server.com/session", {method:"POST"})
 }
+
 return(
 <button onClick={handleVerify}>Verify your identity</button>
 )
@@ -19,8 +21,9 @@ return(
 
 ### Backend
 
-```
+```javascript
 import express from "express";
+
 import { createVerificationSession } from "@privateid/cryptonets-web-sdk";
 const app = express();
 const PORT = process.env.PORT
