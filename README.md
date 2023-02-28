@@ -1,6 +1,8 @@
 # Identity Verification
 
-This repository contains the frontend code for the prebuilt web pages used in the Identity Verification module, which is deployed at https://cams.ultrapass.id/. Additionally, React.js and Node.js/Express code examples are provided that can be used to call the prebuilt web pages in this repository and perform identity verification. In this application, [this file](src/config.ts) has the configuration used to create the verification session. This can be updated and adjusted for each particular usecase.
+This repository includes the front-end code for pre-built web pages used in the Identity Verification module, which can be accessed at https://cams.ultrapass.id/. The repository also contains code examples for React.js and Node.js/Express that demonstrate how to call these pre-built web pages and perform identity verification.
+
+To customize the verification session for your specific use case, you can update the configuration in [src/config.ts](src/config.ts). This file contains the configuration used to create the verification session and can be adjusted as needed.
 
 ## Testcases
 https://docs.google.com/document/d/1uY8ByiiWvXWRNp02wtQAoJqqINNoRR9p2M9znsApV3Q/edit#bookmark=id.bmhpnf16t9l4
