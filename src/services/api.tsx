@@ -15,10 +15,7 @@ export const sendMessage = async (payload: MessagePayload) => {
 
 export const createUser = async (payload: any) => {
   try {
-    const result = await cryptonetsAPI.post(
-      `/ultrapassage/create`,
-      payload
-    );
+    const result = await cryptonetsAPI.post(`/ultrapassage/create`, payload);
     return result;
   } catch (err) {
     return err;
@@ -36,10 +33,7 @@ export const getUser = async (payload: any) => {
 
 export const updateUserApi = async (payload: updatePayload) => {
   try {
-    const result = await cryptonetsAPI.post(
-      `/ultrapassage/update`,
-      payload
-    );
+    const result = await cryptonetsAPI.post(`/ultrapassage/update`, payload);
     return result;
   } catch (err) {
     return err;
@@ -48,10 +42,7 @@ export const updateUserApi = async (payload: updatePayload) => {
 
 export const deleteUserApi = async (payload: updatePayload) => {
   try {
-    const result = await cryptonetsAPI.post(
-      `/ultrapassage/delete`,
-      payload
-    );
+    const result = await cryptonetsAPI.post(`/ultrapassage/delete`, payload);
     return result;
   } catch (err) {
     return err;
@@ -69,15 +60,6 @@ export const createVerificationSession = async (
   }
 };
 
-export const verifyAge = async ({ id, payload }: any) => {
-  try {
-    const result = await identityAPI.post(`/verify-age/${id}`, payload);
-    return result;
-  } catch (err) {
-    return err;
-  }
-};
-
 export const verifyTokenApi = async (id: any) => {
   try {
     const result = await identityAPI.get(`/verification-session/${id}`);
@@ -86,7 +68,6 @@ export const verifyTokenApi = async (id: any) => {
     return err;
   }
 };
-
 
 export const verifyIdApi = async ({ id, payload }: any) => {
   try {
