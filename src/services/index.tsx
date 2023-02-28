@@ -1,9 +1,10 @@
 import axios from "axios";
 
 const axiosInt = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || "https://api.devel.cryptonets.ai/node",
+  baseURL:
+    process.env.REACT_APP_API_URL || "https://api.devel.cryptonets.ai/node",
   headers: {
-    "x-api-key": process.env.REACT_APP_API_KEY || "00000000000000001962",
+    "x-api-key": process.env.REACT_APP_API_KEY || "0000000000000000test",
   },
 });
 

@@ -5,7 +5,7 @@ const axiosInt = axios.create({
     process.env.REACT_APP_ORCHESTRATION_API_URL ||
     "https://api-orchestration.cams.devel.private.id/",
   headers: {
-    x_api_key: process.env.REACT_APP_API_KEY || "00000000000000001962",
+    x_api_key: process.env.REACT_APP_API_KEY || "0000000000000000test",
   },
 });
 
