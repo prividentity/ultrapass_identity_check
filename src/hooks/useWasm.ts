@@ -15,6 +15,7 @@ const useWasm = () => {
   };
 
   useEffect(() => {
+    if (ready) return;
     init();
   }, []);
 

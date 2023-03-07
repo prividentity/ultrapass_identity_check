@@ -30,7 +30,7 @@ interface props {
 }
 
 const Register = ({ theme, skin }: props) => {
-  // useWasm();
+
   const { showToast } = useToast();
   const context = useContext(UserContext);
   const navigate = useNavigate();
