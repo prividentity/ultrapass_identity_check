@@ -27,7 +27,7 @@ const useCamera = (
   const [device, setDevice] = useState("");
   const [faceMode, setFaceMode] = useState<any>(null);
   const [cameraFeatures, setCameraFeatures] = useState({});
-  const resolution = isMobile ? {width: 1600, height:1200} : undefined;
+  // const resolution = isMobile ? {width: 1600, height:1200} : undefined;
   const init = async () => {
     if (ready) return;
     try {
@@ -39,7 +39,7 @@ const useCamera = (
         stream,
         errorMessage,
         capabilities,
-      } = await openCamera(element, requireHD, null, requestFaceMode, resolution);
+      } = await openCamera(element, requireHD, null, requestFaceMode);
       setCameraFeatures({ settings, capabilities });
       setFaceMode(faceMode);
       console.log("hasError??", { status, errorMessage });
@@ -51,14 +51,14 @@ const useCamera = (
 
       console.log("???",devices)
       if(devices?.length === 0){
-        onCameraFail(); 
+        onCameraFail();
         console.log("no camera")
       }
       else{
         setReady(true);
       }
     } catch (e) {
-      onCameraFail(); 
+      onCameraFail();
       console.log("Error Message", e);
     }
     const setCameraFocus = async () => {
