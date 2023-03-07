@@ -20,6 +20,7 @@ import DlFront from "../../assets/dl-front.png";
 import DlBack from "../../assets/Hand-DL-Back.png";
 import { UserContext } from "../../context/UserContext";
 import {
+  closeCamera,
   updateUser,
   uploadDL,
 } from "@privateid/cryptonets-web-sdk-alpha";
@@ -90,6 +91,7 @@ const DLScan = ({
         uploadCroppedDocumentImage &&
         uploadCroppedMugshotImage
       ) {
+        await closeCamera(undefined);
         setIsLoading(true);
         setTimeout(() => {
           setIsUserVerify(true);

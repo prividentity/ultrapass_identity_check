@@ -14,7 +14,7 @@ const ScanFrontDocument = ({
   onReadyCallback: (e: boolean) => void;
   onFailCallback: (e: { status: string; message: string }) => void;
   onCameraFail: (e: any) => void;
-  userUUID : string,
+  userUUID: string;
 }) => {
   const [canvasSize, setCanvasSize] = useState();
 
@@ -22,10 +22,10 @@ const ScanFrontDocument = ({
     onSuccess?.(result);
     console.log("FRONT SCAN DATA: ", result);
   };
-  const { scanFrontDocument } = useScanFrontDocument(
+  const { scanFrontDocument, resultResponse } = useScanFrontDocument(
     handleFrontSuccess,
     onFailCallback,
-    userUUID,
+    userUUID
   ) as any;
   const handleCallbackFromCanvasSizeChange = (size: any) => {
     setCanvasSize(size);
@@ -52,6 +52,11 @@ const ScanFrontDocument = ({
         style={{ height: "unset" }}
         mode={"back"}
         requireHD={false}
+        message={
+          resultResponse?.op_status
+            ? resultResponse?.op_message
+            : resultResponse?.predict_message
+        }
       ></Camera>
     </div>
   );

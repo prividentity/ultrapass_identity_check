@@ -1,7 +1,8 @@
 import { CircularProgress, MenuItem, Select } from "@mui/material";
 import { switchCamera } from "@privateid/cryptonets-web-sdk-alpha";
 import React, { useEffect, useState } from "react";
-import { useCamera, useWasm } from "../../hooks";
+import useCamera from "../../hooks/useCamera";
+import useWasm from "../../hooks/useWasm";
 import styles from "../../styles/Home.module.css";
 import {
   CANVAS_SIZE,
@@ -29,8 +30,13 @@ const Camera = ({
   const { ready: wasmReady } = useWasm();
   const { isCameraGranted } = useCameraPermissions(onReadyCallback);
   const elementId = "userVideo";
-  const classes = useStyles()
-  const { ready, init, device, devices } = useCamera(elementId, mode,requireHD, onCameraFail);
+  const classes = useStyles();
+  const { ready, init, device, devices } = useCamera(
+    elementId,
+    mode,
+    requireHD,
+    onCameraFail
+  );
 
   const [deviceId, setDeviceId] = useState(device);
 
@@ -60,8 +66,6 @@ const Camera = ({
     console.log("--- wasm status ", ready);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wasmReady, ready, isCameraGranted]);
-
-
 
   const handleSwitchCamera = async (e: any) => {
     setDeviceId(e.target.value);
@@ -175,9 +179,7 @@ const Camera = ({
           <span> {message} </span>
         </div>
       )}
-      {
-        ready ? <div className={classes.documentBarCodeOverlay} /> : null
-      }
+      {ready ? <div className={classes.documentBarCodeOverlay} /> : null}
       <video
         id="userVideo"
         className={`
