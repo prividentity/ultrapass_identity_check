@@ -27,7 +27,6 @@ const useEnrollOneFa = (
     // eslint-disable-next-line no-unused-vars
     await enroll1FA(callback, {
       input_image_format: "rgba",
-      send_original_images: false,
     });
   };
 
@@ -97,6 +96,11 @@ const useEnrollOneFa = (
         setFaceDetected(true);
         break;
       case "WASM_RESPONSE":
+        if(result.returnValue?.error === -1 || result.returnValue?.error === -100 || result.returnValue?.status === -1 || result.returnValue?.status === -100) {
+          setEnrollStatus("ENROLL FAILED, PLEASE TRY AGAIN");
+          enrollUserOneFa();
+          return
+        }
         if (result.returnValue?.status === 0) {
           setEnrollStatus("ENROLL SUCCESS");
           setEnrollData(result.returnValue);
@@ -104,14 +108,14 @@ const useEnrollOneFa = (
           setEnrollUUID(result.returnValue.PI.uuid);
           // updateUser(result.returnValue.PI.guid,result.returnValue.PI.uuid);
         }
-        if (result.returnValue?.status === -1) {
-          if (tries === retryTimes) {
-            // onFailure();
-          } else {
-            tries += 1;
-            // enrollUserOneFa();
-          }
-        }
+        // if (result.returnValue?.status === -1) {
+        //   if (tries === retryTimes) {
+        //     // onFailure();
+        //   } else {
+        //     tries += 1;
+        //     // enrollUserOneFa();
+        //   }
+        // }
         break;
       default:
     }
