@@ -1,17 +1,13 @@
 import { ThemeProvider } from "@mui/material/styles";
 import { SnackbarProvider } from "notistack";
 import { RouterProvider } from "react-router-dom";
-import { localThemes, theme, backgroundImages } from "./theme";
+import { theme, backgroundImages } from "./theme";
 import "./App.css";
 import router from "./routes";
 import UserContextProvider from "./context/UserContext";
-
+import { useSkinContext } from "./context/SkinContext";
 function App() {
-  const skin = localThemes?.includes(
-    window?.location?.search?.split("skin=")[1]
-  )
-    ? window?.location?.search?.split("skin=")[1]
-    : "primary";
+  const { skin } = useSkinContext();
   const backgroundImage: { [key: string]: any } = backgroundImages;
 
   return (
