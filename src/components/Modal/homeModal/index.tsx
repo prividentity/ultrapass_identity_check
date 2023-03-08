@@ -35,7 +35,7 @@ const HomeModal = (props: props) => {
       ? searchParams.get("skin")
       : "up"
   ) as string;
-  const logoDark = (logos as any)[skin].dark;
+  const logoDark = skin === "c1" ? (logos as any)[skin].dark : centralLogo;
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
   return (
     <Dialog
@@ -60,7 +60,7 @@ const HomeModal = (props: props) => {
           {matchesSM ? null : (
             <div style={{ backgroundColor: "#ffffff" }}>
               <img
-                src={centralLogo}
+                src={logoDark}
                 alt=""
                 width={100}
                 height={40}

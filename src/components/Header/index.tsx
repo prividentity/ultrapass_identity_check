@@ -57,7 +57,7 @@ const Header = (props: props) => {
         <img
           src={!matchesSM ? Logos?.[skin].dark : Logos?.[skin].light}
           alt=""
-          width={140}
+          width={skin === "c1" ? 120 : 140}
           onClick={() => navigate("/")}
           style={{ cursor: "pointer" }}
           className="headerLogo"
