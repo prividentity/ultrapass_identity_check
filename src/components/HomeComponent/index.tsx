@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Box,
   Typography,
@@ -155,7 +155,7 @@ const HomeComponent = ({ theme, skin }: props) => {
               letterSpacing={"1px"}
               className={classes.homeHeading}
             >
-              CAMS UltraPass ID
+              UltraPass ID
             </Typography>
             <Typography
               component="p"

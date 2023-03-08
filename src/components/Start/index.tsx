@@ -4,8 +4,8 @@ import { useStyles, styles } from "../../pages/register/styles";
 import { theme as Theme } from "../../theme";
 
 import smallLock from "../../assets/smallLock.png";
-import { name } from "platform";
 import STEPS from "../../pages/register/steps";
+import { nameMap } from "../../theme";
 
 const Start = ({
   setStep,
@@ -49,8 +49,8 @@ const Start = ({
           mt={2}
           className={classes.cardInnerHeading}
         >
-          Station Casinos partners with CentralAMS Ultrapass for secure, private
-          verified identity.
+          {nameMap[skin] || "Stations Casino"} partners with Ultrapass for
+          secure, private verified identity.
         </Typography>
         <Typography
           component="p"
@@ -72,7 +72,7 @@ const Start = ({
           color={"#333"}
           className={classes.cardInnerText}
         >
-          How will CentralAMS Ultrapass verify your identity?
+          How will Ultrapass verify your identity?
         </Typography>
         <Typography
           component="p"
@@ -82,10 +82,10 @@ const Start = ({
           mt={0}
           className={classes.cardInnerText}
         >
-          CentralAMS Ultrapass will use your selfie and Photo ID to check your
-          identity. CentralAMS will check third-party and data providers and
-          governments to prevent fraud. Data will be strictly processed
-          according to the CentralAMS Privacy Policy.
+          Ultrapass will use your selfie and Photo ID to check your identity.
+          will check third-party and data providers and governments to prevent
+          fraud. Data will be strictly processed according to the Privacy
+          Policy.
         </Typography>
       </Grid>
       <Grid>

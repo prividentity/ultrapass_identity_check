@@ -1,7 +1,7 @@
 import { useEffect, useContext } from "react";
 import { Button, Divider, Grid, Typography } from "@mui/material";
 import { useStyles, styles } from "../../pages/register/styles";
-import { theme as Theme } from "../../theme";
+import { theme as Theme, nameMap } from "../../theme";
 import { useNavigate } from "react-router";
 import ErrorIcon from "@mui/icons-material/Error";
 import { getStatusFromUser, SUCCESS } from "../../utils";
@@ -58,7 +58,7 @@ const VerificationNotCompleted = ({
           mt={2}
           className={classes.cardInnerHeading}
         >
-          Please visit a Station Casino location to complete your registration.
+          Please visit a {nameMap[skin]} location to complete your registration.
         </Typography>
       </Grid>
       <Grid style={{ marginBottom: 50 }}>

@@ -11,11 +11,10 @@ import {
   useTheme,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import stationLogo from "../../../assets/stations.png";
 import centralLogo from "../../../assets/centralLogo.png";
 import { useStyles } from "./styles";
-import { localThemes, logos } from "../../../theme";
-import { useSearchParams } from "react-router-dom";
+import { logos } from "../../../theme";
+import { useSkinContext } from "../../../context/SkinContext";
 
 interface props {
   open: boolean;
@@ -29,12 +28,8 @@ const HomeModal = (props: props) => {
   const { open, handleClose } = props;
   const classes = useStyles();
   const muiTheme = useTheme();
-  const [searchParams] = useSearchParams();
-  const skin = (
-    localThemes.includes(searchParams.get("skin") as string)
-      ? searchParams.get("skin")
-      : "up"
-  ) as string;
+
+  const { skin } = useSkinContext();
   const logoDark = skin === "c1" ? (logos as any)[skin].dark : centralLogo;
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
   return (
@@ -47,6 +42,11 @@ const HomeModal = (props: props) => {
       id="homeModal"
       className={classes.modal}
       fullScreen={true}
+      sx={{
+        "& .MuiDialog-paper": {
+          boxShadow: "none",
+        },
+      }}
     >
       <Box
         mt={matchesSM ? 0 : 3}
@@ -76,8 +76,12 @@ const HomeModal = (props: props) => {
         <Grid sx={{ position: "absolute" }} className={classes.footer}>
           <ListItem>
             Powered by Ultrapass.
-            <Link className={classes.linkbox}>Privacy</Link>
-            <Link className={classes.linkbox}>Terms of Service</Link>
+            {/* <Link color={"#000"} className={classes.linkbox}>
+              Privacy
+            </Link>
+            <Link color={"#000"} className={classes.linkbox}>
+              Terms of Service
+            </Link> */}
           </ListItem>
         </Grid>
       </Box>

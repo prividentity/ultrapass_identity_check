@@ -34,9 +34,7 @@ const Header = (props: props) => {
   const { isCameraGranted } = useCameraPermissions();
   const { theme } = props;
   const muiTheme = useTheme();
-  const matchesSM =
-    useMediaQuery(muiTheme.breakpoints.down("sm")) &&
-    window?.location?.pathname === "/register";
+  const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
   const Logos: { [key: string]: any } = logos;
   const { skin } = useSkinContext();
   const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -127,7 +125,15 @@ const Header = (props: props) => {
   const { onDeleteUser } = useDelete(useDeleteCallback);
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" style={wrapper}>
+      <AppBar
+        position="fixed"
+        style={{
+          ...wrapper,
+          borderBottom: skin === "c1" ? "none" : "inherit",
+          backgroundColor: skin === "c1" ? "white" : "inherit",
+          zIndex: matchesSM ? 9999999 : "inherit",
+        }}
+      >
         <Toolbar>
           {renderHeaderImage()}
           <Grid container alignItems="center" justifyContent={"flex-end"}>
@@ -224,12 +230,15 @@ const Header = (props: props) => {
                   <Button
                     color={theme as "inherit"}
                     variant="contained"
-                    sx={{ textTransform: "unset" }}
                     style={styles.signupButton}
                     className={`${classes.headerButton} ${
                       matchesSM ? classes.headerButtonMobile : ""
                     }`}
                     onClick={onSignInClick}
+                    sx={{
+                      textTransform: "unset",
+                      color: skin === "c1" ? "black" : undefined,
+                    }}
                   >
                     Sign in
                   </Button>

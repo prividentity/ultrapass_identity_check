@@ -73,7 +73,6 @@ export const useStyles = makeStyles((theme: any) => ({
   },
   footer: {
     bottom: 20,
-    color: "rgb(213, 209, 209)",
     "@media (max-width: 1400px)": {
       bottom: "-43px",
     },
@@ -88,7 +87,6 @@ export const useStyles = makeStyles((theme: any) => ({
   },
   linkbox: {
     marginLeft: "15px !important",
-    color: "rgb(213, 209, 209) !important",
     textDecoration: "unset  !important",
     cursor: "pointer",
     fontSize: 16,

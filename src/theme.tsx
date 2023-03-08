@@ -62,6 +62,7 @@ export const theme = createTheme({
       background: "#7f7f82",
       bg: "#7f7f82",
       text: "#fff",
+      contrastText: "#000",
       mainBackground: "#000",
       listText: "#000",
     },
@@ -97,7 +98,7 @@ export const theme = createTheme({
       secondaryColor: "#F42C24",
       background: "#7f7f82",
       bg: "#7f7f82",
-      text: "#fff",
+      text: "#000",
       mainBackground: "#000",
       listText: "#000",
     },
@@ -213,4 +214,5 @@ export const headerVisible = ["primary", "mg", "up", "c1"];
 
 export const backgroundImages = {
   google: google,
+  c1: "https://ecm.capitalone.com/WCM/homepage/testing/photos/hero/bank/rbt-360savings-jeremy-desktop-jan2023/rtablet.jpg",
 };

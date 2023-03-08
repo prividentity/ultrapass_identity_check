@@ -9,14 +9,17 @@ interface props {
 }
 const Home = ({ theme, skin }: props) => {
   const themeName = skin || "primary";
+  console.log(themeName, "themeName");
   return (
     <>
       {headerVisible?.includes(skin) && <Header theme={themeName} />}
       <div className="homePageWrapper homeComponent">
         <HomeComponent theme={theme} skin={skin} />
-        <div className="homeSidebarImg">
-          <img src={womenImg} alt="women" />
-        </div>
+        {themeName !== "c1" && (
+          <div className="homeSidebarImg">
+            <img src={womenImg} alt="women" />
+          </div>
+        )}
       </div>
     </>
   );

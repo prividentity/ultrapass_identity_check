@@ -11,7 +11,6 @@ export const styles = {
   loginButton: { marginRight: 10 },
   homelogo: { marginLeft: 20, marginRight: 20 },
   homeBar: {
-    zIndex: 9999999,
     backgroundColor: "transparent",
     borderBottom: "1px solid rgb(118 115 115)",
     boxShadow: "none",
@@ -19,7 +18,6 @@ export const styles = {
   signupButton: {
     background: "transparent",
     border: "2px solid rgb(100 98 98)",
-    color: "rgb(213 209 209)",
     marginRight: 5,
     minWidth: "100px",
     lineHeight: 1.25,
@@ -62,7 +60,7 @@ export const useStyles = makeStyles((theme: any) => ({
       margin: "0 20px 5px 0",
       minWidth: 300,
       border: `3px solid ${palette[skin]?.main} !important`,
-      color: `${palette[skin]?.text} !important`,
+      color: `white !important`,
     },
   },
   scanLoader: {
@@ -71,7 +69,7 @@ export const useStyles = makeStyles((theme: any) => ({
     marginBottom: "2px",
     marginRight: "0px",
     [theme.breakpoints.between("xs", "sm")]: {
-      color: `${palette[skin]?.text} !important`
-    }
+      color: `${palette[skin]?.text} !important`,
+    },
   },
 }));

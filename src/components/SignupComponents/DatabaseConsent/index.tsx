@@ -92,13 +92,13 @@ const DatabaseConsent = (props: props) => {
                 </ListItem>
                 <ListItem className={classes.listText}>
                   Ultrapass and our third-party enrollment and identity proofing
-                  service provider Central Account Management Services LLC and
-                  its contract providers may share, use and maintain the images
-                  and information you provide, and the information on file with
-                  other third-party service providers or governments, to further
-                  verify your age or identity, to protect against or prevent
-                  actual or potential fraud or unauthorized use of the Service
-                  for the duration of our business relationship.
+                  service provider and its contract providers may share, use and
+                  maintain the images and information you provide, and the
+                  information on file with other third-party service providers
+                  or governments, to further verify your age or identity, to
+                  protect against or prevent actual or potential fraud or
+                  unauthorized use of the Service for the duration of our
+                  business relationship.
                 </ListItem>
                 <ListItem className={classes.listText}>
                   I have read and agreed to the Ultrapass Terms of Service and
