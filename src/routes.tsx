@@ -8,8 +8,8 @@ import Register from "./pages/register";
 
 const skin = localThemes?.includes(window?.location?.search?.split("skin=")[1])
   ? window?.location?.search?.split("skin=")[1]
-  : "primary";
-const themeName = skin || "primary";
+  : "c1";
+const themeName = skin || "c1";
 
 const router = createBrowserRouter([
   {

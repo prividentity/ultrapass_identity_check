@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Box,
   Typography,
@@ -48,12 +48,17 @@ const HomeComponent = ({ theme, skin }: props) => {
   const onFlowChange = (flow: number, token: string) => {
     switch (flow) {
       case 1:
-        return navigate({
-          pathname: "/register",
-          search: createSearchParams({
-            token: token || "",
-          }).toString(),
-        });
+        // navigate({
+        //   pathname: "/register",
+        //   search: createSearchParams({
+        //     token: token || "",
+        //     skin: skin || "",
+        //   }).toString(),
+
+        // change this from navigate to using window.location.href
+        window.location.href = `/register?token=${token}&skin=${skin}`;
+        break;
+      // });
       case 2:
         return navigate({
           pathname: "/register",
@@ -150,7 +155,7 @@ const HomeComponent = ({ theme, skin }: props) => {
               letterSpacing={"1px"}
               className={classes.homeHeading}
             >
-              CAMS UltraPass ID
+              UltraPass ID
             </Typography>
             <Typography
               component="p"
@@ -169,7 +174,11 @@ const HomeComponent = ({ theme, skin }: props) => {
               {matchesSM ? null : (
                 <Button
                   style={styles.ageLearnMoreButton}
-                  sx={{ textTransform: "unset", textAlign: "center", width: 300 }}
+                  sx={{
+                    textTransform: "unset",
+                    textAlign: "center",
+                    width: 300,
+                  }}
                   className={classes.buttonsWrapButton}
                 >
                   Go for a test drive!

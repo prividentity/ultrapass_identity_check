@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import smallLock from "../../../assets/smallLock.png";
 import { styles, useStyles } from "../../../pages/signup/styles";
-import {theme as Theme} from "../../../theme";
+import { theme as Theme, nameMap } from "../../../theme";
 
 interface props {
   theme: string;
@@ -19,12 +19,7 @@ interface props {
 }
 
 const CannotVerify = (props: props) => {
-  const {
-    skin,
-    navigateToUrl,
-    setStep,
-    prevStep,
-  } = props;
+  const { skin, navigateToUrl, setStep, prevStep } = props;
   const muiTheme = useTheme();
 
   const mainTheme = Theme;
@@ -66,7 +61,7 @@ const CannotVerify = (props: props) => {
           fontWeight={500}
           mt={7}
         >
-          Station Casinos cannot verify your identity
+          {nameMap[skin] || "Stations"} cannot verify your identity
           <br /> without your consent.
         </Typography>
       </Grid>
@@ -94,7 +89,7 @@ const CannotVerify = (props: props) => {
         variant="text"
         color={"inherit"}
         style={styles.textButton}
-        onClick={() => navigateToUrl( 'someFailureUrl')}
+        onClick={() => navigateToUrl("someFailureUrl")}
       >
         <Typography
           component="p"

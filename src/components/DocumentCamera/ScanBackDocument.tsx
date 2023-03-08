@@ -2,6 +2,7 @@ import { useState } from "react";
 import styles from "../../styles/Home.module.css";
 import Camera from "../Camera";
 import useScanBackDocument from "../../hooks/useScanBackDocument";
+import { getBackDocumentMessage } from "../../constants";
 
 const ScanBackDocument = ({
   onSuccess,
@@ -20,7 +21,9 @@ const ScanBackDocument = ({
   const handleBackSuccess = (result: any) => {
     onSuccess?.(result);
   };
-  const { scanBackDocument } = useScanBackDocument(handleBackSuccess) as any;
+  const { scanBackDocument, barcodeStatusCode } = useScanBackDocument(
+    handleBackSuccess
+  ) as any;
   const handleScanDocumentBack = async (e: boolean) => {
     onReadyCallback?.(e);
     if (e) {
@@ -34,7 +37,7 @@ const ScanBackDocument = ({
   };
 
   return (
-    <div id="canvasInput" className={`${styles.container} documentCamera`}>     
+    <div id="canvasInput" className={`${styles.container} documentCamera`}>
       <Camera
         handleCanvasSizeChange={handleCallbackFromCanvasSizeChange}
         onSwitchCamera={handleScanDocumentBack}
@@ -43,6 +46,7 @@ const ScanBackDocument = ({
         style={{ height: "unset" }}
         mode={"back"}
         requireHD={false}
+        message={getBackDocumentMessage(barcodeStatusCode)}
       ></Camera>
     </div>
   );

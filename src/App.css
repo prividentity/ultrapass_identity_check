@@ -120,7 +120,7 @@ body {
 
 .googleBackground {
   position: absolute;
-  z-index: 1;
+  /* z-index: 1; */
 }
 
 /* Spinner Loader */
@@ -240,7 +240,7 @@ body {
   .homeComponent > div {
     height: 100%;
   }
-  .centralLogo{
+  .centralLogo {
     width: 90px;
     margin-left: auto;
     height: 35px;

@@ -63,24 +63,50 @@ const DatabaseConsent = (props: props) => {
               pl: 2,
             }}
           >
-            <ListItem className={classes.listText}>
-              I acknowledge I am over 18 years of age and all information I
-              provided is accurate.
-            </ListItem>
-            <ListItem className={classes.listText}>
-              Ultrapass and our third-party enrollment and identity proofing
-              service provider Central Account Management Services LLC and its
-              contract providers may share, use and maintain the images and
-              information you provide, and the information on file with other
-              third-party service providers or governments, to further verify
-              your age or identity, to protect against or prevent actual or
-              potential fraud or unauthorized use of the Service for the
-              duration of our business relationship.
-            </ListItem>
-            <ListItem className={classes.listText}>
-              I have read and agreed to the Ultrapass Terms of Service and
-              Privacy Policy and Ultrapass Terms of Service and Privacy Policy.
-            </ListItem>
+            {skin === "c1" ? (
+              <>
+                <ListItem className={classes.listText}>
+                  I acknowledge I am over 18 years of age and all information I
+                  provided is accurate.
+                </ListItem>
+                <ListItem className={classes.listText}>
+                  Capital One and our third-party enrollment and identity
+                  proofing service provider Private ID and its contract
+                  providers may share, use and maintain the images and
+                  information you provide, and the information on file with
+                  other third-party service providers or governments, to further
+                  verify your age or identity, to protect against or prevent
+                  actual or potential fraud or unauthorized use of the Service
+                  for the duration of our business relationship.
+                </ListItem>
+                <ListItem className={classes.listText}>
+                  I have read and agreed to the Capital One Terms of Service and
+                  Privacy Policy.
+                </ListItem>
+              </>
+            ) : (
+              <>
+                <ListItem className={classes.listText}>
+                  I acknowledge I am over 18 years of age and all information I
+                  provided is accurate.
+                </ListItem>
+                <ListItem className={classes.listText}>
+                  Ultrapass and our third-party enrollment and identity proofing
+                  service provider and its contract providers may share, use and
+                  maintain the images and information you provide, and the
+                  information on file with other third-party service providers
+                  or governments, to further verify your age or identity, to
+                  protect against or prevent actual or potential fraud or
+                  unauthorized use of the Service for the duration of our
+                  business relationship.
+                </ListItem>
+                <ListItem className={classes.listText}>
+                  I have read and agreed to the Ultrapass Terms of Service and
+                  Privacy Policy and Ultrapass Terms of Service and Privacy
+                  Policy.
+                </ListItem>
+              </>
+            )}
           </List>
         </Card>
       </Grid>

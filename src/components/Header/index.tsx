@@ -11,7 +11,6 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { useNavigate } from "react-router";
-import logo from "../../assets/logo.png";
 import logoBlack from "../../assets/centralLogo.png";
 import { styles, useStyles } from "./styles";
 import useDelete from "../../hooks/useDelete";
@@ -23,9 +22,10 @@ import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import config from "../../config";
-import { createSearchParams, useSearchParams } from "react-router-dom";
-import { localThemes, logos } from "../../theme";
+import { createSearchParams } from "react-router-dom";
+import { logos } from "../../theme";
 import useCameraPermissions from "../../hooks/useCameraPermissions";
+import { useSkinContext } from "../../context/SkinContext";
 
 interface props {
   theme?: string;
@@ -34,13 +34,9 @@ const Header = (props: props) => {
   const { isCameraGranted } = useCameraPermissions();
   const { theme } = props;
   const muiTheme = useTheme();
-  const [searchParams] = useSearchParams();
-  const matchesSM =
-    useMediaQuery(muiTheme.breakpoints.down("sm")) &&
-    window?.location?.pathname === "/register";
+  const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
   const Logos: { [key: string]: any } = logos;
-  const skinQueryParam = searchParams.get("skin") as string;
-  const skin = localThemes?.includes(skinQueryParam) ? skinQueryParam : "up";
+  const { skin } = useSkinContext();
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const uuid = JSON.parse(localStorage.getItem("uuid") || "{}");
   const { showToast } = useToast();
@@ -57,7 +53,7 @@ const Header = (props: props) => {
         <img
           src={!matchesSM ? Logos?.[skin].dark : Logos?.[skin].light}
           alt=""
-          width={140}
+          width={skin === "c1" ? 120 : 140}
           onClick={() => navigate("/")}
           style={{ cursor: "pointer" }}
           className="headerLogo"
@@ -129,7 +125,15 @@ const Header = (props: props) => {
   const { onDeleteUser } = useDelete(useDeleteCallback);
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" style={wrapper}>
+      <AppBar
+        position="fixed"
+        style={{
+          ...wrapper,
+          borderBottom: skin === "c1" ? "none" : "inherit",
+          backgroundColor: skin === "c1" ? "white" : "inherit",
+          zIndex: matchesSM ? 9999999 : "inherit",
+        }}
+      >
         <Toolbar>
           {renderHeaderImage()}
           <Grid container alignItems="center" justifyContent={"flex-end"}>
@@ -226,12 +230,15 @@ const Header = (props: props) => {
                   <Button
                     color={theme as "inherit"}
                     variant="contained"
-                    sx={{ textTransform: "unset" }}
                     style={styles.signupButton}
                     className={`${classes.headerButton} ${
                       matchesSM ? classes.headerButtonMobile : ""
                     }`}
                     onClick={onSignInClick}
+                    sx={{
+                      textTransform: "unset",
+                      color: skin === "c1" ? "black" : undefined,
+                    }}
                   >
                     Sign in
                   </Button>

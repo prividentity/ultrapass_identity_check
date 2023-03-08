@@ -13,6 +13,9 @@ import homeLogo from "./assets/homeLogo.png";
 import logoDarkUp from "./assets/up/logo-dark.png";
 import logoLightUp from "./assets/up/logo-light.png";
 import logoLightMg from "./assets/mg/logo-light.png";
+import logoDarkC1 from "./assets/c1/logo-dark.png";
+import logoLightC1 from "./assets/c1/logo-light.png";
+
 interface ColorThemePalette extends PaletteOptions {
   betmgm: {
     main: string;
@@ -59,6 +62,7 @@ export const theme = createTheme({
       background: "#7f7f82",
       bg: "#7f7f82",
       text: "#fff",
+      contrastText: "#000",
       mainBackground: "#000",
       listText: "#000",
     },
@@ -83,6 +87,18 @@ export const theme = createTheme({
       background: "#7f7f82",
       bg: "#7f7f82",
       text: "#fff",
+      mainBackground: "#000",
+      listText: "#000",
+    },
+    c1: {
+      main: "#044C7C",
+      primaryColor: "#044C7C",
+      primaryColorHover: "#cebe95",
+      primaryColorActive: "#8e7e55",
+      secondaryColor: "#F42C24",
+      background: "#7f7f82",
+      bg: "#7f7f82",
+      text: "#000",
       mainBackground: "#000",
       listText: "#000",
     },
@@ -169,6 +185,10 @@ export const logos = {
     dark: logoDarkMg,
     light: logoLightMg,
   },
+  c1: {
+    dark: logoLightC1,
+    light: logoLightC1,
+  },
 };
 
 export const logoSize = {
@@ -186,11 +206,13 @@ export const logoSize = {
 export const nameMap: Record<string, string> = {
   mg: "Pornhub",
   up: "Ultrapass",
+  c1: "Capital One",
 };
-export const localThemes = ["mg", "up"];
+export const localThemes = ["mg", "up", "c1"];
 
-export const headerVisible = ["primary", "mg", "up"];
+export const headerVisible = ["primary", "mg", "up", "c1"];
 
 export const backgroundImages = {
   google: google,
+  c1: "https://ecm.capitalone.com/WCM/homepage/testing/photos/hero/bank/rbt-360savings-jeremy-desktop-jan2023/rtablet.jpg",
 };
