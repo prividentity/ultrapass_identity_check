@@ -49,6 +49,7 @@ const DLScan = ({
   const [isUserVerify, setIsUserVerify] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [hasNoCamera, setHasNoCamera] = useState(false);
   const [isBarcodeScan, setIsBarcodeScan] = useState(false);
 
@@ -65,44 +66,48 @@ const DLScan = ({
     const { inputImage, croppedDocument, croppedMugshot, documentUUID } =
       result;
     console.log({ inputImage, croppedDocument, croppedMugshot, documentUUID });
+    setIsUploading(true);
     // if(documentUUID){
-    if (documentUUID === uuid) {
-      const uploadImageInput = await uploadDL({
-        id,
-        type: DLType.FRONTDLORIGINAL,
-        image: inputImage,
-      });
-      console.log("uploadImageInput: ", uploadImageInput);
-      const uploadCroppedDocumentImage = await uploadDL({
-        id,
-        type: DLType.FRONTDLCROPPED,
-        image: croppedDocument,
-      });
-      console.log("uploadCroppedDocumentImage: ", uploadCroppedDocumentImage);
-      const uploadCroppedMugshotImage = await uploadDL({
-        id,
-        type: DLType.FRONTDLHEADSHOT,
-        image: croppedMugshot,
-      });
-      console.log("uploadCroppedMugshotImage: ", uploadCroppedMugshotImage);
+    setTimeout(async () => {
+      if (documentUUID === uuid) {
+        const uploadImageInput = await uploadDL({
+          id,
+          type: DLType.FRONTDLORIGINAL,
+          image: inputImage,
+        });
+        console.log("uploadImageInput: ", uploadImageInput);
+        const uploadCroppedDocumentImage = await uploadDL({
+          id,
+          type: DLType.FRONTDLCROPPED,
+          image: croppedDocument,
+        });
+        console.log("uploadCroppedDocumentImage: ", uploadCroppedDocumentImage);
+        const uploadCroppedMugshotImage = await uploadDL({
+          id,
+          type: DLType.FRONTDLHEADSHOT,
+          image: croppedMugshot,
+        });
+        console.log("uploadCroppedMugshotImage: ", uploadCroppedMugshotImage);
 
-      if (
-        uploadImageInput &&
-        uploadCroppedDocumentImage &&
-        uploadCroppedMugshotImage
-      ) {
-        await closeCamera(undefined);
-        setIsLoading(true);
-        setTimeout(() => {
-          setIsUserVerify(true);
-        }, 2000);
-        setTimeout(() => {
-          setIsLoading(false);
-          setIsUserVerify(false);
-          setIsBackScan(true);
-        }, 4000);
+        if (
+          uploadImageInput &&
+          uploadCroppedDocumentImage &&
+          uploadCroppedMugshotImage
+        ) {
+          await closeCamera(undefined);
+          setIsLoading(true);
+          setTimeout(() => {
+            setIsUserVerify(true);
+          }, 2000);
+          setTimeout(() => {
+            setIsLoading(false);
+            setIsUserVerify(false);
+            setIsBackScan(true);
+          }, 4000);
+        }
       }
-    }
+      setIsUploading(false);
+    }, 1000);
   };
 
   const onFailScanFrontScan = ({
@@ -178,12 +183,14 @@ const DLScan = ({
     setIsLoading(true);
     setTimeout(() => {
       setIsUserVerify(true);
-    }, 2000)
+      setIsUploading(true);
+    }, 2000);
     setTimeout(() => {
       setIsLoading(false);
       setIsUserVerify(false);
+      setIsUploading(false);
       onSuccess && onSuccess();
-    }, 4000)
+    }, 4000);
   };
 
   const onCameraNotGranted = (e: boolean) => {
@@ -291,8 +298,8 @@ const DLScan = ({
             textAlign="center"
             fontSize={14}
             fontWeight={500}
-            mt={1}
-            mb={2}
+            mt={0}
+            mb={1}
           >
             {isBarcodeScan
               ? "Place the bar code in the safe area"
@@ -301,6 +308,26 @@ const DLScan = ({
               : "Place the FRONT of your ID towards the camera"}
           </Typography>
         )}
+
+        <Typography
+          align="center"
+          fontSize={13}
+          fontWeight={700}
+          mt={0}
+          mb={0}
+          display={"flex"}
+          alignItems="center"
+          justifyContent={"center"}
+        >
+          <CircularProgress className={classes.progressBar} />
+          {isUploading && isBackScan
+            ? "Uploading back document"
+            : isUploading && !isBackScan
+            ? "Uploading front document"
+            : isBackScan
+            ? "Scanning back document"
+            : "Scanning front document"}
+        </Typography>
 
         <Box className={classes.otherDevice} pl={3} mb={1}>
           <Typography
