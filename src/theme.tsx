@@ -208,7 +208,7 @@ export const nameMap: Record<string, string> = {
   up: "Ultrapass",
   c1: "Capital One",
 };
-export const localThemes = ["mg", "up", "c1"];
+export const localThemes = ["mg", "up", "c1", "primary"];
 
 export const headerVisible = ["primary", "mg", "up", "c1"];
 
