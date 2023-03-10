@@ -16,7 +16,7 @@ export const SkinContextProvider = ({
   const [skin, setSkin] = React.useState(
     localThemes?.includes(window?.location?.search?.split("skin=")[1])
       ? window?.location?.search?.split("skin=")[1]
-      : "c1"
+      : "primary"
   );
 
   React.useEffect(() => {
