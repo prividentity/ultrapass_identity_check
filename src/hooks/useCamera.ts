@@ -27,7 +27,7 @@ const useCamera = (
   const [device, setDevice] = useState("");
   const [faceMode, setFaceMode] = useState<any>(null);
   const [cameraFeatures, setCameraFeatures] = useState({});
-  const enableHDMode = isMobile && requireHD;
+  const enableHDMode = requireHD;
   const init = async () => {
     if (ready) return;
     try {
