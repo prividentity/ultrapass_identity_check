@@ -45,7 +45,7 @@ const ScanBackDocument = ({
         onCameraFail={onCameraFail}
         style={{ height: "unset" }}
         mode={"back"}
-        requireHD={false}
+        requireHD={true}
         message={getBackDocumentMessage(barcodeStatusCode)}
       ></Camera>
     </div>

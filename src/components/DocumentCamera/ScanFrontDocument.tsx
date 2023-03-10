@@ -51,7 +51,7 @@ const ScanFrontDocument = ({
         onCameraFail={onCameraFail}
         style={{ height: "unset" }}
         mode={"back"}
-        requireHD={false}
+        requireHD={true}
         message={
           resultResponse?.op_status
             ? resultResponse?.op_message
