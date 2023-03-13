@@ -131,7 +131,7 @@ const Header = (props: props) => {
           ...wrapper,
           borderBottom: skin === "c1" ? "none" : "inherit",
           backgroundColor: skin === "c1" ? "white" : "inherit",
-          zIndex: matchesSM ? 9999999 : "inherit",
+          zIndex: 9999999,
         }}
       >
         <Toolbar>

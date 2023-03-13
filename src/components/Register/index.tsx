@@ -20,7 +20,8 @@ import { createUser } from "@privateid/cryptonets-web-sdk-alpha/dist/apiUtils";
 import STEPS from "../../pages/register/steps";
 
 import { componentsParameterInterface } from "../../interface";
-import PhoneInput from "react-phone-number-input/input";
+import { parsePhoneNumber } from "react-phone-number-input";
+
 import useToast from "../../utils/useToast";
 
 import PhoneInputComponent from "../PhoneInput";
@@ -41,6 +42,7 @@ const RegisterInputs = ({
   const { showToast } = useToast();
   const [loader, setLoader] = useState(false);
   const [autoFocus, setAutoFocus] = useState(true);
+  const [country, setCountry] = useState<any>("US")
   const palette: { [key: string]: any } = mainTheme.palette;
 
   const [phoneInput, setPhoneInput] = useState("");
@@ -62,8 +64,7 @@ const RegisterInputs = ({
   const handleCheckSSN4Input = () => {
     if (ssn4Ref?.current?.value.length < 4) {
       setShowSSN4Error({ error: true, message: "SSN4 Must be 4 digits." });
-    }
-    else{
+    } else {
       setShowSSN4Error({ error: false, message: "" });
     }
   };
@@ -75,8 +76,7 @@ const RegisterInputs = ({
   const handleCheckPhoneInput = () => {
     if (phoneInput.length < 10) {
       setShowPhoneError({ error: true, message: "Invalid Phone Number." });
-    }
-    else{
+    } else {
       setShowPhoneError({ error: false, message: "" });
     }
   };
@@ -122,6 +122,7 @@ const RegisterInputs = ({
   };
 
   const handlePhoneChange = (e: any) => {
+    setCountry(parsePhoneNumber(e?.toString() || "")?.country)
     setPhoneInput(e);
   };
   return (
@@ -146,7 +147,7 @@ const RegisterInputs = ({
       >
         <Typography
             component="p"
-            textAlign={'center'}
+            textAlign={"center"}
             fontSize={16}
             fontWeight={700}
             lineHeight={1.5}
@@ -163,7 +164,7 @@ const RegisterInputs = ({
               style={{ width: "100%" }}
               value={phoneInput}
               autoFocus={autoFocus}
-              country="US"
+              country={country || "US"}
               onChange={handlePhoneChange}
               // onBlur={handleCheckPhoneInput}
               helperText={showPhoneError.error? showPhoneError.message :""}
@@ -203,12 +204,12 @@ const RegisterInputs = ({
             }}
             inputRef={ssn4Ref}
             onBlur={handleCheckSSN4Input}
-            color={showSSN4Error.error? "error":"primary"}
-            helperText={showSSN4Error.error? showSSN4Error.message :""}
+            color={showSSN4Error.error ? "error" : "primary"}
+            helperText={showSSN4Error.error ? showSSN4Error.message : ""}
             sx={{
               "& .MuiFormHelperText-contained": {
-                color:"red"
-              }
+                color: "red",
+              },
             }}
           />
         </Box>

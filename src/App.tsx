@@ -1,6 +1,7 @@
 import { ThemeProvider } from "@mui/material/styles";
 import { SnackbarProvider } from "notistack";
 import { RouterProvider } from "react-router-dom";
+import { Helmet } from "react-helmet";
 import { theme, backgroundImages } from "./theme";
 import "./App.css";
 import router from "./routes";
@@ -14,6 +15,13 @@ function App() {
     <UserContextProvider>
       <SnackbarProvider maxSnack={3}>
         <ThemeProvider theme={theme}>
+          <Helmet>
+            <link rel="preconnect" href="https://fonts.gstatic.com" />
+            <link
+              href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap"
+              rel="stylesheet"
+            />
+          </Helmet>
           {backgroundImage?.[skin] && (
             <img
               src={backgroundImage?.[skin]}
