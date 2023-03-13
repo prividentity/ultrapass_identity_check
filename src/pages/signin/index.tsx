@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Box } from "@mui/material";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { useNavigate } from "react-router";
 import shield from "../../assets/shield.png";
 import { styles } from "./styles";
 import homeStyles from "../../styles/Home.module.css";
 import {
   ERROR,
-  FAILURE,
   getStatusFromUser,
   isAndroid,
   isIOS,
@@ -19,7 +18,6 @@ import { CircularProgress } from "@mui/material";
 import {
   createVerificationSession,
   getUser,
-  verifyTokenApi,
 } from "../../services/api";
 import womenImg from "../../assets/Kimiko-S3.png";
 import HomeModal from "../../components/Modal/homeModal";
@@ -45,6 +43,8 @@ const Signin = ({ theme, skin }: props) => {
   const navigate = useNavigate();
   const elementId = "userVideo";
   const { ready, init } = useCamera(elementId);
+  const muiTheme = useTheme();
+  const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
 
   useEffect(() => {
     if (!wasmReady) return;
@@ -193,9 +193,11 @@ const Signin = ({ theme, skin }: props) => {
     <>
       {headerVisible?.includes(skin) && <Header theme={themeName} />}
       <div className="homePageWrapper">
-        <div className="homeSidebarImg">
-          <img src={womenImg} alt="women" />
-        </div>
+        {!matchesSM && (
+          <div className="homeSidebarImg">
+            <img src={womenImg} alt="women" />
+          </div>
+        )}
         {isInitialPredict && (
           <>
             <HomeComponent theme={themeName} />
