@@ -174,7 +174,10 @@ export const theme = createTheme({
 
 export const logos = {
   mainLogo: logo,
-  primary: homeLogo,
+  primary: {
+    dark: logoDarkUp,
+    light: logoDarkUp,
+  },
   google: googleLogo,
   fanduel: fanduelLogo,
   up: {

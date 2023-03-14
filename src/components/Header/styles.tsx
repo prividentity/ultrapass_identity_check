@@ -45,6 +45,7 @@ export const useStyles = makeStyles((theme: any) => ({
     },
   },
   headerButton: {
+    color: `${palette[skin]?.text} !important`,
     "&:hover > div": {
       display: "block",
     },
