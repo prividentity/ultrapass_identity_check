@@ -76,7 +76,7 @@ export default function FullWidthTabs() {
     setValue(newValue);
   };
 
-  const pathAndQuery = window.location.pathname + window.location.search;
+  const pathAndQuery = (window.location.pathname + window.location.search).slice(1);
 
   const sendPhone = async () => {
     const payload = {
