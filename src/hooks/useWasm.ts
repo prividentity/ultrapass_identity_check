@@ -6,12 +6,23 @@ import { getUrlParameter } from "../utils";
 const useWasm = () => {
   // Initialize the state
   const [ready, setReady] = useState(false);
+  const [wasmStatus, setWasmStatus] = useState<any>({isChecking: true})
 
   const init = async () => {
     const apiKey = getUrlParameter("api_key", null);
     const apiUrl = getUrlParameter("api_url", null);
-    await loadPrivIdModule(apiUrl, apiKey);
-    setReady(true);
+    const isSupported = await loadPrivIdModule(apiUrl, apiKey);
+    console.log("WASM LOADED SUPPORTED?", isSupported);
+    // setReady(false);
+    // setWasmStatus({isChecking:false, support: false, message: "not supported."});
+    if (isSupported.support) {
+      setReady(true);
+      setWasmStatus({isChecking:false, ...isSupported})
+    }
+    else{
+      setReady(false);
+      setWasmStatus({isChecking:false, ...isSupported})
+    }
   };
 
   useEffect(() => {
@@ -19,7 +30,7 @@ const useWasm = () => {
     init();
   }, []);
 
-  return { ready };
+  return { ready, wasmStatus };
 };
 
 export default useWasm;
