@@ -1,20 +1,20 @@
 import { useState } from "react";
 import styles from "../../styles/Home.module.css";
-import useScanFrontDocument from "../../hooks/useScanFrontDocument";
+import useScanFrontDocumentWithoutPredict from "../../hooks/useScanFrontDocumentWithoutPredict";
 import Camera from "../Camera";
 
-const ScanFrontDocument = ({
+const FaceCompareFrontDocument = ({
   onSuccess,
   onReadyCallback,
   onFailCallback,
   onCameraFail,
-  userUUID,
+  enrollImageData,
 }: {
   onSuccess: (e: any) => void;
   onReadyCallback: (e: boolean) => void;
   onFailCallback: (e: { status: string; message: string }) => void;
   onCameraFail: (e: any) => void;
-  userUUID: string;
+  enrollImageData: any;
 }) => {
   const [canvasSize, setCanvasSize] = useState();
 
@@ -22,10 +22,10 @@ const ScanFrontDocument = ({
     onSuccess?.(result);
     console.log("FRONT SCAN DATA: ", result);
   };
-  const { scanFrontDocument, resultResponse } = useScanFrontDocument(
+  const { scanFrontDocument, resultResponse } = useScanFrontDocumentWithoutPredict(
     handleFrontSuccess,
     onFailCallback,
-    userUUID
+    enrollImageData,
   ) as any;
   const handleCallbackFromCanvasSizeChange = (size: any) => {
     setCanvasSize(size);
@@ -35,7 +35,7 @@ const ScanFrontDocument = ({
   const handleScanDLFront = async (e: boolean) => {
     onReadyCallback?.(e);
     // hack to initialize canvas with large memory, so it doesn't cause an issue.
-    console.log("handleScanDLFront");
+    console.log("handleScanDLFront", e);
     if (e) {
       await scanFrontDocument(canvasSize);
     }
@@ -52,13 +52,12 @@ const ScanFrontDocument = ({
         mode={"back"}
         requireHD={true}
         message={
-          resultResponse?.op_status
-            ? resultResponse?.op_message
-            : resultResponse?.predict_message
+          resultResponse?.op_status === 0 && !resultResponse?.cropped_face_width? 
+          "Checking for Face. Please hold position": resultResponse?.op_message
         }
       ></Camera>
     </div>
   );
 };
 
-export default ScanFrontDocument;
+export default FaceCompareFrontDocument;

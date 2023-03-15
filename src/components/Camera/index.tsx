@@ -25,9 +25,10 @@ const Camera = ({
   onReadyCallback = () => {},
   onSwitchCamera = () => {},
   onCameraFail = () => {},
+  onWasmLoadFail = () => {},
   requireHD = false,
 }: any) => {
-  const { ready: wasmReady } = useWasm();
+  const { ready: wasmReady, wasmStatus } = useWasm();
   const { isCameraGranted } = useCameraPermissions(onReadyCallback);
   const elementId = "userVideo";
   const classes = useStyles();
@@ -48,24 +49,28 @@ const Camera = ({
   ].includes(currentAction);
 
   useEffect(() => {
-    if (!wasmReady) return;
-    if (!ready) {
-      init();
+    console.log("=====? HERE????", { wasmStatus, wasmReady, ready });
+    
+    if (!wasmReady && wasmStatus.isChecking) return;
+
+    if (wasmReady && !wasmStatus.isChecking && wasmStatus.support) {
+      // if(ready && wasmReady && wasmStatus.support && isCameraGranted) return;
+      if (!ready) {
+        init();
+        return;
+      }else if (isCameraGranted && ready) {
+        onReadyCallback(true);
+        return;
+      }
+    }
+
+    if (!wasmReady && !wasmStatus.isChecking && !wasmStatus.support) {
+      onWasmLoadFail();
       return;
     }
-    if (isIOS && osVersion < 15) {
-      console.log("Does not support old version of iOS os version 15 below.");
-    } else if (isAndroid && osVersion < 11) {
-      console.log(
-        "Does not support old version of Android os version 11 below."
-      );
-    }
-    if (isCameraGranted && ready) {
-      onReadyCallback(true);
-    }
+
     console.log("--- wasm status ", ready);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [wasmReady, ready, isCameraGranted]);
+  }, [wasmReady, ready, wasmStatus]);
 
   const handleSwitchCamera = async (e: any) => {
     setDeviceId(e.target.value);

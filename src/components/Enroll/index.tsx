@@ -16,7 +16,11 @@ import homeStyles from "../../styles/Home.module.css";
 import Camera from "../Camera";
 import { theme as Theme } from "../../theme";
 import { UserContext } from "../../context/UserContext";
-import { closeCamera, updateUser } from "@privateid/cryptonets-web-sdk-alpha";
+import {
+  closeCamera,
+  updateUser,
+  uploadPortrait,
+} from "@privateid/cryptonets-web-sdk-alpha";
 import shield from "../../assets/shield.png";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import STEPS from "../../pages/register/steps";
@@ -39,7 +43,7 @@ const Enroll = ({
   const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
   const classes = useStyles();
   const context = React.useContext(UserContext);
-  const { id, setGUID, setUUID } = context;
+  const { id, setGUID, setUUID, setEnrollImageData } = context;
   const [showSuccess, setShowSuccess] = useState(false);
   const mainTheme = Theme;
   const palette: { [key: string]: any } = mainTheme.palette;
@@ -51,11 +55,18 @@ const Enroll = ({
     enrollStatus,
     enrollGUID,
     enrollUUID,
+    enrollImageData,
+    enrollPortrait,
   } = useEnrollOneFa2("userVideo", (e: any) => console.log(e), 4);
 
   const handleUserUpdate = async (guid: string, uuid: string) => {
     setGUID(guid);
     setUUID(uuid);
+    setEnrollImageData(enrollImageData);
+
+    const uploadResult = await uploadPortrait({ id, portrait: enrollPortrait });
+    console.log("upload portrait:", uploadResult);
+
     const params = {
       id,
       attributes: {
@@ -66,17 +77,11 @@ const Enroll = ({
     const updateRes = (await updateUser(params)) as any;
     if (updateRes.guid && updateRes.uuid) {
       setShowSuccess(true);
-      // stopCamera();
       await closeCamera(undefined);
       setTimeout(async () => {
         setStep(STEPS.DRIVERLICENSE);
       }, 1000);
     }
-
-    // setTimeout(async ()=>{
-
-    // await closeCamera(undefined);
-    // },3000)
   };
   useEffect(() => {
     if (enrollGUID && enrollUUID) {
@@ -85,7 +90,6 @@ const Enroll = ({
   }, [enrollStatus, enrollGUID, enrollUUID]);
 
   const onCameraFail = async () => {
-    // setStep(STEPS.SWITCH_DEVICE);
     setHasNoCamera(true);
   };
 
@@ -95,6 +99,10 @@ const Enroll = ({
     } else {
       setStep(STEPS.CAMERA_PERMISSION_FAIL);
     }
+  };
+
+  const onWasmLoadFail = () => {
+    setStep(STEPS.NOT_SUPPORTED);
   };
 
   return (
@@ -114,7 +122,7 @@ const Enroll = ({
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
       <Box position={"relative"} padding={"10px 10px"} mt={0} pr={"12px"}>
-        {(showSuccess || (enrollOneFaProgress === 100)) && (
+        {(showSuccess || enrollOneFaProgress === 100) && (
           <Box style={styles.overlayCamera as React.CSSProperties}>
             {showSuccess ? (
               <img
@@ -149,6 +157,7 @@ const Enroll = ({
                 onSwitchCamera={enrollUserOneFa}
                 onCameraFail={onCameraFail}
                 message={enrollStatus}
+                onWasmLoadFail={onWasmLoadFail}
               />
             )}
           </div>
