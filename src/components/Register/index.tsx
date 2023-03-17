@@ -164,7 +164,7 @@ const RegisterInputs = ({
               style={{ width: "100%" }}
               value={phoneInput}
               autoFocus={autoFocus}
-              country={country || "US"}
+              // country={country || "US"}
               onChange={handlePhoneChange}
               // onBlur={handleCheckPhoneInput}
               helperText={showPhoneError.error? showPhoneError.message :""}
@@ -182,7 +182,7 @@ const RegisterInputs = ({
                     startAdornment: <PhoneIcon sx={{ pr: 1 }} />,
                   }}
                   inputProps={{
-                    maxLength: 16,
+                    maxLength: phoneInput?.startsWith("+1") ? 15 : 11,
                   }}
                 />
               ))}
