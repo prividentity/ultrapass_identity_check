@@ -2,6 +2,7 @@ import { useState } from "react";
 import styles from "../../styles/Home.module.css";
 import useScanFrontDocumentWithoutPredict from "../../hooks/useScanFrontDocumentWithoutPredict";
 import Camera from "../Camera";
+import { getScanFrontMessage } from "../../constants";
 
 const FaceCompareFrontDocument = ({
   onSuccess,
@@ -22,11 +23,12 @@ const FaceCompareFrontDocument = ({
     onSuccess?.(result);
     console.log("FRONT SCAN DATA: ", result);
   };
-  const { scanFrontDocument, resultResponse } = useScanFrontDocumentWithoutPredict(
-    handleFrontSuccess,
-    onFailCallback,
-    enrollImageData,
-  ) as any;
+  const { scanFrontDocument, resultResponse } =
+    useScanFrontDocumentWithoutPredict(
+      handleFrontSuccess,
+      onFailCallback,
+      enrollImageData
+    ) as any;
   const handleCallbackFromCanvasSizeChange = (size: any) => {
     setCanvasSize(size);
     setTimeout(async () => scanFrontDocument(size as any), 1000);
@@ -51,10 +53,16 @@ const FaceCompareFrontDocument = ({
         style={{ height: "unset" }}
         mode={"back"}
         requireHD={true}
-        message={
-          resultResponse?.op_status === 0 && !resultResponse?.cropped_face_width? 
-          "Checking for Face. Please hold position": resultResponse?.op_message
-        }
+        message={() => {
+          if (
+            resultResponse?.op_status === 0 &&
+            !resultResponse?.cropped_face_width
+          ) {
+            getScanFrontMessage(999);
+          } else {
+            getScanFrontMessage(resultResponse?.op_status);
+          }
+        }}
       ></Camera>
     </div>
   );
