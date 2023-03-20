@@ -21,7 +21,7 @@ const Camera = ({
   requireHD = false,
   isDocumentScan = false,
 }: any) => {
-  const { ready: wasmReady, wasmStatus, isLoaded: wasmLoaded } = useWasm();
+  const { ready: wasmReady, wasmStatus } = useWasm();
   const { isCameraGranted } = useCameraPermissions(onReadyCallback);
   const elementId = "userVideo";
   const classes = useStyles();
@@ -30,7 +30,7 @@ const Camera = ({
     mode,
     requireHD,
     onCameraFail,
-      isDocumentScan
+    isDocumentScan
   );
 
   const [deviceId, setDeviceId] = useState(device);
@@ -45,12 +45,9 @@ const Camera = ({
   useEffect(() => {
     console.log("=====? HERE????", { wasmStatus, wasmReady, ready });
 
-    if (!wasmReady && wasmStatus.isChecking && !wasmLoaded) return;
+    if (!wasmReady && wasmStatus.isChecking) return;
 
-    if (
-      wasmLoaded === "success" ||
-      (wasmReady && !wasmStatus.isChecking && wasmStatus.support)
-    ) {
+    if (wasmReady && !wasmStatus.isChecking && wasmStatus.support) {
       // if(ready && wasmReady && wasmStatus.support && isCameraGranted) return;
       if (!ready) {
         init();
@@ -67,7 +64,7 @@ const Camera = ({
     }
 
     console.log("--- wasm status ", ready);
-  }, [wasmReady, ready, wasmStatus, wasmLoaded]);
+  }, [wasmReady, ready, wasmStatus]);
 
   const handleSwitchCamera = async (e: any) => {
     setDeviceId(e.target.value);
@@ -78,27 +75,7 @@ const Camera = ({
     setTimeout(() => {
       onSwitchCamera(true);
     }, 1000);
-
-    // setDeviceCapabilities(capabilities);
-    // setDevicesList(devices.map(mapDevices));
-    // if (useDocumentScan) {
-    //   let width = (WIDTH_TO_STANDARDS as any)[settings?.width];
-    //   if (width === "FHD" && settings?.height === 1440) {
-    //     width = "iPhoneCC";
-    //   }
-    //   await handleCanvasSize({ target: { value: width } }, true);
-    // }
   };
-
-  // const handleCanvasSize = async (e: any, skipSwitchCamera = false) => {
-  //   // setCanvasSize(e.target.value);
-  //   const canvasSize = (CANVAS_SIZE as any)[e.target.value];
-  //   if (!skipSwitchCamera) {
-  //     await switchCamera("front" as any, deviceId || device, canvasSize);
-  //     // setDeviceCapabilities(capabilities);
-  //   }
-  //   handleCanvasSizeChange(e.target.value);
-  // };
 
   return (
     <div className={styles.cameraContainer} style={style}>
@@ -126,20 +103,6 @@ const Camera = ({
             <label style={{ color: "#000", paddingRight: 5 }}>
               Select Camera:
             </label>
-            {/* <select
-              value={deviceId || device}
-              onChange={(e) => handleSwitchCamera(e)}
-            >
-              {(devicesList?.length ? devicesList : devices).map(
-                (e: { label: string; value: string }, index: number) => {
-                  return (
-                    <option id={e.value} value={e.value} key={index}>
-                      {e.label}
-                    </option>
-                  );
-                }
-              )}
-            </select> */}
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -159,23 +122,6 @@ const Camera = ({
             </Select>
           </div>
         ) : null}
-
-        {/*{isDocumentScan && ready ? (*/}
-        {/*  <div>*/}
-        {/*    <label> Canvas Size: </label>*/}
-        {/*    <select*/}
-        {/*      defaultValue={initialCanvasSize}*/}
-        {/*      value={canvasSize}*/}
-        {/*      onChange={(e) => handleCanvasSize(e)}*/}
-        {/*    >*/}
-        {/*      {canvasSizeList.map(({ label, value }) => (*/}
-        {/*        <option id={value} value={value} key={value}>*/}
-        {/*          {label}*/}
-        {/*        </option>*/}
-        {/*      ))}*/}
-        {/*    </select>*/}
-        {/*  </div>*/}
-        {/*) : null}*/}
       </div>
       {message && (
         <div className={styles.enrollDisplay}>
