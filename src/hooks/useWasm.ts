@@ -1,12 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 import { loadPrivIdModule } from "@privateid/cryptonets-web-sdk-alpha";
 import { getUrlParameter } from "../utils";
+import { UserContext } from "../context/UserContext";
 
+let isLoading = false;
 const useWasm = () => {
   // Initialize the state
   const [ready, setReady] = useState(false);
-  const [wasmStatus, setWasmStatus] = useState<any>({isChecking: true})
+  const [wasmStatus, setWasmStatus] = useState<any>({ isChecking: true });
+  const context = useContext(UserContext);
+
+  const { isWasmLoaded, setIsWasmLoaded } = context;
 
   const init = async () => {
     const apiKey = getUrlParameter("api_key", null);
@@ -17,17 +22,25 @@ const useWasm = () => {
     // setWasmStatus({isChecking:false, support: false, message: "not supported."});
     if (isSupported.support) {
       setReady(true);
-      setWasmStatus({isChecking:false, ...isSupported})
-    }
-    else{
+      setWasmStatus({ isChecking: false, ...isSupported });
+      setIsWasmLoaded(true);
+    } else {
       setReady(false);
-      setWasmStatus({isChecking:false, ...isSupported})
+      setWasmStatus({ isChecking: false, ...isSupported });
     }
   };
 
   useEffect(() => {
     if (ready) return;
-    init();
+
+    if (!isWasmLoaded && !isLoading) {
+      init();
+      isLoading = true;
+    }
+    if (isWasmLoaded) {
+      setReady(true);
+      setWasmStatus({ isChecking: false, support: true });
+    }
   }, []);
 
   return { ready, wasmStatus };

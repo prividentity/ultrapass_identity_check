@@ -40,6 +40,8 @@ export const UserContext = createContext({
   setEnrollImageData: (enrollImageData: any) => {},
   portraitConfScore: 0,
   setPortraitConfScore: (portraitConfScore: any) => {},
+  isWasmLoaded: false,
+  setIsWasmLoaded: (isWasmLoaded: boolean) => {},
 });
 
 const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
@@ -58,6 +60,7 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [verificationSession, setVerificationSession] = useState<any>({});
   const [enrollImageData, setEnrollImageData] = useState<any>(null);
   const [portraitConfScore, setPortraitConfScore] = useState<any>(null);
+  const [isWasmLoaded, setIsWasmLoaded] = useState(false);
 
   return (
     <UserContext.Provider
@@ -92,6 +95,8 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
         setEnrollImageData,
         portraitConfScore,
         setPortraitConfScore,
+        isWasmLoaded, 
+        setIsWasmLoaded,
       }}
     >
       {children}

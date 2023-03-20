@@ -42,6 +42,10 @@ const FaceCompareFrontDocument = ({
       await scanFrontDocument(canvasSize);
     }
   };
+
+  const returnMessage = () => {
+    return resultResponse?.op_status === 0 && !resultResponse?.cropped_face_width ? getScanFrontMessage(999) :getScanFrontMessage(resultResponse?.op_status);
+  }
   return (
     <div id="canvasInput" className={`${styles.container} documentCamera`}>
       <Camera
@@ -53,16 +57,9 @@ const FaceCompareFrontDocument = ({
         style={{ height: "unset" }}
         mode={"back"}
         requireHD={true}
-        message={() => {
-          if (
-            resultResponse?.op_status === 0 &&
-            !resultResponse?.cropped_face_width
-          ) {
-            getScanFrontMessage(999);
-          } else {
-            getScanFrontMessage(resultResponse?.op_status);
-          }
-        }}
+        message={
+          returnMessage()
+        }
       ></Camera>
     </div>
   );
