@@ -29,24 +29,18 @@ const FaceCompareFrontDocument = ({
       onFailCallback,
       enrollImageData
     ) as any;
-  const handleCallbackFromCanvasSizeChange = (size: any) => {
-    setCanvasSize(size);
-    setTimeout(async () => scanFrontDocument(size as any), 1000);
-  };
 
   const handleScanDLFront = async (e: boolean) => {
     onReadyCallback?.(e);
     // hack to initialize canvas with large memory, so it doesn't cause an issue.
     console.log("handleScanDLFront", e);
     if (e) {
-      await scanFrontDocument(canvasSize);
+      await scanFrontDocument();
     }
   };
   return (
     <div id="canvasInput" className={`${styles.container} documentCamera`}>
       <Camera
-        handleCanvasSizeChange={handleCallbackFromCanvasSizeChange}
-        // currentAction={"useScanDocumentFront"}
         onReadyCallback={handleScanDLFront}
         onSwitchCamera={handleScanDLFront}
         onCameraFail={onCameraFail}
@@ -63,6 +57,7 @@ const FaceCompareFrontDocument = ({
             getScanFrontMessage(resultResponse?.op_status);
           }
         }}
+        isDocumentScan={true}
       ></Camera>
     </div>
   );

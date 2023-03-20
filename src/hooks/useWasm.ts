@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 import { loadPrivIdModule } from "@privateid/cryptonets-web-sdk-alpha";
 import { getUrlParameter } from "../utils";
-
+let isLoaded: string | null;
 const useWasm = () => {
   // Initialize the state
   const [ready, setReady] = useState(false);
@@ -18,19 +18,22 @@ const useWasm = () => {
     if (isSupported.support) {
       setReady(true);
       setWasmStatus({isChecking:false, ...isSupported})
+      isLoaded = "success";
     }
     else{
       setReady(false);
       setWasmStatus({isChecking:false, ...isSupported})
+      isLoaded = null;
     }
   };
 
   useEffect(() => {
-    if (ready) return;
+    if (isLoaded) return;
     init();
+    isLoaded = "pending";
   }, []);
 
-  return { ready, wasmStatus };
+  return { ready, wasmStatus, isLoaded };
 };
 
 export default useWasm;

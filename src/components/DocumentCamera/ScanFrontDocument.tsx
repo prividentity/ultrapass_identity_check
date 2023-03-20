@@ -56,6 +56,7 @@ const ScanFrontDocument = ({
             ? resultResponse?.op_message
             : resultResponse?.predict_message
         }
+        isDocumentScan={true}
       ></Camera>
     </div>
   );

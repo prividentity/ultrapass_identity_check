@@ -4,20 +4,12 @@ import React, { useEffect, useState } from "react";
 import useCamera from "../../hooks/useCamera";
 import useWasm from "../../hooks/useWasm";
 import styles from "../../styles/Home.module.css";
-import {
-  CANVAS_SIZE,
-  isAndroid,
-  isBackCamera,
-  isIOS,
-  osVersion,
-  WIDTH_TO_STANDARDS,
-} from "../../utils";
+import { isBackCamera } from "../../utils";
 import useCameraPermissions from "../../hooks/useCameraPermissions";
 import { useStyles } from "./styles";
 
 const Camera = ({
   children,
-  handleCanvasSizeChange,
   currentAction,
   style,
   mode = "front",
@@ -27,8 +19,9 @@ const Camera = ({
   onCameraFail = () => {},
   onWasmLoadFail = () => {},
   requireHD = false,
+  isDocumentScan = false,
 }: any) => {
-  const { ready: wasmReady, wasmStatus } = useWasm();
+  const { ready: wasmReady, wasmStatus, isLoaded: wasmLoaded } = useWasm();
   const { isCameraGranted } = useCameraPermissions(onReadyCallback);
   const elementId = "userVideo";
   const classes = useStyles();
@@ -36,29 +29,33 @@ const Camera = ({
     elementId,
     mode,
     requireHD,
-    onCameraFail
+    onCameraFail,
+      isDocumentScan
   );
 
   const [deviceId, setDeviceId] = useState(device);
 
   const isBack = isBackCamera(devices, deviceId || device) || mode === "back";
   const [devicesList] = useState(devices);
-  const isDocumentScan = [
+  const useDocumentScan = [
     "useScanDocumentFront",
     "useScanDocumentBack",
   ].includes(currentAction);
 
   useEffect(() => {
     console.log("=====? HERE????", { wasmStatus, wasmReady, ready });
-    
-    if (!wasmReady && wasmStatus.isChecking) return;
 
-    if (wasmReady && !wasmStatus.isChecking && wasmStatus.support) {
+    if (!wasmReady && wasmStatus.isChecking && !wasmLoaded) return;
+
+    if (
+      wasmLoaded === "success" ||
+      (wasmReady && !wasmStatus.isChecking && wasmStatus.support)
+    ) {
       // if(ready && wasmReady && wasmStatus.support && isCameraGranted) return;
       if (!ready) {
         init();
         return;
-      }else if (isCameraGranted && ready) {
+      } else if (isCameraGranted && ready) {
         onReadyCallback(true);
         return;
       }
@@ -70,7 +67,7 @@ const Camera = ({
     }
 
     console.log("--- wasm status ", ready);
-  }, [wasmReady, ready, wasmStatus]);
+  }, [wasmReady, ready, wasmStatus, wasmLoaded]);
 
   const handleSwitchCamera = async (e: any) => {
     setDeviceId(e.target.value);
@@ -81,26 +78,27 @@ const Camera = ({
     setTimeout(() => {
       onSwitchCamera(true);
     }, 1000);
+
     // setDeviceCapabilities(capabilities);
     // setDevicesList(devices.map(mapDevices));
-    if (isDocumentScan) {
-      let width = (WIDTH_TO_STANDARDS as any)[settings?.width];
-      if (width === "FHD" && settings?.height === 1440) {
-        width = "iPhoneCC";
-      }
-      await handleCanvasSize({ target: { value: width } }, true);
-    }
+    // if (useDocumentScan) {
+    //   let width = (WIDTH_TO_STANDARDS as any)[settings?.width];
+    //   if (width === "FHD" && settings?.height === 1440) {
+    //     width = "iPhoneCC";
+    //   }
+    //   await handleCanvasSize({ target: { value: width } }, true);
+    // }
   };
 
-  const handleCanvasSize = async (e: any, skipSwitchCamera = false) => {
-    // setCanvasSize(e.target.value);
-    const canvasSize = (CANVAS_SIZE as any)[e.target.value];
-    if (!skipSwitchCamera) {
-      await switchCamera("front" as any, deviceId || device, canvasSize);
-      // setDeviceCapabilities(capabilities);
-    }
-    handleCanvasSizeChange(e.target.value);
-  };
+  // const handleCanvasSize = async (e: any, skipSwitchCamera = false) => {
+  //   // setCanvasSize(e.target.value);
+  //   const canvasSize = (CANVAS_SIZE as any)[e.target.value];
+  //   if (!skipSwitchCamera) {
+  //     await switchCamera("front" as any, deviceId || device, canvasSize);
+  //     // setDeviceCapabilities(capabilities);
+  //   }
+  //   handleCanvasSizeChange(e.target.value);
+  // };
 
   return (
     <div className={styles.cameraContainer} style={style}>
@@ -189,7 +187,9 @@ const Camera = ({
         id="userVideo"
         className={`
                 ${styles.cameraDisplay} 
-                ${isBack || isDocumentScan ? "" : styles.mirrored} videoCamera`}
+                ${
+                  isBack || useDocumentScan ? "" : styles.mirrored
+                } videoCamera`}
         muted
         autoPlay
         playsInline
