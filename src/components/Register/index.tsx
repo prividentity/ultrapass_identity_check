@@ -45,7 +45,7 @@ const RegisterInputs = ({
   const [country, setCountry] = useState<any>("US")
   const palette: { [key: string]: any } = mainTheme.palette;
 
-  const [phoneInput, setPhoneInput] = useState("");
+  const [phoneInput, setPhoneInput] = useState("+1");
 
   const ssn4Ref = useRef<HTMLFormElement | null>(null);
 
@@ -158,7 +158,7 @@ const RegisterInputs = ({
             PLEASE ENTER YOUR PERSONAL DETAILS
           </Typography>
         <Box width={"100%"}>
-          
+
           <Grid container pb={2}>
             <Input
               style={{ width: "100%" }}
