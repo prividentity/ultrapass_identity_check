@@ -42,7 +42,7 @@ const RegisterInputs = ({
   const { showToast } = useToast();
   const [loader, setLoader] = useState(false);
   const [autoFocus, setAutoFocus] = useState(true);
-  const [country, setCountry] = useState<any>("US")
+  const [country, setCountry] = useState<any>("US");
   const palette: { [key: string]: any } = mainTheme.palette;
 
   const [phoneInput, setPhoneInput] = useState("+1");
@@ -122,8 +122,8 @@ const RegisterInputs = ({
   };
 
   const handlePhoneChange = (e: any) => {
-    setAutoFocus(true);
-    setCountry(parsePhoneNumber(e?.toString() || "")?.country)
+    if (!autoFocus) setAutoFocus(true);
+    setCountry(parsePhoneNumber(e?.toString() || "")?.country);
     setPhoneInput(e);
   };
   return (
@@ -142,24 +142,20 @@ const RegisterInputs = ({
         </Typography>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
-      <Grid
-        style={styles.cardGrid}
-        className={classes.cardGridMobile}
-      >
+      <Grid style={styles.cardGrid} className={classes.cardGridMobile}>
         <Typography
-            component="p"
-            textAlign={"center"}
-            fontSize={16}
-            fontWeight={700}
-            lineHeight={1.5}
-            mt={3}
-            mb={5}
-            className={classes.cardInnerHeading}
-          >
-            PLEASE ENTER YOUR PERSONAL DETAILS
-          </Typography>
+          component="p"
+          textAlign={"center"}
+          fontSize={16}
+          fontWeight={700}
+          lineHeight={1.5}
+          mt={3}
+          mb={5}
+          className={classes.cardInnerHeading}
+        >
+          PLEASE ENTER YOUR PERSONAL DETAILS
+        </Typography>
         <Box width={"100%"}>
-
           <Grid container pb={2}>
             <Input
               style={{ width: "100%" }}
@@ -168,11 +164,11 @@ const RegisterInputs = ({
               // country={country || "US"}
               onChange={handlePhoneChange}
               // onBlur={handleCheckPhoneInput}
-              helperText={showPhoneError.error? showPhoneError.message :""}
+              helperText={showPhoneError.error ? showPhoneError.message : ""}
               sx={{
                 "& .MuiFormHelperText-contained": {
-                  color:"red"
-                }
+                  color: "red",
+                },
               }}
               placeholder="Mobile number"
               inputComponent={React.forwardRef((props, ref) => (
