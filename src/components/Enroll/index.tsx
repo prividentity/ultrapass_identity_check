@@ -26,6 +26,7 @@ import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import STEPS from "../../pages/register/steps";
 import { stopCamera } from "../../utils";
 import SpinnerLoader from "../SpinnerLoader";
+import {convertBase64ToImageData} from "../../utils/base64ToImageData";
 
 const Enroll = ({
   onReadyCallback,
@@ -55,16 +56,18 @@ const Enroll = ({
     enrollStatus,
     enrollGUID,
     enrollUUID,
-    enrollImageData,
     enrollPortrait,
   } = useEnrollOneFa2("userVideo", (e: any) => console.log(e), 4);
 
   const handleUserUpdate = async (guid: string, uuid: string) => {
     setGUID(guid);
     setUUID(uuid);
-    setEnrollImageData(enrollImageData);
+    await convertBase64ToImageData(enrollPortrait, setEnrollImageData)
 
-    const uploadResult = await uploadPortrait({ id, portrait: enrollPortrait });
+    const uploadResult = await uploadPortrait({
+      id,
+      portrait: enrollPortrait
+    });
     console.log("upload portrait:", uploadResult);
 
     const params = {
