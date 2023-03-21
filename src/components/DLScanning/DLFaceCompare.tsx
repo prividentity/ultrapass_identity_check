@@ -118,9 +118,9 @@ const DLFaceCompare = ({
     status: string;
     message: string;
   }) => {
-    if (parseInt(status) === -100) {
-      showToast(message, "error");
-    }
+    // if (parseInt(status) === -100) {
+    //   showToast(message, "error");
+    // }
   };
 
   const onBackSuccess = async ({
