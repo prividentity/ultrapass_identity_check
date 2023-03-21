@@ -54,10 +54,7 @@ const useScanFrontDocument = (
   const documentCallback = (result: any) => {
     console.log("Front scan callback result:", result);
     setResultResponse(result.returnValue);
-    if (
-      result.returnValue.cropped_face_width &&
-      result.returnValue.cropped_face_height
-    ) {
+    if (result.returnValue.op_status === 0) {
       const {
         predict_status,
         cropped_doc_height,
