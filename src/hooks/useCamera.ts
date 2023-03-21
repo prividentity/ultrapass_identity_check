@@ -1,14 +1,15 @@
 /* eslint-disable */
 import { useState } from "react";
 import { openCamera } from "@privateid/cryptonets-web-sdk-alpha";
-import {isMobile, mapDevices} from "../utils";
+import { isMobile, mapDevices } from "../utils";
 import { CameraFaceMode } from "@privateid/cryptonets-web-sdk-alpha/dist/types";
 
 const useCamera = (
   element = "userVideo",
   requestFaceMode: CameraFaceMode = CameraFaceMode.front,
-  requireHD= false,
-  onCameraFail = ()=>{},
+  requireHD = false,
+  onCameraFail = () => {},
+  isDocumentScan = false
 ): {
   init: () => Promise<void>;
   devices: Array<{ label: string; value: string }>;
@@ -39,7 +40,14 @@ const useCamera = (
         stream,
         errorMessage,
         capabilities,
-      } = await openCamera(element, enableHDMode, null, requestFaceMode);
+      } = await openCamera(
+        element,
+        enableHDMode,
+        null,
+        requestFaceMode,
+        null,
+          isDocumentScan
+      );
       setCameraFeatures({ settings, capabilities });
       setFaceMode(faceMode);
       console.log("hasError??", { status, errorMessage });
@@ -49,12 +57,11 @@ const useCamera = (
         setDevice(settings?.deviceId as string);
       }
 
-      console.log("???",devices)
-      if(devices?.length === 0){
+      console.log("???", devices);
+      if (devices?.length === 0) {
         onCameraFail();
-        console.log("no camera")
-      }
-      else{
+        console.log("no camera");
+      } else {
         setReady(true);
       }
     } catch (e) {

@@ -47,6 +47,7 @@ const ScanBackDocument = ({
         mode={"back"}
         requireHD={true}
         message={getBackDocumentMessage(barcodeStatusCode)}
+        isDocumentScan={true}
       ></Camera>
     </div>
   );

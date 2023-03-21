@@ -11,7 +11,7 @@ import Enroll from "../../components/Enroll";
 import DatabaseConsent from "../../components/SignupComponents/DatabaseConsent";
 import CannotVerify from "../../components/SignupComponents/CannotVerify";
 import VerifyAgeWithScan from "../../components/SignupComponents/VerifyAgeWithScan";
-import DLScan from "../../components/DLScanning";
+import DLScan from "../../components/DLScanning/DLFaceCompare";
 import CameraPermissionFail from "../../components/CameraPermissionFail";
 import { useNavigate } from "react-router";
 import Success from "../../components/Success";
@@ -23,6 +23,7 @@ import useToast from "../../utils/useToast";
 import { verifyIdApi, verifyTokenApi } from "../../services/api";
 import { SUCCESS, REQUIRES_INPUT, getStatusFromUser } from "../../utils";
 import { getUserStatus } from "@privateid/cryptonets-web-sdk-alpha";
+import NotSupported from "../../components/NotSupported";
 
 interface props {
   theme: string;
@@ -182,6 +183,10 @@ const Register = ({ theme, skin }: props) => {
             setPrevStep={setPrevStep}
             handleRequirementsComplete={onVerifyId}
           />
+        );
+      case STEPS.NOT_SUPPORTED:
+        return (
+          <NotSupported />
         );
       default:
     }

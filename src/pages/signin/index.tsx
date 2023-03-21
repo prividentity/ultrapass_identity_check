@@ -30,6 +30,7 @@ import { createSearchParams } from "react-router-dom";
 import { useCamera, useWasm } from "../../hooks";
 import Camera from "../../components/Camera";
 import HomeComponent from "../../components/HomeComponent";
+import STEPS from "../register/steps";
 
 interface props {
   theme: string;
@@ -48,14 +49,13 @@ const Signin = ({ theme, skin }: props) => {
 
   useEffect(() => {
     if (!wasmReady) return;
-    if (!ready) init();
-    if (isIOS && osVersion < 15) {
-      console.log("Does not support old version of iOS os version 15 below.");
-    } else if (isAndroid && osVersion < 11) {
-      console.log(
-        "Does not support old version of Android os version 11 below."
-      );
+    if (!ready) {
+      init();
     }
+
+    // if(!ready && !wasmStatus.isChecking && !wasmStatus.support){
+    //   setStep(STEPS.NOT_SUPPORTED);
+    // }
     predictUserOneFa();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wasmReady, ready]);

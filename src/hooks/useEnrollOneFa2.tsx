@@ -15,6 +15,7 @@ const useEnrollOneFa = (
   const [enrollData, setEnrollData] = useState(null);
   const [enrollGUID, setEnrollGUID] = useState(null);
   const [enrollUUID, setEnrollUUID] = useState(null);
+  const [enrollPortrait, setEnrollPortrait] = useState("");
 
   let tries = 0;
   let showError = false;
@@ -28,47 +29,6 @@ const useEnrollOneFa = (
     await enroll1FA(callback, {
       input_image_format: "rgba",
     });
-  };
-
-  function wait(milliseconds) {
-    const date = Date.now();
-    let currentDate = null;
-    do {
-      currentDate = Date.now();
-    } while (currentDate - date < milliseconds);
-  }
-
-  const getDisplayedMessage = (result) => {
-    switch (result) {
-      case -1:
-        return "Please look at the camera";
-      case 0:
-        return "Face detected";
-      case 1:
-        return "Image Spoof";
-      case 2:
-        return "Video Spoof";
-      case 3:
-        return "Video Spoof";
-      case 4:
-        return "Too far away";
-      case 5:
-        return "Too far to right";
-      case 6:
-        return "Too far to left";
-      case 7:
-        return "Too far up";
-      case 8:
-        return "Too far down";
-      case 9:
-        return "Too blurry";
-      case 10:
-        return "PLEASE REMOVE EYEGLASSES";
-      case 11:
-        return "PLEASE REMOVE FACEMASK";
-      default:
-        return "";
-    }
   };
 
   const callback = async (result) => {
@@ -103,19 +63,10 @@ const useEnrollOneFa = (
         }
         if (result.returnValue?.status === 0) {
           setEnrollStatus("ENROLL SUCCESS");
-          setEnrollData(result.returnValue);
           setEnrollGUID(result.returnValue.PI.guid);
           setEnrollUUID(result.returnValue.PI.uuid);
-          // updateUser(result.returnValue.PI.guid,result.returnValue.PI.uuid);
+          setEnrollPortrait(result.portrait);
         }
-        // if (result.returnValue?.status === -1) {
-        //   if (tries === retryTimes) {
-        //     // onFailure();
-        //   } else {
-        //     tries += 1;
-        //     // enrollUserOneFa();
-        //   }
-        // }
         break;
       default:
     }
@@ -129,6 +80,7 @@ const useEnrollOneFa = (
     progress,
     enrollGUID,
     enrollUUID,
+    enrollPortrait,
   };
 };
 
