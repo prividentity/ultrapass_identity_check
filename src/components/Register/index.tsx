@@ -122,6 +122,7 @@ const RegisterInputs = ({
   };
 
   const handlePhoneChange = (e: any) => {
+    setAutoFocus(true);
     setCountry(parsePhoneNumber(e?.toString() || "")?.country)
     setPhoneInput(e);
   };
