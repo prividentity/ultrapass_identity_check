@@ -15,7 +15,6 @@ const useEnrollOneFa = (
   const [enrollData, setEnrollData] = useState(null);
   const [enrollGUID, setEnrollGUID] = useState(null);
   const [enrollUUID, setEnrollUUID] = useState(null);
-  const [enrollImageData, setEnrollImageData] = useState(null);
   const [enrollPortrait, setEnrollPortrait] = useState("");
 
   let tries = 0;
@@ -27,11 +26,9 @@ const useEnrollOneFa = (
     setProgress(0);
     setEnrollData(null);
     // eslint-disable-next-line no-unused-vars
-    const {imageData} = await enroll1FA(callback, {
+    await enroll1FA(callback, {
       input_image_format: "rgba",
     });
-
-    setEnrollImageData(imageData);
   };
 
   const callback = async (result) => {
@@ -66,7 +63,6 @@ const useEnrollOneFa = (
         }
         if (result.returnValue?.status === 0) {
           setEnrollStatus("ENROLL SUCCESS");
-          setEnrollData(result.returnValue);
           setEnrollGUID(result.returnValue.PI.guid);
           setEnrollUUID(result.returnValue.PI.uuid);
           setEnrollPortrait(result.portrait);
@@ -84,7 +80,6 @@ const useEnrollOneFa = (
     progress,
     enrollGUID,
     enrollUUID,
-    enrollImageData,
     enrollPortrait,
   };
 };

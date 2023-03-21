@@ -68,10 +68,10 @@ const Camera = ({
 
   const handleSwitchCamera = async (e: any) => {
     setDeviceId(e.target.value);
-    const { settings = {} } = (await switchCamera(
-      "front" as any,
+    await switchCamera(
+      null,
       e.target.value
-    )) as any;
+    );
     setTimeout(() => {
       onSwitchCamera(true);
     }, 1000);
