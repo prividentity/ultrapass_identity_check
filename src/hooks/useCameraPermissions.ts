@@ -10,7 +10,7 @@ const useCameraPermissions = (callback?: (arg0: boolean) => any) => {
       if (result.state === "granted") {
         setIsCameraGranted(true);
       } else {
-        getUserMedia(setIsCameraGranted, callback);
+        getUserMedia(setIsCameraGranted, callback); 
       }
       // Don't do anything if the permission was denied.
     });
