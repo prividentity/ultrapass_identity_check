@@ -37,6 +37,7 @@ const usePredictOneFa = (
           if (tries === retryTimes) {
             console.log({ tries, retryTimes });
             onSuccess(result.returnValue);
+            tries = 0;
             // onFailure();
           } else {
             tries += 1;
