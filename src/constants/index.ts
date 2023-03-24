@@ -2,13 +2,14 @@ export const getBackDocumentMessage = (id: number) => {
   switch (id) {
     case 0:
       return "Success";
-    case -12:
+    case 12:
+      return "";
     case -1:
+    case 10:
       return "MOVE CLOSER";
     case 3:
-    case 10:
       return "ALMOST DONE . . .";
-    case -9:
+    case 9:
       return "TOO BLURRY. PLEASE MOVE BACK";
     case -2:
       return "SYSTEM ERROR. Please try again later.";
@@ -23,6 +24,7 @@ export const getScanFrontMessage = (status: number) => {
     case 0:
       return "Success";
     case 12:
+      return "";
     case -1:
     case 18:
       return "MOVE CLOSER";
