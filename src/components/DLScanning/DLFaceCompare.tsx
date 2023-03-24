@@ -141,22 +141,24 @@ const DLFaceCompare = ({
       type: DLType.BACKDLBARCODE,
       image: croppedBarcode,
     });
-    console.log("uploadCroppedBarcodeImage: ", uploadCroppedBarcodeImage);
-    const uploadCroppedBackDocumentImage = await uploadDL({
-      id,
-      type: DLType.BACKDLORIGINAL,
-      image: croppedDocument,
-    });
-    console.log(
-      "uploadCroppedBackDocumentImage: ",
-      uploadCroppedBackDocumentImage
-    );
+    console.log("uploadCroppedBarcodeImage", uploadCroppedBarcodeImage)
+
+    if(croppedDocument){
+      const uploadCroppedBackDocumentImage  = await uploadDL({
+        id,
+        type: DLType.BACKDLORIGINAL,
+        image: croppedDocument,
+      });
+
+      console.log("uploadCroppedBackDocumentImage", uploadCroppedBackDocumentImage)
+    }
+   
     const uploadBarcodeData = await uploadDL({
       id,
       type: DLType.BARCODEJSON,
       barcode: JSON.stringify(barcodeData),
     });
-    console.log("uploadBarcodeData: ", uploadBarcodeData);
+    console.log("uploadBarcodeData",uploadBarcodeData)
 
     console.log("===== end of DL SCAN ====== ");
 
@@ -203,6 +205,12 @@ const DLFaceCompare = ({
     setHasNoCamera(true);
     // setStep(STEPS.SWITCH_DEVICE);
   };
+
+  const onCameraNotFullHd = async () => {
+    console.log("NOT FULL HD CALLED.")
+    await closeCamera(undefined);
+    setStep(STEPS.SWITCH_DEVICE);
+  }
 
   return (
     <>
@@ -265,6 +273,7 @@ const DLFaceCompare = ({
                 onSuccess={onBackSuccess}
                 onReadyCallback={onCameraNotGranted}
                 onCameraFail={onCameraFail}
+                onCameraNotFullHd={onCameraNotFullHd}
               />
             ) : (
               <FaceCompareFrontDocument

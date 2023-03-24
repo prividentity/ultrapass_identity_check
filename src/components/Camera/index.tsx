@@ -20,18 +20,30 @@ const Camera = ({
   onWasmLoadFail = () => {},
   requireHD = false,
   isDocumentScan = false,
+  onCameraNotFullHd = () => {},
 }: any) => {
   const { ready: wasmReady, wasmStatus } = useWasm();
   const { isCameraGranted } = useCameraPermissions(onReadyCallback);
   const elementId = "userVideo";
   const classes = useStyles();
-  const { ready, init, device, devices } = useCamera(
+  const { ready, init, device, devices, settings } = useCamera(
     elementId,
     mode,
     requireHD,
     onCameraFail,
     isDocumentScan
   );
+
+  console.log("CAMERA SETTING FROM APP", settings);
+  
+  useEffect(()=>{
+    console.log(`CAMERA CHECKING IF FULL HD ${settings? Math.max(settings.width, settings.height): "qwe"}`);
+    if(settings && Math.max(settings.width, settings.height) < 1980 ){
+      console.log("NOT FULL HD");
+      onCameraNotFullHd();
+    }
+  },[onCameraNotFullHd, settings])
+
 
   const [deviceId, setDeviceId] = useState(device);
 
