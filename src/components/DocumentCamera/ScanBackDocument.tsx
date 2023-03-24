@@ -9,11 +9,13 @@ const ScanBackDocument = ({
   onReadyCallback,
   onFailCallback,
   onCameraFail,
+  onCameraNotFullHd,
 }: {
   onSuccess?: (e: any) => void;
   onReadyCallback?: (e: boolean) => void;
   onFailCallback?: (e: boolean) => void;
   onCameraFail?: (e: any) => void;
+  onCameraNotFullHd?: (e: any) => void;
 }) => {
   const [canvasSize, setCanvasSize] = useState();
 
@@ -48,6 +50,7 @@ const ScanBackDocument = ({
         requireHD={true}
         message={getBackDocumentMessage(barcodeStatusCode)}
         isDocumentScan={true}
+        onCameraNotFullHd={onCameraNotFullHd}
       ></Camera>
     </div>
   );
