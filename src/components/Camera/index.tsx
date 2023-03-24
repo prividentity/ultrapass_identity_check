@@ -38,7 +38,7 @@ const Camera = ({
   
   useEffect(()=>{
     console.log(`CAMERA CHECKING IF FULL HD ${settings? Math.max(settings.width, settings.height): "qwe"}`);
-    if(settings && Math.max(settings.width, settings.height) < 1980 ){
+    if(settings && Math.max(settings.width, settings.height) < 1920 ){
       console.log("NOT FULL HD");
       onCameraNotFullHd();
     }
