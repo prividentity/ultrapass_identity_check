@@ -118,7 +118,7 @@ export default function FullWidthTabs() {
           Continue your verification
         </Typography>
       </Grid>
-      <Grid item sx={{ bgcolor: "background.paper", width: "100%" }}>
+      <Grid item sx={{ bgcolor: "background.paper", width: "100%",  height:"400px"  }}>
         <Tabs
           value={value}
           onChange={handleChange}
@@ -195,7 +195,7 @@ export default function FullWidthTabs() {
             </Typography>
 
             <Box display="flex" justifyContent={"center"}>
-              <QRCode value={window.location.toString()} />
+              <QRCode size={200} value={window.location.toString()} />
             </Box>
           </Stack>
         </TabPanel>
