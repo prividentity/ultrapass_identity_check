@@ -31,6 +31,7 @@ const usePredictOneFa = (
           setPredictMessage(message);
           setPredictData(result.returnValue);
           onSuccess(result.returnValue);
+          tries = 0;
           setFaceDetected(true);
         }
         if (result.returnValue?.status !== 0) {

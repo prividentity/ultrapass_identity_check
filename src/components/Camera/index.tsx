@@ -74,7 +74,7 @@ const Camera = ({
     );
     setTimeout(() => {
       onSwitchCamera(true);
-    }, 1000);
+    }, 3000);
   };
 
   return (
