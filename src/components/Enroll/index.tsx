@@ -44,7 +44,7 @@ const Enroll = ({
   const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
   const classes = useStyles();
   const context = React.useContext(UserContext);
-  const { id, setGUID, setUUID, setEnrollImageData } = context;
+  const { id, setGUID, setUUID, setEnrollImageData, setDlAction } = context;
   const [showSuccess, setShowSuccess] = useState(false);
   const mainTheme = Theme;
   const palette: { [key: string]: any } = mainTheme.palette;
@@ -82,6 +82,7 @@ const Enroll = ({
       setShowSuccess(true);
       await closeCamera(undefined);
       setTimeout(async () => {
+        setDlAction("frontscan");
         setStep(STEPS.DRIVERLICENSE);
       }, 1000);
     }
