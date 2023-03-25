@@ -17,8 +17,11 @@ import Box from "@mui/material/Box";
 import QRCode from "react-qr-code";
 import Grid from "@mui/material/Grid";
 import { Email as EmailIcon, ContentCopy } from "@mui/icons-material";
-import { sendMessage } from "../../services/api";
+import { sendMessage, verifyTokenApi } from "../../services/api";
 import PhoneInputComponent from "../PhoneInput";
+import { useSearchParams } from "react-router-dom";
+import { useInterval } from "../../utils/useInterval";
+import {navigateToUrl} from "../../utils";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -72,11 +75,32 @@ export default function FullWidthTabs() {
   const [phone, setPhone] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
+  const [refreshInterval, setRefreshInterval] = React.useState<null | number>(
+    5000
+  );
+  const [searchParams] = useSearchParams();
+  const tokenParams = searchParams.get("token");
+
+  useInterval(async () => {
+    verifyTokenApi(tokenParams).then((res: any) => {
+      if (["SUCCESS", "FAILURE"].includes(res.status)) {
+        setRefreshInterval(null);
+        if(res.status === "SUCCESS"){
+          navigateToUrl(res.successUrl, res.token)
+        } else {
+          navigateToUrl(res.failureUrl, res.token)
+        }
+      }
+    });
+  }, refreshInterval);
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
-  const pathAndQuery = (window.location.pathname + window.location.search).slice(1);
+  const pathAndQuery = (
+    window.location.pathname + window.location.search
+  ).slice(1);
 
   const sendPhone = async () => {
     const payload = {
@@ -118,7 +142,10 @@ export default function FullWidthTabs() {
           Continue your verification
         </Typography>
       </Grid>
-      <Grid item sx={{ bgcolor: "background.paper", width: "100%",  height:"400px"  }}>
+      <Grid
+        item
+        sx={{ bgcolor: "background.paper", width: "100%", height: "400px" }}
+      >
         <Tabs
           value={value}
           onChange={handleChange}

@@ -267,6 +267,9 @@ export function getStatusFromUser(user: any) {
 }
 
 export const navigateToUrl = (url: string, token?: string) => {
+  if (!/^https?:\/\//i.test(url)) {
+    url = 'https://' + url;
+  }
   window.open(`${url}?token=${token}`, "_self");
 };
 

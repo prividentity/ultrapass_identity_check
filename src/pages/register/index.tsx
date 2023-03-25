@@ -49,15 +49,6 @@ const Register = ({ theme, skin }: props) => {
       context.setVerificationSession(res);
     });
   }, [tokenParams]);
-  const navigateToUrl = (
-    url: string,
-    timeoutMilliseconds = 1000,
-    token = ""
-  ) => {
-    setTimeout(() => {
-      window.open(`${url}?token=${token}`, "_self");
-    }, timeoutMilliseconds);
-  };
 
   const onVerifyId = async () => {
     const payload = {
@@ -126,7 +117,6 @@ const Register = ({ theme, skin }: props) => {
           <CannotVerify
             theme={theme}
             skin={skin}
-            navigateToUrl={navigateToUrl}
             setStep={setStep}
             prevStep={prevStep}
           />
