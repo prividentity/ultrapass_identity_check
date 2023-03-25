@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   Box,
   CircularProgress,
@@ -46,16 +46,22 @@ const DLFaceCompare = ({
   const { showToast } = useToast();
   const mainTheme = Theme;
   const palette: { [key: string]: any } = mainTheme.palette;
-  const [isBackScan, setIsBackScan] = useState(false);
+
   const [isUserVerify, setIsUserVerify] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
   const [hasNoCamera, setHasNoCamera] = useState(false);
   const [isBarcodeScan, setIsBarcodeScan] = useState(false);
 
+  enum DlActionEnum {
+    frontscan = "frontscan",
+    backscan = "backscan",
+  }
+
   const context = useContext(UserContext);
 
-  const { id, enrollImageData, portraitConfScore, setPortraitConfScore } = context;
+  const { id, enrollImageData, portraitConfScore, setPortraitConfScore, dlAction, setDlAction } =
+    context;
 
   const onSuccessFrontScan = async (result: {
     croppedDocument: string;
@@ -63,8 +69,12 @@ const DLFaceCompare = ({
     inputImage: string;
     portraitConfScore: number;
   }) => {
-    const { inputImage, croppedDocument, croppedMugshot, portraitConfScore:compareScore } =
-      result;
+    const {
+      inputImage,
+      croppedDocument,
+      croppedMugshot,
+      portraitConfScore: compareScore,
+    } = result;
     console.log({
       inputImage,
       croppedDocument,
@@ -92,7 +102,16 @@ const DLFaceCompare = ({
       image: croppedMugshot,
     });
     console.log("uploadCroppedMugshotImage: ", uploadCroppedMugshotImage);
+    const govId = {
+      portraitConfScore: compareScore,
+    };
 
+    const updateUserResult = await updateUser({
+      id,
+      // @ts-ignore
+      attributes: { govId: govId },
+    });
+    console.log("Update user result: ", updateUserResult);
     if (
       uploadImageInput &&
       uploadCroppedDocumentImage &&
@@ -106,7 +125,7 @@ const DLFaceCompare = ({
       setTimeout(() => {
         setIsLoading(false);
         setIsUserVerify(false);
-        setIsBackScan(true);
+        setDlAction(DlActionEnum.backscan);
       }, 4000);
     }
   };
@@ -141,24 +160,27 @@ const DLFaceCompare = ({
       type: DLType.BACKDLBARCODE,
       image: croppedBarcode,
     });
-    console.log("uploadCroppedBarcodeImage", uploadCroppedBarcodeImage)
+    console.log("uploadCroppedBarcodeImage", uploadCroppedBarcodeImage);
 
-    if(croppedDocument){
-      const uploadCroppedBackDocumentImage  = await uploadDL({
+    if (croppedDocument) {
+      const uploadCroppedBackDocumentImage = await uploadDL({
         id,
         type: DLType.BACKDLORIGINAL,
         image: croppedDocument,
       });
 
-      console.log("uploadCroppedBackDocumentImage", uploadCroppedBackDocumentImage)
+      console.log(
+        "uploadCroppedBackDocumentImage",
+        uploadCroppedBackDocumentImage
+      );
     }
-   
+
     const uploadBarcodeData = await uploadDL({
       id,
       type: DLType.BARCODEJSON,
       barcode: JSON.stringify(barcodeData),
     });
-    console.log("uploadBarcodeData",uploadBarcodeData)
+    console.log("uploadBarcodeData", uploadBarcodeData);
 
     console.log("===== end of DL SCAN ====== ");
 
@@ -174,7 +196,6 @@ const DLFaceCompare = ({
         zipCode: barcodeData.postCode,
         country: barcodeData.issuingCountry,
       },
-      portraitConfScore: portraitConfScore,
     };
 
     const updateUserResult = await updateUser({
@@ -207,10 +228,10 @@ const DLFaceCompare = ({
   };
 
   const onCameraNotFullHd = async () => {
-    console.log("NOT FULL HD CALLED.")
+    console.log("NOT FULL HD CALLED.");
     await closeCamera(undefined);
     setStep(STEPS.SWITCH_DEVICE);
-  }
+  };
 
   return (
     <>
@@ -234,7 +255,7 @@ const DLFaceCompare = ({
           <Box position={"relative"}>
             {!hasNoCamera && (
               <img
-                src={isBackScan ? DlBack : DlFront}
+                src={dlAction === DlActionEnum.backscan ? DlBack : DlFront}
                 alt="DlFront"
                 style={styles.DlFront as React.CSSProperties}
                 className="DlBack"
@@ -268,7 +289,7 @@ const DLFaceCompare = ({
                   Please switch device.
                 </Typography>
               </Stack>
-            ) : isBackScan ? (
+            ) : dlAction === DlActionEnum.backscan ? (
               <ScanBackDocument
                 onSuccess={onBackSuccess}
                 onReadyCallback={onCameraNotGranted}
@@ -312,7 +333,7 @@ const DLFaceCompare = ({
           >
             {isBarcodeScan
               ? "Place the bar code in the safe area"
-              : isBackScan
+              : dlAction === DlActionEnum.backscan
               ? "Place the BACK of your ID towards the camera"
               : "Place the FRONT of your ID towards the camera"}
           </Typography>

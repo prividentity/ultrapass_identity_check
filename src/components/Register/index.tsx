@@ -25,6 +25,7 @@ import { parsePhoneNumber } from "react-phone-number-input";
 import useToast from "../../utils/useToast";
 
 import PhoneInputComponent from "../PhoneInput";
+import { updateUserToken } from "../../services/api";
 
 const RegisterInputs = ({
   setStep,
@@ -51,11 +52,8 @@ const RegisterInputs = ({
 
   const context = useContext(UserContext);
 
-  const { setPhoneNumber, setSSN4, setId } = context;
-
-  const handleMobileInputChange = (inputNumber: any) => {
-    setPhoneInput(inputNumber);
-  };
+  const { setPhoneNumber, setSSN4, setId, tokenParams } = context;
+  
 
   const [showSSN4Error, setShowSSN4Error] = useState({
     error: false,
@@ -113,6 +111,9 @@ const RegisterInputs = ({
         phone: phoneInput,
         ssn4: inputSSN4,
       });
+
+      const updateToken = await updateUserToken({customerId: newID}, tokenParams)
+      console.log("Updated Token:", updateToken)
       if (result.user) {
         setToken(result?.user?.customerId);
         setStep(STEPS.PRE_ENROLL);

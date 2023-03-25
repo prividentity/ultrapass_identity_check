@@ -38,7 +38,7 @@ interface props {
 }
 
 const Signin = ({ theme, skin }: props) => {
-  const { ready: wasmReady } = useWasm();
+  const { ready: wasmReady, wasmStatus } = useWasm();
   const [isInitialPredict, setInitialPredict] = useState(true);
   const { showToast } = useToast();
   const navigate = useNavigate();
@@ -47,18 +47,26 @@ const Signin = ({ theme, skin }: props) => {
   const muiTheme = useTheme();
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
 
+
   useEffect(() => {
-    if (!wasmReady) return;
-    if (!ready) {
-      init();
+    console.log("=====? HERE????", { wasmStatus, wasmReady, ready });
+
+    if (!wasmReady && wasmStatus.isChecking) return;
+
+    if (wasmReady && !wasmStatus.isChecking && wasmStatus.support) {
+      // if(ready && wasmReady && wasmStatus.support && isCameraGranted) return;
+      if (!ready) {
+        init();
+        return;
+      } 
     }
 
-    // if(!ready && !wasmStatus.isChecking && !wasmStatus.support){
-    //   setStep(STEPS.NOT_SUPPORTED);
-    // }
-    predictUserOneFa();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [wasmReady, ready]);
+    if(wasmReady && ready){
+      predictUserOneFa();
+    }
+
+    console.log("--- wasm status ", ready);
+  }, [wasmReady, ready, wasmStatus]);
 
   const createVerification = async () => {
     const payload = config.clientConfig;

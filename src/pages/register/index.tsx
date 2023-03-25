@@ -20,7 +20,12 @@ import { UserContext } from "../../context/UserContext";
 import AdditionalRequirements from "../../components/AdditionalRequirements";
 import { useSearchParams } from "react-router-dom";
 import useToast from "../../utils/useToast";
-import { verifyIdApi, verifyTokenApi } from "../../services/api";
+import {
+  getUser,
+  getUserPortrait,
+  verifyIdApi,
+  verifyTokenApi,
+} from "../../services/api";
 import { SUCCESS, REQUIRES_INPUT, getStatusFromUser } from "../../utils";
 import { getUserStatus } from "@privateid/cryptonets-web-sdk-alpha";
 import NotSupported from "../../components/NotSupported";
@@ -31,23 +36,104 @@ interface props {
 }
 
 const Register = ({ theme, skin }: props) => {
-
   const { showToast } = useToast();
   const context = useContext(UserContext);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const tokenParams = searchParams.get("token") as string;
-  const [step, setStep] = useState(STEPS.START);
+  const [step, setStep] = useState("");
   const [prevStep, setPrevStep] = useState(STEPS.START);
   const [token, setToken] = useState("");
   const muiTheme = useTheme();
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
 
+  const verifyTokenAPI = async (token: any) => {
+    await verifyTokenApi(token).then(async (res: any) => {
+      context.setVerificationSession(res);
+      const convertLinkToImageData = async (link: string, setState: any) => {
+        var newImg = new Image();
+        newImg.src = "data:image/png;base64," + link;
+        newImg.onload = async () => {
+          var imgSize = {
+            w: newImg.width,
+            h: newImg.height,
+          };
+          const canvas = document.createElement("canvas");
+          canvas.setAttribute("height", `${imgSize.h}`);
+          canvas.setAttribute("width", `${imgSize.w}`);
+          var ctx = canvas.getContext("2d");
+          // @ts-ignore
+          ctx.drawImage(newImg, 0, 0);
+          // @ts-ignore
+          const enrollImage = ctx.getImageData(0, 0, imgSize.w, imgSize.h);
+          setState(enrollImage);
+          context.setDlAction("frontscan");
+          setStep(STEPS.DRIVERLICENSE);
+        };
+      };
+      console.log("what res?",res);
+      if (res?.customerInformation?.customerId) {
+        context.setId(res.customerInformation.customerId);
+        const userDetails: any = await getUser(
+          res?.customerInformation?.customerId
+        );
+        if (!userDetails.uuid) {
+          setStep(STEPS.PRE_ENROLL);
+        } else if (!userDetails?.govId?.portraitConfScore) {
+          const userPortrait: any = await getUserPortrait(
+            res.customerInformation.customerId
+          );
+          await convertLinkToImageData(
+            userPortrait.imagedata,
+            context.setEnrollImageData
+          );
+        } else if (!userDetails.govId.firstName) {
+          context.setDlAction("backscan");
+          setStep(STEPS.DRIVERLICENSE);
+        } else {
+          const { userApproved, ...rest } = ((await getUserStatus({
+            id: res.customerInformation.customerId,
+          })) || {}) as any;
+          const { requestScanID, requestResAddress } = rest || {};
+          context.setUserStatus({
+            userApproved,
+            requestScanID,
+            requestResAddress: !requestScanID && requestResAddress,
+            ...rest,
+          });
+          const status = getStatusFromUser({ userApproved, ...rest });
+          const session = res;
+          if (status === SUCCESS) {
+            showToast(
+              "You successfully completed your ID verification.",
+              "success"
+            );
+            if (session.successUrl) {
+              window.location.replace(session.successUrl);
+            }
+          } else if (status === REQUIRES_INPUT) {
+            showToast(
+              "We need more information to verify your identity.",
+              "error"
+            );
+            setStep(STEPS.ADDITIONAL_REQUIREMENTS);
+          } else {
+            showToast("Your ID verification was not completed.", "error");
+            if (session.failureUrl) {
+              window.location.replace(session.failureUrl);
+            }
+            // setStep(STEPS.VERIFICATION_NOT_COMPLETED);
+          }
+        }
+      } else {
+        setStep(STEPS.START);
+      }
+    });
+    context.setTokenParams(token);
+  };
   useEffect(() => {
     if (!tokenParams) return;
-    verifyTokenApi(tokenParams).then((res) => {
-      context.setVerificationSession(res);
-    });
+    verifyTokenAPI(tokenParams);
   }, [tokenParams]);
   const navigateToUrl = (
     url: string,
@@ -60,11 +146,12 @@ const Register = ({ theme, skin }: props) => {
   };
 
   const onVerifyId = async () => {
+    console.log("context before verify?????", context)
     const payload = {
-      token: token,
+      token: context.id,
     };
     await verifyIdApi({ id: tokenParams, payload });
-    const { userApproved, ...rest } = ((await getUserStatus({ id: token })) ||
+    const { userApproved, ...rest } = ((await getUserStatus({ id: context.id })) ||
       {}) as any;
     const { requestScanID, requestResAddress } = rest || {};
     context.setUserStatus({
@@ -185,10 +272,9 @@ const Register = ({ theme, skin }: props) => {
           />
         );
       case STEPS.NOT_SUPPORTED:
-        return (
-          <NotSupported />
-        );
+        return <NotSupported />;
       default:
+        return <></>;
     }
   };
   const themeName = skin || "primary";
