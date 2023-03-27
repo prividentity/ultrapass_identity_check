@@ -51,6 +51,7 @@ const HomeComponent = ({ theme, skin }: props) => {
       ...config.clientConfig,
       productGroupId: selectedProductGroup || "intergalactic",
     };
+    console.log(JSON.stringify(payload));
     const result: any = await createVerificationSession(payload);
     if (result?.token) {
       onFlowChange(flow, result?.token);
@@ -175,7 +176,7 @@ const HomeComponent = ({ theme, skin }: props) => {
   const handleChange = (e: any) => {
     setSelectedProductGroup(e?.target?.value);
   };
-
+  console.log({ productGroup });
   return (
     <>
       <Container maxWidth="xl">
@@ -231,11 +232,13 @@ const HomeComponent = ({ theme, skin }: props) => {
               {productGroup?.length ? (
                 [{ name: "Select Product Group", _id: "1" }, ...productGroup]
                   ?.filter((product: { name: string }) => product?.name)
-                  ?.map((product: { name: string; _id: string }) => (
-                    <MenuItem value={product?._id}>{product?.name}</MenuItem>
+                  ?.map((product: any) => (
+                    <MenuItem key={product?._id} value={product?.apiValue}>
+                      {product?.name}
+                    </MenuItem>
                   ))
               ) : (
-                <MenuItem value={"1"}>Select Product Group</MenuItem>
+                <MenuItem value={"intergalactic"}>Select Product Group</MenuItem>
               )}
             </Select>
           </Box>
