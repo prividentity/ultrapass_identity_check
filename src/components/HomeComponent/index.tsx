@@ -34,7 +34,7 @@ const HomeComponent = ({ theme, skin }: props) => {
   const [productGroup, setProductGroup] = useState<
     { name: string; _id: string }[]
   >([]);
-  const [selectedProductGroup, setSelectedProductGroup] = useState<string>("1");
+  const [selectedProductGroup, setSelectedProductGroup] = useState<string>("intergalactic");
   const navigate = useNavigate();
   const classes = useStyles();
   const muiTheme = useTheme();
@@ -230,7 +230,7 @@ const HomeComponent = ({ theme, skin }: props) => {
               MenuProps={{ classes: { paper: classes.menuPaper } }}
             >
               {productGroup?.length ? (
-                [{ name: "Select Product Group", _id: "1" }, ...productGroup]
+                [{ name: "Select Product Group", _id: "1", apiValue: "intergalactic" }, ...productGroup]
                   ?.filter((product: { name: string }) => product?.name)
                   ?.map((product: any) => (
                     <MenuItem key={product?._id} value={product?.apiValue}>
