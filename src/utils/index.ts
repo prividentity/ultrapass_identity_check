@@ -35,6 +35,7 @@ export const getDisplayedMessage = (result: number) => {
 };
 
 export const isIOS = Platform?.os?.family === "iOS";
+export const API_KEY = '0000000000000000test';
 export const osVersion = Number(Platform?.os?.version);
 export const isAndroid = Platform?.os?.family === "Android";
 export const isMobile = isIOS || isAndroid;

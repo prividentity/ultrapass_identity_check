@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -8,10 +8,15 @@ import {
   CircularProgress,
   useTheme,
   useMediaQuery,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { styles } from "../../pages/signup/styles";
 import { useNavigate } from "react-router";
-import { createVerificationSession } from "../../services/api";
+import {
+  createVerificationSession,
+  getProductGroupList,
+} from "../../services/api";
 import { createSearchParams } from "react-router-dom";
 import config from "../../config";
 import { useStyles } from "../../pages/home/styles";
@@ -26,9 +31,14 @@ const HomeComponent = ({ theme, skin }: props) => {
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const [loading, setLoading] = useState(false);
   const [flow] = useState(1);
+  const [productGroup, setProductGroup] = useState<
+    { name: string; _id: string }[]
+  >([]);
+  const [selectedProductGroup, setSelectedProductGroup] = useState<string>("1");
   const navigate = useNavigate();
   const classes = useStyles();
   const muiTheme = useTheme();
+  const url = new URL(window.location.href);
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
 
   const createVerification = async () => {
@@ -141,6 +151,28 @@ const HomeComponent = ({ theme, skin }: props) => {
       );
     }
   }
+
+  const getProductGroup = async () => {
+    const result: any = await getProductGroupList();
+    const prodList = result?.filter(
+      (product: { isProd: boolean }) => product?.isProd
+    );
+    const devList = result?.filter(
+      (product: { isProd: boolean; isDraft: boolean }) =>
+        !product.isProd && !product.isDraft
+    );
+    const isDev = url?.search?.split("environment=")?.[1] === "dev";
+    setProductGroup(isDev ? devList : prodList);
+  };
+
+  useEffect(() => {
+    getProductGroup();
+  }, []);
+
+  const handleChange = (e: any) => {
+    setSelectedProductGroup(e?.target?.value);
+  };
+
   return (
     <>
       <Container maxWidth="xl">
@@ -185,6 +217,24 @@ const HomeComponent = ({ theme, skin }: props) => {
                 </Button>
               )}
             </Grid>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={selectedProductGroup}
+              onChange={handleChange}
+              className={classes.flowdropDown}
+              MenuProps={{ classes: { paper: classes.menuPaper } }}
+            >
+              {productGroup?.length ? (
+                [{ name: "Select Product Group", _id: "1" }, ...productGroup]
+                  ?.filter((product: { name: string }) => product?.name)
+                  ?.map((product: { name: string; _id: string }) => (
+                    <MenuItem value={product?._id}>{product?.name}</MenuItem>
+                  ))
+              ) : (
+                <MenuItem value={"1"}>Select Product Group</MenuItem>
+              )}
+            </Select>
           </Box>
 
           {matchesSM ? (

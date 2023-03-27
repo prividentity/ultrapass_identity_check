@@ -76,6 +76,11 @@ export const useStyles = makeStyles((theme: any) => ({
       color: palette[skin]?.text,
     },
   },
+  menuPaper: {
+    maxHeight: "250px !important",
+    width: "300px !important",
+    left: "95px !important",
+  },
   homeLoader: {
     color: `${palette[skin]?.text} !important`,
     height: "35px  !important",
