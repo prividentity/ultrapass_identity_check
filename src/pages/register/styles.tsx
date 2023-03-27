@@ -383,4 +383,7 @@ export const useStyles = makeStyles((theme: any) => ({
       },
     },
   },
+  loaderProgress: {
+    height: "5px !important"
+  },
 }));

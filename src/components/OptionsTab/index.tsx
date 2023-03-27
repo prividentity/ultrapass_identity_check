@@ -9,6 +9,7 @@ import {
   TextField,
   useMediaQuery,
   CircularProgress,
+  LinearProgress,
 } from "@mui/material";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -21,7 +22,8 @@ import { sendMessage, verifyTokenApi } from "../../services/api";
 import PhoneInputComponent from "../PhoneInput";
 import { useSearchParams } from "react-router-dom";
 import { useInterval } from "../../utils/useInterval";
-import {navigateToUrl} from "../../utils";
+import { navigateToUrl } from "../../utils";
+import { useStyles } from "../../pages/register/styles";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -79,16 +81,20 @@ export default function FullWidthTabs() {
     5000
   );
   const [searchParams] = useSearchParams();
+  const [progress, setProgress] = React.useState(false);
   const tokenParams = searchParams.get("token");
 
   useInterval(async () => {
+    setProgress(true);
     verifyTokenApi(tokenParams).then((res: any) => {
       if (["SUCCESS", "FAILURE"].includes(res.status)) {
         setRefreshInterval(null);
-        if(res.status === "SUCCESS"){
-          navigateToUrl(res.successUrl, res.token)
+        if (res.status === "SUCCESS") {
+          setProgress(false);
+          navigateToUrl(res.successUrl, res.token);
         } else {
-          navigateToUrl(res.failureUrl, res.token)
+          setProgress(false);
+          navigateToUrl(res.failureUrl, res.token);
         }
       }
     });
@@ -128,185 +134,189 @@ export default function FullWidthTabs() {
     setIsLoading(false);
     showToast("Message sent successfully", "success");
   };
+  const classes = useStyles();
 
   return (
-    <Grid container direction={"column"} my={1}>
-      <Grid item container>
-        <Typography
-          align={matchesSM ? "center" : "left"}
-          variant={"h6"}
-          p={2}
-          pb={1}
-          fontWeight={600}
+    <>
+      {progress && <LinearProgress className={classes.loaderProgress} />}
+      <Grid container direction={"column"} my={1}>
+        <Grid item container>
+          <Typography
+            align={matchesSM ? "center" : "left"}
+            variant={"h6"}
+            p={2}
+            pb={1}
+            fontWeight={600}
+          >
+            Continue your verification
+          </Typography>
+        </Grid>
+        <Grid
+          item
+          sx={{ bgcolor: "background.paper", width: "100%", height: "400px" }}
         >
-          Continue your verification
-        </Typography>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            textColor="inherit"
+            variant="fullWidth"
+            sx={{
+              "& .MuiTabs-indicator": {
+                backgroundColor: "#ff9900",
+              },
+            }}
+          >
+            <StyledTab label="SMS" />
+            <StyledTab label="QR Code" />
+            <StyledTab label="Email" />
+            <StyledTab label="Link" />
+          </Tabs>
+
+          <TabPanel value={value} index={0} dir={theme.direction}>
+            <Stack display={"flex"} direction={"column"} gap={2}>
+              <Typography
+                align={matchesSM ? "center" : "left"}
+                component={"p"}
+                variant="h6"
+              >
+                Receive a link via text message.
+              </Typography>
+
+              <Typography
+                align={matchesSM ? "center" : "left"}
+                component={"p"}
+                variant="body1"
+              >
+                Enter your mobile number and we will send you a link to complete
+                this verification on a different device.
+              </Typography>
+              <PhoneInput
+                value={phone}
+                autoFocus
+                onChange={(value) => setPhone(value as string)}
+                inputComponent={React.forwardRef(PhoneInputComponent)}
+              />
+              <Typography
+                align={matchesSM ? "center" : "left"}
+                component={"p"}
+                variant="body2"
+              >
+                Standard messaging rates may apply.
+              </Typography>
+              <Button
+                onClick={sendPhone}
+                variant="contained"
+                sx={{ width: "100%" }}
+              >
+                {isLoading ? <CircularProgress /> : "Send Link"}
+              </Button>
+            </Stack>
+          </TabPanel>
+          <TabPanel value={value} index={1} dir={theme.direction}>
+            <Stack display={"flex"} direction={"column"} gap={2}>
+              <Typography
+                align={matchesSM ? "center" : "left"}
+                component={"p"}
+                variant="h6"
+              >
+                Scan QR code.
+              </Typography>
+
+              <Typography
+                align={matchesSM ? "center" : "left"}
+                component={"p"}
+                variant="body1"
+              >
+                Point your phone's camera at the image to follow the link.
+              </Typography>
+
+              <Box display="flex" justifyContent={"center"}>
+                <QRCode size={200} value={window.location.toString()} />
+              </Box>
+            </Stack>
+          </TabPanel>
+          <TabPanel value={value} index={2} dir={theme.direction}>
+            <Stack display={"flex"} direction={"column"} gap={2}>
+              <Typography
+                align={matchesSM ? "center" : "left"}
+                component={"p"}
+                variant="h6"
+              >
+                Receive a link via email
+              </Typography>
+
+              <Typography
+                align={matchesSM ? "center" : "left"}
+                component={"p"}
+                variant="body1"
+              >
+                Enter your email address and we will send you a link to complete
+                this verification on a different device.
+              </Typography>
+
+              <TextField
+                id="outlined-basic"
+                label="Email"
+                variant="outlined"
+                fullWidth
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                InputProps={{
+                  endAdornment: <EmailIcon />,
+                }}
+              />
+
+              <Typography
+                align={matchesSM ? "center" : "left"}
+                component={"p"}
+                variant="body2"
+              >
+                If you do not see the email, then please check your spam folder.
+              </Typography>
+
+              <Button
+                onClick={sendEmail}
+                variant="contained"
+                sx={{ width: "100%" }}
+              >
+                {isLoading ? <CircularProgress /> : "Send link"}
+              </Button>
+            </Stack>
+          </TabPanel>
+          <TabPanel value={value} index={3} dir={theme.direction}>
+            <Stack display={"flex"} direction={"column"} gap={2}>
+              <Typography
+                align={matchesSM ? "center" : "left"}
+                component={"p"}
+                variant="h6"
+              >
+                Copy link
+              </Typography>
+
+              <Typography
+                align={matchesSM ? "center" : "left"}
+                component={"p"}
+                variant="body1"
+              >
+                Open this link to complete this verification on a different
+                device.
+              </Typography>
+
+              <Button
+                endIcon={<ContentCopy />}
+                variant="contained"
+                onClick={() => {
+                  navigator.clipboard.writeText(window.location.toString());
+                  showToast("Link copied to clipboard", "success");
+                }}
+                sx={{ width: "100%" }}
+              >
+                Copy link
+              </Button>
+            </Stack>
+          </TabPanel>
+        </Grid>
       </Grid>
-      <Grid
-        item
-        sx={{ bgcolor: "background.paper", width: "100%", height: "400px" }}
-      >
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          textColor="inherit"
-          variant="fullWidth"
-          sx={{
-            "& .MuiTabs-indicator": {
-              backgroundColor: "#ff9900",
-            },
-          }}
-        >
-          <StyledTab label="SMS" />
-          <StyledTab label="QR Code" />
-          <StyledTab label="Email" />
-          <StyledTab label="Link" />
-        </Tabs>
-
-        <TabPanel value={value} index={0} dir={theme.direction}>
-          <Stack display={"flex"} direction={"column"} gap={2}>
-            <Typography
-              align={matchesSM ? "center" : "left"}
-              component={"p"}
-              variant="h6"
-            >
-              Receive a link via text message.
-            </Typography>
-
-            <Typography
-              align={matchesSM ? "center" : "left"}
-              component={"p"}
-              variant="body1"
-            >
-              Enter your mobile number and we will send you a link to complete
-              this verification on a different device.
-            </Typography>
-            <PhoneInput
-              value={phone}
-              autoFocus
-              onChange={(value) => setPhone(value as string)}
-              inputComponent={React.forwardRef(PhoneInputComponent)}
-            />
-            <Typography
-              align={matchesSM ? "center" : "left"}
-              component={"p"}
-              variant="body2"
-            >
-              Standard messaging rates may apply.
-            </Typography>
-            <Button
-              onClick={sendPhone}
-              variant="contained"
-              sx={{ width: "100%" }}
-            >
-              {isLoading ? <CircularProgress /> : "Send Link"}
-            </Button>
-          </Stack>
-        </TabPanel>
-        <TabPanel value={value} index={1} dir={theme.direction}>
-          <Stack display={"flex"} direction={"column"} gap={2}>
-            <Typography
-              align={matchesSM ? "center" : "left"}
-              component={"p"}
-              variant="h6"
-            >
-              Scan QR code.
-            </Typography>
-
-            <Typography
-              align={matchesSM ? "center" : "left"}
-              component={"p"}
-              variant="body1"
-            >
-              Point your phone's camera at the image to follow the link.
-            </Typography>
-
-            <Box display="flex" justifyContent={"center"}>
-              <QRCode size={200} value={window.location.toString()} />
-            </Box>
-          </Stack>
-        </TabPanel>
-        <TabPanel value={value} index={2} dir={theme.direction}>
-          <Stack display={"flex"} direction={"column"} gap={2}>
-            <Typography
-              align={matchesSM ? "center" : "left"}
-              component={"p"}
-              variant="h6"
-            >
-              Receive a link via email
-            </Typography>
-
-            <Typography
-              align={matchesSM ? "center" : "left"}
-              component={"p"}
-              variant="body1"
-            >
-              Enter your email address and we will send you a link to complete
-              this verification on a different device.
-            </Typography>
-
-            <TextField
-              id="outlined-basic"
-              label="Email"
-              variant="outlined"
-              fullWidth
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              InputProps={{
-                endAdornment: <EmailIcon />,
-              }}
-            />
-
-            <Typography
-              align={matchesSM ? "center" : "left"}
-              component={"p"}
-              variant="body2"
-            >
-              If you do not see the email, then please check your spam folder.
-            </Typography>
-
-            <Button
-              onClick={sendEmail}
-              variant="contained"
-              sx={{ width: "100%" }}
-            >
-              {isLoading ? <CircularProgress /> : "Send link"}
-            </Button>
-          </Stack>
-        </TabPanel>
-        <TabPanel value={value} index={3} dir={theme.direction}>
-          <Stack display={"flex"} direction={"column"} gap={2}>
-            <Typography
-              align={matchesSM ? "center" : "left"}
-              component={"p"}
-              variant="h6"
-            >
-              Copy link
-            </Typography>
-
-            <Typography
-              align={matchesSM ? "center" : "left"}
-              component={"p"}
-              variant="body1"
-            >
-              Open this link to complete this verification on a different
-              device.
-            </Typography>
-
-            <Button
-              endIcon={<ContentCopy />}
-              variant="contained"
-              onClick={() => {
-                navigator.clipboard.writeText(window.location.toString());
-                showToast("Link copied to clipboard", "success");
-              }}
-              sx={{ width: "100%" }}
-            >
-              Copy link
-            </Button>
-          </Stack>
-        </TabPanel>
-      </Grid>
-    </Grid>
+    </>
   );
 }

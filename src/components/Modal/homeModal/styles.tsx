@@ -42,6 +42,7 @@ export const useStyles = makeStyles((theme: any) => ({
     backgroundColor: "#fffdfd",
     padding: "5px 8px",
     borderRadius: 5,
+    zIndex: 999,
   },
   cardInner: {
     width: 500,
