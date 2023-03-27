@@ -47,7 +47,10 @@ const HomeComponent = ({ theme, skin }: props) => {
       return;
     }
     setLoading(true);
-    const payload = config.clientConfig;
+    const payload = {
+      ...config.clientConfig,
+      productGroupId: selectedProductGroup || "intergalactic",
+    };
     const result: any = await createVerificationSession(payload);
     if (result?.token) {
       onFlowChange(flow, result?.token);
