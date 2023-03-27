@@ -1,7 +1,7 @@
 const config = {
   clientConfig: {
-    successUrl: "https://www.success.com",
-    failureUrl: "https://www.failure.com",
+    successUrl: window.location.origin,
+    failureUrl: window.location.origin,
     type: "IDENTITY",
     productGroupId: "intergalactic",
   },
