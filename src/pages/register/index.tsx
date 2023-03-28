@@ -71,7 +71,7 @@ const Register = ({ theme, skin }: props) => {
           setStep(STEPS.DRIVERLICENSE);
         };
       };
-      console.log("what res?",res);
+      console.log("what res?", res);
       if (res?.customerInformation?.customerId) {
         context.setId(res.customerInformation.customerId);
         const userDetails: any = await getUser(
@@ -109,7 +109,9 @@ const Register = ({ theme, skin }: props) => {
               "success"
             );
             if (session.successUrl) {
-              window.location.replace(session.successUrl);
+              setTimeout(() => {
+                window.location.replace(session.successUrl);
+              }, 3000);
             }
           } else if (status === REQUIRES_INPUT) {
             showToast(
@@ -120,7 +122,9 @@ const Register = ({ theme, skin }: props) => {
           } else {
             showToast("Your ID verification was not completed.", "error");
             if (session.failureUrl) {
-              window.location.replace(session.failureUrl);
+              setTimeout(() => {
+                window.location.replace(session.failureUrl);
+              }, 3000);
             }
             // setStep(STEPS.VERIFICATION_NOT_COMPLETED);
           }
@@ -137,13 +141,14 @@ const Register = ({ theme, skin }: props) => {
   }, [tokenParams]);
 
   const onVerifyId = async () => {
-    console.log("context before verify?????", context)
+    console.log("context before verify?????", context);
     const payload = {
       token: context.id,
     };
     await verifyIdApi({ id: tokenParams, payload });
-    const { userApproved, ...rest } = ((await getUserStatus({ id: context.id })) ||
-      {}) as any;
+    const { userApproved, ...rest } = ((await getUserStatus({
+      id: context.id,
+    })) || {}) as any;
     const { requestScanID, requestResAddress } = rest || {};
     context.setUserStatus({
       userApproved,
