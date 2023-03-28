@@ -122,7 +122,6 @@ const Signin = ({ theme, skin }: props) => {
   };
 
   const handlePredictSuccess = async (result: any) => {
-    console.log({result});
     switch (result.status) {
       case -100:
         setInitialPredict(false);
@@ -133,7 +132,6 @@ const Signin = ({ theme, skin }: props) => {
           guid: result?.PI?.guid,
         };
         const data: any = await getUser(payload);
-        console.log(136, {data})
         if (data?.data?.level === ERROR) {
           showToast(data?.data?.message, "error");
           return createVerification();
