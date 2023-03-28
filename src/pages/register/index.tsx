@@ -71,7 +71,6 @@ const Register = ({ theme, skin }: props) => {
           setStep(STEPS.DRIVERLICENSE);
         };
       };
-      console.log("what res?",res);
       if (res?.customerInformation?.customerId) {
         context.setId(res.customerInformation.customerId);
         const userDetails: any = await getUser(
@@ -230,7 +229,7 @@ const Register = ({ theme, skin }: props) => {
           />
         );
 
-      case STEPS.DRIVERLICENSE:
+      case STEPS. DRIVERLICENSE:
         return (
           <DLScan
             matchesSM={matchesSM}
