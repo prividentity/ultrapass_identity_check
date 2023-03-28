@@ -1,10 +1,10 @@
 import { CircularProgress, MenuItem, Select } from "@mui/material";
 import { switchCamera } from "@privateid/cryptonets-web-sdk-alpha";
 import React, { useEffect, useState } from "react";
-import useCamera from "../../hooks/useCamera";
+import useCamera, { setResolutionForIphoneCC } from "../../hooks/useCamera";
 import useWasm from "../../hooks/useWasm";
 import styles from "../../styles/Home.module.css";
-import { isBackCamera } from "../../utils";
+import { isBackCamera, isIphoneCC } from "../../utils";
 import useCameraPermissions from "../../hooks/useCameraPermissions";
 import { useStyles } from "./styles";
 
@@ -35,15 +35,18 @@ const Camera = ({
   );
 
   console.log("CAMERA SETTING FROM APP", settings);
-  
-  useEffect(()=>{
-    console.log(`CAMERA CHECKING IF FULL HD ${settings? Math.max(settings.width, settings.height): "qwe"}`);
-    if(settings && Math.max(settings.width, settings.height) < 1920 ){
+
+  useEffect(() => {
+    console.log(
+      `CAMERA CHECKING IF FULL HD ${
+        settings ? Math.max(settings.width, settings.height) : "qwe"
+      }`
+    );
+    if (settings && Math.max(settings.width, settings.height) < 1920) {
       console.log("NOT FULL HD");
       onCameraNotFullHd();
     }
-  },[onCameraNotFullHd, settings])
-
+  }, [onCameraNotFullHd, settings]);
 
   const [deviceId, setDeviceId] = useState(device);
 
@@ -80,10 +83,11 @@ const Camera = ({
 
   const handleSwitchCamera = async (e: any) => {
     setDeviceId(e.target.value);
-    await switchCamera(
-      null,
-      e.target.value
-    );
+    // @ts-ignore
+    const { capabilities } = await switchCamera(null, e.target.value);
+    if (isIphoneCC(capabilities)) {
+      await setResolutionForIphoneCC();
+    }
     setTimeout(() => {
       onSwitchCamera(true);
     }, 3000);
