@@ -75,7 +75,7 @@ const DLFaceCompare = ({
       croppedMugshot,
       portraitConfScore: compareScore,
     } = result;
-    console.log({
+    console.log("compareScore??",{
       inputImage,
       croppedDocument,
       croppedMugshot,

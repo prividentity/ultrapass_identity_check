@@ -59,6 +59,7 @@ const Enroll = ({
     enrollPortrait,
   } = useEnrollOneFa2("userVideo", (e: any) => console.log(e), 4);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleUserUpdate = async (guid: string, uuid: string) => {
     setGUID(guid);
     setUUID(uuid);

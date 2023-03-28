@@ -105,11 +105,12 @@ export default function FullWidthTabs() {
   const sendPhone = async () => {
     const payload = {
       type: "phone",
-      phone,
+      phone: phone,
       subject: "Continue your verification",
       message: `to continue your verification process, Please delete this message if you did not request this verification.`,
       endpoint: pathAndQuery,
     };
+    console.log("Phone payload??", payload);
     setIsLoading(true);
     const response = await sendMessage(payload);
     setIsLoading(false);
