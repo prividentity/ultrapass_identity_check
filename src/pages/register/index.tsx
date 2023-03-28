@@ -71,15 +71,18 @@ const Register = ({ theme, skin }: props) => {
           setStep(STEPS.DRIVERLICENSE);
         };
       };
-      console.log("what res?", res);
       if (res?.customerInformation?.customerId) {
         context.setId(res.customerInformation.customerId);
         const userDetails: any = await getUser(
           res?.customerInformation?.customerId
         );
+        console.log("USER DETAILS:", userDetails);
         if (!userDetails.uuid) {
           setStep(STEPS.PRE_ENROLL);
-        } else if (!userDetails?.govId?.portraitConfScore) {
+        } else if (
+          !userDetails?.govId?.portraitConfScore &&
+          userDetails?.govId?.portraitConfScore !== 0
+        ) {
           const userPortrait: any = await getUserPortrait(
             res.customerInformation.customerId
           );

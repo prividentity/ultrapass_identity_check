@@ -30,7 +30,6 @@ import { createSearchParams } from "react-router-dom";
 import { useCamera, useWasm } from "../../hooks";
 import Camera from "../../components/Camera";
 import HomeComponent from "../../components/HomeComponent";
-import STEPS from "../register/steps";
 
 interface props {
   theme: string;
