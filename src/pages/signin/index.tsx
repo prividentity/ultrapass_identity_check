@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { Box } from "@mui/material";
 import { useNavigate } from "react-router";
 import shield from "../../assets/shield.png";
 import { styles } from "./styles";
@@ -19,7 +19,6 @@ import {
   createVerificationSession,
   getUser,
 } from "../../services/api";
-import womenImg from "../../assets/Kimiko-S3.png";
 import HomeModal from "../../components/Modal/homeModal";
 import useToast from "../../utils/useToast";
 import Header from "../../components/Header";
@@ -43,9 +42,6 @@ const Signin = ({ theme, skin }: props) => {
   const navigate = useNavigate();
   const elementId = "userVideo";
   const { ready, init } = useCamera(elementId);
-  const muiTheme = useTheme();
-  const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
-
 
   useEffect(() => {
     console.log("=====? HERE????", { wasmStatus, wasmReady, ready });
@@ -200,11 +196,6 @@ const Signin = ({ theme, skin }: props) => {
     <>
       {headerVisible?.includes(skin) && <Header theme={themeName} />}
       <div className="homePageWrapper">
-        {!matchesSM && (
-          <div className="homeSidebarImg">
-            <img src={womenImg} alt="women" />
-          </div>
-        )}
         {isInitialPredict && (
           <>
             <HomeComponent theme={themeName} />

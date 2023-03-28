@@ -7,9 +7,15 @@ import "./App.css";
 import router from "./routes";
 import UserContextProvider from "./context/UserContext";
 import { useSkinContext } from "./context/SkinContext";
+import { useMediaQuery, useTheme } from "@mui/material";
+import womenImg from "./assets/Kimiko-S3.png";
+
 function App() {
   const { skin } = useSkinContext();
   const backgroundImage: { [key: string]: any } = backgroundImages;
+  const muiTheme = useTheme();
+  const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
+  const isRegister = window?.location?.pathname === '/register'
 
   return (
     <UserContextProvider>
@@ -32,6 +38,11 @@ function App() {
             />
           )}
           <RouterProvider router={router} />
+          {!matchesSM && skin !== "c1" && !isRegister && (
+            <div className="homeSidebarImg">
+              <img src={womenImg} alt="women" />
+            </div>
+          )}
         </ThemeProvider>
       </SnackbarProvider>
     </UserContextProvider>
