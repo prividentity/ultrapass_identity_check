@@ -57,7 +57,7 @@ const Signin = ({ theme, skin }: props) => {
       if (!ready) {
         init();
         return;
-      } 
+      }
     }
 
     if(wasmReady && ready){
@@ -136,8 +136,8 @@ const Signin = ({ theme, skin }: props) => {
           return createVerification();
         } else {
           setIsUserVerify(true);
-          localStorage.setItem("user", JSON.stringify(data?.userData || {}));
-          nextStep(data?.userData);
+          localStorage.setItem("user", JSON.stringify(data || {}));
+          nextStep(data);
         }
         return false;
       }
