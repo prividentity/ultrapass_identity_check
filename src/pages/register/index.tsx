@@ -77,9 +77,10 @@ const Register = ({ theme, skin }: props) => {
         const userDetails: any = await getUser(
           res?.customerInformation?.customerId
         );
+        console.log("USER DETAILS:", userDetails);
         if (!userDetails.uuid) {
           setStep(STEPS.PRE_ENROLL);
-        } else if (!userDetails?.govId?.portraitConfScore) {
+        } else if (!userDetails?.govId?.portraitConfScore && userDetails?.govId?.portraitConfScore !==0) {
           const userPortrait: any = await getUserPortrait(
             res.customerInformation.customerId
           );
