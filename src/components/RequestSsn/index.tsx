@@ -55,7 +55,7 @@ const RequestSsn = ({
     if (ssn9Ref?.current?.value.length !== 11) {
       showToast("Enter SSN9", "error");
     } else if (ssn9Ref?.current?.value.length === 11) {
-      const inputSSN9 = ssn9Ref?.current?.value;
+      const inputSSN9 = ssn9Ref?.current?.value.replace(/-/g,"");
       const updateUserResult: any = await updateUser({
         id,
         attributes: { ssn9: inputSSN9 } as any,
