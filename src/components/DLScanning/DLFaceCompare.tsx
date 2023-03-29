@@ -75,12 +75,12 @@ const DLFaceCompare = ({
       croppedMugshot,
       portraitConfScore: compareScore,
     } = result;
-    console.log("compareScore??",{
-      inputImage,
-      croppedDocument,
-      croppedMugshot,
-      compareScore,
-    });
+    // console.log("compareScore??",{
+    //   inputImage,
+    //   croppedDocument,
+    //   croppedMugshot,
+    //   compareScore,
+    // });
 
     setPortraitConfScore(compareScore);
 
@@ -89,19 +89,19 @@ const DLFaceCompare = ({
       type: DLType.FRONTDLORIGINAL,
       image: inputImage,
     });
-    console.log("uploadImageInput: ", uploadImageInput);
+    // console.log("uploadImageInput: ", uploadImageInput);
     const uploadCroppedDocumentImage = await uploadDL({
       id,
       type: DLType.FRONTDLCROPPED,
       image: croppedDocument,
     });
-    console.log("uploadCroppedDocumentImage: ", uploadCroppedDocumentImage);
+    // console.log("uploadCroppedDocumentImage: ", uploadCroppedDocumentImage);
     const uploadCroppedMugshotImage = await uploadDL({
       id,
       type: DLType.FRONTDLHEADSHOT,
       image: croppedMugshot,
     });
-    console.log("uploadCroppedMugshotImage: ", uploadCroppedMugshotImage);
+    // console.log("uploadCroppedMugshotImage: ", uploadCroppedMugshotImage);
     const govId = {
       portraitConfScore: compareScore,
     };
@@ -111,7 +111,7 @@ const DLFaceCompare = ({
       // @ts-ignore
       attributes: { govId: govId },
     });
-    console.log("Update user result: ", updateUserResult);
+    // console.log("Update user result: ", updateUserResult);
     if (
       uploadImageInput &&
       uploadCroppedDocumentImage &&
@@ -153,14 +153,14 @@ const DLFaceCompare = ({
     croppedDocument: string;
     croppedBarcode: string;
   }) => {
-    console.log({ barcodeData, inputImage, croppedDocument, croppedBarcode });
+    // console.log({ barcodeData, inputImage, croppedDocument, croppedBarcode });
 
     const uploadCroppedBarcodeImage = await uploadDL({
       id,
       type: DLType.BACKDLBARCODE,
       image: croppedBarcode,
     });
-    console.log("uploadCroppedBarcodeImage", uploadCroppedBarcodeImage);
+    // console.log("uploadCroppedBarcodeImage", uploadCroppedBarcodeImage);
 
     if (croppedDocument) {
       const uploadCroppedBackDocumentImage = await uploadDL({
@@ -169,10 +169,10 @@ const DLFaceCompare = ({
         image: croppedDocument,
       });
 
-      console.log(
-        "uploadCroppedBackDocumentImage",
-        uploadCroppedBackDocumentImage
-      );
+      // console.log(
+      //   "uploadCroppedBackDocumentImage",
+      //   uploadCroppedBackDocumentImage
+      // );
     }
 
     const uploadBarcodeData = await uploadDL({
@@ -180,7 +180,7 @@ const DLFaceCompare = ({
       type: DLType.BARCODEJSON,
       barcode: JSON.stringify(barcodeData),
     });
-    console.log("uploadBarcodeData", uploadBarcodeData);
+    // console.log("uploadBarcodeData", uploadBarcodeData);
 
     console.log("===== end of DL SCAN ====== ");
 
@@ -203,7 +203,7 @@ const DLFaceCompare = ({
       // @ts-ignore
       attributes: { govId: govId },
     });
-    console.log("Update user result: ", updateUserResult);
+    // console.log("Update user result: ", updateUserResult);
 
     setIsLoading(true);
     setTimeout(() => {
