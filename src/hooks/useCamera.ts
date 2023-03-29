@@ -54,14 +54,12 @@ const useCamera = (
 
       setCameraFeatures({ settings, capabilities });
       setFaceMode(faceMode);
-      console.log("hasError??", { status, errorMessage });
       if (Array.isArray(devices) && devices?.length > 0) {
         const options = devices?.map(mapDevices);
         setDevices(options);
         setDevice(settings?.deviceId as string);
       }
 
-      console.log("???", devices);
       if (devices?.length === 0) {
         onCameraFail();
         console.log("no camera");

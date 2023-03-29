@@ -164,7 +164,9 @@ const Register = ({ theme, skin }: props) => {
     if (status === SUCCESS) {
       showToast("You successfully completed your ID verification.", "success");
       if (session.successUrl) {
-        window.location.replace(session.successUrl);
+        setTimeout(()=>{
+          window.location.replace(session.successUrl);
+        },2000)
       }
     } else if (status === REQUIRES_INPUT) {
       showToast("We need more information to verify your identity.", "error");
@@ -172,7 +174,9 @@ const Register = ({ theme, skin }: props) => {
     } else {
       showToast("Your ID verification was not completed.", "error");
       if (session.failureUrl) {
-        window.location.replace(session.failureUrl);
+        setTimeout(()=>{
+          window.location.replace(session.failureUrl);
+        },2000)
       }
       // setStep(STEPS.VERIFICATION_NOT_COMPLETED);
     }

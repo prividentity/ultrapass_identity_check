@@ -69,7 +69,7 @@ const Enroll = ({
       id,
       portrait: enrollPortrait
     });
-    console.log("upload portrait:", uploadResult);
+    // console.log("upload portrait:", uploadResult);
 
     const params = {
       id,
