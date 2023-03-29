@@ -48,6 +48,7 @@ const RequestAddress = ({
   const handleContinue = async () => {
     const address = {
       addressLine1: addressData?.addressLine1,
+      addressLine2: addressData?.addressLine2,
       city: addressData?.city,
       state,
       zipCode: addressData?.zipCode,
@@ -56,7 +57,7 @@ const RequestAddress = ({
 
     const updateUserResult: any = await updateUser({
       id,
-      attributes: { govId: address } as any,
+      attributes: { govId: {address} } as any,
     });
     if (updateUserResult?.level === "error") {
       showToast(updateUserResult?.message, "error");
@@ -143,7 +144,7 @@ const RequestAddress = ({
             fullWidth
             id="outlined-basic"
             placeholder="Zip Code"
-            name="ZIP or postal code"
+            name="zipCode"
             inputProps={{
               maxLength: 5,
             }}
