@@ -77,7 +77,7 @@ const Register = ({ theme, skin }: props) => {
           res?.customerInformation?.customerId
         );
         console.log("USER DETAILS:", userDetails);
-        if (!userDetails.uuid) {
+        if (!userDetails.uuid || !userDetails.portrait) {
           setStep(STEPS.PRE_ENROLL);
         } else if (
           !userDetails?.govId?.portraitConfScore &&
