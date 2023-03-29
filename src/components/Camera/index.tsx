@@ -34,14 +34,14 @@ const Camera = ({
     isDocumentScan
   );
 
-  console.log("CAMERA SETTING FROM APP", settings);
+  // console.log("CAMERA SETTING FROM APP", settings);
 
   useEffect(() => {
-    console.log(
-      `CAMERA CHECKING IF FULL HD ${
-        settings ? Math.max(settings.width, settings.height) : "qwe"
-      }`
-    );
+    // console.log(
+    //   `CAMERA CHECKING IF FULL HD ${
+    //     settings ? Math.max(settings.width, settings.height) : "qwe"
+    //   }`
+    // );
     if (settings && Math.max(settings.width, settings.height) < 1920) {
       console.log("NOT FULL HD");
       onCameraNotFullHd();
