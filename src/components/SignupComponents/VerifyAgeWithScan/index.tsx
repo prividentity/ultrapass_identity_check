@@ -60,7 +60,7 @@ const VerifyAgeWithScan = (props: props) => {
           color={"#333"}
           mb={2}
         >
-          Ge ready to take a selfie and <br />
+          Get ready to take a selfie and <br />
           scan your driver’s license
         </Typography>
         <img src={phoneImage} alt="scan" width={"180px"} />
