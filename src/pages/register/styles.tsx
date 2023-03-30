@@ -383,4 +383,21 @@ export const useStyles = makeStyles((theme: any) => ({
       },
     },
   },
+  textArea: {
+    width: "100%",
+    outline: "none",
+    borderRadius: 5,
+    color: palette[skin]?.listText,
+    padding: "5px 5px",
+    boxSizing: "border-box",
+    border: `1px solid ${palette[skin]?.listText}`,
+    fontSize: 15,
+    fontFamily: "Lato,sans-serif",
+  },
+  feedBackImage: {
+    margin: "5px auto",
+    display: "block",
+    width: "300px",
+    height: "90px",
+  },
 }));

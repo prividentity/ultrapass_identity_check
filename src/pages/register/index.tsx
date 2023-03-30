@@ -29,6 +29,7 @@ import {
 import { SUCCESS, REQUIRES_INPUT, getStatusFromUser } from "../../utils";
 import { getUserStatus } from "@privateid/cryptonets-web-sdk-alpha";
 import NotSupported from "../../components/NotSupported";
+import Feedback from "../../components/Feedback";
 
 interface props {
   theme: string;
@@ -275,6 +276,15 @@ const Register = ({ theme, skin }: props) => {
         );
       case STEPS.NOT_SUPPORTED:
         return <NotSupported />;
+      case STEPS.FEEDBACK:
+        return (
+          <Feedback
+            matchesSM={matchesSM}
+            setPrevStep={setPrevStep}
+            setStep={setStep}
+            skin={skin}
+          />
+        );
       default:
         return <></>;
     }
