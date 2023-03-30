@@ -58,6 +58,7 @@ const AdditionalRequirements = ({
       return AdditionalRequirementsEnum.requestResAddress;
     }
     if (requestScanID) {
+      context.setDlAction("frontscan");
       return AdditionalRequirementsEnum.requestScanID;
     }
     return AdditionalRequirementsEnum.requestSSN9;

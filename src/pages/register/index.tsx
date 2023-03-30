@@ -76,12 +76,16 @@ const Register = ({ theme, skin }: props) => {
         const userDetails: any = await getUser(
           res?.customerInformation?.customerId
         );
+        const { userApproved, ...rest } = ((await getUserStatus({
+          id: res.customerInformation.customerId,
+        })) || {}) as any;
+        const { requestScanID, requestResAddress } = rest || {};
         console.log("USER DETAILS:", userDetails);
         if (!userDetails.uuid || !userDetails.portrait) {
           setStep(STEPS.PRE_ENROLL);
         } else if (
           !userDetails?.govId?.portraitConfScore &&
-          userDetails?.govId?.portraitConfScore !== 0
+          userDetails?.govId?.portraitConfScore !== 0 && !requestScanID
         ) {
           const userPortrait: any = await getUserPortrait(
             res.customerInformation.customerId
@@ -94,9 +98,9 @@ const Register = ({ theme, skin }: props) => {
           context.setDlAction("backscan");
           setStep(STEPS.DRIVERLICENSE);
         } else {
-          const { userApproved, ...rest } = ((await getUserStatus({
-            id: res.customerInformation.customerId,
-          })) || {}) as any;
+          // const { userApproved, ...rest } = ((await getUserStatus({
+          //   id: res.customerInformation.customerId,
+          // })) || {}) as any;
           const { requestScanID, requestResAddress } = rest || {};
           context.setUserStatus({
             userApproved,
