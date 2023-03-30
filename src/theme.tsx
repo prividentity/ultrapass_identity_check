@@ -65,6 +65,7 @@ export const theme = createTheme({
       contrastText: "#000",
       mainBackground: "#000",
       listText: "#000",
+      feedBack: '#044C7C',
     },
     up: {
       main: "rgb(255, 153, 0)",

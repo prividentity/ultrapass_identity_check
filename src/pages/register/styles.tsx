@@ -400,4 +400,25 @@ export const useStyles = makeStyles((theme: any) => ({
     width: "300px",
     height: "90px",
   },
+  feedBackIcon: {
+    // width: "0px !important",
+    flexDirection: "column",
+    padding: "0px 10px !important",
+    width: "unset !important",
+    cursor: "pointer",
+    "& svg": {
+      fontSize: 50,
+    },
+    "& p": {
+      // width: "100%",
+      textAlign: "center",
+      margin: "0px",
+      fontSize: 12,
+    },
+  },
+  feedbackIconsWrap: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  }
 }));

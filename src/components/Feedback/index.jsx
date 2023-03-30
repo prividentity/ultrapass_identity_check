@@ -1,17 +1,21 @@
 import {
+  Box,
   Button,
   Divider,
   Grid,
+  ListItem,
   TextareaAutosize,
   Typography,
 } from "@mui/material";
-
+import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
+import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import { useStyles, styles } from "../../pages/register/styles";
 import { theme as Theme } from "../../theme";
 
 import smallLock from "../../assets/smallLock.png";
 import STEPS from "../../pages/register/steps";
-import FeedbackImage from '../../assets/feedback.png'
+import { useState } from "react";
+// import FeedbackImage from "../../assets/feedback.png";
 
 const Feedback = ({
   setStep,
@@ -27,6 +31,17 @@ const Feedback = ({
   const classes = useStyles();
   const mainTheme = Theme;
   const palette: { [key: string]: any } = mainTheme.palette;
+  const [textArea, setTextArea] = useState();
+  const [emoji, setEmoji] = useState();
+  const emojiColor = (currentEmoji) =>
+    emoji === currentEmoji ? palette?.[skin]?.main : palette?.[skin]?.feedBack;
+  const onSubmit = () => {
+    const payload = {
+      textArea,
+      emoji,
+    };
+    console.log(payload,'payload');
+  };
   return (
     <>
       <Grid container alignItems="center" justifyContent={"center"}>
@@ -56,11 +71,51 @@ const Feedback = ({
         >
           How do you rate your user registration experience?
         </Typography>
-        <img
-          src={FeedbackImage}
-          alt=""
-          className={classes.feedBackImage}
-        />
+        <Box className={classes.feedbackIconsWrap}>
+          <ListItem
+            className={classes.feedBackIcon}
+            onClick={() => setEmoji("Delight")}
+          >
+            <InsertEmoticonIcon
+              style={{
+                color: emojiColor("Delight"),
+              }}
+            />
+            <Typography component="p" color={emojiColor("Delight")}>
+              Delight
+            </Typography>
+          </ListItem>
+          <ListItem
+            className={classes.feedBackIcon}
+            onClick={() => setEmoji("Happy")}
+          >
+            <InsertEmoticonIcon style={{ color: emojiColor("Happy") }} />
+            <Typography component="p" color={emojiColor("Happy")}>
+              Happy
+            </Typography>
+          </ListItem>
+          <ListItem
+            className={classes.feedBackIcon}
+            onClick={() => setEmoji("Sad")}
+          >
+            <SentimentVeryDissatisfiedIcon
+              style={{ color: emojiColor("Sad") }}
+            />
+            <Typography component="p" color={emojiColor("Sad")}>
+              Sad
+            </Typography>
+          </ListItem>
+          <ListItem
+            className={classes.feedBackIcon}
+            onClick={() => setEmoji("Frustration")}
+          >
+            <InsertEmoticonIcon style={{ color: emojiColor("Frustration") }} />
+            <Typography component="p" color={emojiColor("Frustration")}>
+              Frustration
+            </Typography>
+          </ListItem>
+        </Box>
+        {/* <img src={FeedbackImage} alt="" className={classes.feedBackImage} /> */}
         <Typography
           component="p"
           textAlign={"center"}
@@ -73,7 +128,11 @@ const Feedback = ({
         >
           Tell us how we can improve?
         </Typography>
-        <TextareaAutosize minRows={5} className={classes.textArea} />
+        <TextareaAutosize
+          minRows={5}
+          className={classes.textArea}
+          onChange={(e) => setTextArea(e?.target?.value)}
+        />
       </Grid>
       <Grid>
         {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
@@ -81,7 +140,7 @@ const Feedback = ({
           variant="contained"
           color={"inherit"}
           style={styles.continueButton}
-          onClick={() => setStep(STEPS.REGISTER_CONSENT)}
+          onClick={() => onSubmit()}
         >
           <Typography
             component="p"
