@@ -5,7 +5,8 @@ const usePredictOneFa = (
   element = "userVideo",
   onSuccess: (e: any) => void,
   retryTimes = 3,
-  deviceId = ""
+  deviceId = "",
+  isInitialPredict = true
 ) => {
   const [predictOneFaaceDetected, setFaceDetected] = useState(false);
   const [predictOneFaStatus, setPredictStatus] = useState(null);
@@ -42,6 +43,9 @@ const usePredictOneFa = (
             // onFailure();
           } else {
             tries += 1;
+            if (!predictOneFaaceDetected && !isInitialPredict) {
+              tries -= 1;
+            }
             predictUserOneFa();
           }
           const { validation_status, message } = result.returnValue;
