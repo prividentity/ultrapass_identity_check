@@ -15,10 +15,7 @@ import {
   SUCCESS,
 } from "../../utils";
 import { CircularProgress } from "@mui/material";
-import {
-  createVerificationSession,
-  getUser,
-} from "../../services/api";
+import { createVerificationSession, getUser } from "../../services/api";
 import womenImg from "../../assets/Kimiko-S3.png";
 import HomeModal from "../../components/Modal/homeModal";
 import useToast from "../../utils/useToast";
@@ -46,7 +43,6 @@ const Signin = ({ theme, skin }: props) => {
   const muiTheme = useTheme();
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
 
-
   useEffect(() => {
     console.log("=====? HERE????", { wasmStatus, wasmReady, ready });
 
@@ -60,7 +56,7 @@ const Signin = ({ theme, skin }: props) => {
       }
     }
 
-    if(wasmReady && ready){
+    if (wasmReady && ready) {
       predictUserOneFa();
     }
 
@@ -84,7 +80,7 @@ const Signin = ({ theme, skin }: props) => {
   const themeName = skin || "primary";
   const [step, setStep] = useState(0);
   const [isUserVerify, setIsUserVerify] = useState(false);
-  const retryTimes = step === 1 ? 12 : 3;
+  const retryTimes = step === 1 ? 12 : 5;
 
   useEffect(() => {
     if (user?._id) {
@@ -151,7 +147,9 @@ const Signin = ({ theme, skin }: props) => {
   const { predictUserOneFa } = usePredictOneFa(
     elementId,
     handlePredictSuccess,
-    retryTimes
+    retryTimes,
+    "",
+    isInitialPredict
   );
 
   const _renderChildren = () => {
