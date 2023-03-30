@@ -69,6 +69,7 @@ const DLFaceCompare = ({
     inputImage: string;
     portraitConfScore: number;
   }) => {
+    setIsLoading(true);
     const {
       inputImage,
       croppedDocument,
@@ -118,7 +119,6 @@ const DLFaceCompare = ({
       uploadCroppedMugshotImage
     ) {
       await closeCamera(undefined);
-      setIsLoading(true);
       setTimeout(() => {
         setIsUserVerify(true);
       }, 2000);
@@ -154,7 +154,7 @@ const DLFaceCompare = ({
     croppedBarcode: string;
   }) => {
     // console.log({ barcodeData, inputImage, croppedDocument, croppedBarcode });
-
+    setIsLoading(true);
     const uploadCroppedBarcodeImage = await uploadDL({
       id,
       type: DLType.BACKDLBARCODE,
@@ -205,7 +205,6 @@ const DLFaceCompare = ({
     });
     // console.log("Update user result: ", updateUserResult);
 
-    setIsLoading(true);
     setTimeout(() => {
       setIsUserVerify(true);
     }, 2000);
