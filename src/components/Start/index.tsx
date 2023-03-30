@@ -82,10 +82,9 @@ const Start = ({
           mt={0}
           className={classes.cardInnerText}
         >
-          Ultrapass will use your selfie and Photo ID to check your identity.
-          will check third-party and data providers and governments to prevent
-          fraud. Data will be strictly processed according to the Privacy
-          Policy.
+         Ultrapass will use your selfie and Photo ID to verify your identity. <br />
+         Third parties including data providers as well as governments will be used for identity validation.<br />
+         Data will be strictly processed according to the Privacy Policy.
         </Typography>
       </Grid>
       <Grid>

@@ -54,7 +54,7 @@ const useScanFrontDocument = (
   const documentCallback = (result: any) => {
     console.log("Front scan callback result:", result);
     setResultResponse(result.returnValue);
-    if (result.returnValue.op_status === 0) {
+    if (result.returnValue.op_status === 0 || result.returnValue.op_status === 10 ) {
       const {
         predict_status,
         cropped_doc_height,
@@ -74,9 +74,15 @@ const useScanFrontDocument = (
         setCroppedMugshotWidth(cropped_face_width);
         setCroppedMugshotHeight(cropped_face_height);
       } else {
+        setInputImageData(null);
+        setCroppedDocumentRaw(null);
+        setCroppedMugshotRaw(null);
         scanFrontDocument();
       }
     } else {
+      setInputImageData(null);
+      setCroppedDocumentRaw(null);
+      setCroppedMugshotRaw(null);
       onFailCallback({
         status: result.returnValue.op_status.toString(),
         message: result.returnValue.op_message,
@@ -99,7 +105,7 @@ const useScanFrontDocument = (
 
   // Converting imageInput
   useEffect(() => {
-    if (inputImageData && isFound) {
+    if (inputImageData && isFound && !inputImageBase64) {
       convertImageToBase64(
         inputImageData?.data,
         inputImageData?.width,
@@ -107,7 +113,7 @@ const useScanFrontDocument = (
         setInputImageBase64
       );
     }
-  }, [inputImageData, isFound]);
+  }, [inputImageData, isFound, inputImageBase64]);
 
   // Converting croppedDocument
   useEffect(() => {

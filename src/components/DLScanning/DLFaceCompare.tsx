@@ -209,7 +209,6 @@ const DLFaceCompare = ({
       setIsUserVerify(true);
     }, 2000);
     setTimeout(() => {
-      setIsLoading(false);
       setIsUserVerify(false);
       onSuccess && onSuccess();
     }, 4000);
