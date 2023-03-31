@@ -9,6 +9,8 @@ export const getBackDocumentMessage = (id: number) => {
       return "MOVE CLOSER";
     case 3:
       return "ALMOST DONE . . .";
+    case 18: 
+      return "Please show the whole document with the corners in the screen"
     case 9:
       return "TOO BLURRY. PLEASE MOVE BACK";
     case -2:
@@ -19,15 +21,15 @@ export const getBackDocumentMessage = (id: number) => {
 };
 
 export const getScanFrontMessage = (status: number) => {
-  console.log("MESSAGE STATUS??? ", status);
   switch (status) {
     case 0:
       return "Success";
     case 12:
       return "";
     case -1:
-    case 18:
       return "MOVE CLOSER";
+    case 18:
+      return "Please show the whole document with the corners in the screen";
     case 3:
     case 999:
       return "MOVE JUST A LITTLE CLOSER";

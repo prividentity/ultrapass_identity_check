@@ -1,4 +1,4 @@
-function convertBase64ToImageData(imageSrc: string, setImageData: any): any {
+async function convertBase64ToImageData(imageSrc: string, setImageData: any) {
   const newImg = new Image();
   newImg.src = imageSrc;
   newImg.onload = async () => {
