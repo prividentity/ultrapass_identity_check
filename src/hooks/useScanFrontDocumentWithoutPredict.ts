@@ -211,6 +211,7 @@ const useScanFrontDocument = (
         // @ts-ignore
         threshold_user_right: 0.0,
         threshold_user_left: 1.0,
+        blur_threshold_doc: 2000,
       },
       canvasObj
     );
