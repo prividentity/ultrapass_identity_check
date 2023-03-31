@@ -16,6 +16,8 @@ import smallLock from "../../assets/smallLock.png";
 import STEPS from "../../pages/register/steps";
 import { useState } from "react";
 // import FeedbackImage from "../../assets/feedback.png";
+import DelightIcon from "../../assets/delight.svg";
+import FrustrationIcon from "../../assets/frustration.svg";
 
 const Feedback = ({
   setStep,
@@ -33,14 +35,23 @@ const Feedback = ({
   const palette: { [key: string]: any } = mainTheme.palette;
   const [textArea, setTextArea] = useState();
   const [emoji, setEmoji] = useState();
-  const emojiColor = (currentEmoji) =>
-    emoji === currentEmoji ? palette?.[skin]?.main : palette?.[skin]?.feedBack;
+  const emojiColor = (currentEmoji, isImage) => {
+    if (isImage) {
+      return emoji === currentEmoji
+        ? "invert(55%) sepia(63%) saturate(462%) hue-rotate(83deg) brightness(100%) contrast(90%)"
+        : null;
+    } else {
+      return emoji === currentEmoji
+        ? palette?.[skin]?.main
+        : palette?.[skin]?.feedBack;
+    }
+  };
   const onSubmit = () => {
     const payload = {
       textArea,
       emoji,
     };
-    console.log(payload,'payload');
+    console.log(payload, "payload");
   };
   return (
     <>
@@ -76,9 +87,12 @@ const Feedback = ({
             className={classes.feedBackIcon}
             onClick={() => setEmoji("Delight")}
           >
-            <InsertEmoticonIcon
+            <img
+              src={DelightIcon}
+              alt=""
+              className={classes.feedBackIconImage}
               style={{
-                color: emojiColor("Delight"),
+                filter: emojiColor("Delight", true),
               }}
             />
             <Typography component="p" color={emojiColor("Delight")}>
@@ -109,7 +123,14 @@ const Feedback = ({
             className={classes.feedBackIcon}
             onClick={() => setEmoji("Frustration")}
           >
-            <InsertEmoticonIcon style={{ color: emojiColor("Frustration") }} />
+            <img
+              src={FrustrationIcon}
+              alt=""
+              className={classes.feedBackIconImage}
+              style={{
+                filter: emojiColor("Frustration", true),
+              }}
+            />
             <Typography component="p" color={emojiColor("Frustration")}>
               Frustration
             </Typography>

@@ -420,5 +420,11 @@ export const useStyles = makeStyles((theme: any) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+  },
+  feedBackIconImage: {
+    width: 40,
+    height: 40,
+    marginBottom: 6,
+    marginTop: 6,
   }
 }));
