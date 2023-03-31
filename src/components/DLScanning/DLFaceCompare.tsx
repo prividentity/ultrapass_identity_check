@@ -52,6 +52,7 @@ const DLFaceCompare = ({
   const [isScanning, setIsScanning] = useState(false);
   const [hasNoCamera, setHasNoCamera] = useState(false);
   const [isBarcodeScan, setIsBarcodeScan] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   enum DlActionEnum {
     frontscan = "frontscan",
@@ -70,64 +71,68 @@ const DLFaceCompare = ({
     portraitConfScore: number;
   }) => {
     setIsLoading(true);
-    const {
-      inputImage,
-      croppedDocument,
-      croppedMugshot,
-      portraitConfScore: compareScore,
-    } = result;
-    // console.log("compareScore??",{
-    //   inputImage,
-    //   croppedDocument,
-    //   croppedMugshot,
-    //   compareScore,
-    // });
+    setIsUploading(true);
+    setTimeout(async () => {
+      const {
+        inputImage,
+        croppedDocument,
+        croppedMugshot,
+        portraitConfScore: compareScore,
+      } = result;
+      // console.log("compareScore??",{
+      //   inputImage,
+      //   croppedDocument,
+      //   croppedMugshot,
+      //   compareScore,
+      // });
 
-    setPortraitConfScore(compareScore);
+      setPortraitConfScore(compareScore);
 
-    const uploadImageInput = await uploadDL({
-      id,
-      type: DLType.FRONTDLORIGINAL,
-      image: inputImage,
-    });
-    // console.log("uploadImageInput: ", uploadImageInput);
-    const uploadCroppedDocumentImage = await uploadDL({
-      id,
-      type: DLType.FRONTDLCROPPED,
-      image: croppedDocument,
-    });
-    // console.log("uploadCroppedDocumentImage: ", uploadCroppedDocumentImage);
-    const uploadCroppedMugshotImage = await uploadDL({
-      id,
-      type: DLType.FRONTDLHEADSHOT,
-      image: croppedMugshot,
-    });
-    // console.log("uploadCroppedMugshotImage: ", uploadCroppedMugshotImage);
-    const govId = {
-      portraitConfScore: compareScore,
-    };
+      const uploadImageInput = await uploadDL({
+        id,
+        type: DLType.FRONTDLORIGINAL,
+        image: inputImage,
+      });
+      // console.log("uploadImageInput: ", uploadImageInput);
+      const uploadCroppedDocumentImage = await uploadDL({
+        id,
+        type: DLType.FRONTDLCROPPED,
+        image: croppedDocument,
+      });
+      // console.log("uploadCroppedDocumentImage: ", uploadCroppedDocumentImage);
+      const uploadCroppedMugshotImage = await uploadDL({
+        id,
+        type: DLType.FRONTDLHEADSHOT,
+        image: croppedMugshot,
+      });
+      // console.log("uploadCroppedMugshotImage: ", uploadCroppedMugshotImage);
+      const govId = {
+        portraitConfScore: compareScore,
+      };
 
-    const updateUserResult = await updateUser({
-      id,
-      // @ts-ignore
-      attributes: { govId: govId },
-    });
-    // console.log("Update user result: ", updateUserResult);
-    if (
-      uploadImageInput &&
-      uploadCroppedDocumentImage &&
-      uploadCroppedMugshotImage
-    ) {
-      await closeCamera(undefined);
-      setTimeout(() => {
-        setIsUserVerify(true);
-      }, 2000);
-      setTimeout(() => {
-        setIsLoading(false);
-        setIsUserVerify(false);
-        setDlAction(DlActionEnum.backscan);
-      }, 4000);
-    }
+      const updateUserResult = await updateUser({
+        id,
+        // @ts-ignore
+        attributes: { govId: govId },
+      });
+      // console.log("Update user result: ", updateUserResult);
+      if (
+        uploadImageInput &&
+        uploadCroppedDocumentImage &&
+        uploadCroppedMugshotImage
+      ) {
+        await closeCamera(undefined);
+        setTimeout(() => {
+          setIsUserVerify(true);
+        }, 2000);
+        setTimeout(() => {
+          setIsLoading(false);
+          setIsUserVerify(false);
+          setDlAction(DlActionEnum.backscan);
+        }, 4000);
+      }
+      setIsUploading(false);
+    }, 1000);
   };
 
   const onFailScanFrontScan = ({
@@ -207,9 +212,11 @@ const DLFaceCompare = ({
 
     setTimeout(() => {
       setIsUserVerify(true);
+      setIsUploading(true);
     }, 2000);
     setTimeout(() => {
       setIsUserVerify(false);
+      setIsUploading(false);
       onSuccess && onSuccess();
     }, 4000);
   };
@@ -326,8 +333,8 @@ const DLFaceCompare = ({
             textAlign="center"
             fontSize={14}
             fontWeight={500}
-            mt={1}
-            mb={2}
+            mt={0}
+            mb={1}
           >
             {isBarcodeScan
               ? "Place the bar code in the safe area"
@@ -336,7 +343,25 @@ const DLFaceCompare = ({
               : "Place the FRONT of your ID towards the camera"}
           </Typography>
         )}
-
+        <Typography
+          align="center"
+          fontSize={13}
+          fontWeight={700}
+          mt={0}
+          mb={0}
+          display={"flex"}
+          alignItems="center"
+          justifyContent={"center"}
+        >
+          <CircularProgress className={classes.progressBar} />
+          {isUploading && dlAction === DlActionEnum.backscan
+            ? "Uploading back document"
+            : isUploading && dlAction === DlActionEnum.frontscan
+            ? "Uploading front document"
+            : dlAction === DlActionEnum.backscan
+            ? "Scanning back document"
+            : "Scanning front document"}
+        </Typography>
         <Box className={classes.otherDevice} pl={3} mb={1}>
           <Typography
             component="p"

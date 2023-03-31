@@ -383,4 +383,9 @@ export const useStyles = makeStyles((theme: any) => ({
       },
     },
   },
+  progressBar: {
+    width: "20px !important",
+    height: "20px !important",
+    marginRight: "10px !important",
+  }
 }));
