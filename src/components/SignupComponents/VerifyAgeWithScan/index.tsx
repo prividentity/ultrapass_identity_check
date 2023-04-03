@@ -7,7 +7,7 @@ import {
   useTheme,
 } from "@mui/material";
 import smallLock from "../../../assets/smallLock.png";
-import phoneImage from "../../../assets/face-id.png";
+import selfieEmojiGray from "../../../assets/SelfieEmojiGray.png";
 import { styles, useStyles } from "../../../pages/signup/styles";
 import { theme as Theme } from "../../../theme";
 import STEPS from "../../../pages/register/steps";
@@ -63,7 +63,7 @@ const VerifyAgeWithScan = (props: props) => {
           Get ready to take a selfie and <br />
           scan your driver’s license
         </Typography>
-        <img src={phoneImage} alt="scan" width={"180px"} />
+        <img src={selfieEmojiGray} alt="scan" width={"250px"} />
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
       <Button

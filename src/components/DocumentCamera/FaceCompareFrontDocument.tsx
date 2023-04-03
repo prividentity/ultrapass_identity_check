@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../../styles/Home.module.css";
 import useScanFrontDocumentWithoutPredict from "../../hooks/useScanFrontDocumentWithoutPredict";
 import Camera from "../Camera";
@@ -10,12 +10,14 @@ const FaceCompareFrontDocument = ({
   onFailCallback,
   onCameraFail,
   enrollImageData,
+  setOpStatus
 }: {
   onSuccess: (e: any) => void;
   onReadyCallback: (e: boolean) => void;
   onFailCallback: (e: { status: string; message: string }) => void;
   onCameraFail: (e: any) => void;
   enrollImageData: any;
+  setOpStatus: (e: number) => void;
 }) => {
   const [canvasSize, setCanvasSize] = useState();
 
@@ -29,6 +31,9 @@ const FaceCompareFrontDocument = ({
       onFailCallback,
       enrollImageData
     ) as any;
+  useEffect(() => {
+    setOpStatus(resultResponse?.op_status)
+  }, [resultResponse])
 
   const handleScanDLFront = async (e: boolean) => {
     onReadyCallback?.(e);

@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import {
+  Alert,
   Box,
   CircularProgress,
   Divider,
@@ -52,6 +53,8 @@ const DLFaceCompare = ({
   const [isScanning, setIsScanning] = useState(false);
   const [hasNoCamera, setHasNoCamera] = useState(false);
   const [isBarcodeScan, setIsBarcodeScan] = useState(false);
+  const [isScanningFailed, setIsScanningFailed] = useState(false);
+  const [opStatus, setOpStatus] = useState<number>();
 
   enum DlActionEnum {
     frontscan = "frontscan",
@@ -63,6 +66,12 @@ const DLFaceCompare = ({
   const { id, enrollImageData, portraitConfScore, setPortraitConfScore, dlAction, setDlAction } =
     context;
 
+  useEffect(() => {
+    setTimeout(() => {
+      setIsScanningFailed(true);
+    }, 30000);
+  }, []);
+
   const onSuccessFrontScan = async (result: {
     croppedDocument: string;
     croppedMugshot: string;
@@ -70,6 +79,7 @@ const DLFaceCompare = ({
     portraitConfScore: number;
   }) => {
     setIsLoading(true);
+    setIsScanningFailed(false);
     const {
       inputImage,
       croppedDocument,
@@ -126,6 +136,9 @@ const DLFaceCompare = ({
         setIsLoading(false);
         setIsUserVerify(false);
         setDlAction(DlActionEnum.backscan);
+        setTimeout(() => {
+          setIsScanningFailed(true);
+        }, 30000);
       }, 4000);
     }
   };
@@ -155,6 +168,7 @@ const DLFaceCompare = ({
   }) => {
     // console.log({ barcodeData, inputImage, croppedDocument, croppedBarcode });
     setIsLoading(true);
+    setIsScanningFailed(false);
     const uploadCroppedBarcodeImage = await uploadDL({
       id,
       type: DLType.BACKDLBARCODE,
@@ -248,6 +262,9 @@ const DLFaceCompare = ({
         </Typography>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
+      {opStatus !== 0 && isScanningFailed && (
+        <Alert severity="error">You can try switching to other device.</Alert>
+      )}
       <Grid style={styles.cardGrid} className={`cardGridMobile overflowUnset`}>
         <Box position={"relative"}>
           <Box position={"relative"}>
@@ -293,6 +310,7 @@ const DLFaceCompare = ({
                 onReadyCallback={onCameraNotGranted}
                 onCameraFail={onCameraFail}
                 onCameraNotFullHd={onCameraNotFullHd}
+                setOpStatus={(e: number) => setOpStatus(e)}
               />
             ) : (
               <FaceCompareFrontDocument
@@ -301,6 +319,7 @@ const DLFaceCompare = ({
                 onFailCallback={onFailScanFrontScan}
                 onCameraFail={onCameraFail}
                 enrollImageData={enrollImageData}
+                setOpStatus={(e: number) => setOpStatus(e)}
               />
             )}
           </Box>

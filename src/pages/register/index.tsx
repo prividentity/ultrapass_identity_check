@@ -29,6 +29,7 @@ import {
 import { SUCCESS, REQUIRES_INPUT, getStatusFromUser } from "../../utils";
 import { getUserStatus } from "@privateid/cryptonets-web-sdk-alpha";
 import NotSupported from "../../components/NotSupported";
+import PrivacyConsent from "../../components/SignupComponents/PrivacyConsent";
 
 interface props {
   theme: string;
@@ -199,7 +200,7 @@ const Register = ({ theme, skin }: props) => {
         );
       case STEPS.REGISTER_CONSENT:
         return (
-          <DatabaseConsent
+          <PrivacyConsent
             theme={theme}
             skin={skin}
             setStep={setStep}

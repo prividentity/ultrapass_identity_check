@@ -9,6 +9,7 @@ import {
   Stack,
   Grid,
   Divider,
+  Alert,
 } from "@mui/material";
 import { useStyles, styles } from "./styles";
 import React, { useEffect, useState } from "react";
@@ -49,6 +50,7 @@ const Enroll = ({
   const mainTheme = Theme;
   const palette: { [key: string]: any } = mainTheme.palette;
   const [hasNoCamera, setHasNoCamera] = useState(false);
+  const [isScanningFailed, setIsScanningFailed] = useState(false);
 
   const {
     enrollUserOneFa,
@@ -94,6 +96,12 @@ const Enroll = ({
     }
   }, [enrollStatus, enrollGUID, enrollUUID]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setIsScanningFailed(true);
+    }, 30000)
+  }, [])
+
   const onCameraFail = async () => {
     setHasNoCamera(true);
   };
@@ -126,6 +134,9 @@ const Enroll = ({
         </Typography>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
+      {enrollOneFaProgress === 0 && isScanningFailed && (
+        <Alert severity="error">You can try switching to other device.</Alert>
+      )}
       <Box position={"relative"} padding={"10px 10px"} mt={0} pr={"12px"}>
         {(showSuccess || enrollOneFaProgress === 100) && (
           <Box style={styles.overlayCamera as React.CSSProperties}>
