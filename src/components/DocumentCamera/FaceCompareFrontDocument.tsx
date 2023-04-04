@@ -3,6 +3,7 @@ import styles from "../../styles/Home.module.css";
 import useScanFrontDocumentWithoutPredict from "../../hooks/useScanFrontDocumentWithoutPredict";
 import Camera from "../Camera";
 import { getScanFrontMessage } from "../../constants";
+import useToast from "../../utils/useToast";
 
 const FaceCompareFrontDocument = ({
   onSuccess,
@@ -21,11 +22,11 @@ const FaceCompareFrontDocument = ({
 }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [canvasSize, setCanvasSize] = useState();
-
+  const { showToast } = useToast();
   const handleFrontSuccess = (result?: any) => {
     const compareScore = result?.portraitConfScore;
     if (compareScore > 0.3) {
-      setErrorMessage("Rescan front of driver’s license");
+      showToast("Face and DL Mugshot didn't match. Please try again.", "error");
       setTimeout(() => reScanFrontDocument(), 2000);
     } else {
       setErrorMessage("");
