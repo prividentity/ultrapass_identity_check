@@ -2,7 +2,7 @@ import axios from "axios";
 
 const axiosInt = axios.create({
   baseURL:
-    process.env.REACT_APP_ORCHESTRATION_API_URL ||
+    process.env.REACT_APP_API_ORCHESTRATION ||
     "https://api-orchestration.cams.devel.private.id/",
   headers: {
     x_api_key: process.env.REACT_APP_API_KEY || "0000000000000000test",
