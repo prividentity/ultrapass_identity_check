@@ -26,7 +26,7 @@ const FaceCompareFrontDocument = ({
     const compareScore = result?.portraitConfScore
     if (compareScore > 0.3) {
       setErrorMessage('Rescan front of driver’s license')
-      // handleScanDLFront(true);
+      setTimeout(() => handleScanDLFront(true), 2000)
     } else {
       setErrorMessage('');
       onSuccess?.(result);
