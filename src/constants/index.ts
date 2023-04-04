@@ -49,3 +49,5 @@ export const getScanFrontMessage = (status: number) => {
       return "";
   }
 };
+
+export const ELEMENT_ID = "userVideo"

@@ -29,6 +29,7 @@ import { DLType } from "@privateid/cryptonets-web-sdk-alpha/dist/types";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import useToast from "../../utils/useToast";
 import SpinnerLoader from "../SpinnerLoader";
+import {ELEMENT_ID} from "../../constants";
 
 const DLScan = ({
   setStep,
@@ -91,7 +92,7 @@ const DLScan = ({
         uploadCroppedDocumentImage &&
         uploadCroppedMugshotImage
       ) {
-        await closeCamera(undefined);
+        await closeCamera(ELEMENT_ID);
         setIsLoading(true);
         setTimeout(() => {
           setIsUserVerify(true);

@@ -73,10 +73,7 @@ const useScanFrontDocument = (
         setCroppedMugshotWidth(cropped_face_width);
         setCroppedMugshotHeight(cropped_face_height);
       } else {
-        setInputImageData(null);
-        setCroppedDocumentRaw(null);
-        setCroppedMugshotRaw(null);
-        scanFrontDocument();
+        reScanFrontDocument();
       }
     } else {
       setInputImageData(null);
@@ -232,12 +229,20 @@ const useScanFrontDocument = (
     }
   };
 
+  const reScanFrontDocument = () => {
+    setInputImageData(null);
+    setCroppedDocumentRaw(null);
+    setCroppedMugshotRaw(null);
+    scanFrontDocument();
+  }
+
   return {
     scanFrontDocument,
     isFound,
     setIsFound,
     resultStatus,
     resultResponse,
+    reScanFrontDocument
   };
 };
 
