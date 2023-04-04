@@ -50,7 +50,6 @@ const DLFaceCompare = ({
 
   const [isUserVerify, setIsUserVerify] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
   const [isScanning, setIsScanning] = useState(false);
   const [hasNoCamera, setHasNoCamera] = useState(false);
   const [isBarcodeScan, setIsBarcodeScan] = useState(false);
@@ -85,12 +84,6 @@ const DLFaceCompare = ({
       croppedMugshot,
       portraitConfScore: compareScore,
     } = result;
-    console.log(compareScore,'compareScore');
-    if (compareScore > 0.3) {
-      console.log(compareScore,'compareScore', enrollImageData);
-      return setErrorMessage('Rescan front of driver’s license')
-    }
-    setErrorMessage('');
     setIsLoading(true);
     setIsScanningFailed(false); 
     // console.log("compareScore??",{
@@ -335,7 +328,6 @@ const DLFaceCompare = ({
                 onCameraFail={onCameraFail}
                 enrollImageData={enrollImageData}
                 setOpStatus={(e: number) => setOpStatus(e)}
-                errorMessage={errorMessage}
               />
             )}
           </Box>
