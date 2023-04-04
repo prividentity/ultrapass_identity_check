@@ -31,6 +31,7 @@ import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import useToast from "../../utils/useToast";
 import SpinnerLoader from "../SpinnerLoader";
 import FaceCompareFrontDocument from "../DocumentCamera/FaceCompareFrontDocument";
+import { cameraDelay } from "../../utils";
 
 const DLFaceCompare = ({
   setStep,
@@ -69,7 +70,7 @@ const DLFaceCompare = ({
   useEffect(() => {
     setTimeout(() => {
       setIsScanningFailed(true);
-    }, 30000);
+    }, cameraDelay);
   }, []);
 
   const onSuccessFrontScan = async (result: {
@@ -137,7 +138,7 @@ const DLFaceCompare = ({
         setDlAction(DlActionEnum.backscan);
         setTimeout(() => {
           setIsScanningFailed(true);
-        }, 30000);
+        }, cameraDelay);
       }, 4000);
     }
   };
