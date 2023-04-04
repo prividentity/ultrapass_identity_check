@@ -9,10 +9,12 @@ export const getBackDocumentMessage = (id: number) => {
       return "MOVE CLOSER";
     case 3:
       return "ALMOST DONE . . .";
+    // case 4: 
+    //   return "Too far";
     case 18: 
       return "Please show the whole document with the corners in the screen"
     case 9:
-      return "TOO BLURRY. PLEASE MOVE BACK";
+      return "TOO BLURRY";
     case -2:
       return "SYSTEM ERROR. Please try again later.";
     default:
@@ -39,7 +41,7 @@ export const getScanFrontMessage = (status: number) => {
     case 8:
       return "";
     case 9:
-      return "TOO BLURRY PLEASE MOVE BACK";
+      return "TOO BLURRY";
     case -2:
       return "SYSTEM ERROR. Please try again later.";
     default:

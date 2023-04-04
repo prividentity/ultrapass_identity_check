@@ -215,9 +215,9 @@ const useScanFrontDocument = (
       {
         input_image_format: "rgba",
         // @ts-ignore
-        threshold_user_right: 0.0,
-        threshold_user_left: 1.0,
-        blur_threshold_doc: 4000,
+        // threshold_user_right: 0.0,
+        // threshold_user_left: 1.0,
+        // blur_threshold_doc: 4000,
       },
       canvasObj
     );

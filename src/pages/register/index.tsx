@@ -30,6 +30,7 @@ import { SUCCESS, REQUIRES_INPUT, getStatusFromUser } from "../../utils";
 import { getUserStatus } from "@privateid/cryptonets-web-sdk-alpha";
 import NotSupported from "../../components/NotSupported";
 import PrivacyConsent from "../../components/SignupComponents/PrivacyConsent";
+import StationsPrivacy from "../../components/StationsPrivacy";
 
 interface props {
   theme: string;
@@ -86,7 +87,8 @@ const Register = ({ theme, skin }: props) => {
           setStep(STEPS.PRE_ENROLL);
         } else if (
           !userDetails?.govId?.portraitConfScore &&
-          userDetails?.govId?.portraitConfScore !== 0 && !requestScanID
+          userDetails?.govId?.portraitConfScore !== 0 &&
+          !requestScanID
         ) {
           const userPortrait: any = await getUserPortrait(
             res.customerInformation.customerId
@@ -169,9 +171,9 @@ const Register = ({ theme, skin }: props) => {
     if (status === SUCCESS) {
       showToast("You successfully completed your ID verification.", "success");
       if (session.successUrl) {
-        setTimeout(()=>{
+        setTimeout(() => {
           window.location.replace(session.successUrl);
-        },2000)
+        }, 2000);
       }
     } else if (status === REQUIRES_INPUT) {
       showToast("We need more information to verify your identity.", "error");
@@ -179,9 +181,9 @@ const Register = ({ theme, skin }: props) => {
     } else {
       showToast("Your ID verification was not completed.", "error");
       if (session.failureUrl) {
-        setTimeout(()=>{
+        setTimeout(() => {
           window.location.replace(session.failureUrl);
-        },2000)
+        }, 2000);
       }
       // setStep(STEPS.VERIFICATION_NOT_COMPLETED);
     }
@@ -199,12 +201,20 @@ const Register = ({ theme, skin }: props) => {
           />
         );
       case STEPS.REGISTER_CONSENT:
+        // return (
+        //   <DatabaseConsent
+        //     theme={theme}
+        //     skin={skin}
+        //     setStep={setStep}
+        //     setPrevStep={setPrevStep}
+        //   />
+        // );
         return (
-          <PrivacyConsent
-            theme={theme}
+          <StationsPrivacy
+            setPrevStep={setPrevStep}
             skin={skin}
             setStep={setStep}
-            setPrevStep={setPrevStep}
+            theme={theme}
           />
         );
       case STEPS.REGISTER_FORM:
