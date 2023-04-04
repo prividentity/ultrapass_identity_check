@@ -1,5 +1,5 @@
 import { CircularProgress, MenuItem, Select } from "@mui/material";
-import { switchCamera } from "@privateid/cryptonets-web-sdk-alpha";
+import { switchCamera } from "@privateid/cryptonets-web-sdk";
 import React, { useEffect, useState } from "react";
 import useCamera, { setResolutionForIphoneCC } from "../../hooks/useCamera";
 import useWasm from "../../hooks/useWasm";
