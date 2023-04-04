@@ -23,7 +23,10 @@ export const createUser = async (payload: any) => {
   }
 };
 
-export const updateUserToken = async (payload: { customerId:string }, verificationsessiontoken:string) => {
+export const updateUserToken = async (
+  payload: { customerId: string },
+  verificationsessiontoken: string
+) => {
   try {
     // const requestOptions: RequestInit = {
     //   method: 'PUT',
@@ -33,7 +36,10 @@ export const updateUserToken = async (payload: { customerId:string }, verificati
     //     'Content-Type': 'application/json',
     //   },
     // };
-    const result = (await identityAPI.put(`/verification-session/${verificationsessiontoken}/customer-information`, payload));
+    const result = await identityAPI.put(
+      `/verification-session/${verificationsessiontoken}/customer-information`,
+      payload
+    );
     return result;
   } catch (err) {
     return err;
@@ -58,20 +64,23 @@ export const updateUserApi = async (payload: updatePayload) => {
   }
 };
 
-export const getUserPortrait = async (token: any) =>{
+export const getUserPortrait = async (token: any) => {
   try {
     const payload = {
-      api_key: process.env.REACT_APP_API_KEY||"",
+      api_key: process.env.REACT_APP_API_KEY || "",
       token: token,
-      type: "portrait"
-    }
+      type: "portrait",
+    };
 
-    const result = await cryptonetsAPI.post(`/user/download/imagedata`, payload);
+    const result = await cryptonetsAPI.post(
+      `/user/download/imagedata`,
+      payload
+    );
     return result;
   } catch (err) {
     return err;
   }
-}
+};
 
 export const deleteUserApi = async (payload: updatePayload) => {
   try {
@@ -114,12 +123,15 @@ export const verifyIdApi = async ({ id, payload }: any) => {
 export const getProductGroupList = async () => {
   const requestOptions = {
     headers: {
-      'Content-Type': 'application/json',
-      x_api_key: API_KEY,
+      "Content-Type": "application/json",
+      x_api_key: process.env.REACT_APP_API_KEY,
     },
   };
   try {
-    const result = await identityAPI.get(`/product-group/list/`, requestOptions);
+    const result = await identityAPI.get(
+      `/product-group/list/`,
+      requestOptions
+    );
     return result;
   } catch (err) {
     return err;
