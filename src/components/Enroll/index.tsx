@@ -28,6 +28,7 @@ import STEPS from "../../pages/register/steps";
 import { cameraDelay, stopCamera } from "../../utils";
 import SpinnerLoader from "../SpinnerLoader";
 import { convertBase64ToImageData } from "../../utils/base64ToImageData";
+import {ELEMENT_ID} from "../../constants";
 
 const Enroll = ({
   onReadyCallback,
@@ -83,7 +84,7 @@ const Enroll = ({
     const updateRes = (await updateUser(params)) as any;
     if (updateRes.guid && updateRes.uuid) {
       setShowSuccess(true);
-      await closeCamera(undefined);
+      await closeCamera(ELEMENT_ID);
       setTimeout(async () => {
         setDlAction("frontscan");
         setStep(STEPS.DRIVERLICENSE);

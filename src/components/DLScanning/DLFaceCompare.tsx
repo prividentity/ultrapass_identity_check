@@ -32,6 +32,7 @@ import useToast from "../../utils/useToast";
 import SpinnerLoader from "../SpinnerLoader";
 import FaceCompareFrontDocument from "../DocumentCamera/FaceCompareFrontDocument";
 import { cameraDelay } from "../../utils";
+import {ELEMENT_ID} from "../../constants";
 
 const DLFaceCompare = ({
   setStep,
@@ -86,7 +87,7 @@ const DLFaceCompare = ({
       portraitConfScore: compareScore,
     } = result;
     setIsLoading(true);
-    setIsScanningFailed(false); 
+    setIsScanningFailed(false);
     // console.log("compareScore??",{
     //   inputImage,
     //   croppedDocument,
@@ -128,7 +129,7 @@ const DLFaceCompare = ({
       uploadCroppedDocumentImage &&
       uploadCroppedMugshotImage
     ) {
-      await closeCamera(undefined);
+      await closeCamera(ELEMENT_ID);
       setTimeout(() => {
         setIsUserVerify(true);
       }, 2000);
@@ -241,7 +242,7 @@ const DLFaceCompare = ({
 
   const onCameraNotFullHd = async () => {
     console.log("NOT FULL HD CALLED.");
-    await closeCamera(undefined);
+    await closeCamera(ELEMENT_ID);
     setStep(STEPS.SWITCH_DEVICE);
   };
 
@@ -267,7 +268,7 @@ const DLFaceCompare = ({
         severity="info"
         onClick={async () => {
           setStep(STEPS.SWITCH_DEVICE);
-          await closeCamera(undefined);
+          await closeCamera(ELEMENT_ID);
         }}
         className={classes.alertWrap}
       >

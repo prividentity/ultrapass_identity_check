@@ -9,7 +9,7 @@ export const getBackDocumentMessage = (id: number) => {
       return "MOVE CLOSER";
     case 3:
       return "ALMOST DONE . . .";
-    case 18: 
+    case 18:
       return "Please show the whole document with the corners in the screen"
     case 9:
       return "TOO BLURRY. PLEASE MOVE BACK";
@@ -46,3 +46,5 @@ export const getScanFrontMessage = (status: number) => {
       return "";
   }
 };
+
+export const ELEMENT_ID = "userVideo"

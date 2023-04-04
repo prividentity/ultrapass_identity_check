@@ -27,6 +27,7 @@ import { createSearchParams } from "react-router-dom";
 import { useCamera, useWasm } from "../../hooks";
 import Camera from "../../components/Camera";
 import HomeComponent from "../../components/HomeComponent";
+import { ELEMENT_ID } from "../../constants";
 
 interface props {
   theme: string;
@@ -38,8 +39,7 @@ const Signin = ({ theme, skin }: props) => {
   const [isInitialPredict, setInitialPredict] = useState(true);
   const { showToast } = useToast();
   const navigate = useNavigate();
-  const elementId = "userVideo";
-  const { ready, init } = useCamera(elementId);
+  const { ready, init } = useCamera(ELEMENT_ID);
   const muiTheme = useTheme();
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
 
@@ -145,7 +145,7 @@ const Signin = ({ theme, skin }: props) => {
   };
 
   const { predictUserOneFa } = usePredictOneFa(
-    elementId,
+    ELEMENT_ID,
     handlePredictSuccess,
     retryTimes,
     "",
