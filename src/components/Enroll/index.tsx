@@ -25,7 +25,7 @@ import {
 import shield from "../../assets/shield.png";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import STEPS from "../../pages/register/steps";
-import { stopCamera } from "../../utils";
+import { cameraDelay, stopCamera } from "../../utils";
 import SpinnerLoader from "../SpinnerLoader";
 import { convertBase64ToImageData } from "../../utils/base64ToImageData";
 
@@ -99,7 +99,7 @@ const Enroll = ({
   useEffect(() => {
     setTimeout(() => {
       setIsScanningFailed(true);
-    }, 30000);
+    }, cameraDelay);
   }, []);
 
   const onCameraFail = async () => {

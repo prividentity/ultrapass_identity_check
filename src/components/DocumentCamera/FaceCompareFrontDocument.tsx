@@ -10,8 +10,7 @@ const FaceCompareFrontDocument = ({
   onFailCallback,
   onCameraFail,
   enrollImageData,
-  setOpStatus,
-  errorMessage
+  setOpStatus
 }: {
   onSuccess: (e: any) => void;
   onReadyCallback: (e: boolean) => void;
@@ -19,13 +18,20 @@ const FaceCompareFrontDocument = ({
   onCameraFail: (e: any) => void;
   enrollImageData: any;
   setOpStatus: (e: number) => void;
-  errorMessage: string;
 }) => {
+  const [errorMessage, setErrorMessage] = useState('');
   const [canvasSize, setCanvasSize] = useState();
 
   const handleFrontSuccess = (result?: any) => {
-    onSuccess?.(result);
-    // console.log("FRONT SCAN DATA: ", result);
+    const compareScore = result?.portraitConfScore
+    if (compareScore > 0.3) {
+      setErrorMessage('Rescan front of driver’s license')
+      // handleScanDLFront(true);
+    } else {
+      setErrorMessage('');
+      onSuccess?.(result);
+    }
+    console.log("FRONT SCAN DATA: ", result);
   };
   const { scanFrontDocument, resultResponse } =
     useScanFrontDocumentWithoutPredict(
