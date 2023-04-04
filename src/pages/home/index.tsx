@@ -12,7 +12,7 @@ const Home = ({ theme, skin }: props) => {
   const themeName = skin || "primary";
   const muiTheme = useTheme();
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
-  console.log(themeName, "themeName");
+  // console.log(themeName, "themeName");
   return (
     <>
       {headerVisible?.includes(skin) && <Header theme={themeName} />}

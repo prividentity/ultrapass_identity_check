@@ -10,7 +10,7 @@ const FaceCompareFrontDocument = ({
   onFailCallback,
   onCameraFail,
   enrollImageData,
-  setOpStatus
+  setOpStatus,
 }: {
   onSuccess: (e: any) => void;
   onReadyCallback: (e: boolean) => void;
@@ -19,42 +19,42 @@ const FaceCompareFrontDocument = ({
   enrollImageData: any;
   setOpStatus: (e: number) => void;
 }) => {
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
   const [canvasSize, setCanvasSize] = useState();
 
   const handleFrontSuccess = (result?: any) => {
-    const compareScore = result?.portraitConfScore
+    const compareScore = result?.portraitConfScore;
     if (compareScore > 0.3) {
-      setErrorMessage('Rescan front of driver’s license')
-      setTimeout(() => handleScanDLFront(true), 2000)
+      setErrorMessage("Rescan front of driver’s license");
+      setTimeout(() => reScanFrontDocument(), 2000);
     } else {
-      setErrorMessage('');
+      setErrorMessage("");
       onSuccess?.(result);
     }
     console.log("FRONT SCAN DATA: ", result);
   };
-  const { scanFrontDocument, resultResponse } =
+  const { scanFrontDocument, resultResponse, reScanFrontDocument } =
     useScanFrontDocumentWithoutPredict(
       handleFrontSuccess,
       onFailCallback,
       enrollImageData
     ) as any;
   useEffect(() => {
-    setOpStatus(resultResponse?.op_status)
-  }, [resultResponse])
+    setOpStatus(resultResponse?.op_status);
+  }, [resultResponse]);
 
   const handleScanDLFront = async (e: boolean) => {
     onReadyCallback?.(e);
     // hack to initialize canvas with large memory, so it doesn't cause an issue.
-    console.log("handleScanDLFront", e);
+    // console.log("handleScanDLFront", e);
     if (e) {
       await scanFrontDocument();
     }
   };
 
   const returnMessage = () => {
-    return errorMessage || (resultResponse?.op_status === 0 && !resultResponse?.cropped_face_width ? getScanFrontMessage(999) :getScanFrontMessage(resultResponse?.op_status));
-  }
+    return getScanFrontMessage(resultResponse?.op_status);
+  };
   return (
     <div id="canvasInput" className={`${styles.container} documentCamera`}>
       <Camera
@@ -64,9 +64,7 @@ const FaceCompareFrontDocument = ({
         style={{ height: "unset" }}
         mode={"back"}
         requireHD={true}
-        message={
-          returnMessage()
-        }
+        message={returnMessage()}
         isDocumentScan={true}
       ></Camera>
     </div>

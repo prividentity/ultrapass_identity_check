@@ -110,7 +110,7 @@ const Header = (props: props) => {
   };
 
   const useDeleteCallback = (deleteStatus: any) => {
-    console.log("delete callback");
+    // console.log("delete callback");
   };
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
