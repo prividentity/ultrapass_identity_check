@@ -74,5 +74,8 @@ export const useStyles = makeStyles((theme: any) => ({
     width: "25px !important",
     height: "25px !important",
     marginRight: "10px !important",
+  },
+  alertWrap: {
+    cursor: "pointer",
   }
 }));

@@ -10,7 +10,8 @@ const FaceCompareFrontDocument = ({
   onFailCallback,
   onCameraFail,
   enrollImageData,
-  setOpStatus
+  setOpStatus,
+  errorMessage
 }: {
   onSuccess: (e: any) => void;
   onReadyCallback: (e: boolean) => void;
@@ -18,6 +19,7 @@ const FaceCompareFrontDocument = ({
   onCameraFail: (e: any) => void;
   enrollImageData: any;
   setOpStatus: (e: number) => void;
+  errorMessage: string;
 }) => {
   const [canvasSize, setCanvasSize] = useState();
 
@@ -45,7 +47,7 @@ const FaceCompareFrontDocument = ({
   };
 
   const returnMessage = () => {
-    return resultResponse?.op_status === 0 && !resultResponse?.cropped_face_width ? getScanFrontMessage(999) :getScanFrontMessage(resultResponse?.op_status);
+    return errorMessage || (resultResponse?.op_status === 0 && !resultResponse?.cropped_face_width ? getScanFrontMessage(999) :getScanFrontMessage(resultResponse?.op_status));
   }
   return (
     <div id="canvasInput" className={`${styles.container} documentCamera`}>

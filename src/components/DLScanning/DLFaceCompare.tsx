@@ -50,6 +50,7 @@ const DLFaceCompare = ({
 
   const [isUserVerify, setIsUserVerify] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [isScanning, setIsScanning] = useState(false);
   const [hasNoCamera, setHasNoCamera] = useState(false);
   const [isBarcodeScan, setIsBarcodeScan] = useState(false);
@@ -78,21 +79,26 @@ const DLFaceCompare = ({
     inputImage: string;
     portraitConfScore: number;
   }) => {
-    setIsLoading(true);
-    setIsScanningFailed(false);
     const {
       inputImage,
       croppedDocument,
       croppedMugshot,
       portraitConfScore: compareScore,
     } = result;
+    console.log(compareScore,'compareScore');
+    if (compareScore > 0.3) {
+      console.log(compareScore,'compareScore', enrollImageData);
+      return setErrorMessage('Rescan front of driver’s license')
+    }
+    setErrorMessage('');
+    setIsLoading(true);
+    setIsScanningFailed(false); 
     // console.log("compareScore??",{
     //   inputImage,
     //   croppedDocument,
     //   croppedMugshot,
     //   compareScore,
     // });
-
     setPortraitConfScore(compareScore);
 
     const uploadImageInput = await uploadDL({
@@ -263,7 +269,16 @@ const DLFaceCompare = ({
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
       {opStatus !== 0 && isScanningFailed && (
-        <Alert severity="error">You can try switching to other device.</Alert>
+        <Alert
+        severity="info"
+        onClick={async () => {
+          setStep(STEPS.SWITCH_DEVICE);
+          await closeCamera(undefined);
+        }}
+        className={classes.alertWrap}
+      >
+        You can try switching to other device.
+      </Alert>
       )}
       <Grid style={styles.cardGrid} className={`cardGridMobile overflowUnset`}>
         <Box position={"relative"}>
@@ -320,6 +335,7 @@ const DLFaceCompare = ({
                 onCameraFail={onCameraFail}
                 enrollImageData={enrollImageData}
                 setOpStatus={(e: number) => setOpStatus(e)}
+                errorMessage={errorMessage}
               />
             )}
           </Box>
