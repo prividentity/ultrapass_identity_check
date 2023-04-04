@@ -9,10 +9,10 @@ export const getBackDocumentMessage = (id: number) => {
       return "MOVE CLOSER";
     case 3:
       return "ALMOST DONE . . .";
-    // case 4: 
+    // case 4:
     //   return "Too far";
-    case 18: 
-      return "Please show the whole document with the corners in the screen"
+    case 18:
+      return "Please show the whole document with the corners in the screen";
     case 9:
       return "TOO BLURRY";
     case -2:
@@ -33,6 +33,7 @@ export const getScanFrontMessage = (status: number) => {
     case 18:
       return "Please show the whole document with the corners in the screen";
     case 3:
+      return "ALMOST DONE . . .";
     case 999:
       return "MOVE JUST A LITTLE CLOSER";
     case 5:

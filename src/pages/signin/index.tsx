@@ -44,7 +44,7 @@ const Signin = ({ theme, skin }: props) => {
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
 
   useEffect(() => {
-    console.log("=====? HERE????", { wasmStatus, wasmReady, ready });
+    // console.log("=====? HERE????", { wasmStatus, wasmReady, ready });
 
     if (!wasmReady && wasmStatus.isChecking) return;
 
@@ -60,7 +60,7 @@ const Signin = ({ theme, skin }: props) => {
       predictUserOneFa();
     }
 
-    console.log("--- wasm status ", ready);
+    // console.log("--- wasm status ", ready);
   }, [wasmReady, ready, wasmStatus]);
 
   const createVerification = async () => {
@@ -93,7 +93,7 @@ const Signin = ({ theme, skin }: props) => {
     const user = userParam || JSON.parse(localStorage.getItem("user") || "{}");
     if (!user._id) return;
     const userStatus = getStatusFromUser(user);
-    console.log(userStatus, "user status\n", user, "user\n");
+    // console.log(userStatus, "user status\n", user, "user\n");
     setIsUserVerify(false);
     stopCamera();
     switch (userStatus) {

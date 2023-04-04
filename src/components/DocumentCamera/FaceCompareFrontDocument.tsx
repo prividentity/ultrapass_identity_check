@@ -46,14 +46,14 @@ const FaceCompareFrontDocument = ({
   const handleScanDLFront = async (e: boolean) => {
     onReadyCallback?.(e);
     // hack to initialize canvas with large memory, so it doesn't cause an issue.
-    console.log("handleScanDLFront", e);
+    // console.log("handleScanDLFront", e);
     if (e) {
       await scanFrontDocument();
     }
   };
 
   const returnMessage = () => {
-    return errorMessage || (resultResponse?.op_status === 0 && !resultResponse?.cropped_face_width ? getScanFrontMessage(999) :getScanFrontMessage(resultResponse?.op_status));
+    return getScanFrontMessage(resultResponse?.op_status);
   }
   return (
     <div id="canvasInput" className={`${styles.container} documentCamera`}>

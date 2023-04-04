@@ -54,7 +54,7 @@ const useScanFrontDocument = (
   const [resultResponse, setResultResponse] = useState(null);
 
   const documentCallback = (result: any) => {
-    console.log("Front scan callback result:", result);
+    // console.log("Front scan callback result:", result);
     setResultResponse(result.returnValue);
     if (
       result.returnValue.predict_status === 0 &&
