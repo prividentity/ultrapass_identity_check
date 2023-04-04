@@ -96,7 +96,7 @@ const Register = ({ theme, skin }: props) => {
             userPortrait.imagedata,
             context.setEnrollImageData
           );
-        } else if (!userDetails.govId.firstName) {
+        } else if (!userDetails?.govId?.firstName) {
           context.setDlAction("backscan");
           setStep(STEPS.DRIVERLICENSE);
         } else {
