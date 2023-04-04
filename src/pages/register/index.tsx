@@ -200,22 +200,24 @@ const Register = ({ theme, skin }: props) => {
           />
         );
       case STEPS.REGISTER_CONSENT:
-        // return (
-        //   <DatabaseConsent
-        //     theme={theme}
-        //     skin={skin}
-        //     setStep={setStep}
-        //     setPrevStep={setPrevStep}
-        //   />
-        // );
         return (
-          <StationsPrivacy
-            setPrevStep={setPrevStep}
+          <DatabaseConsent
+            theme={theme}
             skin={skin}
             setStep={setStep}
-            theme={theme}
+            setPrevStep={setPrevStep}
           />
         );
+
+      case STEPS.STATION_CONSENT:
+        return(
+          <StationsPrivacy
+          setPrevStep={setPrevStep}
+          skin={skin}
+          setStep={setStep}
+          theme={theme}
+        />
+        )
       case STEPS.REGISTER_FORM:
         return (
           <RegisterInputs
