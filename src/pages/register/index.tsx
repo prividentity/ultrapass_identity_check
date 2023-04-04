@@ -29,6 +29,7 @@ import {
 import { SUCCESS, REQUIRES_INPUT, getStatusFromUser } from "../../utils";
 import { getUserStatus } from "@privateid/cryptonets-web-sdk-alpha";
 import NotSupported from "../../components/NotSupported";
+import PrivacyConsent from "../../components/SignupComponents/PrivacyConsent";
 import StationsPrivacy from "../../components/StationsPrivacy";
 
 interface props {
