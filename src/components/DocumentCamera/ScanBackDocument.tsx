@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../../styles/Home.module.css";
 import Camera from "../Camera";
 import useScanBackDocument from "../../hooks/useScanBackDocument";
@@ -10,12 +10,14 @@ const ScanBackDocument = ({
   onFailCallback,
   onCameraFail,
   onCameraNotFullHd,
+  setOpStatus
 }: {
   onSuccess?: (e: any) => void;
   onReadyCallback?: (e: boolean) => void;
   onFailCallback?: (e: boolean) => void;
   onCameraFail?: (e: any) => void;
   onCameraNotFullHd?: (e: any) => void;
+  setOpStatus?: (e: number) => void;
 }) => {
   const [canvasSize, setCanvasSize] = useState();
 
@@ -23,7 +25,7 @@ const ScanBackDocument = ({
   const handleBackSuccess = (result: any) => {
     onSuccess?.(result);
   };
-  const { scanBackDocument, barcodeStatusCode } = useScanBackDocument(
+  const { scanBackDocument, barcodeStatusCode, scannedCodeData } = useScanBackDocument(
     handleBackSuccess
   ) as any;
   const handleScanDocumentBack = async (e: boolean) => {
@@ -32,6 +34,9 @@ const ScanBackDocument = ({
       await scanBackDocument(canvasSize);
     }
   };
+  useEffect(() => (
+    setOpStatus?.(scannedCodeData?.op_status)
+  ), [scannedCodeData])
 
   const handleCallbackFromCanvasSizeChange = (size: any) => {
     setCanvasSize(size);

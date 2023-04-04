@@ -9,6 +9,7 @@ import {
   Stack,
   Grid,
   Divider,
+  Alert,
 } from "@mui/material";
 import { useStyles, styles } from "./styles";
 import React, { useEffect, useState } from "react";
@@ -26,7 +27,7 @@ import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import STEPS from "../../pages/register/steps";
 import { stopCamera } from "../../utils";
 import SpinnerLoader from "../SpinnerLoader";
-import {convertBase64ToImageData} from "../../utils/base64ToImageData";
+import { convertBase64ToImageData } from "../../utils/base64ToImageData";
 
 const Enroll = ({
   onReadyCallback,
@@ -49,6 +50,7 @@ const Enroll = ({
   const mainTheme = Theme;
   const palette: { [key: string]: any } = mainTheme.palette;
   const [hasNoCamera, setHasNoCamera] = useState(false);
+  const [isScanningFailed, setIsScanningFailed] = useState(false);
 
   const {
     enrollUserOneFa,
@@ -63,11 +65,11 @@ const Enroll = ({
   const handleUserUpdate = async (guid: string, uuid: string) => {
     setGUID(guid);
     setUUID(uuid);
-    await convertBase64ToImageData(enrollPortrait, setEnrollImageData)
+    await convertBase64ToImageData(enrollPortrait, setEnrollImageData);
 
     const uploadResult = await uploadPortrait({
       id,
-      portrait: enrollPortrait
+      portrait: enrollPortrait,
     });
     // console.log("upload portrait:", uploadResult);
 
@@ -93,6 +95,12 @@ const Enroll = ({
       handleUserUpdate(enrollGUID, enrollUUID);
     }
   }, [enrollStatus, enrollGUID, enrollUUID]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsScanningFailed(true);
+    }, 30000);
+  }, []);
 
   const onCameraFail = async () => {
     setHasNoCamera(true);
@@ -126,6 +134,18 @@ const Enroll = ({
         </Typography>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
+      {enrollOneFaProgress === 0 && isScanningFailed && (
+        <Alert
+          severity="info"
+          onClick={() => {
+            setStep(STEPS.SWITCH_DEVICE);
+            stopCamera();
+          }}
+          className={classes.alertWrap}
+        >
+          You can try switching to other device.
+        </Alert>
+      )}
       <Box position={"relative"} padding={"10px 10px"} mt={0} pr={"12px"}>
         {(showSuccess || enrollOneFaProgress === 100) && (
           <Box style={styles.overlayCamera as React.CSSProperties}>

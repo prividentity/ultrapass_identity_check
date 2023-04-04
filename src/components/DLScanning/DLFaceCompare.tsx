@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import {
+  Alert,
   Box,
   CircularProgress,
   Divider,
@@ -49,9 +50,12 @@ const DLFaceCompare = ({
 
   const [isUserVerify, setIsUserVerify] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [isScanning, setIsScanning] = useState(false);
   const [hasNoCamera, setHasNoCamera] = useState(false);
   const [isBarcodeScan, setIsBarcodeScan] = useState(false);
+  const [isScanningFailed, setIsScanningFailed] = useState(false);
+  const [opStatus, setOpStatus] = useState<number>();
 
   enum DlActionEnum {
     frontscan = "frontscan",
@@ -63,26 +67,38 @@ const DLFaceCompare = ({
   const { id, enrollImageData, portraitConfScore, setPortraitConfScore, dlAction, setDlAction } =
     context;
 
+  useEffect(() => {
+    setTimeout(() => {
+      setIsScanningFailed(true);
+    }, 30000);
+  }, []);
+
   const onSuccessFrontScan = async (result: {
     croppedDocument: string;
     croppedMugshot: string;
     inputImage: string;
     portraitConfScore: number;
   }) => {
-    setIsLoading(true);
     const {
       inputImage,
       croppedDocument,
       croppedMugshot,
       portraitConfScore: compareScore,
     } = result;
+    console.log(compareScore,'compareScore');
+    if (compareScore > 0.3) {
+      console.log(compareScore,'compareScore', enrollImageData);
+      return setErrorMessage('Rescan front of driver’s license')
+    }
+    setErrorMessage('');
+    setIsLoading(true);
+    setIsScanningFailed(false); 
     // console.log("compareScore??",{
     //   inputImage,
     //   croppedDocument,
     //   croppedMugshot,
     //   compareScore,
     // });
-
     setPortraitConfScore(compareScore);
 
     const uploadImageInput = await uploadDL({
@@ -126,6 +142,9 @@ const DLFaceCompare = ({
         setIsLoading(false);
         setIsUserVerify(false);
         setDlAction(DlActionEnum.backscan);
+        setTimeout(() => {
+          setIsScanningFailed(true);
+        }, 30000);
       }, 4000);
     }
   };
@@ -155,6 +174,7 @@ const DLFaceCompare = ({
   }) => {
     // console.log({ barcodeData, inputImage, croppedDocument, croppedBarcode });
     setIsLoading(true);
+    setIsScanningFailed(false);
     const uploadCroppedBarcodeImage = await uploadDL({
       id,
       type: DLType.BACKDLBARCODE,
@@ -248,6 +268,18 @@ const DLFaceCompare = ({
         </Typography>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
+      {opStatus !== 0 && isScanningFailed && (
+        <Alert
+        severity="info"
+        onClick={async () => {
+          setStep(STEPS.SWITCH_DEVICE);
+          await closeCamera(undefined);
+        }}
+        className={classes.alertWrap}
+      >
+        You can try switching to other device.
+      </Alert>
+      )}
       <Grid style={styles.cardGrid} className={`cardGridMobile overflowUnset`}>
         <Box position={"relative"}>
           <Box position={"relative"}>
@@ -293,6 +325,7 @@ const DLFaceCompare = ({
                 onReadyCallback={onCameraNotGranted}
                 onCameraFail={onCameraFail}
                 onCameraNotFullHd={onCameraNotFullHd}
+                setOpStatus={(e: number) => setOpStatus(e)}
               />
             ) : (
               <FaceCompareFrontDocument
@@ -301,6 +334,8 @@ const DLFaceCompare = ({
                 onFailCallback={onFailScanFrontScan}
                 onCameraFail={onCameraFail}
                 enrollImageData={enrollImageData}
+                setOpStatus={(e: number) => setOpStatus(e)}
+                errorMessage={errorMessage}
               />
             )}
           </Box>
