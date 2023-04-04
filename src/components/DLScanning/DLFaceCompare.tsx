@@ -1,5 +1,6 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
+  Alert,
   Box,
   CircularProgress,
   Divider,
@@ -23,13 +24,15 @@ import {
   closeCamera,
   updateUser,
   uploadDL,
-} from "@privateid/cryptonets-web-sdk-alpha";
-import { DLType } from "@privateid/cryptonets-web-sdk-alpha/dist/types";
+} from "@privateid/cryptonets-web-sdk";
+import { DLType } from "@privateid/cryptonets-web-sdk/dist/types";
 
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import useToast from "../../utils/useToast";
 import SpinnerLoader from "../SpinnerLoader";
 import FaceCompareFrontDocument from "../DocumentCamera/FaceCompareFrontDocument";
+import { cameraDelay } from "../../utils";
+import {ELEMENT_ID} from "../../constants";
 
 const DLFaceCompare = ({
   setStep,
@@ -46,16 +49,30 @@ const DLFaceCompare = ({
   const { showToast } = useToast();
   const mainTheme = Theme;
   const palette: { [key: string]: any } = mainTheme.palette;
-  const [isBackScan, setIsBackScan] = useState(false);
+
   const [isUserVerify, setIsUserVerify] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
   const [hasNoCamera, setHasNoCamera] = useState(false);
   const [isBarcodeScan, setIsBarcodeScan] = useState(false);
+  const [isScanningFailed, setIsScanningFailed] = useState(false);
+  const [opStatus, setOpStatus] = useState<number>();
+
+  enum DlActionEnum {
+    frontscan = "frontscan",
+    backscan = "backscan",
+  }
 
   const context = useContext(UserContext);
 
-  const { id, enrollImageData, portraitConfScore, setPortraitConfScore } = context;
+  const { id, enrollImageData, portraitConfScore, setPortraitConfScore, dlAction, setDlAction } =
+    context;
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsScanningFailed(true);
+    }, cameraDelay);
+  }, []);
 
   const onSuccessFrontScan = async (result: {
     croppedDocument: string;
@@ -63,15 +80,20 @@ const DLFaceCompare = ({
     inputImage: string;
     portraitConfScore: number;
   }) => {
-    const { inputImage, croppedDocument, croppedMugshot, portraitConfScore:compareScore } =
-      result;
-    console.log({
+    const {
       inputImage,
       croppedDocument,
       croppedMugshot,
-      compareScore,
-    });
-
+      portraitConfScore: compareScore,
+    } = result;
+    setIsLoading(true);
+    setIsScanningFailed(false);
+    // console.log("compareScore??",{
+    //   inputImage,
+    //   croppedDocument,
+    //   croppedMugshot,
+    //   compareScore,
+    // });
     setPortraitConfScore(compareScore);
 
     const uploadImageInput = await uploadDL({
@@ -79,34 +101,45 @@ const DLFaceCompare = ({
       type: DLType.FRONTDLORIGINAL,
       image: inputImage,
     });
-    console.log("uploadImageInput: ", uploadImageInput);
+    // console.log("uploadImageInput: ", uploadImageInput);
     const uploadCroppedDocumentImage = await uploadDL({
       id,
       type: DLType.FRONTDLCROPPED,
       image: croppedDocument,
     });
-    console.log("uploadCroppedDocumentImage: ", uploadCroppedDocumentImage);
+    // console.log("uploadCroppedDocumentImage: ", uploadCroppedDocumentImage);
     const uploadCroppedMugshotImage = await uploadDL({
       id,
       type: DLType.FRONTDLHEADSHOT,
       image: croppedMugshot,
     });
-    console.log("uploadCroppedMugshotImage: ", uploadCroppedMugshotImage);
+    // console.log("uploadCroppedMugshotImage: ", uploadCroppedMugshotImage);
+    const govId = {
+      portraitConfScore: compareScore,
+    };
 
+    const updateUserResult = await updateUser({
+      id,
+      // @ts-ignore
+      attributes: { govId: govId },
+    });
+    // console.log("Update user result: ", updateUserResult);
     if (
       uploadImageInput &&
       uploadCroppedDocumentImage &&
       uploadCroppedMugshotImage
     ) {
-      await closeCamera(undefined);
-      setIsLoading(true);
+      await closeCamera(ELEMENT_ID);
       setTimeout(() => {
         setIsUserVerify(true);
       }, 2000);
       setTimeout(() => {
         setIsLoading(false);
         setIsUserVerify(false);
-        setIsBackScan(true);
+        setDlAction(DlActionEnum.backscan);
+        setTimeout(() => {
+          setIsScanningFailed(true);
+        }, cameraDelay);
       }, 4000);
     }
   };
@@ -134,29 +167,35 @@ const DLFaceCompare = ({
     croppedDocument: string;
     croppedBarcode: string;
   }) => {
-    console.log({ barcodeData, inputImage, croppedDocument, croppedBarcode });
-
+    // console.log({ barcodeData, inputImage, croppedDocument, croppedBarcode });
+    setIsLoading(true);
+    setIsScanningFailed(false);
     const uploadCroppedBarcodeImage = await uploadDL({
       id,
       type: DLType.BACKDLBARCODE,
       image: croppedBarcode,
     });
-    console.log("uploadCroppedBarcodeImage: ", uploadCroppedBarcodeImage);
-    const uploadCroppedBackDocumentImage = await uploadDL({
-      id,
-      type: DLType.BACKDLORIGINAL,
-      image: croppedDocument,
-    });
-    console.log(
-      "uploadCroppedBackDocumentImage: ",
-      uploadCroppedBackDocumentImage
-    );
+    // console.log("uploadCroppedBarcodeImage", uploadCroppedBarcodeImage);
+
+    if (croppedDocument) {
+      const uploadCroppedBackDocumentImage = await uploadDL({
+        id,
+        type: DLType.BACKDLORIGINAL,
+        image: croppedDocument,
+      });
+
+      // console.log(
+      //   "uploadCroppedBackDocumentImage",
+      //   uploadCroppedBackDocumentImage
+      // );
+    }
+
     const uploadBarcodeData = await uploadDL({
       id,
       type: DLType.BARCODEJSON,
       barcode: JSON.stringify(barcodeData),
     });
-    console.log("uploadBarcodeData: ", uploadBarcodeData);
+    // console.log("uploadBarcodeData", uploadBarcodeData);
 
     console.log("===== end of DL SCAN ====== ");
 
@@ -172,7 +211,6 @@ const DLFaceCompare = ({
         zipCode: barcodeData.postCode,
         country: barcodeData.issuingCountry,
       },
-      portraitConfScore: portraitConfScore,
     };
 
     const updateUserResult = await updateUser({
@@ -180,14 +218,12 @@ const DLFaceCompare = ({
       // @ts-ignore
       attributes: { govId: govId },
     });
-    console.log("Update user result: ", updateUserResult);
+    // console.log("Update user result: ", updateUserResult);
 
-    setIsLoading(true);
     setTimeout(() => {
       setIsUserVerify(true);
     }, 2000);
     setTimeout(() => {
-      setIsLoading(false);
       setIsUserVerify(false);
       onSuccess && onSuccess();
     }, 4000);
@@ -202,6 +238,12 @@ const DLFaceCompare = ({
   const onCameraFail = async () => {
     setHasNoCamera(true);
     // setStep(STEPS.SWITCH_DEVICE);
+  };
+
+  const onCameraNotFullHd = async () => {
+    // console.log("NOT FULL HD CALLED.");
+    await closeCamera(ELEMENT_ID);
+    setStep(STEPS.SWITCH_DEVICE);
   };
 
   return (
@@ -221,12 +263,24 @@ const DLFaceCompare = ({
         </Typography>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
+      {opStatus !== 0 && isScanningFailed && (
+        <Alert
+        severity="info"
+        onClick={async () => {
+          setStep(STEPS.SWITCH_DEVICE);
+          await closeCamera(ELEMENT_ID);
+        }}
+        className={classes.alertWrap}
+      >
+        You can try switching to other device.
+      </Alert>
+      )}
       <Grid style={styles.cardGrid} className={`cardGridMobile overflowUnset`}>
         <Box position={"relative"}>
           <Box position={"relative"}>
             {!hasNoCamera && (
               <img
-                src={isBackScan ? DlBack : DlFront}
+                src={dlAction === DlActionEnum.backscan ? DlBack : DlFront}
                 alt="DlFront"
                 style={styles.DlFront as React.CSSProperties}
                 className="DlBack"
@@ -260,11 +314,13 @@ const DLFaceCompare = ({
                   Please switch device.
                 </Typography>
               </Stack>
-            ) : isBackScan ? (
+            ) : dlAction === DlActionEnum.backscan ? (
               <ScanBackDocument
                 onSuccess={onBackSuccess}
                 onReadyCallback={onCameraNotGranted}
                 onCameraFail={onCameraFail}
+                onCameraNotFullHd={onCameraNotFullHd}
+                setOpStatus={(e: number) => setOpStatus(e)}
               />
             ) : (
               <FaceCompareFrontDocument
@@ -273,6 +329,7 @@ const DLFaceCompare = ({
                 onFailCallback={onFailScanFrontScan}
                 onCameraFail={onCameraFail}
                 enrollImageData={enrollImageData}
+                setOpStatus={(e: number) => setOpStatus(e)}
               />
             )}
           </Box>
@@ -303,7 +360,7 @@ const DLFaceCompare = ({
           >
             {isBarcodeScan
               ? "Place the bar code in the safe area"
-              : isBackScan
+              : dlAction === DlActionEnum.backscan
               ? "Place the BACK of your ID towards the camera"
               : "Place the FRONT of your ID towards the camera"}
           </Typography>

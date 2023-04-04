@@ -1,10 +1,10 @@
 import { CircularProgress, MenuItem, Select } from "@mui/material";
-import { switchCamera } from "@privateid/cryptonets-web-sdk-alpha";
+import { switchCamera } from "@privateid/cryptonets-web-sdk";
 import React, { useEffect, useState } from "react";
-import useCamera from "../../hooks/useCamera";
+import useCamera, { setResolutionForIphoneCC } from "../../hooks/useCamera";
 import useWasm from "../../hooks/useWasm";
 import styles from "../../styles/Home.module.css";
-import { isBackCamera } from "../../utils";
+import { isBackCamera, isIphoneCC } from "../../utils";
 import useCameraPermissions from "../../hooks/useCameraPermissions";
 import { useStyles } from "./styles";
 
@@ -20,18 +20,33 @@ const Camera = ({
   onWasmLoadFail = () => {},
   requireHD = false,
   isDocumentScan = false,
+  onCameraNotFullHd = () => {},
 }: any) => {
   const { ready: wasmReady, wasmStatus } = useWasm();
   const { isCameraGranted } = useCameraPermissions(onReadyCallback);
   const elementId = "userVideo";
   const classes = useStyles();
-  const { ready, init, device, devices } = useCamera(
+  const { ready, init, device, devices, settings } = useCamera(
     elementId,
     mode,
     requireHD,
     onCameraFail,
     isDocumentScan
   );
+
+  // console.log("CAMERA SETTING FROM APP", settings);
+
+  useEffect(() => {
+    // console.log(
+    //   `CAMERA CHECKING IF FULL HD ${
+    //     settings ? Math.max(settings.width, settings.height) : "qwe"
+    //   }`
+    // );
+    if (settings && Math.max(settings.width, settings.height) < 1920) {
+      // console.log("NOT FULL HD");
+      onCameraNotFullHd();
+    }
+  }, [onCameraNotFullHd, settings]);
 
   const [deviceId, setDeviceId] = useState(device);
 
@@ -43,7 +58,7 @@ const Camera = ({
   ].includes(currentAction);
 
   useEffect(() => {
-    console.log("=====? HERE????", { wasmStatus, wasmReady, ready });
+    // console.log("=====? HERE????", { wasmStatus, wasmReady, ready });
 
     if (!wasmReady && wasmStatus.isChecking) return;
 
@@ -63,18 +78,19 @@ const Camera = ({
       return;
     }
 
-    console.log("--- wasm status ", ready);
+    // console.log("--- wasm status ", ready);
   }, [wasmReady, ready, wasmStatus]);
 
   const handleSwitchCamera = async (e: any) => {
     setDeviceId(e.target.value);
-    await switchCamera(
-      null,
-      e.target.value
-    );
+    // @ts-ignore
+    const { capabilities } = await switchCamera(null, e.target.value);
+    if (isIphoneCC(capabilities)) {
+      await setResolutionForIphoneCC();
+    }
     setTimeout(() => {
       onSwitchCamera(true);
-    }, 1000);
+    }, 3000);
   };
 
   return (

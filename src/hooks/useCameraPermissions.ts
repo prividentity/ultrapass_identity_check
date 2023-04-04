@@ -6,14 +6,18 @@ const browser = detect();
 const useCameraPermissions = (callback?: (arg0: boolean) => any) => {
   const [isCameraGranted, setIsCameraGranted] = useState(false);
   const checkCameraPermissions = async () => {
-    navigator.permissions.query({ name: "camera" } as any).then((result) => {
-      if (result.state === "granted") {
-        setIsCameraGranted(true);
-      } else {
-        getUserMedia(setIsCameraGranted, callback);
-      }
-      // Don't do anything if the permission was denied.
-    });
+    try {
+      navigator.permissions.query({ name: "camera" } as any).then((result) => {
+        if (result.state === "granted") {
+          setIsCameraGranted(true);
+        } else {
+          getUserMedia(setIsCameraGranted, callback);
+        }
+        // Don't do anything if the permission was denied.
+      });
+    } catch (e) {
+      getUserMedia(setIsCameraGranted, callback);
+    }
   };
   useEffect(() => {
     if (browser?.name === "firefox") {

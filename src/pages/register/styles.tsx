@@ -379,8 +379,11 @@ export const useStyles = makeStyles((theme: any) => ({
       [theme.breakpoints.between("xs", "sm")]: {
         flex: 1,
         display: "flex",
-        alignItems: " flex-end",
+        alignItems: "flex-start",
       },
     },
   },
+  alertWrap: {
+    cursor: "pointer",
+  }
 }));

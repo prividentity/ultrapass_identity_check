@@ -113,7 +113,7 @@ export default function NotSupported() {
           pb={1}
           fontWeight={600}
         >
-          Sorry, your device does not support WASM or WebRTC. 
+          Sorry, your device does not support WASM or WebRTC.
           <br /> Please try updating your OS and Browser.
           <br /> You can also try to switching to another device.
         </Typography>

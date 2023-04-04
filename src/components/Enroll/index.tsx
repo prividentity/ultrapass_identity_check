@@ -9,6 +9,7 @@ import {
   Stack,
   Grid,
   Divider,
+  Alert,
 } from "@mui/material";
 import { useStyles, styles } from "./styles";
 import React, { useEffect, useState } from "react";
@@ -20,13 +21,14 @@ import {
   closeCamera,
   updateUser,
   uploadPortrait,
-} from "@privateid/cryptonets-web-sdk-alpha";
+} from "@privateid/cryptonets-web-sdk";
 import shield from "../../assets/shield.png";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import STEPS from "../../pages/register/steps";
-import { stopCamera } from "../../utils";
+import { cameraDelay, stopCamera } from "../../utils";
 import SpinnerLoader from "../SpinnerLoader";
-import {convertBase64ToImageData} from "../../utils/base64ToImageData";
+import { convertBase64ToImageData } from "../../utils/base64ToImageData";
+import {ELEMENT_ID} from "../../constants";
 
 const Enroll = ({
   onReadyCallback,
@@ -44,11 +46,12 @@ const Enroll = ({
   const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
   const classes = useStyles();
   const context = React.useContext(UserContext);
-  const { id, setGUID, setUUID, setEnrollImageData } = context;
+  const { id, setGUID, setUUID, setEnrollImageData, setDlAction } = context;
   const [showSuccess, setShowSuccess] = useState(false);
   const mainTheme = Theme;
   const palette: { [key: string]: any } = mainTheme.palette;
   const [hasNoCamera, setHasNoCamera] = useState(false);
+  const [isScanningFailed, setIsScanningFailed] = useState(false);
 
   const {
     enrollUserOneFa,
@@ -59,16 +62,17 @@ const Enroll = ({
     enrollPortrait,
   } = useEnrollOneFa2("userVideo", (e: any) => console.log(e), 4);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleUserUpdate = async (guid: string, uuid: string) => {
     setGUID(guid);
     setUUID(uuid);
-    await convertBase64ToImageData(enrollPortrait, setEnrollImageData)
+    await convertBase64ToImageData(enrollPortrait, setEnrollImageData);
 
     const uploadResult = await uploadPortrait({
       id,
-      portrait: enrollPortrait
+      portrait: enrollPortrait,
     });
-    console.log("upload portrait:", uploadResult);
+    // console.log("upload portrait:", uploadResult);
 
     const params = {
       id,
@@ -80,8 +84,9 @@ const Enroll = ({
     const updateRes = (await updateUser(params)) as any;
     if (updateRes.guid && updateRes.uuid) {
       setShowSuccess(true);
-      await closeCamera(undefined);
+      await closeCamera(ELEMENT_ID);
       setTimeout(async () => {
+        setDlAction("frontscan");
         setStep(STEPS.DRIVERLICENSE);
       }, 1000);
     }
@@ -91,6 +96,12 @@ const Enroll = ({
       handleUserUpdate(enrollGUID, enrollUUID);
     }
   }, [enrollStatus, enrollGUID, enrollUUID]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsScanningFailed(true);
+    }, cameraDelay);
+  }, []);
 
   const onCameraFail = async () => {
     setHasNoCamera(true);
@@ -124,6 +135,18 @@ const Enroll = ({
         </Typography>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
+      {enrollOneFaProgress === 0 && isScanningFailed && (
+        <Alert
+          severity="info"
+          onClick={() => {
+            setStep(STEPS.SWITCH_DEVICE);
+            stopCamera();
+          }}
+          className={classes.alertWrap}
+        >
+          You can try switching to other device.
+        </Alert>
+      )}
       <Box position={"relative"} padding={"10px 10px"} mt={0} pr={"12px"}>
         {(showSuccess || enrollOneFaProgress === 100) && (
           <Box style={styles.overlayCamera as React.CSSProperties}>

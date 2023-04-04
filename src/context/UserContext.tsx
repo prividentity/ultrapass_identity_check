@@ -42,6 +42,10 @@ export const UserContext = createContext({
   setPortraitConfScore: (portraitConfScore: any) => {},
   isWasmLoaded: false,
   setIsWasmLoaded: (isWasmLoaded: boolean) => {},
+  tokenParams: "",
+  setTokenParams: (tokenParams: string) => {},
+  dlAction: "",
+  setDlAction:  (dlAction: string) => {},
 });
 
 const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
@@ -61,7 +65,8 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [enrollImageData, setEnrollImageData] = useState<any>(null);
   const [portraitConfScore, setPortraitConfScore] = useState<any>(null);
   const [isWasmLoaded, setIsWasmLoaded] = useState(false);
-
+  const [tokenParams, setTokenParams] = useState("");
+  const [dlAction, setDlAction] = useState("");
   return (
     <UserContext.Provider
       value={{
@@ -97,6 +102,10 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
         setPortraitConfScore,
         isWasmLoaded, 
         setIsWasmLoaded,
+        tokenParams, 
+        setTokenParams,
+        dlAction, 
+        setDlAction,
       }}
     >
       {children}

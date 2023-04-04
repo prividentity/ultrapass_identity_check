@@ -35,6 +35,7 @@ export const getDisplayedMessage = (result: number) => {
 };
 
 export const isIOS = Platform?.os?.family === "iOS";
+export const API_KEY = "0000000000000000test";
 export const osVersion = Number(Platform?.os?.version);
 export const isAndroid = Platform?.os?.family === "Android";
 export const isMobile = isIOS || isAndroid;
@@ -42,6 +43,7 @@ export const SUCCESS = "SUCCESS";
 export const FAILURE = "FAILURE";
 export const REQUIRES_INPUT = "REQUIRES_INPUT";
 export const ERROR = "error";
+export const cameraDelay = 30000;
 
 export function getQueryParams(queryString: string) {
   const query = queryString.split("+").join(" ");
@@ -180,7 +182,7 @@ export const formatPhoneInput = (value: string, previousValue?: string) => {
   if (!value) {
     return value;
   }
-  const currentValue = value.replace(/[^\d]/g, '');
+  const currentValue = value.replace(/[^\d]/g, "");
   const cvLength = currentValue.length;
 
   if (!previousValue || value.length > previousValue.length) {
@@ -192,13 +194,13 @@ export const formatPhoneInput = (value: string, previousValue?: string) => {
     }
     return `${currentValue.slice(0, 3)}-${currentValue.slice(
       3,
-      5,
+      5
     )}-${currentValue.slice(5, 9)}`;
   }
 };
 
 export const states = [
-{ label: "Alabama", abbreviation: "AL" },
+  { label: "Alabama", abbreviation: "AL" },
   { label: "Alaska", abbreviation: "AK" },
   { label: "Arizona", abbreviation: "AZ" },
   { label: "Arkansas", abbreviation: "AR" },
@@ -247,7 +249,7 @@ export const states = [
   { label: "Washington", abbreviation: "WA" },
   { label: "West Virginia", abbreviation: "WV" },
   { label: "Wisconsin", abbreviation: "WI" },
-  { label: "Wyoming", abbreviation: "WY" }
+  { label: "Wyoming", abbreviation: "WY" },
 ];
 
 export enum AdditionalRequirementsEnum {
@@ -267,6 +269,13 @@ export function getStatusFromUser(user: any) {
 }
 
 export const navigateToUrl = (url: string, token?: string) => {
+  if (!/^https?:\/\//i.test(url)) {
+    url = "https://" + url;
+  }
   window.open(`${url}?token=${token}`, "_self");
 };
 
+export const isIphoneCC = (capabilities: MediaTrackCapabilities | null) =>
+  capabilities &&
+  capabilities?.height?.max === 1440 &&
+  capabilities?.width?.max === 1920;

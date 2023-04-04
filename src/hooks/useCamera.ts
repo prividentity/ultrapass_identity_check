@@ -1,8 +1,8 @@
 /* eslint-disable */
 import { useState } from "react";
-import { openCamera } from "@privateid/cryptonets-web-sdk-alpha";
-import { isMobile, mapDevices } from "../utils";
-import { CameraFaceMode } from "@privateid/cryptonets-web-sdk-alpha/dist/types";
+import { openCamera } from "@privateid/cryptonets-web-sdk";
+import { isIphoneCC, mapDevices } from "../utils";
+import { CameraFaceMode } from "@privateid/cryptonets-web-sdk/dist/types";
 
 const useCamera = (
   element = "userVideo",
@@ -46,18 +46,20 @@ const useCamera = (
         null,
         requestFaceMode,
         null,
-          isDocumentScan
+        isDocumentScan
       );
+      if (isIphoneCC(capabilities)) {
+        await setResolutionForIphoneCC();
+      }
+
       setCameraFeatures({ settings, capabilities });
       setFaceMode(faceMode);
-      console.log("hasError??", { status, errorMessage });
       if (Array.isArray(devices) && devices?.length > 0) {
         const options = devices?.map(mapDevices);
         setDevices(options);
         setDevice(settings?.deviceId as string);
       }
 
-      console.log("???", devices);
       if (devices?.length === 0) {
         onCameraFail();
         console.log("no camera");
@@ -68,6 +70,7 @@ const useCamera = (
       onCameraFail();
       console.log("Error Message", e);
     }
+
     // const setCameraFocus = async () => {
     //   try {
     //     const video = document.getElementById("userVideo") as any;
@@ -103,6 +106,28 @@ const useCamera = (
     faceMode,
     ...cameraFeatures,
   };
+};
+
+export const setResolutionForIphoneCC = async () => {
+  const video = document.getElementById("userVideo") as any;
+  const mediaStream = video.srcObject;
+  const track = await mediaStream.getTracks()[0];
+  const capabilities = track.getCapabilities() ? track.getCapabilities() : null;
+  if (
+    capabilities &&
+    capabilities?.height?.max === 1440 &&
+    capabilities?.width?.max === 1920
+  ) {
+    console.log("SET CONFIGURATION FOR IPHONE CC");
+    await track.applyConstraints({
+      advanced: [
+        {
+          width: 1920,
+          height: 1440,
+        },
+      ],
+    });
+  }
 };
 
 export default useCamera;

@@ -2,7 +2,7 @@ import { SetStateAction, useEffect, useState } from "react";
 import {
   convertCroppedImage,
   isValidPhotoID,
-} from "@privateid/cryptonets-web-sdk-alpha";
+} from "@privateid/cryptonets-web-sdk";
 import { CANVAS_SIZE } from "../utils";
 
 const useScanBackDocument = (onSuccess: (e: any) => void) => {
@@ -124,7 +124,6 @@ const useScanBackDocument = (onSuccess: (e: any) => void) => {
     if (
       isFound &&
       inputImageBase64 &&
-      croppedDocumentBase64 &&
       croppedBarcodeBase64 &&
       scannedCodeData
     ) {
@@ -159,7 +158,8 @@ const useScanBackDocument = (onSuccess: (e: any) => void) => {
         documentCallback,
         true,
         undefined as any,
-        undefined,
+        // @ts-ignore
+        { document_scan_barcode_only: true},
         canvasObj
       )) as any;
     setCroppedDocumentRaw(croppedDocument);

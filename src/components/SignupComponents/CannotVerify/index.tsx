@@ -9,17 +9,17 @@ import {
 import smallLock from "../../../assets/smallLock.png";
 import { styles, useStyles } from "../../../pages/signup/styles";
 import { theme as Theme, nameMap } from "../../../theme";
+import {navigateToUrl} from "../../../utils";
 
 interface props {
   theme: string;
   skin: string;
-  navigateToUrl: (e: string) => void;
   setStep: (e: string) => void;
   prevStep: string;
 }
 
 const CannotVerify = (props: props) => {
-  const { skin, navigateToUrl, setStep, prevStep } = props;
+  const { skin, setStep, prevStep } = props;
   const muiTheme = useTheme();
 
   const mainTheme = Theme;
@@ -89,7 +89,7 @@ const CannotVerify = (props: props) => {
         variant="text"
         color={"inherit"}
         style={styles.textButton}
-        onClick={() => navigateToUrl("someFailureUrl")}
+        onClick={() => navigateToUrl("/")}
       >
         <Typography
           component="p"

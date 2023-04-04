@@ -16,7 +16,7 @@ import { useStyles, styles } from "../../pages/signup/styles";
 import { theme as Theme } from "../../theme";
 import { UserContext } from "../../context/UserContext";
 import { createUserID } from "../../utils";
-import { createUser } from "@privateid/cryptonets-web-sdk-alpha/dist/apiUtils";
+import { createUser } from "@privateid/cryptonets-web-sdk/dist/apiUtils";
 import STEPS from "../../pages/register/steps";
 
 import { componentsParameterInterface } from "../../interface";
@@ -25,6 +25,7 @@ import { parsePhoneNumber } from "react-phone-number-input";
 import useToast from "../../utils/useToast";
 
 import PhoneInputComponent from "../PhoneInput";
+import { updateUserToken } from "../../services/api";
 
 const RegisterInputs = ({
   setStep,
@@ -51,11 +52,7 @@ const RegisterInputs = ({
 
   const context = useContext(UserContext);
 
-  const { setPhoneNumber, setSSN4, setId } = context;
-
-  const handleMobileInputChange = (inputNumber: any) => {
-    setPhoneInput(inputNumber);
-  };
+  const { setPhoneNumber, setSSN4, setId, tokenParams } = context;
 
   const [showSSN4Error, setShowSSN4Error] = useState({
     error: false,
@@ -83,25 +80,23 @@ const RegisterInputs = ({
 
   const handleContinue = async () => {
     setAutoFocus(false);
-    const validatePhone = (phone: string) =>
-      /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/.test(
-        phone
-      );
-    console.log(
-      validatePhone(phoneInput) && ssn4Ref?.current?.value.length === 4
-    );
+    // const validatePhone = (phone: string) =>
+    //   /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/.test(
+    //     phone
+    //   );
+    // console.log(
+    //   validatePhone(phoneInput) && ssn4Ref?.current?.value.length === 4
+    // );
 
-    if (!validatePhone(phoneInput)) {
-      showToast("Enter mobile number", "error");
-    } else if (ssn4Ref?.current?.value.length !== 4) {
+    // if (!validatePhone(phoneInput)) {
+    //   showToast("Enter mobile number", "error");
+    // } else
+    if (ssn4Ref?.current?.value.length !== 4) {
       showToast("Enter SSN4", "error");
-    } else if (
-      validatePhone(phoneInput) &&
-      ssn4Ref?.current?.value.length === 4
-    ) {
+    } else if (ssn4Ref?.current?.value.length === 4) {
       setLoader(true);
       const inputSSN4 = ssn4Ref?.current?.value;
-      setPhoneNumber(phoneInput);
+      // setPhoneNumber(phoneInput);
       setSSN4(inputSSN4);
       const newID = await createUserID();
       setId(newID);
@@ -110,9 +105,14 @@ const RegisterInputs = ({
         id: newID,
         userConsent: true,
         userConsentDate: Date.now().toString(),
-        phone: phoneInput,
         ssn4: inputSSN4,
       });
+      
+      const updateToken = await updateUserToken(
+        { customerId: newID },
+        tokenParams
+      );
+      console.log("Updated Token:", updateToken);
       if (result.user) {
         setToken(result?.user?.customerId);
         setStep(STEPS.PRE_ENROLL);
@@ -156,7 +156,7 @@ const RegisterInputs = ({
           PLEASE ENTER YOUR PERSONAL DETAILS
         </Typography>
         <Box width={"100%"}>
-          <Grid container pb={2}>
+          {/* <Grid container pb={2}>
             <Input
               style={{ width: "100%" }}
               value={phoneInput}
@@ -184,7 +184,7 @@ const RegisterInputs = ({
                 />
               ))}
             />
-          </Grid>
+          </Grid> */}
 
           <TextField
             fullWidth

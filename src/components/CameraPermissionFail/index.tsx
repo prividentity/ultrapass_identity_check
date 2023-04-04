@@ -8,6 +8,7 @@ import STEPS from "../../pages/register/steps";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import { CameraAlt } from "@mui/icons-material";
 import { componentsParameterInterface } from "../../interface";
+import { detect } from "detect-browser";
 
 const CameraPermissionFail = ({
   setStep,
@@ -18,6 +19,13 @@ const CameraPermissionFail = ({
   const classes = useStyles();
   const mainTheme = Theme;
   const palette: { [key: string]: any } = mainTheme.palette;
+  const browser = detect();
+  const redirectLink =
+    browser?.name === "safari"
+      ? `https://support.apple.com/en-in/guide/mac-help/mchlf6d108da/mac#:~:text=In%20Safari%2C%20to%20allow%20a,click%20Websites%2C%20then%20select%20Camera.`
+      : browser?.name === "firefox"
+      ? "https://support.mozilla.org/en-US/kb/how-manage-your-camera-and-microphone-permissions"
+      : `https://support.google.com/chrome/answer/2693767?co=GENIE.Platform%3DDesktop`;
   return (
     <>
       <Grid container alignItems="center" justifyContent={"center"}>
@@ -58,11 +66,7 @@ const CameraPermissionFail = ({
         >
           To update permissions, see the instructions{" "}
           <span
-            onClick={() =>
-              window.open(
-                "https://support.google.com/chrome/answer/2693767?co=GENIE.Platform%3DDesktop"
-              )
-            }
+            onClick={() => window.open(redirectLink)}
             style={{
               color: palette[skin]?.main,
               fontWeight: 700,

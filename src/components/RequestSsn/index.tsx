@@ -12,7 +12,7 @@ import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import { useStyles, styles } from "../../pages/signup/styles";
 import { theme as Theme } from "../../theme";
 import { UserContext } from "../../context/UserContext";
-import { updateUser } from "@privateid/cryptonets-web-sdk-alpha/dist/apiUtils";
+import { updateUser } from "@privateid/cryptonets-web-sdk/dist/apiUtils";
 import STEPS from "../../pages/register/steps";
 import useToast from "../../utils/useToast";
 import { formatPhoneInput } from "../../utils";
@@ -49,13 +49,13 @@ const RequestSsn = ({
       setShowSSN9Error({ error: true, message: "SSN9 Must be 9 digits." });
     }
   };
-  console.log(ssn9Ref?.current?.value,'ssn9Ref?.current?.value');
+  // console.log(ssn9Ref?.current?.value,'ssn9Ref?.current?.value');
   
   const handleContinue = async () => {
     if (ssn9Ref?.current?.value.length !== 11) {
       showToast("Enter SSN9", "error");
     } else if (ssn9Ref?.current?.value.length === 11) {
-      const inputSSN9 = ssn9Ref?.current?.value;
+      const inputSSN9 = ssn9Ref?.current?.value.replace(/-/g,"");
       const updateUserResult: any = await updateUser({
         id,
         attributes: { ssn9: inputSSN9 } as any,

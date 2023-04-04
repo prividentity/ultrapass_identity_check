@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 
-import { loadPrivIdModule } from "@privateid/cryptonets-web-sdk-alpha";
+import { loadPrivIdModule } from "@privateid/cryptonets-web-sdk";
 import { getUrlParameter } from "../utils";
 import { UserContext } from "../context/UserContext";
 
@@ -17,7 +17,7 @@ const useWasm = () => {
     const apiKey = getUrlParameter("api_key", null);
     const apiUrl = getUrlParameter("api_url", null);
     const isSupported = await loadPrivIdModule(apiUrl, apiKey);
-    console.log("WASM LOADED SUPPORTED?", isSupported);
+    // console.log("WASM LOADED SUPPORTED?", isSupported);
     // setReady(false);
     // setWasmStatus({isChecking:false, support: false, message: "not supported."});
     if (isSupported.support) {

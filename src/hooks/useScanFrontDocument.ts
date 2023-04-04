@@ -2,9 +2,9 @@ import { SetStateAction, useEffect, useState } from "react";
 import {
   convertCroppedImage,
   isValidPhotoID,
-} from "@privateid/cryptonets-web-sdk-alpha";
+} from "@privateid/cryptonets-web-sdk";
 import { CANVAS_SIZE } from "../utils";
-import { DocType } from "@privateid/cryptonets-web-sdk-alpha/dist/types";
+import { DocType } from "@privateid/cryptonets-web-sdk/dist/types";
 
 const useScanFrontDocument = (
   onSuccess: ({
@@ -54,7 +54,7 @@ const useScanFrontDocument = (
   const [resultResponse, setResultResponse] = useState(null);
 
   const documentCallback = (result: any) => {
-    console.log("Front scan callback result:", result);
+    // console.log("Front scan callback result:", result);
     setResultResponse(result.returnValue);
     if (
       result.returnValue.predict_status === 0 &&

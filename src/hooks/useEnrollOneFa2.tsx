@@ -1,7 +1,7 @@
 // @ts-nocheck
 /* eslint-disable no-unused-vars */
 import { useState } from "react";
-import { enroll1FA } from "@privateid/cryptonets-web-sdk-alpha";
+import { enroll1FA } from "@privateid/cryptonets-web-sdk";
 
 const useEnrollOneFa = (
   element = "userVideo",
@@ -32,7 +32,7 @@ const useEnrollOneFa = (
   };
 
   const callback = async (result) => {
-    console.log("enroll callback hook result:", result);
+    // console.log("enroll callback hook result:", result);
     switch (result.status) {
       case "VALID_FACE":
         setFaceDetected(true);

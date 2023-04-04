@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -8,10 +8,15 @@ import {
   CircularProgress,
   useTheme,
   useMediaQuery,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { styles } from "../../pages/signup/styles";
 import { useNavigate } from "react-router";
-import { createVerificationSession } from "../../services/api";
+import {
+  createVerificationSession,
+  getProductGroupList,
+} from "../../services/api";
 import { createSearchParams } from "react-router-dom";
 import config from "../../config";
 import { useStyles } from "../../pages/home/styles";
@@ -26,9 +31,14 @@ const HomeComponent = ({ theme, skin }: props) => {
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const [loading, setLoading] = useState(false);
   const [flow] = useState(1);
+  const [productGroup, setProductGroup] = useState<
+    { name: string; _id: string }[]
+  >([]);
+  const [selectedProductGroup, setSelectedProductGroup] = useState<string>("intergalactic");
   const navigate = useNavigate();
   const classes = useStyles();
   const muiTheme = useTheme();
+  const url = new URL(window.location.href);
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
 
   const createVerification = async () => {
@@ -37,7 +47,11 @@ const HomeComponent = ({ theme, skin }: props) => {
       return;
     }
     setLoading(true);
-    const payload = config.clientConfig;
+    const payload = {
+      ...config.clientConfig,
+      productGroupId: selectedProductGroup || "intergalactic",
+    };
+    // console.log(JSON.stringify(payload));
     const result: any = await createVerificationSession(payload);
     if (result?.token) {
       onFlowChange(flow, result?.token);
@@ -141,6 +155,28 @@ const HomeComponent = ({ theme, skin }: props) => {
       );
     }
   }
+
+  const getProductGroup = async () => {
+    const result: any = await getProductGroupList();
+    const prodList = result?.filter(
+      (product: { isProd: boolean }) => product?.isProd
+    );
+    const devList = result?.filter(
+      (product: { isProd: boolean; isDraft: boolean }) =>
+        !product.isProd && !product.isDraft
+    );
+    const isDev = url?.search?.split("environment=")?.[1] === "dev";
+    setProductGroup(isDev ? devList : prodList);
+  };
+
+  useEffect(() => {
+    getProductGroup();
+  }, []);
+
+  const handleChange = (e: any) => {
+    setSelectedProductGroup(e?.target?.value);
+  };
+  // console.log({ productGroup });
   return (
     <>
       <Container maxWidth="xl">
@@ -185,6 +221,26 @@ const HomeComponent = ({ theme, skin }: props) => {
                 </Button>
               )}
             </Grid>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={selectedProductGroup}
+              onChange={handleChange}
+              className={classes.flowdropDown}
+              MenuProps={{ classes: { paper: classes.menuPaper } }}
+            >
+              {productGroup?.length ? (
+                [{ name: "Select Product Group", _id: "1", apiValue: "intergalactic" }, ...productGroup]
+                  ?.filter((product: { name: string }) => product?.name)
+                  ?.map((product: any) => (
+                    <MenuItem key={product?._id} value={product?.apiValue}>
+                      {product?.name}
+                    </MenuItem>
+                  ))
+              ) : (
+                <MenuItem value={"intergalactic"}>Select Product Group</MenuItem>
+              )}
+            </Select>
           </Box>
 
           {matchesSM ? (

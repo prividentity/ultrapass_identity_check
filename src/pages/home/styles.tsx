@@ -58,7 +58,7 @@ export const useStyles = makeStyles((theme: any) => ({
     },
   },
   flowdropDown: {
-    width: "288px",
+    width: "300px",
     [theme.breakpoints.between("xs", "sm")]: {
       width: "100%",
     },
@@ -74,6 +74,13 @@ export const useStyles = makeStyles((theme: any) => ({
     },
     "& svg": {
       color: palette[skin]?.text,
+    },
+  },
+  menuPaper: {
+    maxHeight: "250px !important",
+    [theme.breakpoints.between("xs", "sm")]: {
+      bottom: '12rem !important',
+      top: 'unset !important',
     },
   },
   homeLoader: {

@@ -15,10 +15,7 @@ import {
   SUCCESS,
 } from "../../utils";
 import { CircularProgress } from "@mui/material";
-import {
-  createVerificationSession,
-  getUser,
-} from "../../services/api";
+import { createVerificationSession, getUser } from "../../services/api";
 import womenImg from "../../assets/Kimiko-S3.png";
 import HomeModal from "../../components/Modal/homeModal";
 import useToast from "../../utils/useToast";
@@ -30,7 +27,7 @@ import { createSearchParams } from "react-router-dom";
 import { useCamera, useWasm } from "../../hooks";
 import Camera from "../../components/Camera";
 import HomeComponent from "../../components/HomeComponent";
-import STEPS from "../register/steps";
+import { ELEMENT_ID } from "../../constants";
 
 interface props {
   theme: string;
@@ -38,27 +35,33 @@ interface props {
 }
 
 const Signin = ({ theme, skin }: props) => {
-  const { ready: wasmReady } = useWasm();
+  const { ready: wasmReady, wasmStatus } = useWasm();
   const [isInitialPredict, setInitialPredict] = useState(true);
   const { showToast } = useToast();
   const navigate = useNavigate();
-  const elementId = "userVideo";
-  const { ready, init } = useCamera(elementId);
+  const { ready, init } = useCamera(ELEMENT_ID);
   const muiTheme = useTheme();
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
 
   useEffect(() => {
-    if (!wasmReady) return;
-    if (!ready) {
-      init();
+    // console.log("=====? HERE????", { wasmStatus, wasmReady, ready });
+
+    if (!wasmReady && wasmStatus.isChecking) return;
+
+    if (wasmReady && !wasmStatus.isChecking && wasmStatus.support) {
+      // if(ready && wasmReady && wasmStatus.support && isCameraGranted) return;
+      if (!ready) {
+        init();
+        return;
+      }
     }
 
-    // if(!ready && !wasmStatus.isChecking && !wasmStatus.support){
-    //   setStep(STEPS.NOT_SUPPORTED);
-    // }
-    predictUserOneFa();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [wasmReady, ready]);
+    if (wasmReady && ready) {
+      predictUserOneFa();
+    }
+
+    // console.log("--- wasm status ", ready);
+  }, [wasmReady, ready, wasmStatus]);
 
   const createVerification = async () => {
     const payload = config.clientConfig;
@@ -77,7 +80,7 @@ const Signin = ({ theme, skin }: props) => {
   const themeName = skin || "primary";
   const [step, setStep] = useState(0);
   const [isUserVerify, setIsUserVerify] = useState(false);
-  const retryTimes = step === 1 ? 12 : 3;
+  const retryTimes = step === 1 ? 12 : 5;
 
   useEffect(() => {
     if (user?._id) {
@@ -90,7 +93,7 @@ const Signin = ({ theme, skin }: props) => {
     const user = userParam || JSON.parse(localStorage.getItem("user") || "{}");
     if (!user._id) return;
     const userStatus = getStatusFromUser(user);
-    console.log(userStatus, "user status\n", user, "user\n");
+    // console.log(userStatus, "user status\n", user, "user\n");
     setIsUserVerify(false);
     stopCamera();
     switch (userStatus) {
@@ -129,8 +132,8 @@ const Signin = ({ theme, skin }: props) => {
           return createVerification();
         } else {
           setIsUserVerify(true);
-          localStorage.setItem("user", JSON.stringify(data?.userData || {}));
-          nextStep(data?.userData);
+          localStorage.setItem("user", JSON.stringify(data || {}));
+          nextStep(data);
         }
         return false;
       }
@@ -142,9 +145,11 @@ const Signin = ({ theme, skin }: props) => {
   };
 
   const { predictUserOneFa } = usePredictOneFa(
-    elementId,
+    ELEMENT_ID,
     handlePredictSuccess,
-    retryTimes
+    retryTimes,
+    "",
+    isInitialPredict
   );
 
   const _renderChildren = () => {
