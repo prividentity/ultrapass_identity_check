@@ -43,7 +43,7 @@ const Camera = ({
     //   }`
     // );
     if (settings && Math.max(settings.width, settings.height) < 1920) {
-      console.log("NOT FULL HD");
+      // console.log("NOT FULL HD");
       onCameraNotFullHd();
     }
   }, [onCameraNotFullHd, settings]);
@@ -58,7 +58,7 @@ const Camera = ({
   ].includes(currentAction);
 
   useEffect(() => {
-    console.log("=====? HERE????", { wasmStatus, wasmReady, ready });
+    // console.log("=====? HERE????", { wasmStatus, wasmReady, ready });
 
     if (!wasmReady && wasmStatus.isChecking) return;
 
@@ -78,7 +78,7 @@ const Camera = ({
       return;
     }
 
-    console.log("--- wasm status ", ready);
+    // console.log("--- wasm status ", ready);
   }, [wasmReady, ready, wasmStatus]);
 
   const handleSwitchCamera = async (e: any) => {

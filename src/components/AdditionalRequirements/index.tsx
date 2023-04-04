@@ -28,7 +28,7 @@ const AdditionalRequirements = ({
   const { showToast } = useToast();
   const convertLinkToImageData = async (link: string, setState: any) => {
     var newImg = new Image();
-    console.log("data:image/png;base64," + link);
+    // console.log("data:image/png;base64," + link);
     newImg.src = "data:image/png;base64," + link;
     newImg.onload = async () => {
       var imgSize = {

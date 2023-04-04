@@ -49,7 +49,7 @@ const RequestSsn = ({
       setShowSSN9Error({ error: true, message: "SSN9 Must be 9 digits." });
     }
   };
-  console.log(ssn9Ref?.current?.value,'ssn9Ref?.current?.value');
+  // console.log(ssn9Ref?.current?.value,'ssn9Ref?.current?.value');
   
   const handleContinue = async () => {
     if (ssn9Ref?.current?.value.length !== 11) {

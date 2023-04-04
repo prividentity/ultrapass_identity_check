@@ -81,7 +81,7 @@ const Register = ({ theme, skin }: props) => {
           id: res.customerInformation.customerId,
         })) || {}) as any;
         const { requestScanID, requestResAddress } = rest || {};
-        console.log("USER DETAILS:", userDetails);
+        // console.log("USER DETAILS:", userDetails);
         if (!userDetails.uuid || !userDetails.portrait) {
           setStep(STEPS.PRE_ENROLL);
         } else if (
@@ -150,7 +150,7 @@ const Register = ({ theme, skin }: props) => {
   }, [tokenParams]);
 
   const onVerifyId = async () => {
-    console.log("context before verify?????", context);
+     // console.log("context before verify?????", context);
     const payload = {
       token: context.id,
     };

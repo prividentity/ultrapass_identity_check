@@ -226,7 +226,7 @@ const DLFaceCompare = ({
   };
 
   const onCameraNotFullHd = async () => {
-    console.log("NOT FULL HD CALLED.");
+    // console.log("NOT FULL HD CALLED.");
     await closeCamera(undefined);
     setStep(STEPS.SWITCH_DEVICE);
   };
