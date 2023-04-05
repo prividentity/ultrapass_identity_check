@@ -107,7 +107,7 @@ const RegisterInputs = ({
         userConsentDate: Date.now().toString(),
         ssn4: inputSSN4,
       });
-      
+
       const updateToken = await updateUserToken(
         { customerId: newID },
         tokenParams
@@ -153,7 +153,7 @@ const RegisterInputs = ({
           mb={5}
           className={classes.cardInnerHeading}
         >
-          PLEASE ENTER YOUR PERSONAL DETAILS
+          PLEASE ENTER YOUR SOCIAL SECURITY NUMBER
         </Typography>
         <Box width={"100%"}>
           {/* <Grid container pb={2}>

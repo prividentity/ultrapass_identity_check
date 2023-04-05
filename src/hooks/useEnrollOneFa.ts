@@ -34,8 +34,10 @@ const useEnrollOneFa = (
 
   const getDisplayedMessage = (result: number) => {
     switch (result) {
+      case -100:
+        return "Invalid Image";
       case -1:
-        return "Please look at the camera";
+        return "No Face Detected";
       case 0:
         return "Face detected";
       case 1:
@@ -43,7 +45,7 @@ const useEnrollOneFa = (
       case 2:
         return "Video Spoof";
       case 3:
-        return "Video Spoof";
+        return "Too close";
       case 4:
         return "Too far away";
       case 5:
@@ -57,9 +59,17 @@ const useEnrollOneFa = (
       case 9:
         return "Too blurry";
       case 10:
-        return "PLEASE REMOVE EYEGLASSES";
+        return "Remove Glasses";
       case 11:
         return "PLEASE REMOVE FACEMASK";
+      case 12:
+        return "Chin too far left";
+      case 13:
+        return "Chin too far right";
+      case 14:
+        return "Tilt camera down level to face"; // (Chin down)
+      case 15:
+        return "Tilt camera up level to face"; //(Chin up)
       default:
         return "";
     }

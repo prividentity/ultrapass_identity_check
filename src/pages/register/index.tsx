@@ -31,6 +31,7 @@ import { getUserStatus } from "@privateid/cryptonets-web-sdk";
 import NotSupported from "../../components/NotSupported";
 import PrivacyConsent from "../../components/SignupComponents/PrivacyConsent";
 import StationsPrivacy from "../../components/StationsPrivacy";
+import { MAX_VERIFY_COUNTS } from "../../constants";
 
 interface props {
   theme: string;
@@ -48,6 +49,15 @@ const Register = ({ theme, skin }: props) => {
   const [token, setToken] = useState("");
   const muiTheme = useTheme();
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
+
+  const failureSessionRedirect = (session: { failureUrl: string | URL }) => {
+    showToast("Your ID verification was not completed.", "error");
+    if (session.failureUrl) {
+      setTimeout(() => {
+        window.location.replace(session.failureUrl);
+      }, 2000);
+    }
+  };
 
   const verifyTokenAPI = async (token: any) => {
     await verifyTokenApi(token).then(async (res: any) => {
@@ -124,18 +134,18 @@ const Register = ({ theme, skin }: props) => {
               }, 3000);
             }
           } else if (status === REQUIRES_INPUT) {
+            if (context.verifyAttempts >= MAX_VERIFY_COUNTS) {
+              return failureSessionRedirect(session);
+            }
+            context.setVerifyAttempts(context.verifyAttempts + 1)
             showToast(
               "We need more information to verify your identity.",
               "error"
             );
+
             setStep(STEPS.ADDITIONAL_REQUIREMENTS);
           } else {
-            showToast("Your ID verification was not completed.", "error");
-            if (session.failureUrl) {
-              setTimeout(() => {
-                window.location.replace(session.failureUrl);
-              }, 3000);
-            }
+            failureSessionRedirect(session);
             // setStep(STEPS.VERIFICATION_NOT_COMPLETED);
           }
         }
@@ -151,7 +161,7 @@ const Register = ({ theme, skin }: props) => {
   }, [tokenParams]);
 
   const onVerifyId = async () => {
-     // console.log("context before verify?????", context);
+    // console.log("context before verify?????", context);
     const payload = {
       token: context.id,
     };
@@ -176,15 +186,14 @@ const Register = ({ theme, skin }: props) => {
         }, 2000);
       }
     } else if (status === REQUIRES_INPUT) {
+      if (context.verifyAttempts >= MAX_VERIFY_COUNTS) {
+        return failureSessionRedirect(session);
+      }
+      context.setVerifyAttempts(context.verifyAttempts + 1)
       showToast("We need more information to verify your identity.", "error");
       setStep(STEPS.ADDITIONAL_REQUIREMENTS);
     } else {
-      showToast("Your ID verification was not completed.", "error");
-      if (session.failureUrl) {
-        setTimeout(() => {
-          window.location.replace(session.failureUrl);
-        }, 2000);
-      }
+      failureSessionRedirect(session);
       // setStep(STEPS.VERIFICATION_NOT_COMPLETED);
     }
   };
@@ -211,14 +220,14 @@ const Register = ({ theme, skin }: props) => {
         );
 
       case STEPS.STATION_CONSENT:
-        return(
+        return (
           <StationsPrivacy
-          setPrevStep={setPrevStep}
-          skin={skin}
-          setStep={setStep}
-          theme={theme}
-        />
-        )
+            setPrevStep={setPrevStep}
+            skin={skin}
+            setStep={setStep}
+            theme={theme}
+          />
+        );
       case STEPS.REGISTER_FORM:
         return (
           <RegisterInputs

@@ -45,7 +45,7 @@ export const UserContext = createContext({
   tokenParams: "",
   setTokenParams: (tokenParams: string) => {},
   dlAction: "",
-  setDlAction:  (dlAction: string) => {},
+  setDlAction: (dlAction: string) => {},
 });
 
 const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
@@ -100,11 +100,11 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
         setEnrollImageData,
         portraitConfScore,
         setPortraitConfScore,
-        isWasmLoaded, 
+        isWasmLoaded,
         setIsWasmLoaded,
-        tokenParams, 
+        tokenParams,
         setTokenParams,
-        dlAction, 
+        dlAction,
         setDlAction,
       }}
     >
