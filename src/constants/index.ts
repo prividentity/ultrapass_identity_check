@@ -51,3 +51,4 @@ export const getScanFrontMessage = (status: number) => {
 };
 
 export const ELEMENT_ID = "userVideo"
+export const MAX_VERIFY_COUNTS = 3
