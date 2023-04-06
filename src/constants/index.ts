@@ -12,7 +12,7 @@ export const getBackDocumentMessage = (id: number) => {
     case 4:
       return "MOVE JUST A LITTLE CLOSER";
     case 18:
-      return "Ensure the entire barcode is in the screen";
+      return "PRESENT BARCODE IN BOX";
     case 9:
       return "TOO BLURRY";
     case -2:
