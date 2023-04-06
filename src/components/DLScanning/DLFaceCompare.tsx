@@ -278,14 +278,14 @@ const DLFaceCompare = ({
       <Grid style={styles.cardGrid} className={`cardGridMobile overflowUnset`}>
         <Box position={"relative"}>
           <Box position={"relative"}>
-            {!hasNoCamera && (
+            {/* {!hasNoCamera && (
               <img
                 src={dlAction === DlActionEnum.backscan ? DlBack : DlFront}
                 alt="DlFront"
                 style={styles.DlFront as React.CSSProperties}
                 className="DlBack"
               />
-            )}
+            )} */}
             {isLoading && (
               <Box style={styles.overlay as React.CSSProperties}>
                 {isUserVerify ? (
