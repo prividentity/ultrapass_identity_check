@@ -2,12 +2,13 @@
 import {
   Box,
   Button,
+  CircularProgress,
   Divider,
   Grid,
   TextField,
   Typography,
 } from "@mui/material";
-import { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useContext } from "react";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import { useStyles, styles } from "../../pages/signup/styles";
 import { theme as Theme } from "../../theme";
@@ -22,13 +23,15 @@ const RequestSsn = ({
   skin,
   matchesSM,
   onSuccess,
-  setPrevStep
+  setPrevStep,
+  loading,
 }: {
   setStep: any;
   setPrevStep?: (e: string) => void;
   skin: string;
   matchesSM: boolean;
   onSuccess: () => void;
+  loading: boolean;
 }) => {
   const classes = useStyles();
   const mainTheme = Theme;
@@ -50,12 +53,12 @@ const RequestSsn = ({
     }
   };
   // console.log(ssn9Ref?.current?.value,'ssn9Ref?.current?.value');
-  
+
   const handleContinue = async () => {
     if (ssn9Ref?.current?.value.length !== 11) {
       showToast("Enter SSN9", "error");
     } else if (ssn9Ref?.current?.value.length === 11) {
-      const inputSSN9 = ssn9Ref?.current?.value.replace(/-/g,"");
+      const inputSSN9 = ssn9Ref?.current?.value.replace(/-/g, "");
       const updateUserResult: any = await updateUser({
         id,
         attributes: { ssn9: inputSSN9 } as any,
@@ -115,9 +118,11 @@ const RequestSsn = ({
             InputProps={{
               startAdornment: <AccountBoxIcon sx={{ pr: 1 }} />,
             }}
-            inputProps={{
-              // maxLength: 9,
-            }}
+            inputProps={
+              {
+                // maxLength: 9,
+              }
+            }
             onChange={(e) => setSnn(e?.target?.value)}
             value={formatPhoneInput(ssn)}
             inputRef={ssn9Ref}
@@ -143,7 +148,11 @@ const RequestSsn = ({
             justifyContent={"center"}
             textTransform="capitalize"
           >
-            Continue
+            {loading ? (
+              <CircularProgress className={classes.scanLoader} />
+            ) : (
+              "Continue"
+            )}
           </Typography>
         </Button>
         <Button
