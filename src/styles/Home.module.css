@@ -151,3 +151,13 @@
   background: rgba(0,0,0,0.5);
   clip-path: polygon(0% 0%, 0% 100%, 5% 100%, 5% 15%, 95% 15%, 95% 86.5%, 0% 86.5%, 0% 100%, 100% 100%, 100% 0%);
 }
+
+@media only screen and (max-width: 767px) {
+  .container video {
+    height: 300px;
+    width: 100%;
+  }
+  .cameraContainer{
+    height: 360px;
+  }
+}
