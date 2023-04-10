@@ -26,14 +26,14 @@ const FaceCompareFrontDocument = ({
   const [isReady, setIsReady] = useState(false);
   const { showToast } = useToast();
   const handleFrontSuccess = (result?: any) => {
-    const compareScore = result?.portraitConfScore;
-    if (compareScore > 0.3) {
-      showToast("Face and DL Mugshot didn't match. Please try again.", "error");
-      setTimeout(() => reScanFrontDocument(), 2000);
-    } else {
+    // const compareScore = result?.portraitConfScore;
+    // if (compareScore > 0.3) {
+    //   showToast("Face and DL Mugshot didn't match. Please try again.", "error");
+    //   setTimeout(() => reScanFrontDocument(), 2000);
+    // } else {
       setErrorMessage("");
       onSuccess?.(result);
-    }
+    // }
     console.log("FRONT SCAN DATA: ", result);
   };
   const { scanFrontDocument, resultResponse, reScanFrontDocument } =

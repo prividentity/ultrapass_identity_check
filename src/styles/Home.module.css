@@ -110,14 +110,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2;
+  z-index: 999;
   background-color: rgba(0,0,0,0.6);
 }
 
 .enrollDisplay span{
   color: #ffffff;
   padding: 5px;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 600;
 }
 
