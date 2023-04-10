@@ -204,6 +204,11 @@ export const useStyles = makeStyles((theme: any) => ({
       },
     },
   },
+  cardSxMobile: {
+    [theme.breakpoints.between("xs", "sm")]: {
+      padding: '0px 10px',
+    },
+  },
   cardGridForm: {
     height: "350px",
     overflow: "auto",
