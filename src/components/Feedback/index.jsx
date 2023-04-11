@@ -60,7 +60,7 @@ const Feedback = ({
       email: `mailto:${AdminEmail}`,
       endpoint: "feedback",
       subject: "Feedback from: Identity Check",
-      message: `\n \nFeeling: ${emoji} \n \nMessage: ${textArea} \n \nUrl: ${window.location.href}`,
+      message: `\n \nUrl: ${window.location.href} \n \nFeeling: ${emoji} \n \nMessage: ${textArea}`,
     };
     const result = await feedback(payload);
     if (result?.success) {
