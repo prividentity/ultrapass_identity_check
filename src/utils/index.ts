@@ -44,7 +44,7 @@ export const FAILURE = "FAILURE";
 export const REQUIRES_INPUT = "REQUIRES_INPUT";
 export const ERROR = "error";
 export const cameraDelay = 30000;
-export const AdminEmail = 'shiven@private.id';
+export const AdminEmail = 'support@private.id';
 
 export function getQueryParams(queryString: string) {
   const query = queryString.split("+").join(" ");
