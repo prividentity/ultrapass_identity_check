@@ -39,8 +39,8 @@ const Feedback = ({
   const palette: { [key: string]: any } = mainTheme.palette;
   const navigate = useNavigate();
   const { showToast } = useToast();
-  const [textArea, setTextArea] = useState('');
-  const [emoji, setEmoji] = useState('');
+  const [textArea, setTextArea] = useState("");
+  const [emoji, setEmoji] = useState("");
   const [loader, setLoader] = useState(false);
   const emojiColor = (currentEmoji, isImage) => {
     if (isImage) {
@@ -59,8 +59,8 @@ const Feedback = ({
       type: "email",
       email: `mailto:${AdminEmail}`,
       endpoint: "feedback",
-      subject: "Private ID",
-      message: `${emoji} - ${textArea}`,
+      subject: "Feedback from: Identity Check",
+      message: `\n \nFeeling: ${emoji} \n \nMessage: ${textArea} \n \nUrl: ${window.location.href}`,
     };
     const result = await feedback(payload);
     if (result?.success) {

@@ -320,13 +320,6 @@ const Register = ({ theme, skin }: props) => {
     }
   };
   const themeName = skin || "primary";
-  const onGoBack = () => {
-    if (step !== STEPS.START) {
-      setStep(prevStep);
-    } else {
-      navigate("/");
-    }
-  }
   const onFeedback = () => {
     setStep(STEPS.FEEDBACK);
     setPrevStep(step);
@@ -340,7 +333,6 @@ const Register = ({ theme, skin }: props) => {
             navigate("/");
           }}
           open={true}
-          onBack={() => onGoBack()}
           onFeedback={onFeedback}
           showFeedback={step !== STEPS.FEEDBACK}
         >

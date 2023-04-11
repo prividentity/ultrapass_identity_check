@@ -77,33 +77,24 @@ const HomeModal = (props: props) => {
           <CardContent className={classes.cardChild} style={{ padding: 0 }}>
             {children}
           </CardContent>
-          {children?.props?.skin && (
+          {children?.props?.skin && showFeedback && (
             <Grid
               display={"flex"}
               alignItems={"center"}
               mb={"-25px"}
-              justifyContent="space-between"
+              justifyContent={matchesSM ? 'center' : "flex-end"}
               pt={1}
-              pl={matchesSM ? 2 : ''}
-              pr={matchesSM ? 2 : ''}
+              pl={matchesSM ? 2 : ""}
+              pr={matchesSM ? 2 : ""}
             >
               <Link
                 color={"#fff"}
                 className={classes.linkbox}
-                ml={"0 !important"}
-                onClick={onBack}
+                onClick={onFeedback}
+                ml={"0px !important"}
               >
-                Back
+                Feedback
               </Link>
-              {showFeedback && (
-                <Link
-                  color={"#fff"}
-                  className={classes.linkbox}
-                  onClick={onFeedback}
-                >
-                  Feedback
-                </Link>
-              )}
             </Grid>
           )}
         </Card>
