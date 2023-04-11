@@ -21,6 +21,7 @@ import FrustrationIcon from "../../assets/frustration.svg";
 import { feedback } from "../../services/api";
 import useToast from "../../utils/useToast";
 import { useNavigate } from "react-router";
+import { AdminEmail } from "../../utils";
 
 const Feedback = ({
   setStep,
@@ -56,7 +57,7 @@ const Feedback = ({
     setLoader(true);
     const payload = {
       type: "email",
-      email: "mailto:shiven@private.id",
+      email: `mailto:${AdminEmail}`,
       endpoint: "feedback",
       subject: "Private ID",
       message: `${emoji} - ${textArea}`,
