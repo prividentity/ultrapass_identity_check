@@ -138,7 +138,7 @@ const Register = ({ theme, skin }: props) => {
             if (context.verifyAttempts >= MAX_VERIFY_COUNTS) {
               return failureSessionRedirect(session);
             }
-            context.setVerifyAttempts(context.verifyAttempts + 1)
+            context.setVerifyAttempts(context.verifyAttempts + 1);
             showToast(
               "We need more information to verify your identity.",
               "error"
@@ -191,14 +191,14 @@ const Register = ({ theme, skin }: props) => {
       if (context.verifyAttempts >= MAX_VERIFY_COUNTS) {
         return failureSessionRedirect(session);
       }
-      context.setVerifyAttempts(context.verifyAttempts + 1)
+      context.setVerifyAttempts(context.verifyAttempts + 1);
       showToast("We need more information to verify your identity.", "error");
       setStep(STEPS.ADDITIONAL_REQUIREMENTS);
     } else {
       failureSessionRedirect(session);
       // setStep(STEPS.VERIFICATION_NOT_COMPLETED);
     }
-    setLoading(false)
+    setLoading(false);
   };
 
   const _renderChildren = () => {
@@ -238,6 +238,7 @@ const Register = ({ theme, skin }: props) => {
             setStep={setStep}
             skin={skin}
             setToken={setToken}
+            setPrevStep={setPrevStep}
           />
         );
       case STEPS.CONSENT_FAIL:
@@ -319,7 +320,17 @@ const Register = ({ theme, skin }: props) => {
     }
   };
   const themeName = skin || "primary";
-
+  const onGoBack = () => {
+    if (step !== STEPS.START) {
+      setStep(prevStep);
+    } else {
+      navigate("/");
+    }
+  }
+  const onFeedback = () => {
+    setStep(STEPS.FEEDBACK);
+    setPrevStep(step);
+  }
   return (
     <>
       {<Header theme={themeName} />}
@@ -329,6 +340,9 @@ const Register = ({ theme, skin }: props) => {
             navigate("/");
           }}
           open={true}
+          onBack={() => onGoBack()}
+          onFeedback={onFeedback}
+          showFeedback={step !== STEPS.FEEDBACK}
         >
           {_renderChildren()}
         </HomeModal>

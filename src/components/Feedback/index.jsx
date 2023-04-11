@@ -18,6 +18,9 @@ import { useState } from "react";
 // import FeedbackImage from "../../assets/feedback.png";
 import DelightIcon from "../../assets/delight.svg";
 import FrustrationIcon from "../../assets/frustration.svg";
+import { feedback } from "../../services/api";
+import useToast from "../../utils/useToast";
+import { useNavigate } from "react-router";
 
 const Feedback = ({
   setStep,
@@ -33,8 +36,11 @@ const Feedback = ({
   const classes = useStyles();
   const mainTheme = Theme;
   const palette: { [key: string]: any } = mainTheme.palette;
-  const [textArea, setTextArea] = useState();
-  const [emoji, setEmoji] = useState();
+  const navigate = useNavigate();
+  const { showToast } = useToast();
+  const [textArea, setTextArea] = useState('');
+  const [emoji, setEmoji] = useState('');
+  const [loader, setLoader] = useState(false);
   const emojiColor = (currentEmoji, isImage) => {
     if (isImage) {
       return emoji === currentEmoji
@@ -46,12 +52,21 @@ const Feedback = ({
         : palette?.[skin]?.feedBack;
     }
   };
-  const onSubmit = () => {
+  const onSubmit = async () => {
+    setLoader(true);
     const payload = {
-      textArea,
-      emoji,
+      type: "email",
+      email: "mailto:shiven@private.id",
+      endpoint: "feedback",
+      subject: "Private ID",
+      message: `${emoji} - ${textArea}`,
     };
-    console.log(payload, "payload");
+    const result = await feedback(payload);
+    if (result?.success) {
+      showToast("Feedback submitted successfully", "success");
+      navigate("/");
+    }
+    setLoader(false);
   };
   return (
     <>
@@ -162,6 +177,7 @@ const Feedback = ({
           color={"inherit"}
           style={styles.continueButton}
           onClick={() => onSubmit()}
+          disabled={loader}
         >
           <Typography
             component="p"
@@ -181,8 +197,8 @@ const Feedback = ({
           color={"inherit"}
           style={styles.textButton}
           onClick={() => {
-            setStep(STEPS.CONSENT_FAIL);
-            setPrevStep(STEPS.START);
+            setStep(STEPS.START);
+            setPrevStep(STEPS.FEEDBACK);
           }}
         >
           <Typography
