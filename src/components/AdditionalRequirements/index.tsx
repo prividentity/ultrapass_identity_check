@@ -5,6 +5,7 @@ import RequestSSN from "../RequestSsn/index";
 import STEPS from "../../pages/register/steps";
 import { AdditionalRequirementsEnum } from "../../utils";
 import useToast from "../../utils/useToast";
+import { getUserPortrait } from "../../services/api";
 
 const AdditionalRequirements = ({
   matchesSM,
@@ -12,19 +13,40 @@ const AdditionalRequirements = ({
   skin,
   handleRequirementsComplete,
   setPrevStep,
+  loading,
 }: {
   matchesSM: boolean;
   setStep: any;
   skin: string;
   handleRequirementsComplete: () => void;
   setPrevStep: (e: string) => void;
+  loading: boolean;
 }) => {
   const context = React.useContext(UserContext);
-  const [requirement, setRequirement] = React.useState(
-    AdditionalRequirementsEnum.requestSSN9
-  );
+  const [requirement, setRequirement] = React.useState<any>(null);
   const { requestSSN9, requestResAddress, requestScanID } = context.userStatus;
   const { showToast } = useToast();
+  const convertLinkToImageData = async (link: string, setState: any) => {
+    var newImg = new Image();
+    // console.log("data:image/png;base64," + link);
+    newImg.src = "data:image/png;base64," + link;
+    newImg.onload = async () => {
+      var imgSize = {
+        w: newImg.width,
+        h: newImg.height,
+      };
+      const canvas = document.createElement("canvas");
+      canvas.setAttribute("height", `${imgSize.h}`);
+      canvas.setAttribute("width", `${imgSize.w}`);
+      var ctx = canvas.getContext("2d");
+      // @ts-ignore
+      ctx.drawImage(newImg, 0, 0);
+      // @ts-ignore
+      const enrollImage = ctx.getImageData(0, 0, imgSize.w, imgSize.h);
+      setState(enrollImage);
+      context.setDlAction("frontscan");
+    };
+  };
   function getNextRequirement() {
     if (
       requirement === AdditionalRequirementsEnum.requestSSN9 &&
@@ -50,7 +72,7 @@ const AdditionalRequirements = ({
       setRequirement(nextRequirement);
     }
   }
-  function getFirstRequirement() {
+  async function getFirstRequirement() {
     if (requestSSN9) {
       return AdditionalRequirementsEnum.requestSSN9;
     }
@@ -58,13 +80,22 @@ const AdditionalRequirements = ({
       return AdditionalRequirementsEnum.requestResAddress;
     }
     if (requestScanID) {
+      context.setDlAction("frontscan");
+      const userPortrait: any = await getUserPortrait(context.id);
+      await convertLinkToImageData(
+        userPortrait.imagedata,
+        context.setEnrollImageData
+      );
       return AdditionalRequirementsEnum.requestScanID;
     }
-    return AdditionalRequirementsEnum.requestSSN9;
+    return null;
   }
 
   React.useEffect(() => {
-    setRequirement(getFirstRequirement());
+    const getRequirements = async () => {
+      setRequirement(await getFirstRequirement());
+    };
+    getRequirements();
   }, []);
 
   React.useEffect(() => {
@@ -79,6 +110,7 @@ const AdditionalRequirements = ({
         setStep={setStep}
         skin={skin}
         matchesSM={matchesSM}
+        loading={loading}
         onSuccess={handleSuccess}
         setPrevStep={setPrevStep}
       />
@@ -89,6 +121,7 @@ const AdditionalRequirements = ({
       <RequestAddress
         setStep={setStep}
         skin={skin}
+        loading={loading}
         matchesSM={matchesSM}
         onSuccess={handleSuccess}
         setPrevStep={setPrevStep}

@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import {
+  Alert,
   Box,
   CircularProgress,
   Divider,
@@ -30,6 +31,8 @@ import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import useToast from "../../utils/useToast";
 import SpinnerLoader from "../SpinnerLoader";
 import FaceCompareFrontDocument from "../DocumentCamera/FaceCompareFrontDocument";
+import { cameraDelay } from "../../utils";
+import {ELEMENT_ID} from "../../constants";
 
 const DLFaceCompare = ({
   setStep,
@@ -52,6 +55,8 @@ const DLFaceCompare = ({
   const [isScanning, setIsScanning] = useState(false);
   const [hasNoCamera, setHasNoCamera] = useState(false);
   const [isBarcodeScan, setIsBarcodeScan] = useState(false);
+  const [isScanningFailed, setIsScanningFailed] = useState(false);
+  const [opStatus, setOpStatus] = useState<number>();
 
   enum DlActionEnum {
     frontscan = "frontscan",
@@ -63,26 +68,32 @@ const DLFaceCompare = ({
   const { id, enrollImageData, portraitConfScore, setPortraitConfScore, dlAction, setDlAction } =
     context;
 
+  useEffect(() => {
+    setTimeout(() => {
+      setIsScanningFailed(true);
+    }, cameraDelay);
+  }, []);
+
   const onSuccessFrontScan = async (result: {
     croppedDocument: string;
     croppedMugshot: string;
     inputImage: string;
     portraitConfScore: number;
   }) => {
-    setIsLoading(true);
     const {
       inputImage,
       croppedDocument,
       croppedMugshot,
       portraitConfScore: compareScore,
     } = result;
+    setIsLoading(true);
+    setIsScanningFailed(false);
     // console.log("compareScore??",{
     //   inputImage,
     //   croppedDocument,
     //   croppedMugshot,
     //   compareScore,
     // });
-
     setPortraitConfScore(compareScore);
 
     const uploadImageInput = await uploadDL({
@@ -118,7 +129,7 @@ const DLFaceCompare = ({
       uploadCroppedDocumentImage &&
       uploadCroppedMugshotImage
     ) {
-      await closeCamera(undefined);
+      await closeCamera(ELEMENT_ID);
       setTimeout(() => {
         setIsUserVerify(true);
       }, 2000);
@@ -126,6 +137,9 @@ const DLFaceCompare = ({
         setIsLoading(false);
         setIsUserVerify(false);
         setDlAction(DlActionEnum.backscan);
+        setTimeout(() => {
+          setIsScanningFailed(true);
+        }, cameraDelay);
       }, 4000);
     }
   };
@@ -155,6 +169,7 @@ const DLFaceCompare = ({
   }) => {
     // console.log({ barcodeData, inputImage, croppedDocument, croppedBarcode });
     setIsLoading(true);
+    setIsScanningFailed(false);
     const uploadCroppedBarcodeImage = await uploadDL({
       id,
       type: DLType.BACKDLBARCODE,
@@ -209,7 +224,6 @@ const DLFaceCompare = ({
       setIsUserVerify(true);
     }, 2000);
     setTimeout(() => {
-      setIsLoading(false);
       setIsUserVerify(false);
       onSuccess && onSuccess();
     }, 4000);
@@ -227,8 +241,8 @@ const DLFaceCompare = ({
   };
 
   const onCameraNotFullHd = async () => {
-    console.log("NOT FULL HD CALLED.");
-    await closeCamera(undefined);
+    // console.log("NOT FULL HD CALLED.");
+    await closeCamera(ELEMENT_ID);
     setStep(STEPS.SWITCH_DEVICE);
   };
 
@@ -241,7 +255,7 @@ const DLFaceCompare = ({
           fontSize={16}
           fontWeight={900}
           letterSpacing={"1px"}
-          sx={{ paddingTop: 3, paddingBottom: 2 }}
+          sx={{ paddingTop: matchesSM ? "0px !important" : 3, paddingBottom: 2 }}
           className={classes.cardHeading}
         >
           <img src={smallLock} alt="smallLock" className={classes.smallLock} />
@@ -249,17 +263,29 @@ const DLFaceCompare = ({
         </Typography>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
-      <Grid style={styles.cardGrid} className={`cardGridMobile overflowUnset`}>
+      {opStatus !== 0 && isScanningFailed && (
+        <Alert
+        severity="info"
+        onClick={async () => {
+          setStep(STEPS.SWITCH_DEVICE);
+          await closeCamera(ELEMENT_ID);
+        }}
+        className={classes.alertWrap}
+      >
+        You can try switching to other device.
+      </Alert>
+      )}
+      <Grid style={styles.cardGrid} className={`cardGridMobile overflowUnset ${classes.cardSxMobile}`}>
         <Box position={"relative"}>
           <Box position={"relative"}>
-            {!hasNoCamera && (
+            {/* {!hasNoCamera && (
               <img
                 src={dlAction === DlActionEnum.backscan ? DlBack : DlFront}
                 alt="DlFront"
                 style={styles.DlFront as React.CSSProperties}
                 className="DlBack"
               />
-            )}
+            )} */}
             {isLoading && (
               <Box style={styles.overlay as React.CSSProperties}>
                 {isUserVerify ? (
@@ -294,6 +320,7 @@ const DLFaceCompare = ({
                 onReadyCallback={onCameraNotGranted}
                 onCameraFail={onCameraFail}
                 onCameraNotFullHd={onCameraNotFullHd}
+                setOpStatus={(e: number) => setOpStatus(e)}
               />
             ) : (
               <FaceCompareFrontDocument
@@ -302,6 +329,7 @@ const DLFaceCompare = ({
                 onFailCallback={onFailScanFrontScan}
                 onCameraFail={onCameraFail}
                 enrollImageData={enrollImageData}
+                setOpStatus={(e: number) => setOpStatus(e)}
               />
             )}
           </Box>

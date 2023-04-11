@@ -30,6 +30,8 @@ import { SUCCESS, REQUIRES_INPUT, getStatusFromUser } from "../../utils";
 import { getUserStatus } from "@privateid/cryptonets-web-sdk-alpha";
 import NotSupported from "../../components/NotSupported";
 import Feedback from "../../components/Feedback";
+import StationsPrivacy from "../../components/StationsPrivacy";
+import { MAX_VERIFY_COUNTS } from "../../constants";
 
 interface props {
   theme: string;
@@ -45,8 +47,18 @@ const Register = ({ theme, skin }: props) => {
   const [step, setStep] = useState("");
   const [prevStep, setPrevStep] = useState(STEPS.START);
   const [token, setToken] = useState("");
+  const [loading, setLoading] = useState(false);
   const muiTheme = useTheme();
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
+
+  const failureSessionRedirect = (session: { failureUrl: string | URL }) => {
+    showToast("Your ID verification was not completed.", "error");
+    if (session.failureUrl) {
+      setTimeout(() => {
+        window.location.replace(session.failureUrl);
+      }, 2000);
+    }
+  };
 
   const verifyTokenAPI = async (token: any) => {
     await verifyTokenApi(token).then(async (res: any) => {
@@ -77,12 +89,17 @@ const Register = ({ theme, skin }: props) => {
         const userDetails: any = await getUser(
           res?.customerInformation?.customerId
         );
-        console.log("USER DETAILS:", userDetails);
+        const { userApproved, ...rest } = ((await getUserStatus({
+          id: res.customerInformation.customerId,
+        })) || {}) as any;
+        const { requestScanID, requestResAddress } = rest || {};
+        // console.log("USER DETAILS:", userDetails);
         if (!userDetails.uuid || !userDetails.portrait) {
           setStep(STEPS.PRE_ENROLL);
         } else if (
           !userDetails?.govId?.portraitConfScore &&
-          userDetails?.govId?.portraitConfScore !== 0
+          userDetails?.govId?.portraitConfScore !== 0 &&
+          !requestScanID
         ) {
           const userPortrait: any = await getUserPortrait(
             res.customerInformation.customerId
@@ -91,13 +108,13 @@ const Register = ({ theme, skin }: props) => {
             userPortrait.imagedata,
             context.setEnrollImageData
           );
-        } else if (!userDetails.govId.firstName) {
+        } else if (!userDetails?.govId?.firstName) {
           context.setDlAction("backscan");
           setStep(STEPS.DRIVERLICENSE);
         } else {
-          const { userApproved, ...rest } = ((await getUserStatus({
-            id: res.customerInformation.customerId,
-          })) || {}) as any;
+          // const { userApproved, ...rest } = ((await getUserStatus({
+          //   id: res.customerInformation.customerId,
+          // })) || {}) as any;
           const { requestScanID, requestResAddress } = rest || {};
           context.setUserStatus({
             userApproved,
@@ -118,18 +135,18 @@ const Register = ({ theme, skin }: props) => {
               }, 3000);
             }
           } else if (status === REQUIRES_INPUT) {
+            if (context.verifyAttempts >= MAX_VERIFY_COUNTS) {
+              return failureSessionRedirect(session);
+            }
+            context.setVerifyAttempts(context.verifyAttempts + 1)
             showToast(
               "We need more information to verify your identity.",
               "error"
             );
+
             setStep(STEPS.ADDITIONAL_REQUIREMENTS);
           } else {
-            showToast("Your ID verification was not completed.", "error");
-            if (session.failureUrl) {
-              setTimeout(() => {
-                window.location.replace(session.failureUrl);
-              }, 3000);
-            }
+            failureSessionRedirect(session);
             // setStep(STEPS.VERIFICATION_NOT_COMPLETED);
           }
         }
@@ -145,7 +162,8 @@ const Register = ({ theme, skin }: props) => {
   }, [tokenParams]);
 
   const onVerifyId = async () => {
-    console.log("context before verify?????", context);
+    setLoading(true);
+    // console.log("context before verify?????", context);
     const payload = {
       token: context.id,
     };
@@ -165,22 +183,22 @@ const Register = ({ theme, skin }: props) => {
     if (status === SUCCESS) {
       showToast("You successfully completed your ID verification.", "success");
       if (session.successUrl) {
-        setTimeout(()=>{
+        setTimeout(() => {
           window.location.replace(session.successUrl);
-        },2000)
+        }, 2000);
       }
     } else if (status === REQUIRES_INPUT) {
+      if (context.verifyAttempts >= MAX_VERIFY_COUNTS) {
+        return failureSessionRedirect(session);
+      }
+      context.setVerifyAttempts(context.verifyAttempts + 1)
       showToast("We need more information to verify your identity.", "error");
       setStep(STEPS.ADDITIONAL_REQUIREMENTS);
     } else {
-      showToast("Your ID verification was not completed.", "error");
-      if (session.failureUrl) {
-        setTimeout(()=>{
-          window.location.replace(session.failureUrl);
-        },2000)
-      }
+      failureSessionRedirect(session);
       // setStep(STEPS.VERIFICATION_NOT_COMPLETED);
     }
+    setLoading(false)
   };
 
   const _renderChildren = () => {
@@ -201,6 +219,16 @@ const Register = ({ theme, skin }: props) => {
             skin={skin}
             setStep={setStep}
             setPrevStep={setPrevStep}
+          />
+        );
+
+      case STEPS.STATION_CONSENT:
+        return (
+          <StationsPrivacy
+            setPrevStep={setPrevStep}
+            skin={skin}
+            setStep={setStep}
+            theme={theme}
           />
         );
       case STEPS.REGISTER_FORM:
@@ -272,6 +300,7 @@ const Register = ({ theme, skin }: props) => {
             skin={skin}
             setPrevStep={setPrevStep}
             handleRequirementsComplete={onVerifyId}
+            loading={loading}
           />
         );
       case STEPS.NOT_SUPPORTED:

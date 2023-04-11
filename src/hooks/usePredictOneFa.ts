@@ -5,7 +5,8 @@ const usePredictOneFa = (
   element = "userVideo",
   onSuccess: (e: any) => void,
   retryTimes = 3,
-  deviceId = ""
+  deviceId = "",
+  isInitialPredict = true
 ) => {
   const [predictOneFaaceDetected, setFaceDetected] = useState(false);
   const [predictOneFaStatus, setPredictStatus] = useState(null);
@@ -23,7 +24,7 @@ const usePredictOneFa = (
   };
 
   const callback = async (result: any) => {
-    console.log("predict callback hook result:", result, tries, retryTimes);
+    // console.log("predict callback hook result:", result, tries, retryTimes);
     switch (result.status) {
       case "WASM_RESPONSE":
         if (result.returnValue?.status === 0) {
@@ -36,12 +37,15 @@ const usePredictOneFa = (
         }
         if (result.returnValue?.status !== 0) {
           if (tries === retryTimes) {
-            console.log({ tries, retryTimes });
+            // console.log({ tries, retryTimes });
             onSuccess(result.returnValue);
             tries = 0;
             // onFailure();
           } else {
             tries += 1;
+            if (!predictOneFaaceDetected && !isInitialPredict) {
+              tries -= 1;
+            }
             predictUserOneFa();
           }
           const { validation_status, message } = result.returnValue;

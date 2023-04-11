@@ -52,9 +52,11 @@ const useScanFrontDocument = (
   // confidence value
   const [resultResponse, setResultResponse] = useState(null);
   const documentCallback = (result: any) => {
-    console.log("Front scan callback result:", result);
     setResultResponse(result.returnValue);
-    if (result.returnValue.op_status === 0) {
+    if (
+      result.returnValue.op_status === 0 ||
+      result.returnValue.op_status === 10
+    ) {
       const {
         predict_status,
         cropped_doc_height,
@@ -74,9 +76,15 @@ const useScanFrontDocument = (
         setCroppedMugshotWidth(cropped_face_width);
         setCroppedMugshotHeight(cropped_face_height);
       } else {
+        setInputImageData(null);
+        setCroppedDocumentRaw(null);
+        setCroppedMugshotRaw(null);
         scanFrontDocument();
       }
     } else {
+      setInputImageData(null);
+      setCroppedDocumentRaw(null);
+      setCroppedMugshotRaw(null);
       onFailCallback({
         status: result.returnValue.op_status.toString(),
         message: result.returnValue.op_message,
@@ -91,15 +99,19 @@ const useScanFrontDocument = (
     height: any,
     setState: SetStateAction<any>
   ) => {
-    if (imageData.length === width * height * 4) {
-      const imageBase64 = await convertCroppedImage(imageData, width, height);
-      setState(imageBase64);
+    try {
+      if (imageData.length === width * height * 4) {
+        const imageBase64 = await convertCroppedImage(imageData, width, height);
+        setState(imageBase64);
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 
   // Converting imageInput
   useEffect(() => {
-    if (inputImageData && isFound) {
+    if (inputImageData && isFound && !inputImageBase64) {
       convertImageToBase64(
         inputImageData?.data,
         inputImageData?.width,
@@ -107,7 +119,7 @@ const useScanFrontDocument = (
         setInputImageBase64
       );
     }
-  }, [inputImageData, isFound]);
+  }, [inputImageData, isFound, inputImageBase64]);
 
   // Converting croppedDocument
   useEffect(() => {
@@ -144,7 +156,7 @@ const useScanFrontDocument = (
   }, [croppedMugshotRaw, croppedMugshotWidth, croppedMugshotHeight, isFound]);
 
   const faceCompareCallback = async (result: any) => {
-    console.log("faceCompareCallback", result);
+    // console.log("faceCompareCallback", result);
     const { conf_score } = result.returnValue;
     onSuccess({
       inputImage: inputImageBase64,
@@ -169,10 +181,10 @@ const useScanFrontDocument = (
         croppedMugshotHeight
       );
       const doCompare = async () => {
-        console.log("Doing compare of: ", {
-          enrollImageData,
-          mugshotImageData,
-        });
+        // console.log("Doing compare of: ", {
+        //   enrollImageData,
+        //   mugshotImageData,
+        // });
         if (enrollImageData && mugshotImageData) {
           await faceCompareLocal(
             faceCompareCallback,
@@ -205,19 +217,34 @@ const useScanFrontDocument = (
       DocType.PHOTO_ID_FRONT,
       initializeCanvas || documentCallback,
       false,
-      undefined as any,
+      undefined,
       {
         input_image_format: "rgba",
-        // @ts-ignore
-        threshold_user_right: 0.0,
-        threshold_user_left: 1.0,
       },
       canvasObj
     );
-    const { imageData, croppedDocument, croppedMugshot } = result;
-    setInputImageData(imageData);
-    setCroppedDocumentRaw(croppedDocument);
-    setCroppedMugshotRaw(croppedMugshot);
+    try {
+      const { imageData, croppedDocument, croppedMugshot } = result;
+      setInputImageData(imageData);
+      setCroppedDocumentRaw(croppedDocument);
+      setCroppedMugshotRaw(croppedMugshot);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const reScanFrontDocument = () => {
+    setInputImageData(null);
+    setCroppedDocumentRaw(null);
+    setCroppedMugshotRaw(null);
+    setCroppedDocumentWidth(null);
+    setCroppedDocumentHeight(null);
+    setCroppedMugshotWidth(null);
+    setCroppedMugshotHeight(null);
+    setInputImageBase64(null);
+    setCroppedDocumentBase64(null);
+    setCroppedMugshotBase64(null);
+    scanFrontDocument();
   };
 
   return {
@@ -226,6 +253,7 @@ const useScanFrontDocument = (
     setIsFound,
     resultStatus,
     resultResponse,
+    reScanFrontDocument,
   };
 };
 

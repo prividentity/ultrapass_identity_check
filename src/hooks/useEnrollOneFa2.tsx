@@ -32,7 +32,7 @@ const useEnrollOneFa = (
   };
 
   const callback = async (result) => {
-    console.log("enroll callback hook result:", result);
+    // console.log("enroll callback hook result:", result);
     switch (result.status) {
       case "VALID_FACE":
         setFaceDetected(true);

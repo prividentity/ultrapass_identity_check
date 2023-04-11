@@ -204,6 +204,11 @@ export const useStyles = makeStyles((theme: any) => ({
       },
     },
   },
+  cardSxMobile: {
+    [theme.breakpoints.between("xs", "sm")]: {
+      padding: "0px 10px",
+    },
+  },
   cardGridForm: {
     height: "350px",
     overflow: "auto",
@@ -383,6 +388,14 @@ export const useStyles = makeStyles((theme: any) => ({
       },
     },
   },
+  feedbackIconsWrap: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  alertWrap: {
+    cursor: "pointer",
+  },
   textArea: {
     width: "100%",
     outline: "none",
@@ -416,15 +429,10 @@ export const useStyles = makeStyles((theme: any) => ({
       fontSize: 12,
     },
   },
-  feedbackIconsWrap: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   feedBackIconImage: {
     width: 40,
     height: 40,
     marginBottom: 6,
     marginTop: 6,
-  }
+  },
 }));

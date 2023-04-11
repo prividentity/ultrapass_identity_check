@@ -36,7 +36,7 @@ const usePredictAge = () => {
     result?: number;
     result_age?: number;
   }) => {
-    console.log("RESPONSE USEPREDICT FE: ", response);
+    // console.log("RESPONSE USEPREDICT FE: ", response);
 
     const { faces } = response?.returnValue || {};
 
@@ -63,11 +63,11 @@ const usePredictAge = () => {
 
   const doPredictAge = async () => {
     const data = await predictAge(undefined, predictAgeCallback);
-    console.log(
-      229,
-      `${(performance as any).memory.usedJSHeapSize / Math.pow(1000, 2)} MB`
-    );
-    console.log("IMAGE DATA HERE??????????", data ? data : false);
+    // console.log(
+    //   229,
+    //   `${(performance as any).memory.usedJSHeapSize / Math.pow(1000, 2)} MB`
+    // );
+    // console.log("IMAGE DATA HERE??????????", data ? data : false);
   };
 
   return { doPredictAge, age, predictAgeHasFinished, setPredictAgeHasFinished };

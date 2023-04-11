@@ -51,7 +51,7 @@ const HomeComponent = ({ theme, skin }: props) => {
       ...config.clientConfig,
       productGroupId: selectedProductGroup || "intergalactic",
     };
-    console.log(JSON.stringify(payload));
+    // console.log(JSON.stringify(payload));
     const result: any = await createVerificationSession(payload);
     if (result?.token) {
       onFlowChange(flow, result?.token);
@@ -176,7 +176,7 @@ const HomeComponent = ({ theme, skin }: props) => {
   const handleChange = (e: any) => {
     setSelectedProductGroup(e?.target?.value);
   };
-  console.log({ productGroup });
+  // console.log({ productGroup });
   return (
     <>
       <Container maxWidth="xl">

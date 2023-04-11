@@ -110,13 +110,54 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2;
+  z-index: 999;
   background-color: rgba(0,0,0,0.6);
 }
 
 .enrollDisplay span{
   color: #ffffff;
   padding: 5px;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 600;
+}
+
+.cameraFrame {
+  width: 90%;
+  height: 250px;
+  position: absolute;
+  top: 56%;
+  z-index: 9999;
+  border: 4px solid;
+  left: 50.5%;
+  transform: translate(-50%, -50%);
+  border-radius: 14px;
+}
+
+.cameraFrame img {
+  opacity: 0.5;
+  height: 100%;
+  width: 100%;
+}
+
+.cameraFrameOuter{
+  width: 100%;
+  height: 87%;
+  position: absolute;
+  top: 46px;
+  border-radius: 10px;
+  left: 1px;
+  border: 1px solid #000;
+  z-index: 999;
+  background: rgba(0,0,0,0.5);
+  clip-path: polygon(0% 0%, 0% 100%, 5% 100%, 5% 15%, 95% 15%, 95% 86.5%, 0% 86.5%, 0% 100%, 100% 100%, 100% 0%);
+}
+
+@media only screen and (max-width: 767px) {
+  .container video {
+    height: 300px;
+    width: 100%;
+  }
+  .cameraContainer{
+    height: 360px;
+  }
 }

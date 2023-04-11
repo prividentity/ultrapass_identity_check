@@ -3,6 +3,7 @@ import {
   Autocomplete,
   Box,
   Button,
+  CircularProgress,
   Divider,
   FormControl,
   Grid,
@@ -12,7 +13,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useContext } from "react";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import { useStyles, styles } from "../../pages/signup/styles";
 import { theme as Theme } from "../../theme";
@@ -27,13 +28,15 @@ const RequestAddress = ({
   skin,
   matchesSM,
   onSuccess,
-  setPrevStep
+  setPrevStep,
+  loading,
 }: {
   setStep: any;
   skin: string;
   matchesSM: boolean;
   onSuccess: () => void;
   setPrevStep: (e: string) => void;
+  loading: boolean;
 }) => {
   const classes = useStyles();
   const mainTheme = Theme;
@@ -57,7 +60,7 @@ const RequestAddress = ({
 
     const updateUserResult: any = await updateUser({
       id,
-      attributes: { govId: {address} } as any,
+      attributes: { govId: { address } } as any,
     });
     if (updateUserResult?.level === "error") {
       showToast(updateUserResult?.message, "error");
@@ -136,7 +139,9 @@ const RequestAddress = ({
               id="combo-box-demo"
               options={states}
               fullWidth
-              renderInput={(params) => <TextField {...params} label="State or province" />}
+              renderInput={(params) => (
+                <TextField {...params} label="State or province" />
+              )}
               onChange={(i, e) => setState(e?.abbreviation)}
             />
           </FormControl>
@@ -171,7 +176,11 @@ const RequestAddress = ({
             justifyContent={"center"}
             textTransform="capitalize"
           >
-            Continue
+            {loading ? (
+              <CircularProgress className={classes.scanLoader} />
+            ) : (
+              "Continue"
+            )}
           </Typography>
         </Button>
         <Button

@@ -29,6 +29,7 @@ import { DLType } from "@privateid/cryptonets-web-sdk-alpha/dist/types";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import useToast from "../../utils/useToast";
 import SpinnerLoader from "../SpinnerLoader";
+import {ELEMENT_ID} from "../../constants";
 
 const DLScan = ({
   setStep,
@@ -64,7 +65,7 @@ const DLScan = ({
   }) => {
     const { inputImage, croppedDocument, croppedMugshot, documentUUID } =
       result;
-    console.log({ inputImage, croppedDocument, croppedMugshot, documentUUID });
+    // console.log({ inputImage, croppedDocument, croppedMugshot, documentUUID });
     // if(documentUUID){
     if (documentUUID === uuid) {
       const uploadImageInput = await uploadDL({
@@ -72,26 +73,26 @@ const DLScan = ({
         type: DLType.FRONTDLORIGINAL,
         image: inputImage,
       });
-      console.log("uploadImageInput: ", uploadImageInput);
+      // console.log("uploadImageInput: ", uploadImageInput);
       const uploadCroppedDocumentImage = await uploadDL({
         id,
         type: DLType.FRONTDLCROPPED,
         image: croppedDocument,
       });
-      console.log("uploadCroppedDocumentImage: ", uploadCroppedDocumentImage);
+      // console.log("uploadCroppedDocumentImage: ", uploadCroppedDocumentImage);
       const uploadCroppedMugshotImage = await uploadDL({
         id,
         type: DLType.FRONTDLHEADSHOT,
         image: croppedMugshot,
       });
-      console.log("uploadCroppedMugshotImage: ", uploadCroppedMugshotImage);
+      // console.log("uploadCroppedMugshotImage: ", uploadCroppedMugshotImage);
 
       if (
         uploadImageInput &&
         uploadCroppedDocumentImage &&
         uploadCroppedMugshotImage
       ) {
-        await closeCamera(undefined);
+        await closeCamera(ELEMENT_ID);
         setIsLoading(true);
         setTimeout(() => {
           setIsUserVerify(true);
@@ -128,29 +129,29 @@ const DLScan = ({
     croppedDocument: string;
     croppedBarcode: string;
   }) => {
-    console.log({ barcodeData, inputImage, croppedDocument, croppedBarcode });
+    // console.log({ barcodeData, inputImage, croppedDocument, croppedBarcode });
 
     const uploadCroppedBarcodeImage = await uploadDL({
       id,
       type: DLType.BACKDLBARCODE,
       image: croppedBarcode,
     });
-    console.log("uploadCroppedBarcodeImage: ", uploadCroppedBarcodeImage);
+    // console.log("uploadCroppedBarcodeImage: ", uploadCroppedBarcodeImage);
     const uploadCroppedBackDocumentImage = await uploadDL({
       id,
       type: DLType.BACKDLORIGINAL,
       image: croppedDocument,
     });
-    console.log(
-      "uploadCroppedBackDocumentImage: ",
-      uploadCroppedBackDocumentImage
-    );
+    // console.log(
+    //   "uploadCroppedBackDocumentImage: ",
+    //   uploadCroppedBackDocumentImage
+    // );
     const uploadBarcodeData = await uploadDL({
       id,
       type: DLType.BARCODEJSON,
       barcode: JSON.stringify(barcodeData),
     });
-    console.log("uploadBarcodeData: ", uploadBarcodeData);
+    // console.log("uploadBarcodeData: ", uploadBarcodeData);
 
     console.log("===== end of DL SCAN ====== ");
 
@@ -173,7 +174,7 @@ const DLScan = ({
       // @ts-ignore
       attributes: { govId: govId },
     });
-    console.log("Update user result: ", updateUserResult);
+    // console.log("Update user result: ", updateUserResult);
 
     setIsLoading(true);
     setTimeout(() => {

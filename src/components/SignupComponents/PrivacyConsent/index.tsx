@@ -21,7 +21,7 @@ interface props {
   setPrevStep: (e: string) => void;
 }
 
-const DatabaseConsent = (props: props) => {
+const PrivacyConsent = (props: props) => {
   const { skin, setStep, setPrevStep } = props;
   const mainTheme = Theme;
   const palette: { [key: string]: any } = mainTheme.palette;
@@ -54,7 +54,7 @@ const DatabaseConsent = (props: props) => {
           mt={2}
           color={"#333"}
         >
-          USER CONSENT
+          Station Casinos Values Your Privacy
         </Typography>
         <Card className={classes.consentCard}>
           <List
@@ -63,50 +63,30 @@ const DatabaseConsent = (props: props) => {
               pl: 2,
             }}
           >
-            {skin === "c1" ? (
-              <>
-                <ListItem className={classes.listText}>
-                  I acknowledge I am over 18 years of age and all information I
-                  provided is accurate.
-                </ListItem>
-                <ListItem className={classes.listText}>
-                  Capital One and our third-party enrollment and identity
-                  proofing service provider Private ID and its contract
-                  providers may share, use and maintain the images and
-                  information you provide, and the information on file with
-                  other third-party service providers or governments, to further
-                  verify your age or identity, to protect against or prevent
-                  actual or potential fraud or unauthorized use of the Service
-                  for the duration of our business relationship.
-                </ListItem>
-                <ListItem className={classes.listText}>
-                  I have read and agreed to the Capital One Terms of Service and
-                  Privacy Policy.
-                </ListItem>
-              </>
-            ) : (
-              <>
-                <ListItem className={classes.listText}>
-                  I acknowledge I am over 18 years of age and all information I
-                  provided is accurate.
-                </ListItem>
-                <ListItem className={classes.listText}>
-                  Ultrapass and our third-party enrollment and identity proofing
-                  service provider and its contract providers may share, use and
-                  maintain the images and information you provide, and the
-                  information on file with other third-party service providers
-                  or governments, to further verify your age or identity, to
-                  protect against or prevent actual or potential fraud or
-                  unauthorized use of the Service for the duration of our
-                  business relationship.
-                </ListItem>
-                <ListItem className={classes.listText}>
-                  I have read and agreed to the Ultrapass Terms of Service and
-                  Privacy Policy and Ultrapass Terms of Service and Privacy
-                  Policy.
-                </ListItem>
-              </>
-            )}
+            <ListItem className={classes.listText}>
+              Station Casinos never captures, collects, stores or manages your
+              biometric data. Your biometric data will be stored locally on your
+              device, encrypted, and deleted within one second.
+            </ListItem>
+            <ListItem className={classes.listText}>
+              Station Casinos will never disclose your biometric data, as
+              provided in the retention schedule set forth in the Station
+              Casinos Biometric Information Policy, a copy of which is posted
+              online at: <a href="https://www.stationcasinos.com/privacy-policy/">https://www.stationcasinos.com/privacy-policy/</a>.
+            </ListItem>
+            <ListItem className={classes.listText}>
+              Only anonymized data, fully homomorphic encrypted and certified
+              compliant with IEEE 2410 Standard for Biometric Privacy, is used
+              by Station Casinos or its Third Party Agent to register your
+              account, authenticate you online, or control access to physical
+              facilities.
+            </ListItem>
+            <ListItem className={classes.listText}>
+              By clicking the “Agree and continue” button below, you acknowledge
+              that you have read the Station Casinos Biometric Information
+              Privacy Policy and you consent to Station Casinos collection, use,
+              and storage of your biometric for the above stated purpose.
+            </ListItem>
           </List>
         </Card>
       </Grid>
@@ -115,7 +95,7 @@ const DatabaseConsent = (props: props) => {
         variant="contained"
         color={"inherit"}
         style={styles.continueButton}
-        onClick={() => setStep(STEPS.STATION_CONSENT)}
+        onClick={() => setStep(STEPS.REGISTER_FORM)}
       >
         <Typography
           component="p"
@@ -127,7 +107,7 @@ const DatabaseConsent = (props: props) => {
           justifyContent={"center"}
           textTransform="capitalize"
         >
-          Accept and continue
+          Agree and continue
         </Typography>
       </Button>
       <Button
@@ -158,4 +138,4 @@ const DatabaseConsent = (props: props) => {
   );
 };
 
-export default DatabaseConsent;
+export default PrivacyConsent;
