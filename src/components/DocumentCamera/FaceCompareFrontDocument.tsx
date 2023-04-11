@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import styles from "../../styles/Home.module.css";
 import useScanFrontDocumentWithoutPredict from "../../hooks/useScanFrontDocumentWithoutPredict";
 import Camera from "../Camera";
-import { getScanFrontMessage } from "../../constants";
+import { getScanFrontColor, getScanFrontMessage } from "../../constants";
 import useToast from "../../utils/useToast";
+import Card from "../../assets/card.svg";
 
 const FaceCompareFrontDocument = ({
   onSuccess,
@@ -22,16 +23,17 @@ const FaceCompareFrontDocument = ({
 }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [canvasSize, setCanvasSize] = useState();
+  const [isReady, setIsReady] = useState(false);
   const { showToast } = useToast();
   const handleFrontSuccess = (result?: any) => {
-    const compareScore = result?.portraitConfScore;
-    if (compareScore > 0.3) {
-      showToast("Face and DL Mugshot didn't match. Please try again.", "error");
-      setTimeout(() => reScanFrontDocument(), 2000);
-    } else {
+    // const compareScore = result?.portraitConfScore;
+    // if (compareScore > 0.3) {
+    //   showToast("Face and DL Mugshot didn't match. Please try again.", "error");
+    //   setTimeout(() => reScanFrontDocument(), 2000);
+    // } else {
       setErrorMessage("");
       onSuccess?.(result);
-    }
+    // }
     console.log("FRONT SCAN DATA: ", result);
   };
   const { scanFrontDocument, resultResponse, reScanFrontDocument } =
@@ -45,6 +47,7 @@ const FaceCompareFrontDocument = ({
   }, [resultResponse]);
 
   const handleScanDLFront = async (e: boolean) => {
+    setIsReady(e);
     onReadyCallback?.(e);
     // hack to initialize canvas with large memory, so it doesn't cause an issue.
     // console.log("handleScanDLFront", e);
@@ -58,6 +61,19 @@ const FaceCompareFrontDocument = ({
   };
   return (
     <div id="canvasInput" className={`${styles.container} documentCamera`}>
+      {isReady && (
+        <>
+          <div
+            className={styles.cameraFrame}
+            style={{
+              borderColor: getScanFrontColor(resultResponse?.op_status),
+            }}
+          >
+            <img src={Card} alt="" />
+          </div>
+          <div className={styles.cameraFrameOuter} />
+        </>
+      )}
       <Camera
         onReadyCallback={handleScanDLFront}
         onSwitchCamera={handleScanDLFront}

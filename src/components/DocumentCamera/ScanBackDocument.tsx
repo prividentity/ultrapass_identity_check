@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import styles from "../../styles/Home.module.css";
 import Camera from "../Camera";
 import useScanBackDocument from "../../hooks/useScanBackDocument";
-import { getBackDocumentMessage } from "../../constants";
+import { getBackDocumentMessage, getScanBackColor } from "../../constants";
+import Card from "../../assets/card.svg";
 
 const ScanBackDocument = ({
   onSuccess,
@@ -20,6 +21,7 @@ const ScanBackDocument = ({
   setOpStatus?: (e: number) => void;
 }) => {
   const [canvasSize, setCanvasSize] = useState();
+  const [isReady, setIsReady] = useState(false);
 
   // Scan Document Back
   const handleBackSuccess = (result: any) => {
@@ -29,6 +31,7 @@ const ScanBackDocument = ({
     handleBackSuccess
   ) as any;
   const handleScanDocumentBack = async (e: boolean) => {
+    setIsReady(e);
     onReadyCallback?.(e);
     if (e) {
       await scanBackDocument(canvasSize);
@@ -45,6 +48,19 @@ const ScanBackDocument = ({
 
   return (
     <div id="canvasInput" className={`${styles.container} documentCamera`}>
+      {isReady && (
+        <>
+          <div
+            className={styles.cameraFrame}
+            style={{
+              borderColor: getScanBackColor(barcodeStatusCode),
+            }}
+          >
+            <img src={Card} alt="" />
+          </div>
+          <div className={styles.cameraFrameOuter} />
+        </>
+      )}
       <Camera
         handleCanvasSizeChange={handleCallbackFromCanvasSizeChange}
         onSwitchCamera={handleScanDocumentBack}

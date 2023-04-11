@@ -47,6 +47,7 @@ const Register = ({ theme, skin }: props) => {
   const [step, setStep] = useState("");
   const [prevStep, setPrevStep] = useState(STEPS.START);
   const [token, setToken] = useState("");
+  const [loading, setLoading] = useState(false);
   const muiTheme = useTheme();
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
 
@@ -161,6 +162,7 @@ const Register = ({ theme, skin }: props) => {
   }, [tokenParams]);
 
   const onVerifyId = async () => {
+    setLoading(true);
     // console.log("context before verify?????", context);
     const payload = {
       token: context.id,
@@ -196,6 +198,7 @@ const Register = ({ theme, skin }: props) => {
       failureSessionRedirect(session);
       // setStep(STEPS.VERIFICATION_NOT_COMPLETED);
     }
+    setLoading(false)
   };
 
   const _renderChildren = () => {
@@ -297,6 +300,7 @@ const Register = ({ theme, skin }: props) => {
             skin={skin}
             setPrevStep={setPrevStep}
             handleRequirementsComplete={onVerifyId}
+            loading={loading}
           />
         );
       case STEPS.NOT_SUPPORTED:

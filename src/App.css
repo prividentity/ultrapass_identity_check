@@ -208,6 +208,9 @@ body {
   .green-border {
     display: none;
   }
+  .overlayLoader{
+    height: 76%;
+  }
   br {
     content: "";
   }

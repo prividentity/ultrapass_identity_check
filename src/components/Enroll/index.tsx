@@ -128,7 +128,7 @@ const Enroll = ({
           fontSize={16}
           fontWeight={900}
           letterSpacing={"1px"}
-          sx={{ paddingTop: 4, paddingBottom: 2 }}
+          sx={{ paddingTop: matchesSM ? "10px !important" : 4, paddingBottom: 2 }}
           className={classes.cardHeading}
         >
           CONFIRM YOUR IDENTITY
@@ -147,7 +147,7 @@ const Enroll = ({
           You can try switching to other device.
         </Alert>
       )}
-      <Box position={"relative"} padding={"10px 10px"} mt={0} pr={"12px"}>
+      <Box position={"relative"} padding={matchesSM ? '0px 10px' : "10px 10px"} mt={0} pr={"12px"}>
         {(showSuccess || enrollOneFaProgress === 100) && (
           <Box style={styles.overlayCamera as React.CSSProperties}>
             {showSuccess ? (

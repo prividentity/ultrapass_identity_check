@@ -255,7 +255,7 @@ const DLFaceCompare = ({
           fontSize={16}
           fontWeight={900}
           letterSpacing={"1px"}
-          sx={{ paddingTop: 3, paddingBottom: 2 }}
+          sx={{ paddingTop: matchesSM ? "0px !important" : 3, paddingBottom: 2 }}
           className={classes.cardHeading}
         >
           <img src={smallLock} alt="smallLock" className={classes.smallLock} />
@@ -275,17 +275,17 @@ const DLFaceCompare = ({
         You can try switching to other device.
       </Alert>
       )}
-      <Grid style={styles.cardGrid} className={`cardGridMobile overflowUnset`}>
+      <Grid style={styles.cardGrid} className={`cardGridMobile overflowUnset ${classes.cardSxMobile}`}>
         <Box position={"relative"}>
           <Box position={"relative"}>
-            {!hasNoCamera && (
+            {/* {!hasNoCamera && (
               <img
                 src={dlAction === DlActionEnum.backscan ? DlBack : DlFront}
                 alt="DlFront"
                 style={styles.DlFront as React.CSSProperties}
                 className="DlBack"
               />
-            )}
+            )} */}
             {isLoading && (
               <Box style={styles.overlay as React.CSSProperties}>
                 {isUserVerify ? (

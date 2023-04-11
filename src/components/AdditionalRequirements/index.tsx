@@ -13,17 +13,17 @@ const AdditionalRequirements = ({
   skin,
   handleRequirementsComplete,
   setPrevStep,
+  loading,
 }: {
   matchesSM: boolean;
   setStep: any;
   skin: string;
   handleRequirementsComplete: () => void;
   setPrevStep: (e: string) => void;
+  loading: boolean;
 }) => {
   const context = React.useContext(UserContext);
-  const [requirement, setRequirement] = React.useState<any>(
-    null
-  );
+  const [requirement, setRequirement] = React.useState<any>(null);
   const { requestSSN9, requestResAddress, requestScanID } = context.userStatus;
   const { showToast } = useToast();
   const convertLinkToImageData = async (link: string, setState: any) => {
@@ -81,9 +81,7 @@ const AdditionalRequirements = ({
     }
     if (requestScanID) {
       context.setDlAction("frontscan");
-      const userPortrait: any = await getUserPortrait(
-        context.id
-      );
+      const userPortrait: any = await getUserPortrait(context.id);
       await convertLinkToImageData(
         userPortrait.imagedata,
         context.setEnrollImageData
@@ -94,9 +92,9 @@ const AdditionalRequirements = ({
   }
 
   React.useEffect(() => {
-    const getRequirements = async () =>{
+    const getRequirements = async () => {
       setRequirement(await getFirstRequirement());
-    }
+    };
     getRequirements();
   }, []);
 
@@ -112,6 +110,7 @@ const AdditionalRequirements = ({
         setStep={setStep}
         skin={skin}
         matchesSM={matchesSM}
+        loading={loading}
         onSuccess={handleSuccess}
         setPrevStep={setPrevStep}
       />
@@ -122,6 +121,7 @@ const AdditionalRequirements = ({
       <RequestAddress
         setStep={setStep}
         skin={skin}
+        loading={loading}
         matchesSM={matchesSM}
         onSuccess={handleSuccess}
         setPrevStep={setPrevStep}
