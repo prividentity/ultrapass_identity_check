@@ -95,7 +95,10 @@ const StationsPrivacy = (props: props) => {
         variant="contained"
         color={"inherit"}
         style={styles.continueButton}
-        onClick={() => setStep(STEPS.REGISTER_FORM)}
+        onClick={() => {
+          setStep(STEPS.REGISTER_FORM);
+          setPrevStep(STEPS.STATION_CONSENT);
+        }}
       >
         <Typography
           component="p"
@@ -116,7 +119,7 @@ const StationsPrivacy = (props: props) => {
         style={styles.textButton}
         onClick={() => {
           setStep(STEPS.CONSENT_FAIL);
-          setPrevStep(STEPS.REGISTER_CONSENT);
+          setPrevStep(STEPS.STATION_CONSENT);
         }}
       >
         <Typography

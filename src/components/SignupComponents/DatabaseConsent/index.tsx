@@ -115,7 +115,10 @@ const DatabaseConsent = (props: props) => {
         variant="contained"
         color={"inherit"}
         style={styles.continueButton}
-        onClick={() => setStep(STEPS.STATION_CONSENT)}
+        onClick={() => {
+          setStep(STEPS.STATION_CONSENT);
+          setPrevStep(STEPS.REGISTER_CONSENT);
+        }}
       >
         <Typography
           component="p"

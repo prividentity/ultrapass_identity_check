@@ -137,3 +137,12 @@ export const getProductGroupList = async () => {
     return err;
   }
 };
+
+export const feedback = async (payload: any) => {
+  try {
+    const result = await cryptonetsAPI.post(`/user/communicate`, payload);
+    return result;
+  } catch (err) {
+    return err;
+  }
+};

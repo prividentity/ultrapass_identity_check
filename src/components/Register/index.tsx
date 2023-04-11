@@ -32,11 +32,13 @@ const RegisterInputs = ({
   skin,
   matchesSM,
   setToken,
+  setPrevStep
 }: {
   setStep: any;
   skin: string;
   matchesSM: boolean;
   setToken: (e: string) => void;
+  setPrevStep: (e: string) => void;
 }) => {
   const classes = useStyles();
   const mainTheme = Theme;
@@ -79,6 +81,7 @@ const RegisterInputs = ({
   };
 
   const handleContinue = async () => {
+    setPrevStep(STEPS.REGISTER_FORM);
     setAutoFocus(false);
     // const validatePhone = (phone: string) =>
     //   /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/.test(
