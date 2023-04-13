@@ -28,7 +28,9 @@ import STEPS from "../../pages/register/steps";
 import { cameraDelay, stopCamera } from "../../utils";
 import SpinnerLoader from "../SpinnerLoader";
 import { convertBase64ToImageData } from "../../utils/base64ToImageData";
-import {ELEMENT_ID} from "../../constants";
+import { ELEMENT_ID } from "../../constants";
+
+import sound from "../../assets/sound/success.mp3";
 
 const Enroll = ({
   onReadyCallback,
@@ -64,6 +66,9 @@ const Enroll = ({
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleUserUpdate = async (guid: string, uuid: string) => {
+    const audio = new Audio(sound);
+    await audio.play();
+    console.log("play");
     setGUID(guid);
     setUUID(uuid);
     await convertBase64ToImageData(enrollPortrait, setEnrollImageData);
@@ -128,7 +133,10 @@ const Enroll = ({
           fontSize={16}
           fontWeight={900}
           letterSpacing={"1px"}
-          sx={{ paddingTop: matchesSM ? "10px !important" : 4, paddingBottom: 2 }}
+          sx={{
+            paddingTop: matchesSM ? "10px !important" : 4,
+            paddingBottom: 2,
+          }}
           className={classes.cardHeading}
         >
           CONFIRM YOUR IDENTITY
@@ -147,7 +155,12 @@ const Enroll = ({
           You can try switching to other device.
         </Alert>
       )}
-      <Box position={"relative"} padding={matchesSM ? '0px 10px' : "10px 10px"} mt={0} pr={"12px"}>
+      <Box
+        position={"relative"}
+        padding={matchesSM ? "0px 10px" : "10px 10px"}
+        mt={0}
+        pr={"12px"}
+      >
         {(showSuccess || enrollOneFaProgress === 100) && (
           <Box style={styles.overlayCamera as React.CSSProperties}>
             {showSuccess ? (
