@@ -30,7 +30,7 @@ import SpinnerLoader from "../SpinnerLoader";
 import { convertBase64ToImageData } from "../../utils/base64ToImageData";
 import { ELEMENT_ID } from "../../constants";
 
-import sound from "../../assets/sound/success.mp3";
+// import sound from "../../assets/sound/success.mp3";
 
 const Enroll = ({
   onReadyCallback,
@@ -66,9 +66,9 @@ const Enroll = ({
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleUserUpdate = async (guid: string, uuid: string) => {
-    const audio = new Audio(sound);
-    await audio.play();
-    console.log("play");
+    // const audio = new Audio(sound);
+    // await audio.play();
+    // console.log("play");
     setGUID(guid);
     setUUID(uuid);
     await convertBase64ToImageData(enrollPortrait, setEnrollImageData);
