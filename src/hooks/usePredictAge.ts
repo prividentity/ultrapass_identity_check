@@ -6,7 +6,7 @@ const usePredictAge = () => {
   const [predictAgeHasFinished, setPredictAgeHasFinished] = useState(false);
 
   const predictAgeCallback = (response?: {
-    returnValue: {
+    returnValue?: {
       faces: any;
     };
     ageFactor?: number;
