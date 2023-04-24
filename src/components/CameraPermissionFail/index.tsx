@@ -21,7 +21,7 @@ const CameraPermissionFail = ({
   const palette: { [key: string]: any } = mainTheme.palette;
   const browser = detect();
   const redirectLink =
-    browser?.name === "safari"
+    browser && ["safari", "ios"].includes(browser?.name)
       ? `https://support.apple.com/en-in/guide/mac-help/mchlf6d108da/mac#:~:text=In%20Safari%2C%20to%20allow%20a,click%20Websites%2C%20then%20select%20Camera.`
       : browser?.name === "firefox"
       ? "https://support.mozilla.org/en-US/kb/how-manage-your-camera-and-microphone-permissions"
