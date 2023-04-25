@@ -26,17 +26,20 @@ import useToast from "../../utils/useToast";
 
 import PhoneInputComponent from "../PhoneInput";
 import { updateUserToken } from "../../services/api";
+import { Email } from "@mui/icons-material";
 
 const RegisterInputs = ({
   setStep,
   skin,
   matchesSM,
   setToken,
+  setPrevStep,
 }: {
   setStep: any;
   skin: string;
   matchesSM: boolean;
   setToken: (e: string) => void;
+  setPrevStep: (e: string) => void;
 }) => {
   const classes = useStyles();
   const mainTheme = Theme;
@@ -50,10 +53,16 @@ const RegisterInputs = ({
 
   const ssn4Ref = useRef<HTMLFormElement | null>(null);
 
+  const emailRef = useRef<HTMLFormElement | null>(null);
+
   const context = useContext(UserContext);
 
   const { setPhoneNumber, setSSN4, setId, tokenParams } = context;
-
+  const validateEmail = (email: string) => {
+    return email.match(
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+  };
   const [showSSN4Error, setShowSSN4Error] = useState({
     error: false,
     message: "",
@@ -79,19 +88,21 @@ const RegisterInputs = ({
   };
 
   const handleContinue = async () => {
+    setPrevStep(STEPS.REGISTER_FORM);
     setAutoFocus(false);
-    // const validatePhone = (phone: string) =>
-    //   /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/.test(
-    //     phone
-    //   );
-    // console.log(
-    //   validatePhone(phoneInput) && ssn4Ref?.current?.value.length === 4
-    // );
+    const validatePhone = (phone: string) =>
+      /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/.test(
+        phone
+      );
+    console.log(
+      validatePhone(phoneInput) && ssn4Ref?.current?.value.length === 4
+    );
 
-    // if (!validatePhone(phoneInput)) {
-    //   showToast("Enter mobile number", "error");
-    // } else
-    if (ssn4Ref?.current?.value.length !== 4) {
+    if (!validateEmail(emailRef?.current?.value)) {
+      showToast("Enter valid email", "error");
+    } else if (!validatePhone(phoneInput)) {
+      showToast("Enter mobile number", "error");
+    } else if (ssn4Ref?.current?.value.length !== 4) {
       showToast("Enter SSN4", "error");
     } else if (ssn4Ref?.current?.value.length === 4) {
       setLoader(true);
@@ -106,6 +117,8 @@ const RegisterInputs = ({
         userConsent: true,
         userConsentDate: Date.now().toString(),
         ssn4: inputSSN4,
+        email: emailRef?.current?.value || "",
+        phone: phoneInput,
       });
 
       const updateToken = await updateUserToken(
@@ -126,6 +139,27 @@ const RegisterInputs = ({
     setCountry(parsePhoneNumber(e?.toString() || "")?.country);
     setPhoneInput(e);
   };
+
+  const [showEmailError, setShowEmailError] = useState({
+    error: false,
+    message: "",
+  });
+
+  const handleCheckEmailOnBlur = (e: any) => {
+    console.log("email input:", emailRef.current?.value);
+
+    const emailInput = e.target.value;
+   
+    if (validateEmail(emailInput)) {
+      setShowEmailError({ error: false, message: "" });
+    } else {
+      setShowEmailError({
+        error: true,
+        message: "Please enter a valid Email.",
+      });
+    }
+  };
+
   return (
     <>
       <Grid container alignItems="center" justifyContent={"center"}>
@@ -153,10 +187,33 @@ const RegisterInputs = ({
           mb={5}
           className={classes.cardInnerHeading}
         >
-          PLEASE ENTER YOUR SOCIAL SECURITY NUMBER
+          PLEASE ENTER THE REQUIRED INFORMATION
         </Typography>
+
         <Box width={"100%"}>
-          {/* <Grid container pb={2}>
+          <TextField
+            fullWidth
+            id="outlined-basic"
+            label="EMAIL"
+            type="email"
+            placeholder="Email"
+            name="Email"
+            InputProps={{
+              startAdornment: <Email sx={{ pr: 1 }} />,
+            }}
+            autoComplete="off"
+            inputRef={emailRef}
+            onBlur={handleCheckEmailOnBlur}
+            color={showEmailError.error ? "error" : "primary"}
+            helperText={showEmailError.error ? showEmailError.message : ""}
+            sx={{
+              "& .MuiFormHelperText-contained": {
+                color: "red",
+              },
+            }}
+          />
+
+          <Grid container pb={2} pt={2}>
             <Input
               style={{ width: "100%" }}
               value={phoneInput}
@@ -169,6 +226,7 @@ const RegisterInputs = ({
                 "& .MuiFormHelperText-contained": {
                   color: "red",
                 },
+                autoComplete: "off",
               }}
               placeholder="Mobile number"
               inputComponent={React.forwardRef((props, ref) => (
@@ -179,12 +237,13 @@ const RegisterInputs = ({
                     startAdornment: <PhoneIcon sx={{ pr: 1 }} />,
                   }}
                   inputProps={{
+                    autoComplete: "off",
                     maxLength: phoneInput?.startsWith("+1") ? 15 : 11,
                   }}
                 />
               ))}
             />
-          </Grid> */}
+          </Grid>
 
           <TextField
             fullWidth

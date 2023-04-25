@@ -206,7 +206,7 @@ export const useStyles = makeStyles((theme: any) => ({
   },
   cardSxMobile: {
     [theme.breakpoints.between("xs", "sm")]: {
-      padding: '0px 10px',
+      padding: "0px 10px",
     },
   },
   cardGridForm: {
@@ -384,11 +384,55 @@ export const useStyles = makeStyles((theme: any) => ({
       [theme.breakpoints.between("xs", "sm")]: {
         flex: 1,
         display: "flex",
-        alignItems: "flex-start",
+        alignItems: " flex-end",
       },
     },
   },
+  feedbackIconsWrap: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   alertWrap: {
     cursor: "pointer",
-  }
+  },
+  textArea: {
+    width: "100%",
+    outline: "none",
+    borderRadius: 5,
+    color: palette[skin]?.listText,
+    padding: "5px 5px",
+    boxSizing: "border-box",
+    border: `1px solid ${palette[skin]?.listText}`,
+    fontSize: 15,
+    fontFamily: "Lato,sans-serif",
+  },
+  feedBackImage: {
+    margin: "5px auto",
+    display: "block",
+    width: "300px",
+    height: "90px",
+  },
+  feedBackIcon: {
+    // width: "0px !important",
+    flexDirection: "column",
+    padding: "0px 10px !important",
+    width: "unset !important",
+    cursor: "pointer",
+    "& svg": {
+      fontSize: 50,
+    },
+    "& p": {
+      // width: "100%",
+      textAlign: "center",
+      margin: "0px",
+      fontSize: 12,
+    },
+  },
+  feedBackIconImage: {
+    width: 40,
+    height: 40,
+    marginBottom: 6,
+    marginTop: 6,
+  },
 }));

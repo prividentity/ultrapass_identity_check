@@ -7,6 +7,7 @@ import {
   Grid,
   Link,
   ListItem,
+  Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
@@ -22,10 +23,14 @@ interface props {
   theme?: string;
   children?: React.ReactNode;
   skin?: string;
+  onBack?: () => void;
+  onFeedback?: () => void;
+  showFeedback?: boolean;
 }
 
 const HomeModal = (props: props) => {
-  const { open, handleClose } = props;
+  const { open, handleClose, onBack, onFeedback, showFeedback } = props;
+  const children: any = props?.children;
   const classes = useStyles();
   const muiTheme = useTheme();
 
@@ -70,12 +75,43 @@ const HomeModal = (props: props) => {
           )}
           <CloseIcon className={classes.closeIcon} onClick={handleClose} />
           <CardContent className={classes.cardChild} style={{ padding: 0 }}>
-            {props.children}
+            {children}
           </CardContent>
+          {children?.props?.skin && showFeedback && (
+            <Grid
+              display={"flex"}
+              alignItems={"center"}
+              mb={"-25px"}
+              justifyContent={matchesSM ? 'center' : "flex-end"}
+              pt={1}
+              pl={matchesSM ? 2 : ""}
+              pr={matchesSM ? 2 : ""}
+            >
+              <Link
+                color={"#fff"}
+                className={classes.linkbox}
+                onClick={onFeedback}
+                ml={"0px !important"}
+              >
+                Feedback
+              </Link>
+            </Grid>
+          )}
         </Card>
-        <Grid sx={{ position: "absolute" }} className={classes.footer}>
+        <Grid
+          sx={{ position: "absolute", bottom: matchesSM ? -25 : "" }}
+          className={classes.footer}
+        >
           <ListItem>
-            Powered by Ultrapass.
+            <Typography
+              component="p"
+              textAlign="center"
+              fontSize={16}
+              color={matchesSM ? "#000" : "#fff"}
+            >
+              Powered by Ultrapass.
+            </Typography>
+
             {/* <Link color={"#000"} className={classes.linkbox}>
               Privacy
             </Link>

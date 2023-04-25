@@ -29,7 +29,7 @@ import {
 import { SUCCESS, REQUIRES_INPUT, getStatusFromUser } from "../../utils";
 import { getUserStatus } from "@privateid/cryptonets-web-sdk";
 import NotSupported from "../../components/NotSupported";
-import PrivacyConsent from "../../components/SignupComponents/PrivacyConsent";
+import Feedback from "../../components/Feedback";
 import StationsPrivacy from "../../components/StationsPrivacy";
 import { MAX_VERIFY_COUNTS } from "../../constants";
 
@@ -138,7 +138,7 @@ const Register = ({ theme, skin }: props) => {
             if (context.verifyAttempts >= MAX_VERIFY_COUNTS) {
               return failureSessionRedirect(session);
             }
-            context.setVerifyAttempts(context.verifyAttempts + 1)
+            context.setVerifyAttempts(context.verifyAttempts + 1);
             showToast(
               "We need more information to verify your identity.",
               "error"
@@ -191,14 +191,14 @@ const Register = ({ theme, skin }: props) => {
       if (context.verifyAttempts >= MAX_VERIFY_COUNTS) {
         return failureSessionRedirect(session);
       }
-      context.setVerifyAttempts(context.verifyAttempts + 1)
+      context.setVerifyAttempts(context.verifyAttempts + 1);
       showToast("We need more information to verify your identity.", "error");
       setStep(STEPS.ADDITIONAL_REQUIREMENTS);
     } else {
       failureSessionRedirect(session);
       // setStep(STEPS.VERIFICATION_NOT_COMPLETED);
     }
-    setLoading(false)
+    setLoading(false);
   };
 
   const _renderChildren = () => {
@@ -238,6 +238,7 @@ const Register = ({ theme, skin }: props) => {
             setStep={setStep}
             skin={skin}
             setToken={setToken}
+            setPrevStep={setPrevStep}
           />
         );
       case STEPS.CONSENT_FAIL:
@@ -305,12 +306,24 @@ const Register = ({ theme, skin }: props) => {
         );
       case STEPS.NOT_SUPPORTED:
         return <NotSupported />;
+      case STEPS.FEEDBACK:
+        return (
+          <Feedback
+            matchesSM={matchesSM}
+            setPrevStep={setPrevStep}
+            setStep={setStep}
+            skin={skin}
+          />
+        );
       default:
         return <></>;
     }
   };
   const themeName = skin || "primary";
-
+  const onFeedback = () => {
+    setStep(STEPS.FEEDBACK);
+    setPrevStep(step);
+  }
   return (
     <>
       {<Header theme={themeName} />}
@@ -320,6 +333,8 @@ const Register = ({ theme, skin }: props) => {
             navigate("/");
           }}
           open={true}
+          onFeedback={onFeedback}
+          showFeedback={step !== STEPS.FEEDBACK}
         >
           {_renderChildren()}
         </HomeModal>

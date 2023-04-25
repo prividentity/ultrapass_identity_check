@@ -46,7 +46,7 @@ const useEnrollOneFa = (
           setFaceDetected(false);
           setTimeout(()=>{
             showError = false;
-          },500)
+          },1000)
         }
         setEnrollStatus(result.message);
         setFaceDetected(false);
