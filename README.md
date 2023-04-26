@@ -52,7 +52,7 @@ import { createVerificationSession } from "@privateid/cryptonets-web-sdk";
 const app = express();
 const PORT = process.env.PORT;
 
-app.post("/session", (req, res) => {
+app.post("/session", async (req, res) => {
   const result = await createVerificationSession({
     //(The URL to redirect to on success),
     successUrl: "https://www.success.com",
@@ -61,11 +61,28 @@ app.post("/session", (req, res) => {
     // The type of session to create. Can be "IDENTITY" or "AGE"
     type: "IDENTITY",
     //(This is the API value for the product group associated with this session)
-    // We already have test product group built on the orchestration layer with an ID of intergalactic 
+    // We already have test product group built on the orchestration layer with an ID of intergalactic
     productGroupId: "process.env.MY_PRODUCT_GROUP_ID" || "intergalactic",
+
+    // Details about the transmittal of user details back to the client
+    // After the user completes the verification process,
+    // the orchestration layer will transmit the user details back to this URL
+    transmitUserDetails: {
+      // url to transmit user details to
+      url: "https://www.transmituserdetails.com",
+      // HTTP method to use when transmitting user details
+      method: "POST",
+      // HTTP headers to use when transmitting user details
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer 1234",
+        //... any other headers included in the request
+      },
+    },
   });
   //result will be an object with the following structure {
-  // url:”https://cams.ultrapass.id?token=1223”
+  // url:”https://cams.ultrapass.id?token=1223”,
+  // token:”1223”
   // }
 
   res.redirect(result.url);
