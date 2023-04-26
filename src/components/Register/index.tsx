@@ -79,6 +79,8 @@ const RegisterInputs = ({
     error: false,
     message: "",
   });
+
+
   const handleCheckPhoneInput = () => {
     if (phoneInput.length < 10) {
       setShowPhoneError({ error: true, message: "Invalid Phone Number." });
@@ -94,9 +96,6 @@ const RegisterInputs = ({
       /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/.test(
         phone
       );
-    console.log(
-      validatePhone(phoneInput) && ssn4Ref?.current?.value.length === 4
-    );
 
     if (!validateEmail(emailRef?.current?.value)) {
       showToast("Enter valid email", "error");
@@ -125,7 +124,6 @@ const RegisterInputs = ({
         { customerId: newID },
         tokenParams
       );
-      console.log("Updated Token:", updateToken);
       if (result.user) {
         setToken(result?.user?.customerId);
         setStep(STEPS.PRE_ENROLL);
@@ -146,8 +144,6 @@ const RegisterInputs = ({
   });
 
   const handleCheckEmailOnBlur = (e: any) => {
-    console.log("email input:", emailRef.current?.value);
-
     const emailInput = e.target.value;
    
     if (validateEmail(emailInput)) {
@@ -159,6 +155,29 @@ const RegisterInputs = ({
       });
     }
   };
+
+  enum FocusHandlerEnum {
+    email="email",
+    ssn4="ssn4",
+    phone="phone",
+  }
+
+  const handleOnFocus = (handle:FocusHandlerEnum) => {
+    setAutoFocus(false);
+    switch(handle){
+      case FocusHandlerEnum.email:
+        setShowEmailError({ error: false, message: "" });
+        return;
+      case FocusHandlerEnum.ssn4:
+        setShowSSN4Error({ error: false, message: "" });
+        return;
+      case FocusHandlerEnum.phone:
+        setShowPhoneError({ error: false, message: "" });
+        return
+      default:
+        return;
+    }
+  }
 
   return (
     <>
@@ -191,29 +210,7 @@ const RegisterInputs = ({
         </Typography>
 
         <Box width={"100%"}>
-          <TextField
-            fullWidth
-            id="outlined-basic"
-            label="EMAIL"
-            type="email"
-            placeholder="Email"
-            name="Email"
-            InputProps={{
-              startAdornment: <Email sx={{ pr: 1 }} />,
-            }}
-            autoComplete="off"
-            inputRef={emailRef}
-            onBlur={handleCheckEmailOnBlur}
-            color={showEmailError.error ? "error" : "primary"}
-            helperText={showEmailError.error ? showEmailError.message : ""}
-            sx={{
-              "& .MuiFormHelperText-contained": {
-                color: "red",
-              },
-            }}
-          />
-
-          <Grid container pb={2} pt={2}>
+        <Grid container>
             <Input
               style={{ width: "100%" }}
               value={phoneInput}
@@ -226,7 +223,6 @@ const RegisterInputs = ({
                 "& .MuiFormHelperText-contained": {
                   color: "red",
                 },
-                autoComplete: "off",
               }}
               placeholder="Mobile number"
               inputComponent={React.forwardRef((props, ref) => (
@@ -237,13 +233,37 @@ const RegisterInputs = ({
                     startAdornment: <PhoneIcon sx={{ pr: 1 }} />,
                   }}
                   inputProps={{
-                    autoComplete: "off",
                     maxLength: phoneInput?.startsWith("+1") ? 15 : 11,
                   }}
                 />
               ))}
             />
           </Grid>
+
+
+          <TextField
+            fullWidth
+            id="outlined-basic"
+            label="EMAIL"
+            type="email"
+            placeholder="Email"
+            name="Email"
+            InputProps={{
+              startAdornment: <Email sx={{ pr: 1 }} />,
+            }}
+            inputRef={emailRef}
+            onBlur={handleCheckEmailOnBlur}
+            onFocus={()=>{handleOnFocus(FocusHandlerEnum.email)}}
+            color={showEmailError.error ? "error" : "primary"}
+            helperText={showEmailError.error ? showEmailError.message : ""}
+            sx={{
+              "& .MuiFormHelperText-contained": {
+                color: "red",
+              },
+              mb:2,
+              mt:2,
+            }}
+          />
 
           <TextField
             fullWidth
@@ -260,6 +280,7 @@ const RegisterInputs = ({
             }}
             inputRef={ssn4Ref}
             onBlur={handleCheckSSN4Input}
+            onFocus={()=>{handleOnFocus(FocusHandlerEnum.ssn4)}}
             color={showSSN4Error.error ? "error" : "primary"}
             helperText={showSSN4Error.error ? showSSN4Error.message : ""}
             sx={{
@@ -270,6 +291,7 @@ const RegisterInputs = ({
           />
         </Box>
       </Grid>
+
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
       <Box mb={"52px"}>
         <Button
@@ -303,18 +325,3 @@ const RegisterInputs = ({
 
 export default RegisterInputs;
 
-// const PhoneInputComponent = (props: any, ref: React.Ref<HTMLInputElement>) => {
-//   return (
-//     <TextField
-//       id="outlined-basic"
-//       label="Phone"
-//       inputRef={ref}
-//       variant="outlined"
-//       fullWidth
-//       InputProps={{
-//         startAdornment: <PhoneIcon sx={{pr:1}}/>,
-//       }}
-//       {...props}
-//     />
-//   );
-// };
