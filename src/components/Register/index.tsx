@@ -16,7 +16,7 @@ import { useStyles, styles } from "../../pages/signup/styles";
 import { theme as Theme } from "../../theme";
 import { UserContext } from "../../context/UserContext";
 import { createUserID } from "../../utils";
-import { createUser } from "@privateid/cryptonets-web-sdk-alpha/dist/apiUtils";
+import { createUser } from "@privateid/cryptonets-web-sdk/dist/apiUtils";
 import STEPS from "../../pages/register/steps";
 
 import { componentsParameterInterface } from "../../interface";
