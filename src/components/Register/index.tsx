@@ -133,8 +133,12 @@ const RegisterInputs = ({
 
   const handlePhoneChange = (e: any) => {
     if (!autoFocus) setAutoFocus(true);
-    setCountry(parsePhoneNumber(e?.toString() || "")?.country);
-    setPhoneInput(e);
+    let phoneNo = e;
+    if (phoneNo && !phoneNo?.startsWith("+1")) {
+      phoneNo = `+1${phoneNo.slice(1)}`;
+    }
+    setCountry(parsePhoneNumber(phoneNo?.toString() || "")?.country);
+    setPhoneInput(phoneNo);
   };
 
   const [showEmailError, setShowEmailError] = useState({
@@ -144,7 +148,7 @@ const RegisterInputs = ({
 
   const handleCheckEmailOnBlur = (e: any) => {
     const emailInput = e.target.value;
-   
+
     if (validateEmail(emailInput)) {
       setShowEmailError({ error: false, message: "" });
     } else {
