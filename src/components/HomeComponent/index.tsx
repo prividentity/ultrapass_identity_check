@@ -191,6 +191,7 @@ const HomeComponent = ({ theme, skin }: props) => {
               lineHeight={"60px"}
               letterSpacing={"1px"}
               className={classes.homeHeading}
+              mt={skin === "stncharms" && matchesSM ? 4 : ""}
             >
               {skin === "stncharms"
                 ? "Private Verified Identity"

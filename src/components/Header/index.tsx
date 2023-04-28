@@ -53,7 +53,13 @@ const Header = (props: props) => {
     if (isAtHomePage) {
       return (
         <img
-          src={!matchesSM ? Logos?.[skin].dark : Logos?.[skin].light}
+          src={
+            window.location.pathname === "/" && isStncharms
+              ? Logos?.[skin].dark
+              : !matchesSM
+              ? Logos?.[skin].dark
+              : Logos?.[skin].light
+          }
           alt=""
           width={isStncharms ? 100 : skin === "c1" ? 120 : 140}
           onClick={() => navigate("/")}
