@@ -160,7 +160,7 @@ const Header = (props: props) => {
               />
             ) : null}
           </Grid>
-          <Grid
+          {/* <Grid
             container
             alignItems="center"
             justifyContent={"flex-end"}
@@ -272,7 +272,7 @@ const Header = (props: props) => {
                 )}
               </>
             )}
-          </Grid>
+          </Grid> */}
         </Toolbar>
       </AppBar>
     </Box>

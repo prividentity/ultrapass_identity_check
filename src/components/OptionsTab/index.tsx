@@ -22,7 +22,7 @@ import PhoneInputComponent from "../PhoneInput";
 import { useSearchParams } from "react-router-dom";
 import { useInterval } from "../../utils/useInterval";
 import PhoneIcon from "@mui/icons-material/Phone";
-import { localThemes, theme as Theme } from "../../theme";
+import { DEFAULT_THEME, localThemes, theme as Theme } from "../../theme";
 import { navigateToUrl } from "../../utils";
 
 interface TabPanelProps {
@@ -63,7 +63,7 @@ const StyledTab = styled((props: StyledTabProps) => (
     window?.location?.search?.split("skin=")[1]
   )
     ? window?.location?.search?.split("skin=")[1]
-    : "primary";
+    : DEFAULT_THEME;
   return {
     textTransform: "none",
     fontWeight: theme.typography.fontWeightBold,
