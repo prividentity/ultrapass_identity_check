@@ -9,13 +9,18 @@ import logoDarkMg from "./assets/mg/logo-dark.png";
 import googleLogo from "./assets/google-logo.png";
 import fanduelLogo from "./assets/fanduel-logo.svg";
 import google from "./assets/account.png";
-import homeLogo from "./assets/homeLogo.png";
+import StnLogo from "./assets/stn-logo.png";
 import logoDarkUp from "./assets/up/logo-dark.png";
-import logoLightUp from "./assets/up/logo-light.png";
+import StnLogoBlack from "./assets/stn-logo-black.png";
 import logoLightMg from "./assets/mg/logo-light.png";
-import logoDarkC1 from "./assets/c1/logo-dark.png";
+import darkBG from "./assets/dark-bg.jpg";
 import logoLightC1 from "./assets/c1/logo-light.png";
 
+export const DEFAULT_THEME = 'stncharms'
+export const localThemes = ["mg", "up", "c1", "stncharms", "primary"];
+const skin = localThemes?.includes(window?.location?.search?.split("skin=")[1])
+  ? window?.location?.search?.split("skin=")[1]
+  : DEFAULT_THEME;
 interface ColorThemePalette extends PaletteOptions {
   betmgm: {
     main: string;
@@ -65,7 +70,22 @@ export const theme = createTheme({
       contrastText: "#000",
       mainBackground: "#000",
       listText: "#000",
-      feedBack: '#044C7C',
+      feedBack: "#044C7C",
+    },
+    stncharms: {
+      main: "#8fc640",
+      primaryColor: "#8fc640",
+      error: "#ff0000",
+      primaryColorHover: "#cebe95",
+      primaryColorActive: "#8e7e55",
+      secondaryColor: "#000",
+      background: "#7f7f82",
+      bg: "#7f7f82",
+      text: "#fff",
+      contrastText: "#000",
+      mainBackground: "#000",
+      listText: "#000",
+      feedBack: "#044C7C",
     },
     up: {
       main: "rgb(255, 153, 0)",
@@ -160,7 +180,10 @@ export const theme = createTheme({
     },
   } as ColorThemePalette,
   typography: {
-    fontFamily: ["'Lato'", "sans-serif"].join(", "),
+    fontFamily:
+      skin === "stncharms"
+        ? ["'Open Sans', sans-serif"].join(", ")
+        : ["'Lato'", "sans-serif"].join(", "),
   },
   breakpoints: {
     values: {
@@ -193,6 +216,10 @@ export const logos = {
     dark: logoLightC1,
     light: logoLightC1,
   },
+  stncharms: {
+    dark: StnLogo,
+    light: StnLogoBlack,
+  },
 };
 
 export const logoSize = {
@@ -212,11 +239,11 @@ export const nameMap: Record<string, string> = {
   up: "Ultrapass",
   c1: "Capital One",
 };
-export const localThemes = ["mg", "up", "c1"];
 
-export const headerVisible = ["primary", "mg", "up", "c1"];
+export const headerVisible = ["primary", "mg", "up", "c1", "stncharms"];
 
 export const backgroundImages = {
   google: google,
   c1: "https://ecm.capitalone.com/WCM/homepage/testing/photos/hero/bank/rbt-360savings-jeremy-desktop-jan2023/rtablet.jpg",
+  primary: darkBG
 };

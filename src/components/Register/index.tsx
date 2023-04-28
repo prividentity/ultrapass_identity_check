@@ -80,7 +80,6 @@ const RegisterInputs = ({
     message: "",
   });
 
-
   const handleCheckPhoneInput = () => {
     if (phoneInput.length < 10) {
       setShowPhoneError({ error: true, message: "Invalid Phone Number." });
@@ -157,14 +156,14 @@ const RegisterInputs = ({
   };
 
   enum FocusHandlerEnum {
-    email="email",
-    ssn4="ssn4",
-    phone="phone",
+    email = "email",
+    ssn4 = "ssn4",
+    phone = "phone",
   }
 
-  const handleOnFocus = (handle:FocusHandlerEnum) => {
+  const handleOnFocus = (handle: FocusHandlerEnum) => {
     setAutoFocus(false);
-    switch(handle){
+    switch (handle) {
       case FocusHandlerEnum.email:
         setShowEmailError({ error: false, message: "" });
         return;
@@ -173,11 +172,11 @@ const RegisterInputs = ({
         return;
       case FocusHandlerEnum.phone:
         setShowPhoneError({ error: false, message: "" });
-        return
+        return;
       default:
         return;
     }
-  }
+  };
 
   return (
     <>
@@ -210,7 +209,7 @@ const RegisterInputs = ({
         </Typography>
 
         <Box width={"100%"}>
-        <Grid container>
+          <Grid container>
             <Input
               style={{ width: "100%" }}
               value={phoneInput}
@@ -235,11 +234,18 @@ const RegisterInputs = ({
                   inputProps={{
                     maxLength: phoneInput?.startsWith("+1") ? 15 : 11,
                   }}
+                  sx={{
+                    ".Mui-focused fieldset": {
+                      borderColor: `${palette[skin]?.primaryColor} !important`,
+                    },
+                    "label.Mui-focused ": {
+                      color: `${palette[skin]?.primaryColor} !important`,
+                    },
+                  }}
                 />
               ))}
             />
           </Grid>
-
 
           <TextField
             fullWidth
@@ -253,15 +259,23 @@ const RegisterInputs = ({
             }}
             inputRef={emailRef}
             onBlur={handleCheckEmailOnBlur}
-            onFocus={()=>{handleOnFocus(FocusHandlerEnum.email)}}
+            onFocus={() => {
+              handleOnFocus(FocusHandlerEnum.email);
+            }}
             color={showEmailError.error ? "error" : "primary"}
             helperText={showEmailError.error ? showEmailError.message : ""}
             sx={{
               "& .MuiFormHelperText-contained": {
                 color: "red",
               },
-              mb:2,
-              mt:2,
+              mb: 2,
+              mt: 2,
+              ".Mui-focused fieldset": {
+                borderColor: `${palette[skin]?.primaryColor} !important`,
+              },
+              "label.Mui-focused ": {
+                color: `${palette[skin]?.primaryColor} !important`,
+              },
             }}
           />
 
@@ -280,12 +294,20 @@ const RegisterInputs = ({
             }}
             inputRef={ssn4Ref}
             onBlur={handleCheckSSN4Input}
-            onFocus={()=>{handleOnFocus(FocusHandlerEnum.ssn4)}}
+            onFocus={() => {
+              handleOnFocus(FocusHandlerEnum.ssn4);
+            }}
             color={showSSN4Error.error ? "error" : "primary"}
             helperText={showSSN4Error.error ? showSSN4Error.message : ""}
             sx={{
               "& .MuiFormHelperText-contained": {
                 color: "red",
+              },
+              ".Mui-focused fieldset": {
+                borderColor: `${palette[skin]?.primaryColor} !important`,
+              },
+              "label.Mui-focused ": {
+                color: `${palette[skin]?.primaryColor} !important`,
               },
             }}
           />
@@ -324,4 +346,3 @@ const RegisterInputs = ({
 };
 
 export default RegisterInputs;
-

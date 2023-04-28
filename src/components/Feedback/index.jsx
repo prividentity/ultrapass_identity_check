@@ -42,10 +42,13 @@ const Feedback = ({
   const [textArea, setTextArea] = useState("");
   const [emoji, setEmoji] = useState("");
   const [loader, setLoader] = useState(false);
+  const isStncharms = skin === "stncharms";
   const emojiColor = (currentEmoji, isImage) => {
     if (isImage) {
       return emoji === currentEmoji
-        ? "invert(55%) sepia(63%) saturate(462%) hue-rotate(83deg) brightness(100%) contrast(90%)"
+        ? isStncharms
+          ? "invert(76%) sepia(65%) saturate(462%) hue-rotate(32deg) brightness(88%) contrast(84%)"
+          : "invert(55%) sepia(63%) saturate(462%) hue-rotate(83deg) brightness(100%) contrast(90%)"
         : null;
     } else {
       return emoji === currentEmoji

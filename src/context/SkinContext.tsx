@@ -1,8 +1,8 @@
 import React from "react";
-import { localThemes } from "../theme";
+import { DEFAULT_THEME, localThemes } from "../theme";
 
 const SkinContext = React.createContext({
-  skin: "primary",
+  skin: "stncharms",
   setSkin: (skin: string) => {},
 });
 
@@ -16,7 +16,7 @@ export const SkinContextProvider = ({
   const [skin, setSkin] = React.useState(
     localThemes?.includes(window?.location?.search?.split("skin=")[1])
       ? window?.location?.search?.split("skin=")[1]
-      : "primary"
+      : DEFAULT_THEME
   );
 
   React.useEffect(() => {

@@ -4,6 +4,9 @@ const config = {
     failureUrl: window.location.origin,
     type: "IDENTITY",
     productGroupId: "intergalactic",
+    customizations:{
+      skin:"primary"
+    }
   },
 };
 

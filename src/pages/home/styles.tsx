@@ -1,13 +1,21 @@
 import { makeStyles } from "@mui/styles";
-import { localThemes, theme as Theme } from "../../theme";
+import { DEFAULT_THEME, localThemes, theme as Theme } from "../../theme";
 
 const mainTheme = Theme;
 const palette: { [key: string]: any } = mainTheme.palette;
 const skin = localThemes?.includes(window?.location?.search?.split("skin=")[1])
   ? window?.location?.search?.split("skin=")[1]
-  : "primary";
+  : DEFAULT_THEME;
 
 export const useStyles = makeStyles((theme: any) => ({
+  bannerImage: {
+    [theme.breakpoints.between("xs", "sm")]: {
+      display: "block",
+      margin: "0 auto",
+      marginTop: "50px",
+      width: "170px",
+    },
+  },
   homeHeading: {
     textAlign: "left",
     [theme.breakpoints.between("xs", "sm")]: {
@@ -79,8 +87,8 @@ export const useStyles = makeStyles((theme: any) => ({
   menuPaper: {
     maxHeight: "250px !important",
     [theme.breakpoints.between("xs", "sm")]: {
-      bottom: '12rem !important',
-      top: 'unset !important',
+      bottom: "12rem !important",
+      top: "unset !important",
     },
   },
   homeLoader: {

@@ -1,5 +1,4 @@
 import useToast from "../../utils/useToast";
-import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import * as React from "react";
 import { useTheme, styled } from "@mui/material/styles";
@@ -10,6 +9,7 @@ import {
   useMediaQuery,
   CircularProgress,
 } from "@mui/material";
+import Input from "react-phone-number-input/input";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
@@ -21,7 +21,9 @@ import { sendMessage, verifyTokenApi } from "../../services/api";
 import PhoneInputComponent from "../PhoneInput";
 import { useSearchParams } from "react-router-dom";
 import { useInterval } from "../../utils/useInterval";
-import {navigateToUrl} from "../../utils";
+import PhoneIcon from "@mui/icons-material/Phone";
+import { DEFAULT_THEME, localThemes, theme as Theme } from "../../theme";
+import { navigateToUrl } from "../../utils";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -56,39 +58,48 @@ interface StyledTabProps {
 
 const StyledTab = styled((props: StyledTabProps) => (
   <Tab disableRipple {...props} />
-))(({ theme }) => ({
-  textTransform: "none",
-  fontWeight: theme.typography.fontWeightBold,
-  fontSize: theme.typography.pxToRem(15),
-  marginRight: theme.spacing(1),
-  color: "rgba(0, 0, 0, 0.8)",
-  "&.Mui-selected": {
-    color: "#ff9900",
-  },
-}));
+))(({ theme }: any) => {
+  const skin = localThemes?.includes(
+    window?.location?.search?.split("skin=")[1]
+  )
+    ? window?.location?.search?.split("skin=")[1]
+    : DEFAULT_THEME;
+  return {
+    textTransform: "none",
+    fontWeight: theme.typography.fontWeightBold,
+    fontSize: theme.typography.pxToRem(15),
+    marginRight: theme.spacing(1),
+    color: "rgba(0, 0, 0, 0.8)",
+    "&.Mui-selected": {
+      color: theme?.palette?.[skin]?.primaryColor,
+    },
+  };
+});
 
-export default function FullWidthTabs() {
+export default function FullWidthTabs({ skin }: any) {
   const { showToast } = useToast();
   const theme = useTheme();
   const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
   const [value, setValue] = React.useState(0);
-  const [phone, setPhone] = React.useState("");
+  const [phone, setPhone] = React.useState("+1");
   const [email, setEmail] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
+  const [autoFocus, setAutoFocus] = React.useState(true);
   const [refreshInterval, setRefreshInterval] = React.useState<null | number>(
     5000
   );
   const [searchParams] = useSearchParams();
   const tokenParams = searchParams.get("token");
-
+  const mainTheme = Theme;
+  const palette: { [key: string]: any } = mainTheme.palette;
   useInterval(async () => {
     verifyTokenApi(tokenParams).then((res: any) => {
       if (["SUCCESS", "FAILURE"].includes(res.status)) {
         setRefreshInterval(null);
-        if(res.status === "SUCCESS"){
-          navigateToUrl(res.successUrl, res.token)
+        if (res.status === "SUCCESS") {
+          navigateToUrl(res.successUrl, res.token);
         } else {
-          navigateToUrl(res.failureUrl, res.token)
+          navigateToUrl(res.failureUrl, res.token);
         }
       }
     });
@@ -130,6 +141,10 @@ export default function FullWidthTabs() {
     showToast("Message sent successfully", "success");
   };
 
+  const handlePhoneChange = (e: any) => {
+    if (!autoFocus) setAutoFocus(true);
+    setPhone(e);
+  };
   return (
     <Grid container direction={"column"} my={1}>
       <Grid item container>
@@ -154,57 +169,17 @@ export default function FullWidthTabs() {
           variant="fullWidth"
           sx={{
             "& .MuiTabs-indicator": {
-              backgroundColor: "#ff9900",
+              backgroundColor: palette?.[skin]?.primaryColor,
             },
           }}
         >
-          <StyledTab label="SMS" />
           <StyledTab label="QR Code" />
+          <StyledTab label="SMS" />
           <StyledTab label="Email" />
           <StyledTab label="Link" />
         </Tabs>
 
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <Stack display={"flex"} direction={"column"} gap={2}>
-            <Typography
-              align={matchesSM ? "center" : "left"}
-              component={"p"}
-              variant="h6"
-            >
-              Receive a link via text message.
-            </Typography>
-
-            <Typography
-              align={matchesSM ? "center" : "left"}
-              component={"p"}
-              variant="body1"
-            >
-              Enter your mobile number and we will send you a link to complete
-              this verification on a different device.
-            </Typography>
-            <PhoneInput
-              value={phone}
-              autoFocus
-              onChange={(value) => setPhone(value as string)}
-              inputComponent={React.forwardRef(PhoneInputComponent)}
-            />
-            <Typography
-              align={matchesSM ? "center" : "left"}
-              component={"p"}
-              variant="body2"
-            >
-              Standard messaging rates may apply.
-            </Typography>
-            <Button
-              onClick={sendPhone}
-              variant="contained"
-              sx={{ width: "100%" }}
-            >
-              {isLoading ? <CircularProgress /> : "Send Link"}
-            </Button>
-          </Stack>
-        </TabPanel>
-        <TabPanel value={value} index={1} dir={theme.direction}>
           <Stack display={"flex"} direction={"column"} gap={2}>
             <Typography
               align={matchesSM ? "center" : "left"}
@@ -225,6 +200,77 @@ export default function FullWidthTabs() {
             <Box display="flex" justifyContent={"center"}>
               <QRCode size={200} value={window.location.toString()} />
             </Box>
+          </Stack>
+        </TabPanel>
+        <TabPanel value={value} index={1} dir={theme.direction}>
+          <Stack display={"flex"} direction={"column"} gap={2}>
+            <Typography
+              align={matchesSM ? "center" : "left"}
+              component={"p"}
+              variant="h6"
+            >
+              Receive a link via text message.
+            </Typography>
+
+            <Typography
+              align={matchesSM ? "center" : "left"}
+              component={"p"}
+              variant="body1"
+            >
+              Enter your mobile number and we will send you a link to complete
+              this verification on a different device.
+            </Typography>
+            <Input
+              style={{ width: "100%" }}
+              value={phone}
+              autoFocus={autoFocus}
+              onChange={handlePhoneChange}
+              sx={{
+                "& .MuiFormHelperText-contained": {
+                  color: "red",
+                },
+              }}
+              placeholder="Mobile number"
+              inputComponent={React.forwardRef((props, ref) => (
+                <PhoneInputComponent
+                  {...props}
+                  inputRef={ref}
+                  InputProps={{
+                    startAdornment: <PhoneIcon sx={{ pr: 1 }} />,
+                  }}
+                  inputProps={{
+                    maxLength: phone?.startsWith("+1") ? 15 : 11,
+                  }}
+                  sx={{
+                    ".Mui-focused fieldset": {
+                      borderColor: `${
+                        palette[skin]?.primaryColor
+                      } !important`,
+                    },
+                    "label.Mui-focused ": {
+                      color: `${palette[skin]?.primaryColor} !important`,
+                    },
+                  }}
+                />
+              ))}
+            />
+            <Typography
+              align={matchesSM ? "center" : "left"}
+              component={"p"}
+              variant="body2"
+            >
+              Standard messaging rates may apply.
+            </Typography>
+            <Button
+              onClick={sendPhone}
+              variant="contained"
+              sx={{
+                width: "100%",
+                backgroundColor: palette[skin]?.primaryColor,
+              }}
+            >
+              {isLoading ? <CircularProgress /> : "Send Link"}
+            </Button>
           </Stack>
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
@@ -256,6 +302,16 @@ export default function FullWidthTabs() {
               InputProps={{
                 endAdornment: <EmailIcon />,
               }}
+              sx={{
+                ".Mui-focused fieldset": {
+                  borderColor: `${
+                    palette[skin]?.primaryColor
+                  } !important`,
+                },
+                "label.Mui-focused ": {
+                  color: `${palette[skin]?.primaryColor} !important`,
+                },
+              }}
             />
 
             <Typography
@@ -269,7 +325,10 @@ export default function FullWidthTabs() {
             <Button
               onClick={sendEmail}
               variant="contained"
-              sx={{ width: "100%" }}
+              sx={{
+                width: "100%",
+                backgroundColor: palette[skin]?.primaryColor,
+              }}
             >
               {isLoading ? <CircularProgress /> : "Send link"}
             </Button>
@@ -301,7 +360,10 @@ export default function FullWidthTabs() {
                 navigator.clipboard.writeText(window.location.toString());
                 showToast("Link copied to clipboard", "success");
               }}
-              sx={{ width: "100%" }}
+              sx={{
+                width: "100%",
+                backgroundColor: palette[skin]?.primaryColor,
+              }}
             >
               Copy link
             </Button>

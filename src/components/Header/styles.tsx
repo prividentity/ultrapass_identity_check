@@ -1,11 +1,11 @@
 import { makeStyles } from "@mui/styles";
-import { localThemes, theme as Theme } from "../../theme";
+import { DEFAULT_THEME, localThemes, theme as Theme } from "../../theme";
 
 const mainTheme = Theme;
 const palette: { [key: string]: any } = mainTheme.palette;
 const skin = localThemes?.includes(window?.location?.search?.split("skin=")[1])
   ? window?.location?.search?.split("skin=")[1]
-  : "primary";
+  : DEFAULT_THEME;
 export const styles = {
   appBar: { zIndex: 9999999, backgroundColor: "skyblue" },
   loginButton: { marginRight: 10 },
@@ -17,7 +17,11 @@ export const styles = {
   },
   signupButton: {
     background: "transparent",
-    border: "2px solid rgb(100 98 98)",
+    border: `${
+      skin === "stncharms"
+        ? `1px solid ${palette?.[skin]?.primaryColor}`
+        : "2px solid rgb(100 98 98)"
+    }`,
     marginRight: 5,
     minWidth: "100px",
     lineHeight: 1.25,
