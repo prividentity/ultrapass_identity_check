@@ -21,7 +21,7 @@ import {
   closeCamera,
   updateUser,
   uploadPortrait,
-} from "@privateid/cryptonets-web-sdk-alpha";
+} from "@privateid/cryptonets-web-sdk";
 import shield from "../../assets/shield.png";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import STEPS from "../../pages/register/steps";

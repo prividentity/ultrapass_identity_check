@@ -7,7 +7,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { switchCamera } from "@privateid/cryptonets-web-sdk-alpha";
+import { switchCamera } from "@privateid/cryptonets-web-sdk";
 import React, { useEffect, useState } from "react";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import useCamera, { setResolutionForIphoneCC } from "../../hooks/useCamera";
