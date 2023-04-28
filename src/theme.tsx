@@ -17,7 +17,7 @@ import darkBG from "./assets/dark-bg.jpg";
 import logoLightC1 from "./assets/c1/logo-light.png";
 
 export const DEFAULT_THEME = 'stncharms'
-export const localThemes = ["primary", "mg", "up", "c1", "stncharms"];
+export const localThemes = ["mg", "up", "c1", "stncharms", "primary"];
 const skin = localThemes?.includes(window?.location?.search?.split("skin=")[1])
   ? window?.location?.search?.split("skin=")[1]
   : DEFAULT_THEME;
