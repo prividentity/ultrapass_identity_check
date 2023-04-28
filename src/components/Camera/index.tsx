@@ -16,7 +16,9 @@ import styles from "../../styles/Home.module.css";
 import { isBackCamera, isIphoneCC } from "../../utils";
 import useCameraPermissions from "../../hooks/useCameraPermissions";
 import { useStyles } from "./styles";
+import STEPS from "../../pages/register/steps";
 
+export const SWITCH_DEVICE = "Switch Device";
 const Camera = ({
   children,
   currentAction,
@@ -95,6 +97,10 @@ const Camera = ({
   }, [wasmReady, ready, wasmStatus]);
 
   const handleSwitchCamera = async (e: any) => {
+    if (e.target.value === SWITCH_DEVICE) {
+      setStep(STEPS?.SWITCH_DEVICE);
+      return;
+    }
     setDeviceId(e.target.value);
     // @ts-ignore
     const { capabilities } = await switchCamera(null, e.target.value);
@@ -109,7 +115,7 @@ const Camera = ({
   return (
     <div
       className={styles.cameraContainer}
-      style={{ ...style, height: otherDevice && ready && "450px" }}
+      style={style}
     >
       {!ready ? (
         <div className="overlayLoader">
@@ -151,28 +157,14 @@ const Camera = ({
                   );
                 }
               )}
+              <MenuItem value={SWITCH_DEVICE}>Switch Device</MenuItem>
             </Select>
           </div>
         ) : null}
       </div>
-      {otherDevice && ready && (
-        <Box className={classes.otherOptions}>
-          <Typography
-            component="p"
-            textAlign={matchesSM ? "center" : "left"}
-            fontSize={15}
-            fontWeight={500}
-            mt={2}
-            onClick={setStep}
-          >
-            <PhoneIphoneIcon /> Switch to other device
-          </Typography>
-        </Box>
-      )}
       {message && (
         <div
           className={styles.enrollDisplay}
-          style={{ top: otherDevice && "86px" }}
         >
           <span> {message} </span>
         </div>

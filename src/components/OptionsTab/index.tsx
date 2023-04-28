@@ -24,6 +24,7 @@ import { useInterval } from "../../utils/useInterval";
 import PhoneIcon from "@mui/icons-material/Phone";
 import { DEFAULT_THEME, localThemes, theme as Theme } from "../../theme";
 import { navigateToUrl } from "../../utils";
+import { parsePhoneNumber } from "react-phone-number-input";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -143,7 +144,11 @@ export default function FullWidthTabs({ skin }: any) {
 
   const handlePhoneChange = (e: any) => {
     if (!autoFocus) setAutoFocus(true);
-    setPhone(e);
+    let phoneNo = e;
+    if (phoneNo && !phoneNo?.startsWith("+1")) {
+      phoneNo = `+1${phoneNo.slice(1)}`;
+    }
+    setPhone(phoneNo);
   };
   return (
     <Grid container direction={"column"} my={1}>
@@ -243,9 +248,7 @@ export default function FullWidthTabs({ skin }: any) {
                   }}
                   sx={{
                     ".Mui-focused fieldset": {
-                      borderColor: `${
-                        palette[skin]?.primaryColor
-                      } !important`,
+                      borderColor: `${palette[skin]?.primaryColor} !important`,
                     },
                     "label.Mui-focused ": {
                       color: `${palette[skin]?.primaryColor} !important`,
@@ -304,9 +307,7 @@ export default function FullWidthTabs({ skin }: any) {
               }}
               sx={{
                 ".Mui-focused fieldset": {
-                  borderColor: `${
-                    palette[skin]?.primaryColor
-                  } !important`,
+                  borderColor: `${palette[skin]?.primaryColor} !important`,
                 },
                 "label.Mui-focused ": {
                   color: `${palette[skin]?.primaryColor} !important`,
