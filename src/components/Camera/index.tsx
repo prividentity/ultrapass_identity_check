@@ -1,6 +1,15 @@
-import { CircularProgress, MenuItem, Select } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  MenuItem,
+  Select,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { switchCamera } from "@privateid/cryptonets-web-sdk-alpha";
 import React, { useEffect, useState } from "react";
+import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import useCamera, { setResolutionForIphoneCC } from "../../hooks/useCamera";
 import useWasm from "../../hooks/useWasm";
 import styles from "../../styles/Home.module.css";
@@ -21,11 +30,15 @@ const Camera = ({
   requireHD = false,
   isDocumentScan = false,
   onCameraNotFullHd = () => {},
+  otherDevice,
+  setStep,
 }: any) => {
   const { ready: wasmReady, wasmStatus } = useWasm();
   const { isCameraGranted } = useCameraPermissions(onReadyCallback);
   const elementId = "userVideo";
   const classes = useStyles();
+  const theme = useTheme();
+  const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
   const { ready, init, device, devices, settings } = useCamera(
     elementId,
     mode,
@@ -94,7 +107,10 @@ const Camera = ({
   };
 
   return (
-    <div className={styles.cameraContainer} style={style}>
+    <div
+      className={styles.cameraContainer}
+      style={{ ...style, height: otherDevice && ready && "450px" }}
+    >
       {!ready ? (
         <div className="overlayLoader">
           <CircularProgress />
@@ -139,8 +155,25 @@ const Camera = ({
           </div>
         ) : null}
       </div>
+      {otherDevice && ready && (
+        <Box className={classes.otherOptions}>
+          <Typography
+            component="p"
+            textAlign={matchesSM ? "center" : "left"}
+            fontSize={15}
+            fontWeight={500}
+            mt={2}
+            onClick={setStep}
+          >
+            <PhoneIphoneIcon /> Switch to other device
+          </Typography>
+        </Box>
+      )}
       {message && (
-        <div className={styles.enrollDisplay}>
+        <div
+          className={styles.enrollDisplay}
+          style={{ top: otherDevice && "86px" }}
+        >
           <span> {message} </span>
         </div>
       )}

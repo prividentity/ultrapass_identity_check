@@ -4,7 +4,7 @@ const mainTheme = Theme;
 const palette: { [key: string]: any } = mainTheme.palette;
 const skin = localThemes?.includes(window?.location?.search?.split("skin=")[1])
   ? window?.location?.search?.split("skin=")[1]
-  : "primary";
+  : "stncharms";
 
 export const styles = {
   arrowIcon: {

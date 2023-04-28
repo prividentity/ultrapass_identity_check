@@ -81,8 +81,11 @@ export const useStyles = makeStyles((theme: any) => ({
       fontSize: 13,
       width: 350,
       justifyContent: "center",
-      marginLeft: 20,
+      marginLeft: 0,
       color: "#000",
+      "& li": {
+        justifyContent: "center",
+      }
     },
   },
   linkbox: {

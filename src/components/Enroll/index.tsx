@@ -197,24 +197,14 @@ const Enroll = ({
                 onCameraFail={onCameraFail}
                 message={enrollStatus}
                 onWasmLoadFail={onWasmLoadFail}
+                otherDevice={true}
+                setStep={() => {
+                  setStep(STEPS.SWITCH_DEVICE);
+                  stopCamera();
+                }}
               />
             )}
           </div>
-          <Box className={classes.otherOptions}>
-            <Typography
-              component="p"
-              textAlign={matchesSM ? "center" : "left"}
-              fontSize={15}
-              fontWeight={500}
-              mt={2}
-              onClick={() => {
-                setStep(STEPS.SWITCH_DEVICE);
-                stopCamera();
-              }}
-            >
-              <PhoneIphoneIcon /> Switch to other device
-            </Typography>
-          </Box>
           <Box style={{ height: 50 }}>
             <Box style={{ height: 14 }}>
               {enrollOneFaProgress > 0 && (

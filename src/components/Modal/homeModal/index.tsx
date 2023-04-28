@@ -12,6 +12,7 @@ import {
   useTheme,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import StnBlackLogo from "../../../assets/stn-logo-black.png";
 import centralLogo from "../../../assets/centralLogo.png";
 import { useStyles } from "./styles";
 import { logos } from "../../../theme";
@@ -35,7 +36,13 @@ const HomeModal = (props: props) => {
   const muiTheme = useTheme();
 
   const { skin } = useSkinContext();
-  const logoDark = skin === "c1" ? (logos as any)[skin].dark : centralLogo;
+  const isStncharms = skin === "stncharms";
+  const logoDark =
+    skin === "c1"
+      ? (logos as any)[skin].dark
+      : isStncharms
+      ? StnBlackLogo
+      : centralLogo;
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
   return (
     <Dialog
@@ -67,8 +74,8 @@ const HomeModal = (props: props) => {
               <img
                 src={logoDark}
                 alt=""
-                width={100}
-                height={40}
+                width={isStncharms ? 70 : 100}
+                height={isStncharms ? 35 : 40}
                 className={classes.modalBoxLogo}
               />
             </div>
@@ -82,7 +89,7 @@ const HomeModal = (props: props) => {
               display={"flex"}
               alignItems={"center"}
               mb={"-25px"}
-              justifyContent={matchesSM ? 'center' : "flex-end"}
+              justifyContent={matchesSM ? "center" : "flex-end"}
               pt={1}
               pl={matchesSM ? 2 : ""}
               pr={matchesSM ? 2 : ""}

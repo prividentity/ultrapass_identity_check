@@ -8,6 +8,14 @@ const skin = localThemes?.includes(window?.location?.search?.split("skin=")[1])
   : "primary";
 
 export const useStyles = makeStyles((theme: any) => ({
+  bannerImage: {
+    [theme.breakpoints.between("xs", "sm")]: {
+      display: "block",
+      margin: "0 auto",
+      marginTop: "50px",
+      width: "170px",
+    },
+  },
   homeHeading: {
     textAlign: "left",
     [theme.breakpoints.between("xs", "sm")]: {
@@ -79,8 +87,8 @@ export const useStyles = makeStyles((theme: any) => ({
   menuPaper: {
     maxHeight: "250px !important",
     [theme.breakpoints.between("xs", "sm")]: {
-      bottom: '12rem !important',
-      top: 'unset !important',
+      bottom: "12rem !important",
+      top: "unset !important",
     },
   },
   homeLoader: {

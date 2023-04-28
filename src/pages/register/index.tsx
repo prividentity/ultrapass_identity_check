@@ -282,7 +282,7 @@ const Register = ({ theme, skin }: props) => {
           />
         );
       case STEPS.SWITCH_DEVICE:
-        return <FullWidthTabs />;
+        return <FullWidthTabs skin={skin} />;
       case STEPS.SUCCESS:
         return <Success matchesSM={matchesSM} setStep={setStep} skin={skin} />;
       case STEPS.VERIFICATION_NOT_COMPLETED:
