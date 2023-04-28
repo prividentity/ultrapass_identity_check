@@ -20,7 +20,7 @@ import womenImg from "../../assets/Kimiko-S3.png";
 import HomeModal from "../../components/Modal/homeModal";
 import useToast from "../../utils/useToast";
 import Header from "../../components/Header";
-import { headerVisible } from "../../theme";
+import { DEFAULT_THEME, headerVisible } from "../../theme";
 import usePredictOneFa from "../../hooks/usePredictOneFa";
 import config from "../../config";
 import { createSearchParams } from "react-router-dom";
@@ -77,7 +77,7 @@ const Signin = ({ theme, skin }: props) => {
     }
   };
   const user = JSON.parse(localStorage.getItem("user") || "{}");
-  const themeName = skin || "primary";
+  const themeName = skin || DEFAULT_THEME;
   const [step, setStep] = useState(0);
   const [isUserVerify, setIsUserVerify] = useState(false);
   const retryTimes = step === 1 ? 12 : 5;

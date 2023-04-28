@@ -1,11 +1,11 @@
 import { makeStyles } from "@mui/styles";
-import { localThemes, theme as Theme } from "../../theme";
+import { DEFAULT_THEME, localThemes, theme as Theme } from "../../theme";
 
 const mainTheme = Theme;
 const palette: { [key: string]: any } = mainTheme.palette;
 const skin = localThemes?.includes(window?.location?.search?.split("skin=")[1])
   ? window?.location?.search?.split("skin=")[1]
-  : "primary";
+  : DEFAULT_THEME;
 
 export const useStyles = makeStyles((theme: any) => ({
   bannerImage: {
