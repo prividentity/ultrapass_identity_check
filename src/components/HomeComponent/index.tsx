@@ -55,12 +55,12 @@ const HomeComponent = ({ theme, skin }: props) => {
     // console.log(JSON.stringify(payload));
     const result: any = await createVerificationSession(payload);
     if (result?.token) {
-      onFlowChange(flow, result?.token);
+      onFlowChange(flow, result?.token, result?.url);
     }
     setLoading(false);
   };
 
-  const onFlowChange = (flow: number, token: string) => {
+  const onFlowChange = (flow: number, token: string, url?: string) => {
     switch (flow) {
       case 1:
         // navigate({
@@ -71,7 +71,7 @@ const HomeComponent = ({ theme, skin }: props) => {
         //   }).toString(),
 
         // change this from navigate to using window.location.href
-        window.location.href = `/register?token=${token}&skin=${skin}`;
+        window.location.href = url || `/register?token=${token}&skin=${skin}`;
         break;
       // });
       case 2:
