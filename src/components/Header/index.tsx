@@ -160,119 +160,121 @@ const Header = (props: props) => {
               />
             ) : null}
           </Grid>
-          {/* <Grid
-            container
-            alignItems="center"
-            justifyContent={"flex-end"}
-            style={{ flex: 1 }}
-          >
-            {user?._id ? (
-              <>
-                <Tooltip title="Account settings">
-                  <IconButton
-                    onClick={handleClick}
-                    size="small"
-                    sx={{ ml: 2 }}
-                    aria-controls={open ? "account-menu" : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={open ? "true" : undefined}
-                  >
-                    <Avatar sx={{ width: 32, height: 32 }} />
-                  </IconButton>
-                </Tooltip>
-                <Menu
-                  anchorEl={anchorEl}
-                  id="account-menu"
-                  open={open}
-                  onClose={handleClose}
-                  onClick={handleClose}
-                  PaperProps={{
-                    elevation: 0,
-                    sx: {
-                      overflow: "visible",
-                      filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                      mt: 1.5,
-                      "& .MuiAvatar-root": {
-                        width: 32,
-                        height: 32,
-                        ml: -0.5,
-                        mr: 1,
+          {!isStncharms && (
+            <Grid
+              container
+              alignItems="center"
+              justifyContent={"flex-end"}
+              style={{ flex: 1 }}
+            >
+              {user?._id ? (
+                <>
+                  <Tooltip title="Account settings">
+                    <IconButton
+                      onClick={handleClick}
+                      size="small"
+                      sx={{ ml: 2 }}
+                      aria-controls={open ? "account-menu" : undefined}
+                      aria-haspopup="true"
+                      aria-expanded={open ? "true" : undefined}
+                    >
+                      <Avatar sx={{ width: 32, height: 32 }} />
+                    </IconButton>
+                  </Tooltip>
+                  <Menu
+                    anchorEl={anchorEl}
+                    id="account-menu"
+                    open={open}
+                    onClose={handleClose}
+                    onClick={handleClose}
+                    PaperProps={{
+                      elevation: 0,
+                      sx: {
+                        overflow: "visible",
+                        filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                        mt: 1.5,
+                        "& .MuiAvatar-root": {
+                          width: 32,
+                          height: 32,
+                          ml: -0.5,
+                          mr: 1,
+                        },
+                        "&:before": {
+                          content: '""',
+                          display: "block",
+                          position: "absolute",
+                          top: 0,
+                          right: 14,
+                          width: 10,
+                          height: 10,
+                          bgcolor: "background.paper",
+                          transform: "translateY(-50%) rotate(45deg)",
+                          zIndex: 99999991,
+                        },
+                        ul: {
+                          paddingBottom: 0,
+                          paddingTop: 0,
+                        },
                       },
-                      "&:before": {
-                        content: '""',
-                        display: "block",
-                        position: "absolute",
-                        top: 0,
-                        right: 14,
-                        width: 10,
-                        height: 10,
-                        bgcolor: "background.paper",
-                        transform: "translateY(-50%) rotate(45deg)",
-                        zIndex: 99999991,
-                      },
-                      ul: {
-                        paddingBottom: 0,
-                        paddingTop: 0,
-                      },
-                    },
-                  }}
-                  transformOrigin={{ horizontal: "right", vertical: "top" }}
-                  anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-                >
-                  {" "}
-                  <MenuItem
-                    className="AgeItem"
-                    onClick={() => onDeleteAccount()}
-                  >
-                    Delete account
-                  </MenuItem>
-                  <Divider color="#000" style={{ margin: 0 }} />
-                  <MenuItem className="AgeItem" onClick={() => onLogout()}>
-                    Logout
-                  </MenuItem>
-                </Menu>
-              </>
-            ) : (
-              <>
-                {" "}
-                {window.location.pathname === "/" ||
-                window?.location?.pathname === "/register" ? (
-                  <Button
-                    color={theme as "inherit"}
-                    variant="contained"
-                    style={styles.signupButton}
-                    className={`${classes.headerButton} ${
-                      matchesSM ? classes.headerButtonMobile : ""
-                    }`}
-                    onClick={onSignInClick}
-                    sx={{
-                      textTransform: "unset",
-                      color: skin === "c1" ? "black" : undefined,
                     }}
+                    transformOrigin={{ horizontal: "right", vertical: "top" }}
+                    anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
                   >
-                    Sign in
-                  </Button>
-                ) : (
-                  <Button
-                    color={theme as "inherit"}
-                    variant="contained"
-                    sx={{ textTransform: "unset" }}
-                    style={styles.signupButton}
-                    className={`${classes.headerButton} ${
-                      matchesSM ? classes.headerButtonMobile : ""
-                    }`}
-                    onClick={() => createVerification()}
-                  >
-                    {loader ? (
-                      <CircularProgress className={classes.scanLoader} />
-                    ) : (
-                      "Register"
-                    )}
-                  </Button>
-                )}
-              </>
-            )}
-          </Grid> */}
+                    {" "}
+                    <MenuItem
+                      className="AgeItem"
+                      onClick={() => onDeleteAccount()}
+                    >
+                      Delete account
+                    </MenuItem>
+                    <Divider color="#000" style={{ margin: 0 }} />
+                    <MenuItem className="AgeItem" onClick={() => onLogout()}>
+                      Logout
+                    </MenuItem>
+                  </Menu>
+                </>
+              ) : (
+                <>
+                  {" "}
+                  {window.location.pathname === "/" ||
+                  window?.location?.pathname === "/register" ? (
+                    <Button
+                      color={theme as "inherit"}
+                      variant="contained"
+                      style={styles.signupButton}
+                      className={`${classes.headerButton} ${
+                        matchesSM ? classes.headerButtonMobile : ""
+                      }`}
+                      onClick={onSignInClick}
+                      sx={{
+                        textTransform: "unset",
+                        color: skin === "c1" ? "black" : undefined,
+                      }}
+                    >
+                      Sign in
+                    </Button>
+                  ) : (
+                    <Button
+                      color={theme as "inherit"}
+                      variant="contained"
+                      sx={{ textTransform: "unset" }}
+                      style={styles.signupButton}
+                      className={`${classes.headerButton} ${
+                        matchesSM ? classes.headerButtonMobile : ""
+                      }`}
+                      onClick={() => createVerification()}
+                    >
+                      {loader ? (
+                        <CircularProgress className={classes.scanLoader} />
+                      ) : (
+                        "Register"
+                      )}
+                    </Button>
+                  )}
+                </>
+              )}
+            </Grid>
+          )}
         </Toolbar>
       </AppBar>
     </Box>
