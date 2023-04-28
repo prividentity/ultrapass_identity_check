@@ -26,6 +26,7 @@ import { createSearchParams } from "react-router-dom";
 import { logos } from "../../theme";
 import useCameraPermissions from "../../hooks/useCameraPermissions";
 import { useSkinContext } from "../../context/SkinContext";
+import StationLogo from "../../assets/stations.png";
 
 interface props {
   theme?: string;
@@ -43,6 +44,7 @@ const Header = (props: props) => {
   const navigate = useNavigate();
   const classes = useStyles();
   const [loader, setLoader] = useState(true);
+  const isStncharms = skin === "stncharms";
   const renderHeaderImage = () => {
     const isAtHomePage =
       window.location.pathname === "/" ||
@@ -53,9 +55,9 @@ const Header = (props: props) => {
         <img
           src={!matchesSM ? Logos?.[skin].dark : Logos?.[skin].light}
           alt=""
-          width={skin === "c1" ? 120 : 140}
+          width={isStncharms ? 100 : skin === "c1" ? 120 : 140}
           onClick={() => navigate("/")}
-          style={{ cursor: "pointer" }}
+          style={{ cursor: "pointer", marginTop: 20 }}
           className="headerLogo"
         />
       );
@@ -141,10 +143,12 @@ const Header = (props: props) => {
             window?.location?.pathname === "/register" ||
             window?.location?.pathname === "/signin" ? (
               <img
-                src={matchesSM ? logoBlack : logoBlack}
+                src={
+                  isStncharms ? StationLogo : matchesSM ? logoBlack : logoBlack
+                }
                 alt=""
-                width={80}
-                height={40}
+                width={isStncharms ? 120 : 80}
+                height={isStncharms ? "" : 40}
                 style={styles.homelogo}
                 className="headerLogo centralLogo"
               />

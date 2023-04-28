@@ -1,4 +1,11 @@
+import { localThemes, theme as Theme } from "../../theme";
 import { makeStyles } from "@mui/styles";
+
+const mainTheme = Theme;
+const palette: { [key: string]: any } = mainTheme.palette;
+const skin = localThemes?.includes(window?.location?.search?.split("skin=")[1])
+  ? window?.location?.search?.split("skin=")[1]
+  : "primary";
 
 export const useStyles = makeStyles((theme: any) => ({
   documentBarCodeOverlay: {
@@ -13,5 +20,27 @@ export const useStyles = makeStyles((theme: any) => ({
     // zIndex: 999,
     // left: 2,
     // borderRadius: "7px",
+  },
+  otherOptions: {
+    marginBottom: "10px !important",
+    margin: "0px !important",
+    "& p": {
+      cursor: "pointer",
+      color: palette[skin]?.main,
+      margin: "0px !important",
+      marginLeft: "-4px !important",
+    },
+    "& p:hover": {
+      textDecoration: "underline",
+    },
+    "& svg": {
+      position: "relative",
+      top: 6.5,
+      color: palette[skin]?.main,
+      width: "21px",
+    },
+    [theme.breakpoints.between("xs", "sm")]: {
+      top: -38,
+    },
   },
 }));

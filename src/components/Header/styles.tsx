@@ -17,7 +17,11 @@ export const styles = {
   },
   signupButton: {
     background: "transparent",
-    border: "2px solid rgb(100 98 98)",
+    border: `${
+      skin === "stncharms"
+        ? `1px solid ${palette?.[skin]?.primaryColor}`
+        : "2px solid rgb(100 98 98)"
+    }`,
     marginRight: 5,
     minWidth: "100px",
     lineHeight: 1.25,

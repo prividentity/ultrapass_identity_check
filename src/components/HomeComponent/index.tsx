@@ -34,7 +34,8 @@ const HomeComponent = ({ theme, skin }: props) => {
   const [productGroup, setProductGroup] = useState<
     { name: string; _id: string }[]
   >([]);
-  const [selectedProductGroup, setSelectedProductGroup] = useState<string>("intergalactic");
+  const [selectedProductGroup, setSelectedProductGroup] =
+    useState<string>("intergalactic");
   const navigate = useNavigate();
   const classes = useStyles();
   const muiTheme = useTheme();
@@ -191,18 +192,22 @@ const HomeComponent = ({ theme, skin }: props) => {
               letterSpacing={"1px"}
               className={classes.homeHeading}
             >
-              UltraPass ID
+              {skin === "stncharms"
+                ? "Private Verified Identity"
+                : "UltraPass ID"}
             </Typography>
-            <Typography
-              component="p"
-              color={`${theme}.text`}
-              fontSize={30}
-              fontWeight={500}
-              className={classes.homeSubHeading}
-              mt={0}
-            >
-              Private Verified Identity
-            </Typography>
+            {skin !== "stncharms" && (
+              <Typography
+                component="p"
+                color={`${theme}.text`}
+                fontSize={30}
+                fontWeight={500}
+                className={classes.homeSubHeading}
+                mt={0}
+              >
+                Private Verified Identity
+              </Typography>
+            )}
           </Box>
           <Box pt={5} className={classes.buttonsGrid}>
             <Grid container alignItems="center" className={classes.buttonsWrap}>
@@ -213,7 +218,7 @@ const HomeComponent = ({ theme, skin }: props) => {
                   sx={{
                     textTransform: "unset",
                     textAlign: "center",
-                    width: 300,
+                    width: 250,
                   }}
                   className={classes.buttonsWrapButton}
                 >
@@ -230,7 +235,14 @@ const HomeComponent = ({ theme, skin }: props) => {
               MenuProps={{ classes: { paper: classes.menuPaper } }}
             >
               {productGroup?.length ? (
-                [{ name: "Select Product Group", _id: "1", apiValue: "intergalactic" }, ...productGroup]
+                [
+                  {
+                    name: "Select Product Group",
+                    _id: "1",
+                    apiValue: "intergalactic",
+                  },
+                  ...productGroup,
+                ]
                   ?.filter((product: { name: string }) => product?.name)
                   ?.map((product: any) => (
                     <MenuItem key={product?._id} value={product?.apiValue}>
@@ -238,7 +250,9 @@ const HomeComponent = ({ theme, skin }: props) => {
                     </MenuItem>
                   ))
               ) : (
-                <MenuItem value={"intergalactic"}>Select Product Group</MenuItem>
+                <MenuItem value={"intergalactic"}>
+                  Select Product Group
+                </MenuItem>
               )}
             </Select>
           </Box>
