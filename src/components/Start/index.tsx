@@ -49,7 +49,7 @@ const Start = ({
           mt={2}
           className={classes.cardInnerHeading}
         >
-          {nameMap[skin] || "Stations Casino"} partners with Ultrapass for
+          {nameMap[skin] || "Station Casinos"} partners with Ultrapass for
           secure, private verified identity.
         </Typography>
         <Typography
