@@ -2,7 +2,7 @@ import { SetStateAction, useEffect, useState } from "react";
 import {
   convertCroppedImage,
   isValidPhotoID,
-} from "@privateid/cryptonets-web-sdk-alpha";
+} from "@privateid/cryptonets-web-sdk";
 import { CANVAS_SIZE } from "../utils";
 
 const useScanBackDocument = (onSuccess: (e: any) => void) => {
