@@ -1,4 +1,3 @@
-import useEnrollOneFa2 from "../../hooks/useEnrollOneFa2";
 import {
   Box,
   CircularProgress,
@@ -29,6 +28,7 @@ import { cameraDelay, stopCamera } from "../../utils";
 import SpinnerLoader from "../SpinnerLoader";
 import { convertBase64ToImageData } from "../../utils/base64ToImageData";
 import { ELEMENT_ID } from "../../constants";
+import useEnrollOneFaWithLiveness from "../../hooks/useEnrollOneFaWithLiveness";
 
 // import sound from "../../assets/sound/success.mp3";
 
@@ -62,7 +62,8 @@ const Enroll = ({
     enrollGUID,
     enrollUUID,
     enrollPortrait,
-  } = useEnrollOneFa2("userVideo", (e: any) => console.log(e), 4);
+    livenessCheckStatus,
+  } = useEnrollOneFaWithLiveness("userVideo", (e: any) => console.log(e), 4);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleUserUpdate = async (guid: string, uuid: string) => {

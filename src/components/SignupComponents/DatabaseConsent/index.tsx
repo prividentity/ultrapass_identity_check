@@ -87,23 +87,91 @@ const DatabaseConsent = (props: props) => {
             ) : (
               <>
                 <ListItem className={classes.listText}>
-                  I acknowledge I am over 18 years of age and all information I
-                  provided is accurate.
+                  This Station Casinos-CAMS Private ID® app protects your
+                  privacy by immediately encrypting your selfie into anonymized
+                  data on your device, in compliance with IEEE 2410 Standard for
+                  Biometric Privacy. No biometric template is created,
+                  processed, stored, transmitted, or received.
                 </ListItem>
                 <ListItem className={classes.listText}>
-                  Ultrapass and our third-party enrollment and identity proofing
-                  service provider and its contract providers may share, use and
-                  maintain the images and information you provide, and the
-                  information on file with other third-party service providers
-                  or governments, to further verify your age or identity, to
-                  protect against or prevent actual or potential fraud or
-                  unauthorized use of the Service for the duration of our
-                  business relationship.
+                  I acknowledge I am over 18 years of age, all information I
+                  provided is accurate, and I am prohibited from allowing any
+                  other person to access or use my verified digital identity
+                  account.
                 </ListItem>
                 <ListItem className={classes.listText}>
-                  I have read and agreed to the Ultrapass Terms of Service and
-                  Privacy Policy and Ultrapass Terms of Service and Privacy
-                  Policy.
+                  Station Casinos, and our third-party enrollment and identity
+                  proofing service providers CentralAMS and Private ID, may
+                  share, use and maintain the images and information you
+                  provide, and the information on file with other third-party
+                  service providers to further verify your identity, to protect
+                  against or prevent actual or potential fraud or unauthorized
+                  use of the Service, and to establish, maintain and
+                  authenticate your verified digital identity, for the duration
+                  of our business relationship.
+                </ListItem>
+                <ListItem className={classes.listText}>
+                  I agree to receive email and SMS messages for the purpose of
+                  registering and maintaining an account.
+                </ListItem>
+                <ListItem className={classes.listText}>
+                  I agree to enroll using my face images and my driving license.
+                  Each face image is one-way FHE encrypted in compliance with
+                  the IEEE 2410-2021 Standard for Biometric Privacy, and
+                  completely transformed into anonymized data. Only anonymized
+                  data is used to authenticate you, or transmitted to, stored by
+                  or used by CentralAMS or Private Identity LLC.
+                </ListItem>
+                <ListItem className={classes.listText}>
+                  I have read and accepted the Stations{" "}
+                  <a
+                    href="https://www.stationcasinos.com/terms-of-use/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Terms of Use
+                  </a>{" "}
+                  and{" "}
+                  <a
+                    href="https://www.stationcasinos.com/privacy-policy/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Privacy Policy
+                  </a>
+                  , the CentralAMS{" "}
+                  <a
+                    href="https://www.centralams.com/terms-of-use/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Terms of Use
+                  </a>{" "}
+                  and{" "}
+                  <a
+                    href="https://www.centralams.com/privacy-policy/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Privacy Policy
+                  </a>
+                  , and the Private Identity LLC{" "}
+                  <a
+                    href="https://github.com/openinfer/PrivateIdentity/wiki/Terms-of-Use"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Terms of Use
+                  </a>{" "}
+                  and{" "}
+                  <a
+                    href="https://github.com/openinfer/PrivateIdentity/wiki/Privacy-Policy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Privacy Policy
+                  </a>
+                  .
                 </ListItem>
               </>
             )}
@@ -116,7 +184,7 @@ const DatabaseConsent = (props: props) => {
         color={"inherit"}
         style={styles.continueButton}
         onClick={() => {
-          setStep(STEPS.STATION_CONSENT);
+          setStep(STEPS.PRE_ENROLL);
           setPrevStep(STEPS.REGISTER_CONSENT);
         }}
       >

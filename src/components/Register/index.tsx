@@ -69,7 +69,7 @@ const RegisterInputs = ({
   });
   const handleCheckSSN4Input = () => {
     if (ssn4Ref?.current?.value.length < 4) {
-      setShowSSN4Error({ error: true, message: "SSN4 Must be 4 digits." });
+      setShowSSN4Error({ error: true, message: "Enter the last 4 digits of your Social Security Number." });
     } else {
       setShowSSN4Error({ error: false, message: "" });
     }
@@ -98,10 +98,21 @@ const RegisterInputs = ({
 
     if (!validateEmail(emailRef?.current?.value)) {
       showToast("Enter valid email", "error");
+      setShowEmailError({
+        error: true,
+        message: "Please enter a valid Email.",
+      });
     } else if (!validatePhone(phoneInput)) {
       showToast("Enter mobile number", "error");
     } else if (ssn4Ref?.current?.value.length !== 4) {
-      showToast("Enter SSN4", "error");
+      showToast(
+        "Enter the last 4 digits of your Social Security Number",
+        "error"
+      );
+      setShowSSN4Error({
+        error: true,
+        message: "Enter the last 4 digits of your Social Security Number",
+      });
     } else if (ssn4Ref?.current?.value.length === 4) {
       setLoader(true);
       const inputSSN4 = ssn4Ref?.current?.value;
@@ -288,7 +299,7 @@ const RegisterInputs = ({
             id="outlined-basic"
             label="SSN4"
             type="tel"
-            placeholder="SSN4 – Social Security Number"
+            placeholder="Last 4 digits of your Social Security Number"
             name="SSN4"
             InputProps={{
               startAdornment: <AccountBoxIcon sx={{ pr: 1 }} />,
