@@ -223,15 +223,16 @@ const Register = ({ theme, skin }: props) => {
           />
         );
 
-      case STEPS.STATION_CONSENT:
-        return (
-          <StationsPrivacy
-            setPrevStep={setPrevStep}
-            skin={skin}
-            setStep={setStep}
-            theme={theme}
-          />
-        );
+      // case STEPS.STATION_CONSENT:
+      //   return (
+      //     <StationsPrivacy
+      //       setPrevStep={setPrevStep}
+      //       skin={skin}
+      //       setStep={setStep}
+      //       theme={theme}
+      //     />
+      //   );
+      
       case STEPS.REGISTER_FORM:
         return (
           <RegisterInputs
@@ -331,7 +332,7 @@ const Register = ({ theme, skin }: props) => {
       <div className="homePageWrapper">
         <HomeModal
           handleClose={() => {
-            navigate("/");
+            failureSessionRedirect(context.verificationSession);
           }}
           open={true}
           onFeedback={onFeedback}
