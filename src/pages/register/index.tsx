@@ -331,7 +331,7 @@ const Register = ({ theme, skin }: props) => {
       <div className="homePageWrapper">
         <HomeModal
           handleClose={() => {
-            navigate("/");
+            window.open(context?.verificationSession?.failureUrl, "_self");
           }}
           open={true}
           onFeedback={onFeedback}
