@@ -72,7 +72,7 @@ const PrivacyConsent = (props: props) => {
               Station Casinos will never disclose your biometric data, as
               provided in the retention schedule set forth in the Station
               Casinos Biometric Information Policy, a copy of which is posted
-              online at: <a href="https://www.stationcasinos.com/privacy-policy/">https://www.stationcasinos.com/privacy-policy/</a>.
+              online at: LINK.
             </ListItem>
             <ListItem className={classes.listText}>
               Only anonymized data, fully homomorphic encrypted and certified
