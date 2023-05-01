@@ -184,7 +184,7 @@ const DatabaseConsent = (props: props) => {
         color={"inherit"}
         style={styles.continueButton}
         onClick={() => {
-          setStep(STEPS.PRE_ENROLL);
+          setStep(STEPS.REGISTER_FORM);
           setPrevStep(STEPS.REGISTER_CONSENT);
         }}
       >
