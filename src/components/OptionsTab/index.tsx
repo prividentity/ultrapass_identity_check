@@ -24,7 +24,6 @@ import { useInterval } from "../../utils/useInterval";
 import PhoneIcon from "@mui/icons-material/Phone";
 import { DEFAULT_THEME, localThemes, theme as Theme } from "../../theme";
 import { navigateToUrl } from "../../utils";
-import { parsePhoneNumber } from "react-phone-number-input";
 
 interface TabPanelProps {
   children?: React.ReactNode;
