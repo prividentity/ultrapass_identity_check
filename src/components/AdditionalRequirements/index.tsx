@@ -4,7 +4,6 @@ import RequestAddress from "../RequestAddress";
 import RequestSSN from "../RequestSsn/index";
 import STEPS from "../../pages/register/steps";
 import { AdditionalRequirementsEnum } from "../../utils";
-import useToast from "../../utils/useToast";
 import { getUserPortrait } from "../../services/api";
 
 const AdditionalRequirements = ({
@@ -25,10 +24,8 @@ const AdditionalRequirements = ({
   const context = React.useContext(UserContext);
   const [requirement, setRequirement] = React.useState<any>(null);
   const { requestSSN9, requestResAddress, requestScanID } = context.userStatus;
-  const { showToast } = useToast();
   const convertLinkToImageData = async (link: string, setState: any) => {
     var newImg = new Image();
-    // console.log("data:image/png;base64," + link);
     newImg.src = "data:image/png;base64," + link;
     newImg.onload = async () => {
       var imgSize = {

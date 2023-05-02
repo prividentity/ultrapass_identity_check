@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { useNavigate } from "react-router";
+import { CircularProgress } from "@mui/material";
+import { createSearchParams } from "react-router-dom";
+
 import shield from "../../assets/shield.png";
 import { styles } from "./styles";
 import homeStyles from "../../styles/Home.module.css";
 import {
   ERROR,
   getStatusFromUser,
-  isAndroid,
-  isIOS,
-  osVersion,
   REQUIRES_INPUT,
   stopCamera,
   SUCCESS,
 } from "../../utils";
-import { CircularProgress } from "@mui/material";
 import { createVerificationSession, getUser } from "../../services/api";
 import womenImg from "../../assets/Kimiko-S3.png";
 import HomeModal from "../../components/Modal/homeModal";
@@ -23,7 +22,6 @@ import Header from "../../components/Header";
 import { DEFAULT_THEME, headerVisible } from "../../theme";
 import usePredictOneFa from "../../hooks/usePredictOneFa";
 import config from "../../config";
-import { createSearchParams } from "react-router-dom";
 import { useCamera, useWasm } from "../../hooks";
 import Camera from "../../components/Camera";
 import HomeComponent from "../../components/HomeComponent";
@@ -44,12 +42,9 @@ const Signin = ({ theme, skin }: props) => {
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
 
   useEffect(() => {
-    // console.log("=====? HERE????", { wasmStatus, wasmReady, ready });
-
     if (!wasmReady && wasmStatus.isChecking) return;
 
     if (wasmReady && !wasmStatus.isChecking && wasmStatus.support) {
-      // if(ready && wasmReady && wasmStatus.support && isCameraGranted) return;
       if (!ready) {
         init();
         return;
@@ -59,8 +54,6 @@ const Signin = ({ theme, skin }: props) => {
     if (wasmReady && ready) {
       predictUserOneFa();
     }
-
-    // console.log("--- wasm status ", ready);
   }, [wasmReady, ready, wasmStatus]);
 
   const createVerification = async () => {
@@ -93,7 +86,6 @@ const Signin = ({ theme, skin }: props) => {
     const user = userParam || JSON.parse(localStorage.getItem("user") || "{}");
     if (!user._id) return;
     const userStatus = getStatusFromUser(user);
-    // console.log(userStatus, "user status\n", user, "user\n");
     setIsUserVerify(false);
     stopCamera();
     switch (userStatus) {

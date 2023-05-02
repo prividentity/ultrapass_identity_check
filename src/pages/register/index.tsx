@@ -1,5 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import { useTheme, useMediaQuery } from "@mui/material";
+import { useSearchParams } from "react-router-dom";
+import { getUserStatus } from "@privateid/cryptonets-web-sdk-alpha";
 
 import HomeModal from "../../components/Modal/homeModal";
 import Header from "../../components/Header";
@@ -13,12 +15,10 @@ import CannotVerify from "../../components/SignupComponents/CannotVerify";
 import VerifyAgeWithScan from "../../components/SignupComponents/VerifyAgeWithScan";
 import DLScan from "../../components/DLScanning/DLFaceCompare";
 import CameraPermissionFail from "../../components/CameraPermissionFail";
-import { useNavigate } from "react-router";
 import Success from "../../components/Success";
 import VerificationNotCompleted from "../../components/VerificationNotCompleted";
 import { UserContext } from "../../context/UserContext";
 import AdditionalRequirements from "../../components/AdditionalRequirements";
-import { useSearchParams } from "react-router-dom";
 import useToast from "../../utils/useToast";
 import {
   getUser,
@@ -27,10 +27,8 @@ import {
   verifyTokenApi,
 } from "../../services/api";
 import { SUCCESS, REQUIRES_INPUT, getStatusFromUser } from "../../utils";
-import { getUserStatus } from "@privateid/cryptonets-web-sdk-alpha";
 import NotSupported from "../../components/NotSupported";
 import Feedback from "../../components/Feedback";
-import StationsPrivacy from "../../components/StationsPrivacy";
 import { MAX_VERIFY_COUNTS } from "../../constants";
 import { DEFAULT_THEME } from "../../theme";
 
@@ -42,12 +40,10 @@ interface props {
 const Register = ({ theme, skin }: props) => {
   const { showToast } = useToast();
   const context = useContext(UserContext);
-  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const tokenParams = searchParams.get("token") as string;
   const [step, setStep] = useState("");
   const [prevStep, setPrevStep] = useState(STEPS.START);
-  const [token, setToken] = useState("");
   const [loading, setLoading] = useState(false);
   const muiTheme = useTheme();
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
@@ -93,8 +89,7 @@ const Register = ({ theme, skin }: props) => {
         const { userApproved, ...rest } = ((await getUserStatus({
           id: res.customerInformation.customerId,
         })) || {}) as any;
-        const { requestScanID, requestResAddress } = rest || {};
-        // console.log("USER DETAILS:", userDetails);
+        const { requestScanID } = rest || {};
         if (!userDetails.uuid || !userDetails.portrait) {
           setStep(STEPS.PRE_ENROLL);
         } else if (
@@ -232,14 +227,13 @@ const Register = ({ theme, skin }: props) => {
       //       theme={theme}
       //     />
       //   );
-      
+
       case STEPS.REGISTER_FORM:
         return (
           <RegisterInputs
             matchesSM={matchesSM}
             setStep={setStep}
             skin={skin}
-            setToken={setToken}
             setPrevStep={setPrevStep}
           />
         );
@@ -325,7 +319,7 @@ const Register = ({ theme, skin }: props) => {
   const onFeedback = () => {
     setStep(STEPS.FEEDBACK);
     setPrevStep(step);
-  }
+  };
   return (
     <>
       {<Header theme={themeName} />}

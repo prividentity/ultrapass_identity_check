@@ -1,7 +1,7 @@
 import React from "react";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { useStyles, styles } from "../../pages/register/styles";
-import { theme as Theme, theme } from "../../theme";
+import { theme as Theme } from "../../theme";
 
 import smallLock from "../../assets/smallLock.png";
 import STEPS from "../../pages/register/steps";

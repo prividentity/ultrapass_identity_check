@@ -6,7 +6,6 @@ async function convertBase64ToImageData(imageSrc: string, setImageData: any) {
       w: newImg.width,
       h: newImg.height,
     };
-    // alert(imgSize.w + " " + imgSize.h);
     const canvas = document.createElement("canvas");
     canvas.width = imgSize.w;
     canvas.height = imgSize.h;

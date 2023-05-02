@@ -12,7 +12,6 @@ const Home = ({ theme, skin }: props) => {
   const themeName = skin || DEFAULT_THEME;
   const muiTheme = useTheme();
   const matchesSM = useMediaQuery(muiTheme.breakpoints.down("sm"));
-  // console.log(themeName, "themeName");
   return (
     <>
       {headerVisible?.includes(skin) && <Header theme={themeName} />}

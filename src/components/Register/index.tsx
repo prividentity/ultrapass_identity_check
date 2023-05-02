@@ -32,13 +32,11 @@ const RegisterInputs = ({
   setStep,
   skin,
   matchesSM,
-  setToken,
   setPrevStep,
 }: {
   setStep: any;
   skin: string;
   matchesSM: boolean;
-  setToken: (e: string) => void;
   setPrevStep: (e: string) => void;
 }) => {
   const classes = useStyles();
@@ -135,7 +133,6 @@ const RegisterInputs = ({
         tokenParams
       );
       if (result.user) {
-        setToken(result?.user?.customerId);
         setStep(STEPS.PRE_ENROLL);
       }
       setLoader(false);

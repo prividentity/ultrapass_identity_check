@@ -1,15 +1,6 @@
-import {
-  Box,
-  CircularProgress,
-  MenuItem,
-  Select,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { CircularProgress, MenuItem, Select } from "@mui/material";
 import { switchCamera } from "@privateid/cryptonets-web-sdk-alpha";
-import React, { useEffect, useState } from "react";
-import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
+import { useEffect, useState } from "react";
 import useCamera, { setResolutionForIphoneCC } from "../../hooks/useCamera";
 import useWasm from "../../hooks/useWasm";
 import styles from "../../styles/Home.module.css";
@@ -39,8 +30,6 @@ const Camera = ({
   const { isCameraGranted } = useCameraPermissions(onReadyCallback);
   const elementId = "userVideo";
   const classes = useStyles();
-  const theme = useTheme();
-  const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
   const { ready, init, device, devices, settings } = useCamera(
     elementId,
     mode,
@@ -49,14 +38,7 @@ const Camera = ({
     isDocumentScan
   );
 
-  // console.log("CAMERA SETTING FROM APP", settings);
-
   useEffect(() => {
-    // console.log(
-    //   `CAMERA CHECKING IF FULL HD ${
-    //     settings ? Math.max(settings.width, settings.height) : "qwe"
-    //   }`
-    // );
     if (settings && Math.max(settings.width, settings.height) < 1920) {
       // console.log("NOT FULL HD");
       onCameraNotFullHd();
@@ -113,10 +95,7 @@ const Camera = ({
   };
 
   return (
-    <div
-      className={styles.cameraContainer}
-      style={style}
-    >
+    <div className={styles.cameraContainer} style={style}>
       {!ready ? (
         <div className="overlayLoader">
           <CircularProgress />
@@ -163,9 +142,7 @@ const Camera = ({
         ) : null}
       </div>
       {message && (
-        <div
-          className={styles.enrollDisplay}
-        >
+        <div className={styles.enrollDisplay}>
           <span> {message} </span>
         </div>
       )}

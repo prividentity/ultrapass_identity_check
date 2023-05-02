@@ -11,17 +11,22 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
-import { styles } from "../../pages/signup/styles";
 import { useNavigate } from "react-router";
+import { createSearchParams } from "react-router-dom";
+
+import { styles } from "../../pages/signup/styles";
 import {
   createVerificationSession,
   getProductGroupList,
 } from "../../services/api";
-import { createSearchParams } from "react-router-dom";
 import config from "../../config";
 import { useStyles } from "../../pages/home/styles";
-import { getStatusFromUser, navigateToUrl } from "../../utils";
-import { SUCCESS, FAILURE } from "../../utils";
+import {
+  getStatusFromUser,
+  navigateToUrl,
+  SUCCESS,
+  FAILURE,
+} from "../../utils";
 
 interface props {
   theme?: string;
@@ -52,7 +57,6 @@ const HomeComponent = ({ theme, skin }: props) => {
       ...config.clientConfig,
       productGroupId: selectedProductGroup || "intergalactic",
     };
-    // console.log(JSON.stringify(payload));
     const result: any = await createVerificationSession(payload);
     if (result?.token) {
       onFlowChange(flow, result?.token, result?.url);
@@ -63,17 +67,8 @@ const HomeComponent = ({ theme, skin }: props) => {
   const onFlowChange = (flow: number, token: string, url?: string) => {
     switch (flow) {
       case 1:
-        // navigate({
-        //   pathname: "/register",
-        //   search: createSearchParams({
-        //     token: token || "",
-        //     skin: skin || "",
-        //   }).toString(),
-
-        // change this from navigate to using window.location.href
         window.location.href = url || `/register?token=${token}&skin=${skin}`;
         break;
-      // });
       case 2:
         return navigate({
           pathname: "/register",
@@ -177,7 +172,6 @@ const HomeComponent = ({ theme, skin }: props) => {
   const handleChange = (e: any) => {
     setSelectedProductGroup(e?.target?.value);
   };
-  // console.log({ productGroup });
   return (
     <>
       <Container maxWidth="xl">

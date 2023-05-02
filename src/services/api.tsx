@@ -2,7 +2,6 @@ import { updatePayload, verificationSessionPayload } from "../interface";
 import cryptonetsAPI from "./index";
 import identityAPI from "./orchestration";
 import { MessagePayload } from "../interface";
-import { API_KEY } from "../utils";
 
 export const sendMessage = async (payload: MessagePayload) => {
   try {
@@ -28,14 +27,6 @@ export const updateUserToken = async (
   verificationsessiontoken: string
 ) => {
   try {
-    // const requestOptions: RequestInit = {
-    //   method: 'PUT',
-    //   body: JSON.stringify(payload),
-    //   headers: {
-    //     'x-api-key': process.env.REACT_APP_API_KEY || "",
-    //     'Content-Type': 'application/json',
-    //   },
-    // };
     const result = await identityAPI.put(
       `/verification-session/${verificationsessiontoken}/customer-information`,
       payload
