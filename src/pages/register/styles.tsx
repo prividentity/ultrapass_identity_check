@@ -382,9 +382,11 @@ export const useStyles = makeStyles((theme: any) => ({
     },
     "& > div": {
       [theme.breakpoints.between("xs", "sm")]: {
-        flex: 1,
+        // flex: 1,
         display: "flex",
-        alignItems: " flex-end",
+        alignItems: "flex-end",
+        justifyContent: 'center',
+        paddingLeft: '0px',
       },
     },
   },

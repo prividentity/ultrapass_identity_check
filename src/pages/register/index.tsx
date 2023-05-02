@@ -163,43 +163,48 @@ const Register = ({ theme, skin }: props) => {
   }, [tokenParams]);
 
   const onVerifyId = async () => {
-    setLoading(true);
-    // console.log("context before verify?????", context);
-    const payload = {
-      token: context.id,
-    };
-    await verifyIdApi({ id: tokenParams, payload });
-    const { userApproved, ...rest } = ((await getUserStatus({
-      id: context.id,
-    })) || {}) as any;
-    const { requestScanID, requestResAddress } = rest || {};
-    context.setUserStatus({
-      userApproved,
-      requestScanID,
-      requestResAddress: !requestScanID && requestResAddress,
-      ...rest,
-    });
-    const status = getStatusFromUser({ userApproved, ...rest });
-    const session = context.verificationSession;
-    if (status === SUCCESS) {
-      showToast("You successfully completed your ID verification.", "success");
-      if (session.successUrl) {
-        setTimeout(() => {
-          window.location.replace(session.successUrl);
-        }, 2000);
+    if (!loading) {
+      setLoading(true);
+      // console.log("context before verify?????", context);
+      const payload = {
+        token: context.id,
+      };
+      await verifyIdApi({ id: tokenParams, payload });
+      const { userApproved, ...rest } = ((await getUserStatus({
+        id: context.id,
+      })) || {}) as any;
+      const { requestScanID, requestResAddress } = rest || {};
+      context.setUserStatus({
+        userApproved,
+        requestScanID,
+        requestResAddress: !requestScanID && requestResAddress,
+        ...rest,
+      });
+      const status = getStatusFromUser({ userApproved, ...rest });
+      const session = context.verificationSession;
+      if (status === SUCCESS) {
+        showToast(
+          "You successfully completed your ID verification.",
+          "success"
+        );
+        if (session.successUrl) {
+          setTimeout(() => {
+            window.location.replace(session.successUrl);
+          }, 2000);
+        }
+      } else if (status === REQUIRES_INPUT) {
+        if (context.verifyAttempts >= MAX_VERIFY_COUNTS) {
+          return failureSessionRedirect(session);
+        }
+        context.setVerifyAttempts(context.verifyAttempts + 1);
+        showToast("We need more information to verify your identity.", "error");
+        setStep(STEPS.ADDITIONAL_REQUIREMENTS);
+      } else {
+        failureSessionRedirect(session);
+        // setStep(STEPS.VERIFICATION_NOT_COMPLETED);
       }
-    } else if (status === REQUIRES_INPUT) {
-      if (context.verifyAttempts >= MAX_VERIFY_COUNTS) {
-        return failureSessionRedirect(session);
-      }
-      context.setVerifyAttempts(context.verifyAttempts + 1);
-      showToast("We need more information to verify your identity.", "error");
-      setStep(STEPS.ADDITIONAL_REQUIREMENTS);
-    } else {
-      failureSessionRedirect(session);
-      // setStep(STEPS.VERIFICATION_NOT_COMPLETED);
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const _renderChildren = () => {
@@ -232,7 +237,7 @@ const Register = ({ theme, skin }: props) => {
       //       theme={theme}
       //     />
       //   );
-      
+
       case STEPS.REGISTER_FORM:
         return (
           <RegisterInputs
@@ -325,7 +330,7 @@ const Register = ({ theme, skin }: props) => {
   const onFeedback = () => {
     setStep(STEPS.FEEDBACK);
     setPrevStep(step);
-  }
+  };
   return (
     <>
       {<Header theme={themeName} />}
