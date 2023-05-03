@@ -82,7 +82,9 @@ const Register = ({ theme, skin }: props) => {
           const enrollImage = ctx.getImageData(0, 0, imgSize.w, imgSize.h);
           setState(enrollImage);
           context.setDlAction("frontscan");
-          setStep(STEPS.DRIVERLICENSE);
+          setTimeout(() => {
+            setStep(STEPS.DRIVERLICENSE);
+          }, 300);
         };
       };
       if (res?.customerInformation?.customerId) {
@@ -109,7 +111,10 @@ const Register = ({ theme, skin }: props) => {
             userPortrait.imagedata,
             context.setEnrollImageData
           );
-        } else if (!userDetails?.govId?.firstName) {
+        } else if (
+          !userDetails?.govId?.firstName &&
+          userDetails?.govId?.portraitConfScore
+        ) {
           context.setDlAction("backscan");
           setStep(STEPS.DRIVERLICENSE);
         } else {
