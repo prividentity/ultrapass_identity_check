@@ -29,7 +29,7 @@ export const UserContext = createContext({
   setFailURL: (failURL: string) => {},
   userStatus: defaultUserStatus,
   setUserStatus: (userStatus: any) => {},
-  verifyAttempts: 0,
+  verifyAttempts: 1,
   setVerifyAttempts: (userStatus: number) => {},
   verificationSession: {
     successUrl: "",
@@ -60,7 +60,7 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [successURL, setSuccessURL] = useState("");
   const [failURL, setFailURL] = useState("");
   const [userStatus, setUserStatus] = useState(defaultUserStatus);
-  const [verifyAttempts, setVerifyAttempts] = useState(0);
+  const [verifyAttempts, setVerifyAttempts] = useState(1);
   const [verificationSession, setVerificationSession] = useState<any>({});
   const [enrollImageData, setEnrollImageData] = useState<any>(null);
   const [portraitConfScore, setPortraitConfScore] = useState<any>(null);
