@@ -113,7 +113,7 @@ const Register = ({ theme, skin }: props) => {
           );
         } else if (
           !userDetails?.govId?.firstName &&
-          userDetails?.govId?.portraitConfScore
+          userDetails?.govId?.portraitConfScore !== undefined
         ) {
           context.setDlAction("backscan");
           setStep(STEPS.DRIVERLICENSE);
