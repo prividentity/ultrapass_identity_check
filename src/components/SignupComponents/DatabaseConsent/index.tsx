@@ -66,7 +66,7 @@ const DatabaseConsent = (props: props) => {
             {skin === "c1" ? (
               <>
                 <ListItem className={classes.listText}>
-                  I acknowledge I am over 18 years of age and all information I
+                  I acknowledge I am over 21 years of age and all information I
                   provided is accurate.
                 </ListItem>
                 <ListItem className={classes.listText}>
