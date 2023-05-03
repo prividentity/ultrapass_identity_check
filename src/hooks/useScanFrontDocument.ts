@@ -2,9 +2,9 @@ import { SetStateAction, useEffect, useState } from "react";
 import {
   convertCroppedImage,
   isValidPhotoID,
-} from "@privateid/cryptonets-web-sdk-alpha";
+} from "@privateid/cryptonets-web-sdk";
 import { CANVAS_SIZE } from "../utils";
-import { DocType } from "@privateid/cryptonets-web-sdk-alpha/dist/types";
+import { DocType } from "@privateid/cryptonets-web-sdk/dist/types";
 
 const useScanFrontDocument = (
   onSuccess: ({
