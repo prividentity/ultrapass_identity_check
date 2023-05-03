@@ -82,9 +82,7 @@ const Register = ({ theme, skin }: props) => {
           const enrollImage = ctx.getImageData(0, 0, imgSize.w, imgSize.h);
           setState(enrollImage);
           context.setDlAction("frontscan");
-          setTimeout(() => {
-            setStep(STEPS.DRIVERLICENSE);
-          }, 300);
+          setStep(STEPS.DRIVERLICENSE);
         };
       };
       if (res?.customerInformation?.customerId) {
