@@ -86,7 +86,7 @@ const CreateAccountConsent = (props: props) => {
             }}
           >
             <ListItem className={classes.listText}>
-              I acknowledge I am over 18 years of age, all information I
+              I acknowledge I am over 21 years of age, all information I
               provided is accurate, and I am prohibited from allowing any person
               under the age of 18 to access or use my account.
             </ListItem>
