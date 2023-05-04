@@ -94,7 +94,7 @@ const DatabaseConsent = (props: props) => {
                   processed, stored, transmitted, or received.
                 </ListItem>
                 <ListItem className={classes.listText}>
-                  I acknowledge I am over 18 years of age, all information I
+                  I acknowledge I am over 21 years of age, all information I
                   provided is accurate, and I am prohibited from allowing any
                   other person to access or use my verified digital identity
                   account.
