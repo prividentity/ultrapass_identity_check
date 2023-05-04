@@ -27,7 +27,7 @@ import {
   verifyTokenApi,
 } from "../../services/api";
 import { SUCCESS, REQUIRES_INPUT, getStatusFromUser } from "../../utils";
-import { getUserStatus } from "@privateid/cryptonets-web-sdk-alpha";
+import { getUserStatus } from "@privateid/cryptonets-web-sdk";
 import NotSupported from "../../components/NotSupported";
 import Feedback from "../../components/Feedback";
 import StationsPrivacy from "../../components/StationsPrivacy";
@@ -82,9 +82,7 @@ const Register = ({ theme, skin }: props) => {
           const enrollImage = ctx.getImageData(0, 0, imgSize.w, imgSize.h);
           setState(enrollImage);
           context.setDlAction("frontscan");
-          setTimeout(() => {
-            setStep(STEPS.DRIVERLICENSE);
-          }, 300);
+          setStep(STEPS.DRIVERLICENSE);
         };
       };
       if (res?.customerInformation?.customerId) {
@@ -113,7 +111,7 @@ const Register = ({ theme, skin }: props) => {
           );
         } else if (
           !userDetails?.govId?.firstName &&
-          userDetails?.govId?.portraitConfScore
+          userDetails?.govId?.portraitConfScore !== undefined
         ) {
           context.setDlAction("backscan");
           setStep(STEPS.DRIVERLICENSE);

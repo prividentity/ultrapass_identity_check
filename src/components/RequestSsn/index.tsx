@@ -13,7 +13,7 @@ import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import { useStyles, styles } from "../../pages/signup/styles";
 import { theme as Theme } from "../../theme";
 import { UserContext } from "../../context/UserContext";
-import { updateUser } from "@privateid/cryptonets-web-sdk-alpha/dist/apiUtils";
+import { updateUser } from "@privateid/cryptonets-web-sdk/dist/apiUtils";
 import STEPS from "../../pages/register/steps";
 import useToast from "../../utils/useToast";
 import { formatPhoneInput } from "../../utils";
