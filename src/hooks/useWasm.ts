@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 
-import { loadPrivIdModule } from "@privateid/cryptonets-web-sdk";
+import { loadPrivIdModule } from "@privateid/cryptonets-web-sdk-alpha";
 import { getUrlParameter } from "../utils";
 import { UserContext } from "../context/UserContext";
 

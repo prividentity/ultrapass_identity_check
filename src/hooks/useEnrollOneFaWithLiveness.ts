@@ -1,7 +1,7 @@
 // @ts-nocheck
 /* eslint-disable no-unused-vars */
 import { useState } from "react";
-import { enroll1FA } from "@privateid/cryptonets-web-sdk";
+import { enroll1FA } from "@privateid/cryptonets-web-sdk-alpha";
 
 const useEnrollOneFaWithLiveness = (
   element = "userVideo",

@@ -23,8 +23,8 @@ import {
   closeCamera,
   updateUser,
   uploadDL,
-} from "@privateid/cryptonets-web-sdk";
-import { DLType } from "@privateid/cryptonets-web-sdk/dist/types";
+} from "@privateid/cryptonets-web-sdk-alpha";
+import { DLType } from "@privateid/cryptonets-web-sdk-alpha/dist/types";
 
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import useToast from "../../utils/useToast";

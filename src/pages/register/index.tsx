@@ -27,7 +27,7 @@ import {
   verifyTokenApi,
 } from "../../services/api";
 import { SUCCESS, REQUIRES_INPUT, getStatusFromUser } from "../../utils";
-import { getUserStatus } from "@privateid/cryptonets-web-sdk";
+import { getUserStatus } from "@privateid/cryptonets-web-sdk-alpha";
 import NotSupported from "../../components/NotSupported";
 import Feedback from "../../components/Feedback";
 import StationsPrivacy from "../../components/StationsPrivacy";

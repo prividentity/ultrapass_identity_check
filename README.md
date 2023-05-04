@@ -42,12 +42,12 @@ export default IdentityVerificationButton;
 
 #### Install dependencies
 ```javascript
-npm i express @privateid/cryptonets-web-sdk
+npm i express @privateid/cryptonets-web-sdk-alpha
 ```
 
 ```javascript
 import express from "express";
-import { createVerificationSession } from "@privateid/cryptonets-web-sdk";
+import { createVerificationSession } from "@privateid/cryptonets-web-sdk-alpha";
 
 const app = express();
 const PORT = process.env.PORT;

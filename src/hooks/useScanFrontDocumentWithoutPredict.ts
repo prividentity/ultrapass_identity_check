@@ -3,9 +3,9 @@ import {
   convertCroppedImage,
   faceCompareLocal,
   isValidPhotoID,
-} from "@privateid/cryptonets-web-sdk";
+} from "@privateid/cryptonets-web-sdk-alpha";
 import { CANVAS_SIZE } from "../utils";
-import { DocType } from "@privateid/cryptonets-web-sdk/dist/types";
+import { DocType } from "@privateid/cryptonets-web-sdk-alpha/dist/types";
 
 const useScanFrontDocument = (
   onSuccess: ({
