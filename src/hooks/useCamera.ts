@@ -1,8 +1,8 @@
 /* eslint-disable */
 import { useState } from "react";
-import { openCamera } from "@privateid/cryptonets-web-sdk-alpha";
+import { openCamera } from "@privateid/cryptonets-web-sdk";
 import { isIphoneCC, mapDevices } from "../utils";
-import { CameraFaceMode } from "@privateid/cryptonets-web-sdk-alpha/dist/types";
+import { CameraFaceMode } from "@privateid/cryptonets-web-sdk/dist/types";
 
 const useCamera = (
   element = "userVideo",
