@@ -64,7 +64,18 @@ const VerifyAgeWithScan = (props: props) => {
           Get ready to take a selfie and <br />
           scan your driver’s license
         </Typography>
-        <img src={SelfieEmoji} alt="scan" width={"250px"} />
+        <img src={SelfieEmoji} alt="scan" width={"200px"} />
+        <Typography
+          component="p"
+          textAlign="center"
+          fontSize={16}
+          fontWeight={500}
+          mt={2}
+          color={"#333"}
+          mb={2}
+        >
+          Make sure you are in a well-lit area
+        </Typography>
       </Grid>
       {!matchesSM && <Divider color={palette?.[skin]?.listText} />}
       <Button

@@ -350,20 +350,32 @@ const DLFaceCompare = ({
         ) : null}
 
         {!hasNoCamera && (
-          <Typography
-            component="p"
-            textAlign="center"
-            fontSize={14}
-            fontWeight={500}
-            mt={1}
-            mb={2}
-          >
-            {isBarcodeScan
-              ? "Place the bar code in the safe area"
-              : dlAction === DlActionEnum.backscan
-              ? "Place the BACK of your ID towards the camera"
-              : "Place the FRONT of your ID towards the camera"}
-          </Typography>
+          <>
+            <Typography
+              component="p"
+              textAlign="center"
+              fontSize={14}
+              fontWeight={500}
+              mt={1}
+              mb={0}
+            >
+              {isBarcodeScan
+                ? "Place the bar code in the safe area"
+                : dlAction === DlActionEnum.backscan
+                ? "Place the BACK of your ID towards the camera"
+                : "Place the FRONT of your ID towards the camera"}
+            </Typography>
+            <Typography
+              component="p"
+              textAlign="center"
+              fontSize={14}
+              fontWeight={500}
+              mt={0}
+              mb={0}
+            >
+              For best results use a dark background
+            </Typography>
+          </>
         )}
 
         <Box className={classes.otherDevice} pl={3} mb={1}>
