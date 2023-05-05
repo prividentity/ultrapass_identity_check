@@ -13,6 +13,7 @@ const FaceCompareFrontDocument = ({
   onCameraFail,
   enrollImageData,
   setOpStatus,
+  setStep
 }: {
   onSuccess: (e: any) => void;
   onReadyCallback: (e: boolean) => void;
@@ -20,6 +21,7 @@ const FaceCompareFrontDocument = ({
   onCameraFail: (e: any) => void;
   enrollImageData: any;
   setOpStatus: (e: number) => void;
+  setStep: () => void;
 }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [canvasSize, setCanvasSize] = useState();
@@ -83,6 +85,7 @@ const FaceCompareFrontDocument = ({
         requireHD={true}
         message={returnMessage()}
         isDocumentScan={true}
+        setStep={setStep}
       ></Camera>
     </div>
   );
