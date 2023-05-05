@@ -321,6 +321,7 @@ const DLFaceCompare = ({
                 onCameraFail={onCameraFail}
                 onCameraNotFullHd={onCameraNotFullHd}
                 setOpStatus={(e: number) => setOpStatus(e)}
+                setStep={setStep}
               />
             ) : (
               <FaceCompareFrontDocument
@@ -330,6 +331,7 @@ const DLFaceCompare = ({
                 onCameraFail={onCameraFail}
                 enrollImageData={enrollImageData}
                 setOpStatus={(e: number) => setOpStatus(e)}
+                setStep={setStep}
               />
             )}
           </Box>
