@@ -5,6 +5,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Home from "./pages/home";
 import Signin from "./pages/signin";
 import Register from "./pages/register";
+import { SessionProvider } from "./context/SessionContext";
 
 const skin = localThemes?.includes(window?.location?.search?.split("skin=")[1])
   ? window?.location?.search?.split("skin=")[1]
@@ -26,7 +27,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/register",
-    element: <Register theme={themeName} skin={skin} />,
+    element: (
+      <SessionProvider>
+        <Register theme={themeName} skin={skin} />
+      </SessionProvider>
+    ),
   },
 ]);
 

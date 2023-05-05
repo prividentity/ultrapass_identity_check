@@ -40,3 +40,12 @@ export interface componentsParameterInterface {
   skin: string;
   matchesSM: boolean;
 }
+export interface Session {
+  token: string;
+  flowStatus: string;
+  sessionStatus: string;
+  ageThreshold: number;
+  expiresAt: Date;
+  isUsed: boolean;
+  redirectUrl: string;
+}

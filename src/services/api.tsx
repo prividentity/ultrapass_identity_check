@@ -146,3 +146,8 @@ export const feedback = async (payload: any) => {
     return err;
   }
 };
+
+export const getSession = async (token: string): Promise<any> => {
+  const result = (await cryptonetsAPI.get(`session/${token}`)) as any;
+  return result;
+};
