@@ -62,8 +62,12 @@ const Header = (props: props) => {
           }
           alt=""
           width={isStncharms ? 100 : skin === "c1" ? 120 : 140}
-          onClick={() => navigate("/")}
-          style={{ cursor: "pointer", marginTop: 20 }}
+          onClick={() => {
+            if (!isStncharms) {
+              navigate("/");
+            }
+          }}
+          style={{ cursor: !isStncharms ? "pointer" : "", marginTop: 20 }}
           className="headerLogo"
         />
       );
