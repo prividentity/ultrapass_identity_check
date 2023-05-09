@@ -59,7 +59,7 @@ const Camera = ({
     // );
     if (settings && Math.max(settings.width, settings.height) < 1920) {
       // console.log("NOT FULL HD");
-      onCameraNotFullHd();
+      // onCameraNotFullHd();
     }
   }, [onCameraNotFullHd, settings]);
 
