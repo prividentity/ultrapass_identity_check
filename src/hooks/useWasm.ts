@@ -16,7 +16,7 @@ const useWasm = () => {
   const init = async () => {
     const apiKey = getUrlParameter("api_key", null);
     const apiUrl = getUrlParameter("api_url", null);
-    const isSupported = await loadPrivIdModule(apiUrl, apiKey);
+    const isSupported = await loadPrivIdModule(apiUrl, apiKey, false, false, false, false, true);
     // console.log("WASM LOADED SUPPORTED?", isSupported);
     // setReady(false);
     // setWasmStatus({isChecking:false, support: false, message: "not supported."});
