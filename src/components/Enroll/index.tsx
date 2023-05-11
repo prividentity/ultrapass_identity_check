@@ -202,7 +202,7 @@ const Enroll = ({
             ) : (
               <Camera
                 onReadyCallback={cameraPermissionCheckAndEnroll}
-                onSwitchCamera={enrollUserOneFa}
+                onSwitchCamera={()=>{}}
                 onCameraFail={onCameraFail}
                 message={enrollStatus}
                 onWasmLoadFail={onWasmLoadFail}

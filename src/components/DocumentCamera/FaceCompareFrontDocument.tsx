@@ -49,6 +49,7 @@ const FaceCompareFrontDocument = ({
   }, [resultResponse]);
 
   const handleScanDLFront = async (e: boolean) => {
+    console.log("FRONT DL SCAN CALLED");
     setIsReady(e);
     onReadyCallback?.(e);
     // hack to initialize canvas with large memory, so it doesn't cause an issue.
@@ -78,7 +79,7 @@ const FaceCompareFrontDocument = ({
       )}
       <Camera
         onReadyCallback={handleScanDLFront}
-        onSwitchCamera={handleScanDLFront}
+        onSwitchCamera={()=>{}}
         onCameraFail={onCameraFail}
         style={{ height: "unset" }}
         mode={"back"}
