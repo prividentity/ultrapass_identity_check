@@ -11,10 +11,31 @@ const skin = localThemes?.includes(window?.location?.search?.split("skin=")[1])
   : DEFAULT_THEME;
 const themeName = skin || DEFAULT_THEME;
 
-const router = createBrowserRouter([
+const router = createBrowserRouter(skin === "stncharms"? [
+  {
+    path: "/cams_test",
+    element:
+      <Home theme={themeName} skin={skin} />,
+  },
+  {
+    path: "/signup",
+    element: <Register theme={themeName} skin={skin} />,
+  },
+  {
+    path: "/signin",
+    element: <Signin theme={themeName} skin={skin} />,
+  },
+  {
+    path: "/register",
+    element: <Register theme={themeName} skin={skin} />,
+  },
+]
+:
+[
   {
     path: "/",
-    element: <Home theme={themeName} skin={skin} />,
+    element:
+      <Home theme={themeName} skin={skin} />,
   },
   {
     path: "/signup",

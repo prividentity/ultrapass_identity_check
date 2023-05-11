@@ -20,7 +20,7 @@ interface props {
   setStep: (e: string) => void;
 }
 
-const VerifyAgeWithScan = (props: props) => {
+const   VerifyAgeWithScan = (props: props) => {
   const { skin, setStep, setPrevStep } = props;
   const muiTheme = useTheme();
   const mainTheme = Theme;
