@@ -6,21 +6,13 @@ import {
 import { CANVAS_SIZE } from "../utils";
 
 const useScanBackDocument = (onSuccess: (e: any) => void) => {
-  const [scannedCodeData, setScannedCodeData] = useState({});
+  const [scannedCodeData, setScannedCodeData] = useState<any>({});
   const [isFound, setIsFound] = useState(false);
 
   // raw byte
   const [inputImageData, setInputImageData] = useState<any>(null);
   const [croppedDocumentRaw, setCroppedDocumentRaw] = useState(null);
   const [croppedBarcodeRaw, setCroppedBarcodeRaw] = useState(null);
-
-  // image width
-  const [croppedDocumentWidth, setCroppedDocumentWidth] = useState(null);
-  const [croppedBarcodeWidth, setCroppedBarcodeWidth] = useState(null);
-
-  // image height
-  const [croppedDocumentHeight, setCroppedDocumentHeight] = useState(null);
-  const [croppedBarcodeHeight, setCroppedBarcodeHeight] = useState(null);
 
   // base64 image
   const [inputImageBase64, setInputImageBase64] = useState(null);
@@ -34,24 +26,12 @@ const useScanBackDocument = (onSuccess: (e: any) => void) => {
       setBarcodeStatusCode(result.returnValue.op_status);
       if (result.returnValue.op_status === 0) {
         // onSuccess(result.returnValue);
-        setScannedCodeData(result.returnValue)
-        const {
-          crop_doc_width,
-          crop_doc_height,
-          crop_barcode_width,
-          crop_barcode_height,
-        } = result.returnValue;
-        setCroppedDocumentWidth(crop_doc_width);
-        setCroppedDocumentHeight(crop_doc_height);
-        setCroppedBarcodeWidth(crop_barcode_width);
-        setCroppedBarcodeHeight(crop_barcode_height);
+        setScannedCodeData(result.returnValue);
         setIsFound(true);
         return;
       } else {
-        setCroppedDocumentWidth(null);
-        setCroppedDocumentHeight(null);
-        setCroppedBarcodeWidth(null);
-        setCroppedBarcodeHeight(null);
+        setScannedCodeData({});
+        setIsFound(false);
       }
     }
     setCroppedBarcodeRaw(null);
@@ -64,7 +44,7 @@ const useScanBackDocument = (onSuccess: (e: any) => void) => {
     imageData: any,
     width: any,
     height: any,
-    setState: SetStateAction<any>,
+    setState: SetStateAction<any>
   ) => {
     if (imageData.length === width * height * 4) {
       const imageBase64 = await convertCroppedImage(imageData, width, height);
@@ -76,48 +56,47 @@ const useScanBackDocument = (onSuccess: (e: any) => void) => {
   useEffect(() => {
     if (inputImageData && isFound) {
       convertImageToBase64(
-        inputImageData?.data,
-        inputImageData?.width,
-        inputImageData?.height,
+        inputImageData,
+        scannedCodeData?.image_width,
+        scannedCodeData?.image_height,
         setInputImageBase64
       );
     }
-  }, [inputImageData, isFound]);
+  }, [inputImageData, scannedCodeData?.image_width, isFound]);
 
   // Converting Cropped Document
   useEffect(() => {
     if (
       isFound &&
       croppedDocumentRaw &&
-      croppedDocumentWidth &&
-      croppedDocumentHeight
+      scannedCodeData?.crop_doc_width &&
+      scannedCodeData?.crop_doc_height
     ) {
       convertImageToBase64(
         croppedDocumentRaw,
-        croppedDocumentWidth,
-        croppedDocumentHeight,
+        scannedCodeData?.crop_doc_width,
+        scannedCodeData?.crop_doc_height,
         setCroppedDocumentBase64
       );
     }
-  }, [croppedDocumentRaw, croppedDocumentWidth, croppedDocumentHeight, isFound]);
+  }, [croppedDocumentRaw, scannedCodeData?.crop_doc_width, isFound]);
 
   // Converting Cropped Barcode
   useEffect(() => {
     if (
       croppedBarcodeRaw &&
-      croppedBarcodeWidth &&
-      croppedBarcodeHeight &&
+      scannedCodeData?.crop_barcode_width &&
+      scannedCodeData?.crop_barcode_height &&
       isFound
     ) {
       convertImageToBase64(
         croppedBarcodeRaw,
-        croppedBarcodeWidth,
-        croppedBarcodeHeight,
+        scannedCodeData?.crop_barcode_width,
+        scannedCodeData?.crop_barcode_height,
         setCroppedBarcodeBase64
       );
     }
-  }, [croppedBarcodeRaw, croppedBarcodeWidth, croppedBarcodeHeight, isFound]);
-
+  }, [croppedBarcodeRaw, scannedCodeData?.crop_barcode_width, isFound]);
 
   // onSuccess Callback
   useEffect(() => {
@@ -139,9 +118,8 @@ const useScanBackDocument = (onSuccess: (e: any) => void) => {
     inputImageBase64,
     croppedDocumentBase64,
     croppedBarcodeBase64,
-    scannedCodeData,
+    scannedCodeData?.crop_barcode_width,
   ]);
-
 
   const scanBackDocument = async (canvasSize?: any) => {
     // if (canvasSize && canvasSize !== internalCanvasSize) {
@@ -159,12 +137,14 @@ const useScanBackDocument = (onSuccess: (e: any) => void) => {
         true,
         undefined as any,
         // @ts-ignore
-        { document_scan_barcode_only: true},
+        { document_scan_barcode_only: true },
         canvasObj
       )) as any;
-    setCroppedDocumentRaw(croppedDocument);
-    setCroppedBarcodeRaw(croppedBarcode);
-    setInputImageData(imageData);
+    if(croppedDocument && croppedBarcode && imageData){
+      setCroppedDocumentRaw(croppedDocument);
+      setCroppedBarcodeRaw(croppedBarcode);
+      setInputImageData(imageData);
+    }
   };
 
   return {

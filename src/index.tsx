@@ -2,12 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
+import * as FullStory from '@fullstory/browser';
 import { SkinContextProvider } from "./context/SkinContext";
 import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+FullStory.init({ orgId: 'o-1KN8WV-na1' });
 root.render(
   <React.StrictMode>
     <SkinContextProvider>
