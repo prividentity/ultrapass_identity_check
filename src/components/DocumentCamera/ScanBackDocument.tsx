@@ -65,7 +65,7 @@ const ScanBackDocument = ({
       )}
       <Camera
         handleCanvasSizeChange={handleCallbackFromCanvasSizeChange}
-        onSwitchCamera={handleScanDocumentBack}
+        onSwitchCamera={()=>{}}
         onReadyCallback={handleScanDocumentBack}
         onCameraFail={onCameraFail}
         style={{ height: "unset" }}

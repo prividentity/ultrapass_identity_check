@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   AppBar,
   Box,
@@ -27,11 +27,13 @@ import { logos } from "../../theme";
 import useCameraPermissions from "../../hooks/useCameraPermissions";
 import { useSkinContext } from "../../context/SkinContext";
 import StationLogo from "../../assets/stations.png";
+import { UserContext } from "../../context/UserContext";
 
 interface props {
   theme?: string;
 }
 const Header = (props: props) => {
+  const context = useContext(UserContext);
   const { isCameraGranted } = useCameraPermissions();
   const { theme } = props;
   const muiTheme = useTheme();

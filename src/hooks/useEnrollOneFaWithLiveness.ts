@@ -27,15 +27,19 @@ const useEnrollOneFaWithLiveness = (
     setProgress(0);
     setEnrollData(null);
     // eslint-disable-next-line no-unused-vars
-    const {imageData, height, width} =  await enroll1FA(
-      callback,
-      {
-        input_image_format: "rgba",
-      },
-      true
-    );
-    if(imageData && width && height){
-      setEnrollPortrait(new ImageData(imageData, width, height))
+    try {
+      const { imageData, height, width } = await enroll1FA(
+        callback,
+        {
+          input_image_format: "rgba",
+        },
+        true
+      );
+      if (imageData && width && height) {
+        setEnrollPortrait(new ImageData(imageData, width, height));
+      }
+    } catch (e) {
+      enrollUserOneFa();
     }
   };
 
