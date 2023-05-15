@@ -17,11 +17,33 @@ const useEnrollOneFaWithLiveness = (
   const [enrollUUID, setEnrollUUID] = useState(null);
   const [enrollPortrait, setEnrollPortrait] = useState<ImageData>();
   const [livenessCheckStatus, setLivenessCheckStatus] = useState(null);
+  
 
   let tries = 0;
   let showError = false;
 
+  let reRunEnroll = true;
+  let reRunId;
+  let clearing = false;
+  const doInterval = () => {
+    const id = setInterval(() => {
+      console.log({ reRunEnroll, reRunId, clearing });
+      if (reRunEnroll) {
+        console.log("Redo Enroll!!");
+        enrollUserOneFa();
+      }
+      if (!clearing) {
+        reRunEnroll = true;
+      }
+    }, 5000);
+    return id;
+  };
+
   const enrollUserOneFa = async () => {
+    if (!reRunId) {
+      reRunId = doInterval();
+      console.log(reRunId);
+    }
     setFaceDetected(false);
     setEnrollStatus(null);
     setProgress(0);
@@ -44,14 +66,19 @@ const useEnrollOneFaWithLiveness = (
   };
 
   const callback = async (result) => {
-    // console.log("enroll callback hook result:", result);
-
+    console.log("enroll callback FE:", result);
+    reRunEnroll = false;
     switch (result.status) {
       case "VALID_FACE":
         setFaceDetected(true);
         setEnrollStatus(null);
         setProgress(result.progress);
         setLivenessCheckStatus(result?.livenessCheck);
+        if(result.progress === 100){
+          clearing = true;
+          clearInterval(reRunId);
+          reRunId = null;
+        }
         break;
       case "INVALID_FACE":
         if (!showError) {
@@ -63,8 +90,10 @@ const useEnrollOneFaWithLiveness = (
           }, 1000);
         }
         setEnrollStatus(
-          result?.livenessCheck === -1 || result?.livenessCheck === 1
-            ? "Face Not Found"
+          result?.livenessCheck === -1
+            ? "Move closer to camera"
+            : result?.livenessCheck === 1
+            ? "Image too dark, increase lighting"
             : result.message
         );
         setFaceDetected(false);
