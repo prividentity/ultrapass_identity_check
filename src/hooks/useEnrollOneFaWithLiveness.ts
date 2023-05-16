@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 import { useState } from "react";
 import { enroll1FA } from "@privateid/cryptonets-web-sdk";
+import Rerun from "../utils/reRuncheck";
 
 const useEnrollOneFaWithLiveness = (
   element = "userVideo",
@@ -15,36 +16,49 @@ const useEnrollOneFaWithLiveness = (
   const [enrollData, setEnrollData] = useState(null);
   const [enrollGUID, setEnrollGUID] = useState(null);
   const [enrollUUID, setEnrollUUID] = useState(null);
-  const [enrollPortrait, setEnrollPortrait] = useState("");
+  const [enrollPortrait, setEnrollPortrait] = useState<ImageData>();
   const [livenessCheckStatus, setLivenessCheckStatus] = useState(null);
 
   let tries = 0;
   let showError = false;
 
   const enrollUserOneFa = async () => {
+    RerunAction.doInterval();
     setFaceDetected(false);
     setEnrollStatus(null);
     setProgress(0);
     setEnrollData(null);
     // eslint-disable-next-line no-unused-vars
-    await enroll1FA(
-      callback,
-      {
-        input_image_format: "rgba",
-      },
-      true
-    );
+    try {
+      const { imageData, height, width } = await enroll1FA(
+        callback,
+        {
+          input_image_format: "rgba",
+        },
+        true
+      );
+      if (imageData && width && height) {
+        setEnrollPortrait(new ImageData(imageData, width, height));
+      }
+    } catch (e) {
+      enrollUserOneFa();
+    }
   };
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
+  const RerunAction = new Rerun(enrollUserOneFa);
 
   const callback = async (result) => {
-    // console.log("enroll callback hook result:", result);
-
+    // console.log("enroll callback FE:", result);
+    RerunAction.RerunAction = false;
     switch (result.status) {
       case "VALID_FACE":
         setFaceDetected(true);
         setEnrollStatus(null);
         setProgress(result.progress);
         setLivenessCheckStatus(result?.livenessCheck);
+        if (result.progress === 100) {
+          RerunAction.clearCheck();
+        }
         break;
       case "INVALID_FACE":
         if (!showError) {
@@ -56,8 +70,10 @@ const useEnrollOneFaWithLiveness = (
           }, 1000);
         }
         setEnrollStatus(
-          result?.livenessCheck === -1 || result?.livenessCheck === 1
-            ? "Face Not Found"
+          result?.livenessCheck === -1
+            ? "Move closer to camera"
+            : result?.livenessCheck === 1
+            ? "Image too dark, increase lighting"
             : result.message
         );
         setFaceDetected(false);
@@ -82,7 +98,7 @@ const useEnrollOneFaWithLiveness = (
           setEnrollStatus("ENROLL SUCCESS");
           setEnrollGUID(result.returnValue.PI.guid);
           setEnrollUUID(result.returnValue.PI.uuid);
-          setEnrollPortrait(result.portrait);
+          // setEnrollPortrait(result.portrait);
           setLivenessCheckStatus(0);
         }
         break;

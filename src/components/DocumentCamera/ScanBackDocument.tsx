@@ -11,7 +11,8 @@ const ScanBackDocument = ({
   onFailCallback,
   onCameraFail,
   onCameraNotFullHd,
-  setOpStatus
+  setOpStatus,
+  setStep
 }: {
   onSuccess?: (e: any) => void;
   onReadyCallback?: (e: boolean) => void;
@@ -19,6 +20,7 @@ const ScanBackDocument = ({
   onCameraFail?: (e: any) => void;
   onCameraNotFullHd?: (e: any) => void;
   setOpStatus?: (e: number) => void;
+  setStep?: () => void;
 }) => {
   const [canvasSize, setCanvasSize] = useState();
   const [isReady, setIsReady] = useState(false);
@@ -63,7 +65,7 @@ const ScanBackDocument = ({
       )}
       <Camera
         handleCanvasSizeChange={handleCallbackFromCanvasSizeChange}
-        onSwitchCamera={handleScanDocumentBack}
+        onSwitchCamera={()=>{}}
         onReadyCallback={handleScanDocumentBack}
         onCameraFail={onCameraFail}
         style={{ height: "unset" }}
@@ -72,6 +74,7 @@ const ScanBackDocument = ({
         message={getBackDocumentMessage(barcodeStatusCode)}
         isDocumentScan={true}
         onCameraNotFullHd={onCameraNotFullHd}
+        setStep={setStep}
       ></Camera>
     </div>
   );
