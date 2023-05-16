@@ -1,7 +1,7 @@
 // @ts-nocheck
 /* eslint-disable no-unused-vars */
 import { useState } from "react";
-import { enroll1FA } from "@privateid/cryptonets-web-sdk-alpha";
+import { enroll1FA } from "@privateid/cryptonets-web-sdk";
 import Rerun from "../utils/reRuncheck";
 
 const useEnrollOneFaWithLiveness = (

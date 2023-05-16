@@ -12,7 +12,7 @@
     "@mui/material": "^5.11.7",
     "@mui/styles": "^5.11.9",
     "@mui/x-date-pickers": "^5.0.17",
-    "@privateid/cryptonets-web-sdk-alpha": "latest",
+    "@privateid/cryptonets-web-sdk": "latest",
     "@sentry/react": "^7.51.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -41,8 +41,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "prestart": "cp -R ./node_modules/@privateid/cryptonets-web-sdk-alpha/wasm public/&& cp -R ./node_modules/@privateid/cryptonets-web-sdk-alpha/workers public/",
-    "postinstall": "cp -R ./node_modules/@privateid/cryptonets-web-sdk-alpha/wasm public/ && cp -R ./node_modules/@privateid/cryptonets-web-sdk-alpha/workers public/",
+    "prestart": "cp -R ./node_modules/@privateid/cryptonets-web-sdk/wasm public/&& cp -R ./node_modules/@privateid/cryptonets-web-sdk/workers public/",
+    "postinstall": "cp -R ./node_modules/@privateid/cryptonets-web-sdk/wasm public/ && cp -R ./node_modules/@privateid/cryptonets-web-sdk/workers public/",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

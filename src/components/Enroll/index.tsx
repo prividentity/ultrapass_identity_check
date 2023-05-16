@@ -13,7 +13,7 @@ import {
 import { useStyles, styles } from "./styles";
 import React, { useEffect, useState } from "react";
 import homeStyles from "../../styles/Home.module.css";
-import { convertCroppedImage } from "@privateid/cryptonets-web-sdk-alpha";
+import { convertCroppedImage } from "@privateid/cryptonets-web-sdk";
 import Camera from "../Camera";
 import { theme as Theme } from "../../theme";
 import { UserContext } from "../../context/UserContext";
@@ -21,7 +21,7 @@ import {
   closeCamera,
   updateUser,
   uploadPortrait,
-} from "@privateid/cryptonets-web-sdk-alpha";
+} from "@privateid/cryptonets-web-sdk";
 import shield from "../../assets/shield.png";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import STEPS from "../../pages/register/steps";
