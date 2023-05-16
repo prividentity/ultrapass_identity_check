@@ -4,6 +4,7 @@ import {
   isValidPhotoID,
 } from "@privateid/cryptonets-web-sdk-alpha";
 import { CANVAS_SIZE } from "../utils";
+import Rerun from "../utils/reRuncheck";
 
 const useScanBackDocument = (onSuccess: (e: any) => void) => {
   const [scannedCodeData, setScannedCodeData] = useState<any>({});
@@ -21,33 +22,13 @@ const useScanBackDocument = (onSuccess: (e: any) => void) => {
 
   const [barcodeStatusCode, setBarcodeStatusCode] = useState(null);
 
-  let reRunScan = true;
-  let reRunId:any = null;
-  let clearing = false;
-
-  const doInterval = () => {
-    const id = setInterval(() => {
-      console.log({ reRunScan, reRunId, clearing });
-      if (reRunScan) {
-        console.log("Redo Scan Back!!");
-        scanBackDocument();
-      }
-      if (!clearing) {
-        reRunScan = true;
-      }
-    }, 5000);
-    return id;
-  };
-
   const documentCallback = (result: any) => {
-    console.log("document front BE: ", result);
-    reRunScan = false;
+    // console.log("document front BE: ", result);
+    RerunAction.RerunAction = false
     if (result.status === "WASM_RESPONSE") {
       setBarcodeStatusCode(result.returnValue.op_status);
       if (result.returnValue.op_status === 0) {
-        clearing = true;
-        clearInterval(reRunId);
-        reRunId = null;
+        RerunAction.clearCheck();
         // onSuccess(result.returnValue);
         setScannedCodeData(result.returnValue);
         setIsFound(true);
@@ -144,8 +125,9 @@ const useScanBackDocument = (onSuccess: (e: any) => void) => {
     scannedCodeData?.crop_barcode_width,
   ]);
 
+
   const scanBackDocument = async (canvasSize?: any) => {
-    reRunId = doInterval();
+    RerunAction.doInterval();
     // if (canvasSize && canvasSize !== internalCanvasSize) {
     //   internalCanvasSize = canvasSize;
     // }
@@ -170,6 +152,7 @@ const useScanBackDocument = (onSuccess: (e: any) => void) => {
       setInputImageData(imageData);
     }
   };
+  const RerunAction = new Rerun(scanBackDocument);
 
   return {
     scanBackDocument,

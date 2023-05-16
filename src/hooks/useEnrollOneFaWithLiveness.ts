@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 import { useState } from "react";
 import { enroll1FA } from "@privateid/cryptonets-web-sdk-alpha";
+import Rerun from "../utils/reRuncheck";
 
 const useEnrollOneFaWithLiveness = (
   element = "userVideo",
@@ -17,33 +18,12 @@ const useEnrollOneFaWithLiveness = (
   const [enrollUUID, setEnrollUUID] = useState(null);
   const [enrollPortrait, setEnrollPortrait] = useState<ImageData>();
   const [livenessCheckStatus, setLivenessCheckStatus] = useState(null);
-  
 
   let tries = 0;
   let showError = false;
 
-  let reRunEnroll = true;
-  let reRunId;
-  let clearing = false;
-  const doInterval = () => {
-    const id = setInterval(() => {
-      console.log({ reRunEnroll, reRunId, clearing });
-      if (reRunEnroll) {
-        console.log("Redo Enroll!!");
-        enrollUserOneFa();
-      }
-      if (!clearing) {
-        reRunEnroll = true;
-      }
-    }, 5000);
-    return id;
-  };
-
   const enrollUserOneFa = async () => {
-    if (!reRunId) {
-      reRunId = doInterval();
-      console.log(reRunId);
-    }
+    RerunAction.doInterval();
     setFaceDetected(false);
     setEnrollStatus(null);
     setProgress(0);
@@ -64,20 +44,20 @@ const useEnrollOneFaWithLiveness = (
       enrollUserOneFa();
     }
   };
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
+  const RerunAction = new Rerun(enrollUserOneFa);
 
   const callback = async (result) => {
-    console.log("enroll callback FE:", result);
-    reRunEnroll = false;
+    // console.log("enroll callback FE:", result);
+    RerunAction.RerunAction = false;
     switch (result.status) {
       case "VALID_FACE":
         setFaceDetected(true);
         setEnrollStatus(null);
         setProgress(result.progress);
         setLivenessCheckStatus(result?.livenessCheck);
-        if(result.progress === 100){
-          clearing = true;
-          clearInterval(reRunId);
-          reRunId = null;
+        if (result.progress === 100) {
+          RerunAction.clearCheck();
         }
         break;
       case "INVALID_FACE":
