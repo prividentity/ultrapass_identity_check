@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import { SetStateAction, useEffect, useState } from "react";
 import {
   convertCroppedImage,
@@ -6,6 +7,7 @@ import {
 } from "@privateid/cryptonets-web-sdk-alpha";
 import { CANVAS_SIZE } from "../utils";
 import { DocType } from "@privateid/cryptonets-web-sdk-alpha/dist/types";
+import Rerun from "../utils/reRuncheck";
 
 const useScanFrontDocument = (
   onSuccess: ({
@@ -45,36 +47,16 @@ const useScanFrontDocument = (
   const [resultResponse, setResultResponse] = useState(null);
   const [returnValue, setResultValue] = useState<any>({});
 
-  let reRunScan = true;
-  let reRunId:any = null;
-  let clearing = false;
-
-  const doInterval = () => {
-    const id = setInterval(() => {
-      console.log({ reRunScan, reRunId, clearing });
-      if (reRunScan) {
-        console.log("Redo Scan Front!!");
-        scanFrontDocument();
-      }
-      if (!clearing) {
-        reRunScan = true;
-      }
-    }, 5000);
-    return id;
-  };
-
   const documentCallback = (result: any) => {
     console.log("document front FE: ", result);
-    reRunScan = false;
+    RerunAction.RerunAction = false;
 
     setResultResponse(result.returnValue);
     if (
       result.returnValue.op_status === 0 ||
       result.returnValue.op_status === 10
     ) {
-      clearing = true;
-      clearInterval(reRunId);
-      reRunId = null;
+      RerunAction.clearCheck();
       const { predict_status } = result.returnValue;
       if (
         result.returnValue.cropped_face_width &&
@@ -208,10 +190,7 @@ const useScanFrontDocument = (
     canvasSize?: any,
     initializeCanvas?: any
   ) => {
-    
-    if(!reRunId) {
-      reRunId =  doInterval();
-    }
+    RerunAction.doInterval();
     const canvasObj = canvasSize ? CANVAS_SIZE?.[canvasSize] : {};
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const result: any = await isValidPhotoID(
@@ -235,6 +214,8 @@ const useScanFrontDocument = (
       console.log(e);
     }
   };
+
+  const RerunAction = new Rerun(scanFrontDocument);
 
   const reScanFrontDocument = () => {
     setInputImageData(null);
