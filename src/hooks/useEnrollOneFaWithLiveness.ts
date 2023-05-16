@@ -18,13 +18,9 @@ const useEnrollOneFaWithLiveness = (
   const [enrollUUID, setEnrollUUID] = useState(null);
   const [enrollPortrait, setEnrollPortrait] = useState<ImageData>();
   const [livenessCheckStatus, setLivenessCheckStatus] = useState(null);
-  
 
   let tries = 0;
   let showError = false;
-
-  // eslint-disable-next-line @typescript-eslint/no-use-before-define
-  const RerunAction = new Rerun(enrollUserOneFa);
 
   const enrollUserOneFa = async () => {
     RerunAction.doInterval();
@@ -48,6 +44,8 @@ const useEnrollOneFaWithLiveness = (
       enrollUserOneFa();
     }
   };
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
+  const RerunAction = new Rerun(enrollUserOneFa);
 
   const callback = async (result) => {
     // console.log("enroll callback FE:", result);
@@ -58,7 +56,7 @@ const useEnrollOneFaWithLiveness = (
         setEnrollStatus(null);
         setProgress(result.progress);
         setLivenessCheckStatus(result?.livenessCheck);
-        if(result.progress === 100){
+        if (result.progress === 100) {
           RerunAction.clearCheck();
         }
         break;

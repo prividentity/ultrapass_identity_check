@@ -23,7 +23,7 @@ const useScanBackDocument = (onSuccess: (e: any) => void) => {
   const [barcodeStatusCode, setBarcodeStatusCode] = useState(null);
 
   const documentCallback = (result: any) => {
-    console.log("document front BE: ", result);
+    // console.log("document front BE: ", result);
     RerunAction.RerunAction = false
     if (result.status === "WASM_RESPONSE") {
       setBarcodeStatusCode(result.returnValue.op_status);

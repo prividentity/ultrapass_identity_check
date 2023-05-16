@@ -48,7 +48,7 @@ const useScanFrontDocument = (
   const [returnValue, setResultValue] = useState<any>({});
 
   const documentCallback = (result: any) => {
-    console.log("document front FE: ", result);
+    // console.log("document front FE: ", result);
     RerunAction.RerunAction = false;
 
     setResultResponse(result.returnValue);
