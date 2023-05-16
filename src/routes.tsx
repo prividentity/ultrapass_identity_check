@@ -20,6 +20,10 @@ const router = createBrowserRouter(
           element: <Register theme={themeName} skin={skin} />,
         },
         {
+          path: "/cams_test",
+          element: <Home theme={themeName} skin={skin} />,
+        },
+        {
           path: "*",
           element: <Redirect Url="https://stncharms.com/" />,
           errorElement: <Redirect Url="https://stncharms.com/" />,
