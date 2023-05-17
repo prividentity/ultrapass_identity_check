@@ -13,9 +13,9 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_CAMS }}
       AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
       SKIP_PREFLIGHT_CHECK: true
-      REACT_APP_API_URL: https://api.devel.cryptonets.ai/node
-      REACT_APP_API_URL_WASM: https://api.devel.cryptonets.ai/node
-      REACT_APP_API_ORCHESTRATION: https://api-orchestration.cams.devel.private.id
+      REACT_APP_API_URL: https://api.cryptonets.test.privateid.com/node
+      REACT_APP_API_URL_WASM: https://api.cryptonets.test.privateid.com/node
+      REACT_APP_API_ORCHESTRATION: https://api.orchestration.test.cams.privateid.com
       REACT_APP_API_KEY: "0000000000000000test"
       REACT_APP_WASM_MODULE: face_mask
       CI: false
