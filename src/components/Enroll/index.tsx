@@ -64,7 +64,7 @@ const Enroll = ({
     enrollUUID,
     enrollPortrait,
     livenessCheckStatus,
-  } = useEnrollOneFaWithLiveness("userVideo", (e: any) => console.log(e), 4);
+  } = useEnrollOneFaWithLiveness("userVideo", (e: any) => console.log(), 4);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleUserUpdate = async (guid: string, uuid: string) => {

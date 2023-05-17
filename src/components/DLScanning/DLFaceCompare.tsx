@@ -197,8 +197,6 @@ const DLFaceCompare = ({
     });
     // console.log("uploadBarcodeData", uploadBarcodeData);
 
-    console.log("===== end of DL SCAN ====== ");
-
     const govId = {
       firstName: barcodeData.firstName,
       lastName: barcodeData.lastName,

@@ -9,7 +9,7 @@ export const sendMessage = async (payload: MessagePayload) => {
     const result = await cryptonetsAPI.post(`/user/communicate`, payload);
     return result;
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     return err;
   }
 };

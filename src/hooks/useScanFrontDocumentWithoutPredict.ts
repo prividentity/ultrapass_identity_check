@@ -95,7 +95,7 @@ const useScanFrontDocument = (
         setState(imageBase64);
       }
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
@@ -211,7 +211,7 @@ const useScanFrontDocument = (
         setCroppedMugshotRaw(croppedMugshot);
       }
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 

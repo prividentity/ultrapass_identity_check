@@ -153,7 +153,7 @@ const DLScan = ({
     });
     // console.log("uploadBarcodeData: ", uploadBarcodeData);
 
-    console.log("===== end of DL SCAN ====== ");
+    // console.log("===== end of DL SCAN ====== ");
 
     const govId = {
       firstName: barcodeData.firstName,

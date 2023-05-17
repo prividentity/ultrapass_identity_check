@@ -62,13 +62,13 @@ const useCamera = (
 
       if (devices?.length === 0) {
         onCameraFail();
-        console.log("no camera");
+        // console.log("no camera");
       } else {
         setReady(true);
       }
     } catch (e) {
       onCameraFail();
-      console.log("Error Message", e);
+      // console.log("Error Message", e);
     }
 
     // const setCameraFocus = async () => {
@@ -118,7 +118,7 @@ export const setResolutionForIphoneCC = async () => {
     capabilities?.height?.max === 1440 &&
     capabilities?.width?.max === 1920
   ) {
-    console.log("SET CONFIGURATION FOR IPHONE CC");
+    // console.log("SET CONFIGURATION FOR IPHONE CC");
     await track.applyConstraints({
       advanced: [
         {

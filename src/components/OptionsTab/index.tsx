@@ -121,7 +121,7 @@ export default function FullWidthTabs({ skin }: any) {
       message: `to continue your verification process, Please delete this message if you did not request this verification.`,
       endpoint: pathAndQuery,
     };
-    console.log("Phone payload??", payload);
+    // console.log("Phone payload??", payload);
     setIsLoading(true);
     const response = await sendMessage(payload);
     setIsLoading(false);

@@ -20,7 +20,7 @@ const ScanFrontDocument = ({
 
   const handleFrontSuccess = (result?: any) => {
     onSuccess?.(result);
-    console.log("FRONT SCAN DATA: ", result);
+    // console.log("FRONT SCAN DATA: ", result);
   };
   const { scanFrontDocument, resultResponse } = useScanFrontDocument(
     handleFrontSuccess,
@@ -35,7 +35,7 @@ const ScanFrontDocument = ({
   const handleScanDLFront = async (e: boolean) => {
     onReadyCallback?.(e);
     // hack to initialize canvas with large memory, so it doesn't cause an issue.
-    console.log("handleScanDLFront");
+    // console.log("handleScanDLFront");
     if (e) {
       await scanFrontDocument(canvasSize);
     }

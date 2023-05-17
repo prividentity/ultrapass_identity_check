@@ -36,7 +36,7 @@ const FaceCompareFrontDocument = ({
       setErrorMessage("");
       onSuccess?.(result);
     // }
-    console.log("FRONT SCAN DATA: ", result);
+    // console.log("FRONT SCAN DATA: ", result);
   };
   const { scanFrontDocument, resultResponse, reScanFrontDocument } =
     useScanFrontDocumentWithoutPredict(
@@ -49,7 +49,7 @@ const FaceCompareFrontDocument = ({
   }, [resultResponse]);
 
   const handleScanDLFront = async (e: boolean) => {
-    console.log("FRONT DL SCAN CALLED");
+    // console.log("FRONT DL SCAN CALLED");
     setIsReady(e);
     onReadyCallback?.(e);
     // hack to initialize canvas with large memory, so it doesn't cause an issue.
