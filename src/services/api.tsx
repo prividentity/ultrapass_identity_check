@@ -3,14 +3,30 @@ import cryptonetsAPI from "./index";
 import identityAPI from "./orchestration";
 import { MessagePayload } from "../interface";
 import { API_KEY } from "../utils";
+import axios from "axios";
 
 export const sendMessage = async (payload: MessagePayload) => {
+  // try {
+  //   const result = await cryptonetsAPI.post(`/user/communicate`, payload);
+  //   return result;
+  // } catch (err) {
+  //   console.log(err);
+  //   return err;
+  // }
   try {
-    const result = await cryptonetsAPI.post(`/user/communicate`, payload);
-    return result;
-  } catch (err) {
-    console.log(err);
-    return err;
+    const result = await axios.post(
+      "https://api.cryptonets.ai/node/user/communicate",
+      payload,
+      {
+        headers: {
+          "x-api-key": "0000000000000000test",
+        },
+      }
+    );
+    return result.data;
+  } catch (e) {
+    console.log(e);
+   return e;
   }
 };
 
