@@ -10,13 +10,22 @@ const useWasm = () => {
   const [ready, setReady] = useState(false);
   const [wasmStatus, setWasmStatus] = useState<any>({ isChecking: true });
   const context = useContext(UserContext);
-
   const { isWasmLoaded, setIsWasmLoaded } = context;
 
   const init = async () => {
-    const apiKey = getUrlParameter("api_key", null);
+    const apiKey =
+      context?.verificationSession?.organization ||
+      getUrlParameter("api_key", null);
     const apiUrl = getUrlParameter("api_url", null);
-    const isSupported = await loadPrivIdModule(apiUrl, apiKey, null, null, null, null, true);
+    const isSupported = await loadPrivIdModule(
+      apiUrl,
+      apiKey,
+      null,
+      null,
+      null,
+      null,
+      true
+    );
     // console.log("WASM LOADED SUPPORTED?", isSupported);
     // setReady(false);
     // setWasmStatus({isChecking:false, support: false, message: "not supported."});
