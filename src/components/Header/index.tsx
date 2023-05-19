@@ -48,10 +48,9 @@ const Header = (props: props) => {
   const [loader, setLoader] = useState(true);
   const isStncharms = skin === "stncharms";
   const renderHeaderImage = () => {
-    const isAtHomePage =
-      window.location.pathname === "/" ||
-      window?.location?.pathname === "/register" ||
-      window?.location?.pathname === "/signin";
+    const isAtHomePage = ["/", "/register", "/cams_test", "/signin"]?.includes(
+      window.location.pathname
+    );
     if (isAtHomePage) {
       return (
         <img
@@ -98,12 +97,11 @@ const Header = (props: props) => {
     }
   };
 
-  let wrapper =
-    window.location.pathname === "/" ||
-    window?.location?.pathname === "/register" ||
-    window?.location?.pathname === "/signin"
-      ? styles.homeBar
-      : styles.appBar;
+  let wrapper = ["/", "/register", "/cams_test", "/signin"]?.includes(
+    window?.location?.pathname
+  )
+    ? styles.homeBar
+    : styles.appBar;
 
   const onLogout = () => {
     localStorage.removeItem("user");
@@ -151,9 +149,9 @@ const Header = (props: props) => {
         <Toolbar>
           {renderHeaderImage()}
           <Grid container alignItems="center" justifyContent={"flex-end"}>
-            {window.location.pathname === "/" ||
-            window?.location?.pathname === "/register" ||
-            window?.location?.pathname === "/signin" ? (
+            {["/", "/register", "/cams_test", "/signin"]?.includes(
+              window?.location?.pathname
+            ) ? (
               <img
                 src={
                   isStncharms ? StationLogo : matchesSM ? logoBlack : logoBlack
@@ -242,8 +240,9 @@ const Header = (props: props) => {
               ) : (
                 <>
                   {" "}
-                  {window.location.pathname === "/" ||
-                  window?.location?.pathname === "/register" ? (
+                  {["/", "/register", "/cams_test"]?.includes(
+                    window?.location?.pathname
+                  ) ? (
                     <Button
                       color={theme as "inherit"}
                       variant="contained"
