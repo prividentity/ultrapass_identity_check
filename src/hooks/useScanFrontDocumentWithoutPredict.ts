@@ -28,7 +28,8 @@ const useScanFrontDocument = (
     status: string;
     message: string;
   }) => void,
-  enrollImageData: ImageData
+  enrollImageData: ImageData,
+  showToastOnNotSame: ()=>void,
 ) => {
   const [isFound, setIsFound] = useState(false);
   const [resultStatus, setResultStatus] = useState(null);
@@ -48,7 +49,6 @@ const useScanFrontDocument = (
   const [returnValue, setResultValue] = useState<any>({});
 
   const documentCallback = (result: any) => {
-    // console.log("document front FE: ", result);
     RerunAction.RerunAction = false;
 
     setResultResponse(result.returnValue);
@@ -138,12 +138,27 @@ const useScanFrontDocument = (
   const faceCompareCallback = async (result: any) => {
     // console.log("faceCompareCallback", result);
     const { conf_score } = result.returnValue;
-    onSuccess({
-      inputImage: inputImageBase64,
-      croppedDocument: croppedDocumentBase64,
-      croppedMugshot: croppedMugshotBase64,
-      portraitConfScore: conf_score,
-    });
+    console.log("confidence_score:", conf_score);
+    if (conf_score <= 0.25){
+      onSuccess({
+        inputImage: inputImageBase64,
+        croppedDocument: croppedDocumentBase64,
+        croppedMugshot: croppedMugshotBase64,
+        portraitConfScore: conf_score,
+      });
+    }
+    else {
+      showToastOnNotSame();
+      setIsFound(false);
+      setInputImageBase64(null);
+      setCroppedDocumentBase64(null);
+      setCroppedMugshotBase64(null);
+      setInputImageData(null);
+      setCroppedDocumentRaw(null);
+      setCroppedMugshotRaw(null);
+      setResultValue(null);
+      scanFrontDocument();
+    }
   };
 
   // if all images are available and Document UUID available call onSuccess Callback
@@ -203,6 +218,7 @@ const useScanFrontDocument = (
       },
       canvasObj
     );
+
     try {
       const { imageData, croppedDocument, croppedMugshot } = result;
       if (imageData && croppedDocument && croppedMugshot) {

@@ -38,11 +38,16 @@ const FaceCompareFrontDocument = ({
     // }
     console.log("FRONT SCAN DATA: ", result);
   };
+  const showError = () => {
+    showToast("Enrolled Face and Document Mugshot does not match. Try again.", "error");
+  }
+
   const { scanFrontDocument, resultResponse, reScanFrontDocument } =
     useScanFrontDocumentWithoutPredict(
       handleFrontSuccess,
       onFailCallback,
-      enrollImageData
+      enrollImageData,
+      showError
     ) as any;
   useEffect(() => {
     setOpStatus(resultResponse?.op_status);
