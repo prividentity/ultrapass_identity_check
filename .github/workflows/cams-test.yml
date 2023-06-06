@@ -1,4 +1,4 @@
-name: cams2 test workflow
+name: cams test michelle workflow
 
 on:
   push:
