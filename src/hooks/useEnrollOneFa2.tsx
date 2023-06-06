@@ -40,13 +40,13 @@ const useEnrollOneFa = (
         setProgress(result.progress);
         break;
       case "INVALID_FACE":
-        if (!showError){
-          showError= true;
+        if (!showError) {
+          showError = true;
           setEnrollStatus(result.message);
           setFaceDetected(false);
-          setTimeout(()=>{
+          setTimeout(() => {
             showError = false;
-          },1000)
+          }, 1000);
         }
         setEnrollStatus(result.message);
         setFaceDetected(false);
@@ -56,10 +56,15 @@ const useEnrollOneFa = (
         setFaceDetected(true);
         break;
       case "WASM_RESPONSE":
-        if(result.returnValue?.error === -1 || result.returnValue?.error === -100 || result.returnValue?.status === -1 || result.returnValue?.status === -100) {
+        if (
+          result.returnValue?.error === -1 ||
+          result.returnValue?.error === -100 ||
+          result.returnValue?.status === -1 ||
+          result.returnValue?.status === -100
+        ) {
           setEnrollStatus("ENROLL FAILED, PLEASE TRY AGAIN");
           enrollUserOneFa();
-          return
+          return;
         }
         if (result.returnValue?.status === 0) {
           setEnrollStatus("ENROLL SUCCESS");

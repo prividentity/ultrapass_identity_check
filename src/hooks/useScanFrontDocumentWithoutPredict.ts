@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import { SetStateAction, useEffect, useState } from "react";
 import {
   convertCroppedImage,
@@ -6,6 +7,7 @@ import {
 } from "@privateid/cryptonets-web-sdk-alpha";
 import { CANVAS_SIZE } from "../utils";
 import { DocType } from "@privateid/cryptonets-web-sdk-alpha/dist/types";
+import Rerun from "../utils/reRuncheck";
 
 const useScanFrontDocument = (
   onSuccess: ({
@@ -36,14 +38,6 @@ const useScanFrontDocument = (
   const [croppedDocumentRaw, setCroppedDocumentRaw] = useState(null);
   const [croppedMugshotRaw, setCroppedMugshotRaw] = useState(null);
 
-  // image width
-  const [croppedDocumentWidth, setCroppedDocumentWidth] = useState(null);
-  const [croppedMugshotWidth, setCroppedMugshotWidth] = useState(null);
-
-  // image height
-  const [croppedDocumentHeight, setCroppedDocumentHeight] = useState(null);
-  const [croppedMugshotHeight, setCroppedMugshotHeight] = useState(null);
-
   // base64 image
   const [inputImageBase64, setInputImageBase64] = useState(null);
   const [croppedDocumentBase64, setCroppedDocumentBase64] = useState(null);
@@ -51,30 +45,26 @@ const useScanFrontDocument = (
 
   // confidence value
   const [resultResponse, setResultResponse] = useState(null);
+  const [returnValue, setResultValue] = useState<any>({});
+
   const documentCallback = (result: any) => {
+    // console.log("document front FE: ", result);
+    RerunAction.RerunAction = false;
+
     setResultResponse(result.returnValue);
     if (
       result.returnValue.op_status === 0 ||
       result.returnValue.op_status === 10
     ) {
-      const {
-        predict_status,
-        cropped_doc_height,
-        cropped_doc_width,
-        cropped_face_height,
-        cropped_face_width,
-      } = result.returnValue;
-
+      RerunAction.clearCheck();
+      const { predict_status } = result.returnValue;
       if (
         result.returnValue.cropped_face_width &&
         result.returnValue.cropped_face_height
       ) {
         setIsFound(true);
         setResultStatus(predict_status);
-        setCroppedDocumentWidth(cropped_doc_width);
-        setCroppedDocumentHeight(cropped_doc_height);
-        setCroppedMugshotWidth(cropped_face_width);
-        setCroppedMugshotHeight(cropped_face_height);
+        setResultValue(result.returnValue);
       } else {
         setInputImageData(null);
         setCroppedDocumentRaw(null);
@@ -111,49 +101,39 @@ const useScanFrontDocument = (
 
   // Converting imageInput
   useEffect(() => {
-    if (inputImageData && isFound && !inputImageBase64) {
+    if (inputImageData && isFound && returnValue?.image_width) {
       convertImageToBase64(
-        inputImageData?.data,
-        inputImageData?.width,
-        inputImageData?.height,
+        inputImageData,
+        returnValue?.image_width,
+        returnValue?.image_height,
         setInputImageBase64
       );
     }
-  }, [inputImageData, isFound, inputImageBase64]);
+  }, [inputImageData, isFound, returnValue?.image_width]);
 
   // Converting croppedDocument
   useEffect(() => {
-    if (
-      isFound &&
-      croppedDocumentRaw &&
-      croppedDocumentWidth &&
-      croppedMugshotHeight
-    ) {
+    if (isFound && croppedDocumentRaw && returnValue?.cropped_doc_width) {
       convertImageToBase64(
         croppedDocumentRaw,
-        croppedDocumentWidth,
-        croppedDocumentHeight,
+        returnValue?.cropped_doc_width,
+        returnValue?.cropped_doc_height,
         setCroppedDocumentBase64
       );
     }
-  }, [croppedDocumentRaw, croppedDocumentWidth, croppedMugshotHeight, isFound]);
+  }, [croppedDocumentRaw, returnValue?.cropped_doc_width, isFound]);
 
   // Converting croppedMugshot
   useEffect(() => {
-    if (
-      croppedMugshotRaw &&
-      croppedMugshotWidth &&
-      croppedMugshotHeight &&
-      isFound
-    ) {
+    if (croppedMugshotRaw && returnValue?.cropped_face_width && isFound) {
       convertImageToBase64(
         croppedMugshotRaw,
-        croppedMugshotWidth,
-        croppedMugshotHeight,
+        returnValue?.cropped_face_width,
+        returnValue?.cropped_face_height,
         setCroppedMugshotBase64
       );
     }
-  }, [croppedMugshotRaw, croppedMugshotWidth, croppedMugshotHeight, isFound]);
+  }, [croppedMugshotRaw, returnValue?.cropped_face_width, isFound]);
 
   const faceCompareCallback = async (result: any) => {
     // console.log("faceCompareCallback", result);
@@ -177,8 +157,8 @@ const useScanFrontDocument = (
       const mugshotImageData = new ImageData(
         // @ts-ignore
         croppedMugshotRaw,
-        croppedMugshotWidth,
-        croppedMugshotHeight
+        returnValue?.cropped_face_width,
+        returnValue?.cropped_face_height
       );
       const doCompare = async () => {
         // console.log("Doing compare of: ", {
@@ -202,8 +182,7 @@ const useScanFrontDocument = (
     croppedDocumentBase64,
     croppedMugshotBase64,
     croppedMugshotRaw,
-    croppedMugshotWidth,
-    croppedMugshotHeight,
+    returnValue?.cropped_face_width,
     enrollImageData,
   ]);
 
@@ -211,6 +190,7 @@ const useScanFrontDocument = (
     canvasSize?: any,
     initializeCanvas?: any
   ) => {
+    RerunAction.doInterval();
     const canvasObj = canvasSize ? CANVAS_SIZE?.[canvasSize] : {};
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const result: any = await isValidPhotoID(
@@ -225,25 +205,26 @@ const useScanFrontDocument = (
     );
     try {
       const { imageData, croppedDocument, croppedMugshot } = result;
-      setInputImageData(imageData);
-      setCroppedDocumentRaw(croppedDocument);
-      setCroppedMugshotRaw(croppedMugshot);
+      if (imageData && croppedDocument && croppedMugshot) {
+        setInputImageData(imageData);
+        setCroppedDocumentRaw(croppedDocument);
+        setCroppedMugshotRaw(croppedMugshot);
+      }
     } catch (e) {
       console.log(e);
     }
   };
 
+  const RerunAction = new Rerun(scanFrontDocument);
+
   const reScanFrontDocument = () => {
     setInputImageData(null);
     setCroppedDocumentRaw(null);
     setCroppedMugshotRaw(null);
-    setCroppedDocumentWidth(null);
-    setCroppedDocumentHeight(null);
-    setCroppedMugshotWidth(null);
-    setCroppedMugshotHeight(null);
     setInputImageBase64(null);
     setCroppedDocumentBase64(null);
     setCroppedMugshotBase64(null);
+    setResultValue({});
     scanFrontDocument();
   };
 

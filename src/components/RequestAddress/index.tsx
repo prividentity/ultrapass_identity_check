@@ -109,6 +109,19 @@ const RequestAddress = ({
           <br />
           Please try again with your home address.
         </Typography>
+        <Typography
+          component="p"
+          textAlign={matchesSM ? "center" : "left"}
+          fontSize={12}
+          fontWeight={600}
+          lineHeight={1}
+          mt={1}
+          className={classes.cardInnerText}
+          mb={0}
+        >
+          "If you have moved within the past 6 months, try your previous
+          address"
+        </Typography>
         <Box width={"100%"}>
           <TextField
             fullWidth

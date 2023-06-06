@@ -13,6 +13,7 @@ import {
 import { useStyles, styles } from "./styles";
 import React, { useEffect, useState } from "react";
 import homeStyles from "../../styles/Home.module.css";
+import { convertCroppedImage } from "@privateid/cryptonets-web-sdk-alpha";
 import Camera from "../Camera";
 import { theme as Theme } from "../../theme";
 import { UserContext } from "../../context/UserContext";
@@ -72,29 +73,36 @@ const Enroll = ({
     // console.log("play");
     setGUID(guid);
     setUUID(uuid);
-    await convertBase64ToImageData(enrollPortrait, setEnrollImageData);
+    if (enrollPortrait) {
+      setEnrollImageData(enrollPortrait);
+      const enrollPortraitBase64 = await convertCroppedImage(
+        enrollPortrait.data,
+        enrollPortrait.width,
+        enrollPortrait.height
+      );
+      // console.log({ enrollPortraitBase64 });
+      await uploadPortrait({
+        id,
+        portrait: enrollPortraitBase64,
+      });
+      // console.log("upload portrait:", uploadResult);
 
-    const uploadResult = await uploadPortrait({
-      id,
-      portrait: enrollPortrait,
-    });
-    // console.log("upload portrait:", uploadResult);
-
-    const params = {
-      id,
-      attributes: {
-        guid,
-        uuid,
-      },
-    };
-    const updateRes = (await updateUser(params)) as any;
-    if (updateRes.guid && updateRes.uuid) {
-      setShowSuccess(true);
-      await closeCamera(ELEMENT_ID);
-      setTimeout(async () => {
-        setDlAction("frontscan");
-        setStep(STEPS.DRIVERLICENSE);
-      }, 1000);
+      const params = {
+        id,
+        attributes: {
+          guid,
+          uuid,
+        },
+      };
+      const updateRes = (await updateUser(params)) as any;
+      if (updateRes.guid && updateRes.uuid) {
+        setShowSuccess(true);
+        await closeCamera(ELEMENT_ID);
+        setTimeout(async () => {
+          setDlAction("frontscan");
+          setStep(STEPS.DRIVERLICENSE);
+        }, 1000);
+      }
     }
   };
   useEffect(() => {
@@ -194,7 +202,7 @@ const Enroll = ({
             ) : (
               <Camera
                 onReadyCallback={cameraPermissionCheckAndEnroll}
-                onSwitchCamera={enrollUserOneFa}
+                onSwitchCamera={()=>{}}
                 onCameraFail={onCameraFail}
                 message={enrollStatus}
                 onWasmLoadFail={onWasmLoadFail}
@@ -207,20 +215,20 @@ const Enroll = ({
             )}
           </div>
           <Box className={classes.otherOptions}>
-             <Typography
-               component="p"
-               textAlign={matchesSM ? "center" : "left"}
-               fontSize={15}
-               fontWeight={500}
-               mt={2}
-               onClick={() => {
-                 setStep(STEPS.SWITCH_DEVICE);
-                 stopCamera();
-               }}
-             >
-               <PhoneIphoneIcon /> Switch to other device
-             </Typography>
-           </Box>
+            <Typography
+              component="p"
+              textAlign={matchesSM ? "center" : "left"}
+              fontSize={15}
+              fontWeight={500}
+              mt={2}
+              onClick={() => {
+                setStep(STEPS.SWITCH_DEVICE);
+                stopCamera();
+              }}
+            >
+              <PhoneIphoneIcon /> Switch to other device
+            </Typography>
+          </Box>
           <Box style={{ height: 50 }}>
             <Box style={{ height: 14 }}>
               {enrollOneFaProgress > 0 && (

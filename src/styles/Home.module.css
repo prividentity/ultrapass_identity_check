@@ -16,6 +16,7 @@
   height: 400px;
   margin-bottom: 0px;
   object-fit: cover;
+  width: 100%;
 }
 
 .age-box {
