@@ -94,12 +94,12 @@ export default function FullWidthTabs({ skin }: any) {
   const palette: { [key: string]: any } = mainTheme.palette;
   useInterval(async () => {
     verifyTokenApi(tokenParams).then((res: any) => {
-      if (["SUCCESS", "FAILURE"].includes(res.status)) {
+      if (["SUCCESS", "FAILURE"].includes(res?.status)) {
         setRefreshInterval(null);
-        if (res.status === "SUCCESS") {
-          navigateToUrl(res.successUrl, res.token);
+        if (res?.status === "SUCCESS") {
+          navigateToUrl(res?.successUrl, res?.token);
         } else {
-          navigateToUrl(res.failureUrl, res.token);
+          navigateToUrl(res?.failureUrl, res?.token);
         }
       }
     });
