@@ -3,14 +3,12 @@ import ReactDOM from "react-dom/client";
 import * as Sentry from "@sentry/react";
 import "./index.css";
 import App from "./App";
-import * as FullStory from "@fullstory/browser";
 import { SkinContextProvider } from "./context/SkinContext";
 import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
-FullStory.init({ orgId: "o-1KN8WV-na1" });
 process.env.REACT_APP_SENTRY_URL &&
   Sentry.init({
     dsn: process.env.REACT_APP_SENTRY_URL,
