@@ -17,6 +17,7 @@ jobs:
       REACT_APP_API_URL_WASM: https://api.cryptonets.ultrapass.id/node
       REACT_APP_API_ORCHESTRATION: https://api.orchestration.ultrapass.id
       REACT_APP_API_KEY: "0000000000000000test"
+      GENERATE_SOURCEMAP: false
       REACT_APP_WASM_MODULE: face_mask
       REACT_APP_SENTRY_URL: https://88fc65fee23b4e68af4569038c7adbee@o4505141914501120.ingest.sentry.io/4505141916467200
       CI: false
