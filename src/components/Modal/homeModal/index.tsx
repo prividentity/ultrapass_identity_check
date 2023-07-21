@@ -116,7 +116,7 @@ const HomeModal = (props: props) => {
               fontSize={16}
               color={matchesSM ? "#000" : "#fff"}
             >
-              Powered by Ultrapass.
+              Powered by PrivateID.
             </Typography>
 
             {/* <Link color={"#000"} className={classes.linkbox}>

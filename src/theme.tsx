@@ -10,11 +10,12 @@ import googleLogo from "./assets/google-logo.png";
 import fanduelLogo from "./assets/fanduel-logo.svg";
 import google from "./assets/account.png";
 import StnLogo from "./assets/stn-logo.png";
-import logoDarkUp from "./assets/up/logo-dark.png";
+// import logoDarkUp from "./assets/up/logo-dark.png";
 import StnLogoBlack from "./assets/stn-logo-black.png";
 import logoLightMg from "./assets/mg/logo-light.png";
 import darkBG from "./assets/dark-bg.jpg";
 import logoLightC1 from "./assets/c1/logo-light.png";
+import logoBlack from "./assets/centralLogo.png";
 
 export const DEFAULT_THEME = 'stncharms'
 export const localThemes = ["mg", "up", "c1", "stncharms", "primary"];
@@ -199,14 +200,14 @@ export const theme = createTheme({
 export const logos = {
   mainLogo: logo,
   primary: {
-    dark: logoDarkUp,
-    light: logoDarkUp,
+    dark: logoBlack,
+    light: logoBlack,
   },
   google: googleLogo,
   fanduel: fanduelLogo,
   up: {
-    dark: logoDarkUp,
-    light: logoDarkUp,
+    dark: logoBlack,
+    light: logoBlack,
   },
   mg: {
     dark: logoDarkMg,

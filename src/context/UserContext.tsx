@@ -34,6 +34,7 @@ export const UserContext = createContext({
   verificationSession: {
     successUrl: "",
     failureUrl: "",
+    organization: process.env.REACT_APP_API_KEY
   },
   setVerificationSession: (verificationSession: any) => {},
   enrollImageData: null,
