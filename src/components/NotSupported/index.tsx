@@ -17,7 +17,7 @@ import Box from "@mui/material/Box";
 import QRCode from "react-qr-code";
 import Grid from "@mui/material/Grid";
 import { Email as EmailIcon, ContentCopy } from "@mui/icons-material";
-import { sendMessage } from "../../services/api";
+import { sendMessage, sendSMS } from "../../services/api";
 import PhoneInputComponent from "../PhoneInput";
 
 interface TabPanelProps {
@@ -85,7 +85,7 @@ export default function NotSupported() {
       endpoint: window.location.search,
     };
     setIsLoading(true);
-    const response = await sendMessage(payload);
+    const response = await sendSMS(payload);
     setIsLoading(false);
     showToast("Message sent successfully", "success");
   };
@@ -118,7 +118,10 @@ export default function NotSupported() {
           <br /> You can also try to switching to another device.
         </Typography>
       </Grid>
-      <Grid item sx={{ bgcolor: "background.paper", width: "100%", height:"400px" }}>
+      <Grid
+        item
+        sx={{ bgcolor: "background.paper", width: "100%", height: "400px" }}
+      >
         <Tabs
           value={value}
           onChange={handleChange}
@@ -270,7 +273,9 @@ export default function NotSupported() {
               endIcon={<ContentCopy />}
               variant="contained"
               onClick={() => {
-                navigator.clipboard.writeText(window.location.origin.toString());
+                navigator.clipboard.writeText(
+                  window.location.origin.toString()
+                );
                 showToast("Link copied to clipboard", "success");
               }}
               sx={{ width: "100%" }}

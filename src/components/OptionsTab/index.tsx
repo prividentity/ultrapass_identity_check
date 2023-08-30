@@ -17,7 +17,7 @@ import Box from "@mui/material/Box";
 import QRCode from "react-qr-code";
 import Grid from "@mui/material/Grid";
 import { Email as EmailIcon, ContentCopy } from "@mui/icons-material";
-import { sendMessage, verifyTokenApi } from "../../services/api";
+import { sendMessage, sendSMS, verifyTokenApi } from "../../services/api";
 import PhoneInputComponent from "../PhoneInput";
 import { useSearchParams } from "react-router-dom";
 import { useInterval } from "../../utils/useInterval";
@@ -123,7 +123,7 @@ export default function FullWidthTabs({ skin }: any) {
     };
     console.log("Phone payload??", payload);
     setIsLoading(true);
-    const response = await sendMessage(payload);
+    const response = await sendSMS(payload);
     setIsLoading(false);
     showToast("Message sent successfully", "success");
   };

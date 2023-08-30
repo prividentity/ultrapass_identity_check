@@ -3,6 +3,24 @@ import cryptonetsAPI from "./index";
 import identityAPI from "./orchestration";
 import { MessagePayload } from "../interface";
 import { API_KEY } from "../utils";
+import axios from "axios";
+
+export const sendSMS = async (payload: any) => {
+  try {
+    const result = await axios.post(
+      `https://api.cryptonets.ai/node/user/communicate`,
+      payload,
+      {
+        headers: {
+          "x-api-key": process.env.REACT_APP_API_KEY || API_KEY,
+        },
+      }
+    );
+    return result;
+  } catch (err) {
+    return err;
+  }
+};
 
 export const sendMessage = async (payload: MessagePayload) => {
   try {
