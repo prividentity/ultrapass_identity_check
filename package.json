@@ -12,7 +12,7 @@
     "@mui/material": "^5.11.7",
     "@mui/styles": "^5.11.9",
     "@mui/x-date-pickers": "^5.0.17",
-    "@privateid/cryptonets-web-sdk-alpha": "latest",
+    "@privateid/cryptonets-web-sdk-alpha": "2.0.261-alpha",
     "@sentry/react": "^7.51.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
