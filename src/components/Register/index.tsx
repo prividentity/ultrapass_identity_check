@@ -69,7 +69,10 @@ const RegisterInputs = ({
   });
   const handleCheckSSN4Input = () => {
     if (ssn4Ref?.current?.value.length < 4) {
-      setShowSSN4Error({ error: true, message: "Enter the last 4 digits of your Social Security Number." });
+      setShowSSN4Error({
+        error: true,
+        message: "Enter the last 4 digits of your Social Security Number.",
+      });
     } else {
       setShowSSN4Error({ error: false, message: "" });
     }
@@ -148,7 +151,7 @@ const RegisterInputs = ({
     if (phoneNo && !phoneNo?.startsWith("+1")) {
       phoneNo = `+1${phoneNo.slice(1)}`;
     }
-    setCountry(parsePhoneNumber(phoneNo?.toString() || "")?.country);
+    // setCountry(parsePhoneNumber(phoneNo?.toString() || "")?.country);
     setPhoneInput(phoneNo);
   };
 
@@ -239,26 +242,53 @@ const RegisterInputs = ({
                 },
               }}
               placeholder="Mobile number"
-              inputComponent={React.forwardRef((props, ref) => (
-                <PhoneInputComponent
-                  {...props}
-                  inputRef={ref}
-                  InputProps={{
-                    startAdornment: <PhoneIcon sx={{ pr: 1 }} />,
-                  }}
-                  inputProps={{
-                    maxLength: phoneInput?.startsWith("+1") ? 15 : 11,
-                  }}
-                  sx={{
-                    ".Mui-focused fieldset": {
-                      borderColor: `${palette[skin]?.primaryColor} !important`,
-                    },
-                    "label.Mui-focused ": {
-                      color: `${palette[skin]?.primaryColor} !important`,
-                    },
-                  }}
-                />
-              ))}
+              inputComponent={React.forwardRef((props, ref) => {
+                return (
+                  <PhoneInputComponent
+                    {...props}
+                    inputRef={ref}
+                    InputProps={{
+                      startAdornment: <PhoneIcon sx={{ pr: 1 }} />,
+                    }}
+                    inputProps={
+                      {
+                        maxLength: phoneInput?.startsWith("+1") ? 15 : 11,
+                      }
+                    }
+                    onChange={(e: any) => {
+                      const parsedPhoneNo = e.target.value.replace(/[-\s.()]/g, "");
+                      if (parsedPhoneNo.startsWith("+")) {
+                        if (
+                          parsedPhoneNo[1] !== "1" &&
+                          parsedPhoneNo.length === 11
+                        ) {
+                          e.target.value = `+1${parsedPhoneNo.slice(1, 11)}`;
+                        } else {
+                          e.target.value = parsedPhoneNo.slice(0, 12);
+                        }
+                      } else {
+                        if (
+                          parsedPhoneNo[0] === "1" &&
+                          parsedPhoneNo.length === 11
+                        ) {
+                          e.target.value = `+${parsedPhoneNo.slice(1, 11)}`;
+                        } else {
+                          e.target.value = `+1${parsedPhoneNo.slice(0, 10)}`;
+                        }
+                      }
+                      return props.onChange(e);
+                    }}
+                    sx={{
+                      ".Mui-focused fieldset": {
+                        borderColor: `${palette[skin]?.primaryColor} !important`,
+                      },
+                      "label.Mui-focused ": {
+                        color: `${palette[skin]?.primaryColor} !important`,
+                      },
+                    }}
+                  />
+                );
+              })}
             />
           </Grid>
 
