@@ -129,10 +129,10 @@ const Register = ({ theme, skin }: props) => {
           const status = getStatusFromUser({ userApproved, ...rest });
           const session = res;
           if (status === SUCCESS) {
-            showToast(
-              "You successfully completed your ID verification.",
-              "success"
-            );
+            // showToast(
+            //   "You successfully completed your ID verification.",
+            //   "success"
+            // );
             if (session.successUrl) {
               setTimeout(() => {
                 window.location.replace(session.successUrl);
@@ -186,10 +186,10 @@ const Register = ({ theme, skin }: props) => {
       const status = getStatusFromUser({ userApproved, ...rest });
       const session = context.verificationSession;
       if (status === SUCCESS) {
-        showToast(
-          "You successfully completed your ID verification.",
-          "success"
-        );
+        // showToast(
+        //   "You successfully completed your ID verification.",
+        //   "success"
+        // );
         if (session.successUrl) {
           setTimeout(() => {
             window.location.replace(session.successUrl);
