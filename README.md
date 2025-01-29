@@ -1,6 +1,6 @@
-# PrivateID Verified Identity – PreBuilt Webpages
+# Ultrapass Verified Identity by PrivateID – PreBuilt Webpages
 
-Welcome to the **PrivateID Verified Identity** repository! This project houses front-end code for **pre-built web pages**—developed in **React.js**, **Material UI**, and **TypeScript**—that showcase how to integrate **PrivateID**’s homomorphic tokenization-based **Ultrapass Authenticator** into your applications. 
+Welcome to the **Ultrapass Verified Identity** repository! This project houses front-end code for **pre-built web pages**—developed in **React.js**, **Material UI**, and **TypeScript**—that showcase how to integrate **Ultrapass**’s homomorphic tokenization-based **Ultrapass Authenticator** into your applications. 
 
 The **Ultrapass Authenticator** is a comprehensive identity solution supporting:
 - **Registration** (biometric capture and secure user onboarding)
@@ -10,7 +10,7 @@ The **Ultrapass Authenticator** is a comprehensive identity solution supporting:
 
 Depending on your requirements, you can deploy these capabilities in multiple ways:
 - As **downloadable software** on mobile devices (iOS/Android apps)
-- As a fully managed **SaaS** hosted by PrivateID
+- As a fully managed **SaaS** hosted by Ultrapass
 - As a **PaaS** in your own infrastructure (self-hosted or private cloud)
 - Embedded in a webpage via **WebAssembly**, with **white-label** options to fit your brand
 
@@ -19,25 +19,25 @@ Depending on your requirements, you can deploy these capabilities in multiple wa
 ## Table of Contents
 
 1. [Ultrapass Authenticator Introduction](#ultrapass-authenticator-introduction)
-2. [Introduction to PrivateID Services](#introduction-to-privateid-services)
-   - [PrivateID Downloadable Software Services](#privateid-downloadable-software-services)
-   - [PrivateID Online and SaaS Services](#privateid-online-and-saas-services)
+2. [Introduction to Ultrapass Services](#introduction-to-Ultrapass-services)
+   - [Ultrapass Downloadable Software Services](#Ultrapass-downloadable-software-services)
+   - [Ultrapass Online and SaaS Services](#Ultrapass-online-and-saas-services)
 3. [Repository Overview](#repository-overview)
    - [Environment Variables](#environment-variables)
    - [Configuration](#configuration)
 4. [Using the Ultrapass Authenticator in Different Deployment Models](#using-the-ultrapass-authenticator-in-different-deployment-models)
    - [Mobile Apps (Downloadable Software)](#mobile-apps-downloadable-software)
-   - [Backend as SaaS (Hosted by PrivateID)](#backend-as-saas-hosted-by-privateid)
+   - [Backend as SaaS (Hosted by Ultrapass)](#backend-as-saas-hosted-by-Ultrapass)
    - [Backend as PaaS (Self-Hosted)](#backend-as-paas-self-hosted)
    - [WebAssembly Integration (Browser-Based)](#webassembly-integration-browser-based)
    - [White Labeling](#white-labeling)
-5. [How to Use PrivateID Software (General Guidance)](#how-to-use-privateid-software-general-guidance)
+5. [How to Use Ultrapass Software (General Guidance)](#how-to-use-Ultrapass-software-general-guidance)
    - [Register](#register)
    - [Passwordless Authentication](#passwordless-authentication)
    - [Face Age Estimation](#face-age-estimation)
    - [Ultrapass MediaSafe Hosted Video Pipeline](#ultrapass-mediasafe-hosted-video-pipeline)
    - [Attended vs. Unattended Use](#attended-vs-unattended-use)
-6. [Technical Explanation of PrivateID Homomorphic Tokenization](#technical-explanation-of-privateid-homomorphic-tokenization)
+6. [Technical Explanation of Ultrapass Homomorphic Tokenization](#technical-explanation-of-Ultrapass-homomorphic-tokenization)
    - [1. Introduction](#1-introduction)
    - [2. Background and Motivation](#2-background-and-motivation)
    - [3. Core Concept: Homomorphic Tokenization Technology](#3-core-concept-homomorphic-tokenization-technology)
@@ -76,18 +76,18 @@ The **Ultrapass Authenticator** provides a comprehensive solution for identity v
 
 ---
 
-## Introduction to PrivateID Services
+## Introduction to Ultrapass Services
 
-**PrivateID** is the overarching platform behind the Ultrapass Authenticator. Here’s how the broader **PrivateID** service offerings map to typical enterprise or developer needs:
+**Ultrapass** is the overarching platform behind the Ultrapass Authenticator. Here’s how the broader **Ultrapass** service offerings map to typical enterprise or developer needs:
 
-### PrivateID Downloadable Software Services
+### Ultrapass Downloadable Software Services
 
 1. **Downloadable Computer Software for Biometric Identification**  
    - Software utilities, SDKs, or modules that can be installed on devices, self-check-in kiosks, or servers.  
    - Manages biometric capture, liveness checks, and token creation.
 
 2. **Biometric Identification Apparatus**  
-   - Hardware and sensor packages optimized for the PrivateID ecosystem.  
+   - Hardware and sensor packages optimized for the Ultrapass ecosystem.  
    - Ensures high-fidelity biometric capture, further reducing error rates and false matches.
 
 3. **Downloadable Computer Programs for Identity Control, Verification, and Enrollment**  
@@ -98,10 +98,10 @@ The **Ultrapass Authenticator** provides a comprehensive solution for identity v
    - Adds a layer of secure credential storage on user devices or enterprise servers.  
    - Facilitates multi-factor or biometric-based decryption and access control.
 
-### PrivateID Online and SaaS Services
+### Ultrapass Online and SaaS Services
 
 1. **User Authentication Technology Services**  
-   - PrivateID’s secure servers verify user tokens and identity.  
+   - Ultrapass’s secure servers verify user tokens and identity.  
    - Also supports multi-factor flows combining biometrics and passcodes/hardware tokens.
 
 2. **Biometric Authentication & Identity Verification for E-Commerce**  
@@ -121,7 +121,7 @@ The **Ultrapass Authenticator** provides a comprehensive solution for identity v
    - Deploy to your private cloud or on-premises infrastructure.
 
 6. **Online Non-Downloadable Software (Web Portals, On-Demand Apps)**  
-   - Provides immediate access to PrivateID features via web browsers.  
+   - Provides immediate access to Ultrapass features via web browsers.  
    - Zero install overhead for end-users, suitable for quick user registration or identity proofing.
 
 ---
