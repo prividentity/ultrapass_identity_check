@@ -7,6 +7,8 @@ The **Ultrapass Authenticator** is a comprehensive identity solution supporting:
 - **Passwordless Authentication** (eliminates traditional passwords with token-based verification)
 - **Face Age Estimation** (age checks to ensure compliance or user gating)
 - **Ultrapass MediaSafe** (a hosted video pipeline for secure media recording and verification)
+- **Photo ID Scanning and On-Device Comparison** (capture driver's license, passport, or other photo IDs; compare the ID portrait to the user in real time)
+- **IDV Services** in partnership with **IDEMIA** (document identity verification and authenticity checks)
 
 Depending on your requirements, you can deploy these capabilities in multiple ways:
 - As **downloadable software** on mobile devices (iOS/Android apps)
@@ -74,6 +76,11 @@ The **Ultrapass Authenticator** provides a comprehensive solution for identity v
    - A secure end-to-end pipeline for recording and storing video evidence (e.g., identity-proofing sessions, liveness checks, additional user verification steps).  
    - Preserves privacy by encrypting data in transit and at rest, ensuring compliance with data protection laws.
 
+5. **Photo ID Scanning & Comparison**  
+   - Capture and analyze the portrait from a driver’s license, passport, or other photo IDs.  
+   - Compare the ID portrait to the user in real time on-device, ensuring the highest level of privacy.  
+   - Integrates with **IDEMIA** for extended IDV services (document identity verification, authenticity checks) to validate the integrity of the ID document.
+
 ---
 
 ## Introduction to PrivateID Services
@@ -84,7 +91,7 @@ The **Ultrapass Authenticator** provides a comprehensive solution for identity v
 
 1. **Downloadable Computer Software for Biometric Identification**  
    - Software utilities, SDKs, or modules that can be installed on devices, self-check-in kiosks, or servers.  
-   - Manages biometric capture, liveness checks, and token creation.
+   - Manages biometric capture, liveness checks, token creation, and photo ID scanning modules.
 
 2. **Biometric Identification Apparatus**  
    - Hardware and sensor packages optimized for the PrivateID ecosystem.  
@@ -102,7 +109,7 @@ The **Ultrapass Authenticator** provides a comprehensive solution for identity v
 
 1. **User Authentication Technology Services**  
    - PrivateID’s secure servers verify user tokens and identity.  
-   - Also supports multi-factor flows combining biometrics and passcodes/hardware tokens.
+   - Also supports multi-factor flows combining biometrics, photo ID scanning, and passcodes/hardware tokens.
 
 2. **Biometric Authentication & Identity Verification for E-Commerce**  
    - Ideal for checkout flows that need stronger identity proofing or frictionless re-authentication.  
@@ -117,12 +124,12 @@ The **Ultrapass Authenticator** provides a comprehensive solution for identity v
    - Enterprise-friendly features like admin dashboards, analytics, and user provisioning.
 
 5. **Application Service Provider (API) & Platform-as-a-Service (PaaS)**  
-   - Modular APIs for implementing tokenization, verification, searching, and more within your environment.  
+   - Modular APIs for implementing tokenization, verification, searching, photo ID scanning, and more within your environment.  
    - Deploy to your private cloud or on-premises infrastructure.
 
 6. **Online Non-Downloadable Software (Web Portals, On-Demand Apps)**  
    - Provides immediate access to PrivateID features via web browsers.  
-   - Zero install overhead for end-users, suitable for quick user registration or identity proofing.
+   - Zero install overhead for end-users, suitable for quick user registration, ID checks, or identity proofing.
 
 ---
 
@@ -145,283 +152,162 @@ An `env.example` file is provided to illustrate the environment variables requir
 1. Copy `env.example` to `.env`:
    ```bash
    cp env.example .env
-Edit .env to include your PrivateID API key:
-bash
-Copy
+
+## Edit .env to Include Your PrivateID API Key
+
+```bash
 REACT_APP_API_KEY=YOUR_PRIVATEID_API_KEY
-Security Note: Never commit your actual .env or secrets to version control.
-Configuration
-Modify src/config.ts to adapt the verification workflow to your needs:
+```
 
-Session Timeout: Define how long a verification session stays active.
-Callback Endpoints: Specify endpoints for asynchronous notifications (e.g., after a user finishes capturing data).
-Branding and UI: Adjust color palettes, logos, text, and disclaimers.
-Enabled Biometric Flows: Toggle face recognition, liveness checks, or age estimation.
-Using the Ultrapass Authenticator in Different Deployment Models
-Mobile Apps (Downloadable Software)
-Platform: iOS or Android
-Installation: Distribute internally, on public app stores, or via enterprise side-loading.
-Features: Registration, face capture (with or without liveness checks), passwordless login, age checks, and capturing short video clips via MediaSafe.
-Offline Capabilities: Certain user authentication and token generation tasks can work offline; data syncs securely when online.
-Advantages
-Rich device capabilities (camera quality, face sensors).
-Incredibly user-friendly for repeat logins or continuous ID checks.
-Access to local device biometrics, motion sensors (for liveness detection), etc.
-Backend as SaaS (Hosted by PrivateID)
-Fully Managed: PrivateID hosts and maintains servers, updates software, and provides SLAs for uptime.
-Elastic Scalability: Handle spikes in user activity without worrying about infrastructure.
-Data Compliance: PrivateID meets major regulatory and certification standards, reducing your burden.
-Usage: Integrate through REST or GraphQL APIs. The pre-built React pages here are configured to communicate with PrivateID’s SaaS endpoints by default.
-Advantages
-Fast to market—no server setup or maintenance.
-Continuous updates and security patches from PrivateID.
-Ideal for smaller teams or those without DevOps expertise.
-Backend as PaaS (Self-Hosted)
-Your Infrastructure: Install PrivateID’s microservices and vector database in your Kubernetes cluster or on VMs.
-Customization: Gain more control over data flows, logs, scaling policies, and compliance.
-Isolation: Ensures data residency if your organization must store or process data in specific jurisdictions.
-Advantages
-Full control over environment, scaling, and compliance measures.
-Can integrate with existing enterprise identity and access management systems more deeply.
-Customizable for advanced use cases (e.g., multi-tenant setups, region-specific privacy policies).
-WebAssembly Integration (Browser-Based)
-Client-Side Tokenization: Convert raw biometric data (e.g., from a user’s webcam) to a token inside the browser.
-Minimal Latency: No round-trip needed for raw images; only tokens are sent to the server.
-High Security: Zero raw biometric data leaves the device unencrypted.
-Implementation: Include the .wasm module and associated JavaScript glue code. Provide a front-end UI for capturing images or videos.
-Advantages
-Near-native performance in modern browsers.
-Simple user flow—no downloads or mobile apps required.
-Maintains privacy with strong cryptography at the edge.
-White Labeling
-Branding & Customization: Replace default PrivateID or Ultrapass branding with your logos, color themes, domain name, and custom text.
-Seamless User Experience: Present a consistent style from your primary site/app to the identity verification screens.
-Flexible Theming: Adjust typography, layout, and visual elements to align with your brand guidelines.
-Advantages
-Unified brand identity, reinforcing user trust.
-Full control over user experience, from design to messaging.
-Option to add unique disclaimers or extra privacy statements relevant to your industry.
-How to Use PrivateID Software (General Guidance)
-Register
-Capture & Tokenize
+### Security Note
+Never commit your actual `.env` or secrets to version control.
 
-User consents to biometric capture (face, voice, or other).
-Biometric data is transformed into a homomorphic token on-device in milliseconds.
-Backend Registration
+## Configuration
+Modify `src/config.ts` to adapt the verification workflow to your needs:
 
-Your application or the pre-built pages send the token to the PrivateID verification service (SaaS/PaaS).
-The service creates a new unique user profile or merges tokens with an existing user record.
-Confirmation
+- **Session Timeout**: Define how long a verification session stays active.
+- **Callback Endpoints**: Specify endpoints for asynchronous notifications (e.g., after a user finishes capturing data).
+- **Branding and UI**: Adjust color palettes, logos, text, and disclaimers.
+- **Enabled Biometric Flows**: Toggle face recognition, liveness checks, age estimation, or ID scanning.
 
-A success message is returned with a unique user identifier (GUID) reference—no raw biometrics are ever stored.
-Passwordless Authentication
-Request Token
+## Using the Ultrapass Authenticator in Different Deployment Models
 
-User initiates sign-in. A local or server-based module requests a fresh biometric capture.
-The user’s face or voice is turned into a new token on the client side.
-Match & Verify
+### Mobile Apps (Downloadable Software)
+- **Platform**: iOS or Android
+- **Installation**: Distribute internally, on public app stores, or via enterprise side-loading.
+- **Features**:
+  - Registration
+  - Face capture (with or without liveness checks)
+  - Passwordless login
+  - Age checks
+  - Capturing short video clips via MediaSafe
+  - Photo ID scanning/comparison
+- **Offline Capabilities**: Certain authentication and token generation tasks work offline; data syncs securely when online.
+- **Advantages**:
+  - Rich device capabilities (camera quality, face sensors)
+  - User-friendly for repeat logins or continuous ID checks
+  - Access to local device biometrics, motion sensors (for liveness detection), and scanning features
 
-The token is securely submitted to the PrivateID service for matching.
-The service checks it against stored tokens for the user or performs a “1:few” search.
-Grant Access
+### Backend as SaaS (Hosted by PrivateID)
+- **Fully Managed**: PrivateID hosts and maintains servers, updates software, and provides SLAs for uptime.
+- **Elastic Scalability**: Handles spikes in user activity without infrastructure concerns.
+- **Data Compliance**: Meets major regulatory and certification standards.
+- **Usage**: Integrate through REST or GraphQL APIs. The pre-built React pages communicate with PrivateID’s SaaS endpoints by default.
+- **Advantages**:
+  - Fast to market—no server setup or maintenance
+  - Continuous updates and security patches from PrivateID
+  - Ideal for smaller teams or those without DevOps expertise
 
-If the match is successful, the user is authenticated.
-The system can generate a session token, JWT, or pass a success callback to your application.
-Face Age Estimation
-On-Device Model
+### Backend as PaaS (Self-Hosted)
+- **Your Infrastructure**: Install PrivateID’s microservices and vector database in your Kubernetes cluster or on VMs.
+- **Customization**: More control over data flows, logs, scaling policies, and compliance.
+- **Isolation**: Ensures data residency if required.
+- **Advantages**:
+  - Full control over environment, scaling, and compliance measures
+  - Deeper integration with enterprise IAM systems
+  - Customizable for advanced use cases
 
-Using a specialized AI model, the user’s face is quickly analyzed for an approximate age range.
-The entire transformation from raw image to homomorphic token can incorporate age metadata.
-Compliance
+### WebAssembly Integration (Browser-Based)
+- **Client-Side Tokenization**: Convert biometric data into a token inside the browser.
+- **Minimal Latency**: Only tokens are sent to the server, not raw images.
+- **High Security**: Zero raw biometric data leaves the device unencrypted.
+- **Implementation**: Include the `.wasm` module and JavaScript glue code.
+- **Advantages**:
+  - Near-native performance in modern browsers
+  - Simple user flow—no downloads or mobile apps required
+  - Maintains privacy with strong cryptography
 
-Perfect for gating content (e.g., verifying 18+ or 21+).
-Reduces friction and risk of human error when manually checking IDs.
-Integration
+## White Labeling
+- **Branding & Customization**: Replace PrivateID branding with custom logos, colors, and text.
+- **Seamless User Experience**: Ensure a consistent style across platforms.
+- **Flexible Theming**: Adjust typography, layout, and visual elements.
+- **Advantages**:
+  - Reinforces user trust
+  - Full control over user experience
+  - Allows for industry-specific disclaimers or privacy statements
 
-The result (“Over 18,” “Over 21,” or “Fails Age Check”) is passed to the server or rendered in your front-end UI.
-All raw data is discarded after token generation.
-Ultrapass MediaSafe Hosted Video Pipeline
-Video Recording
+## How to Use PrivateID Software
 
-Users can record or stream short videos for identity proof or advanced liveness detection.
-The system can also record user steps during remote notary or compliance checks.
-Secure Upload & Storage
+### Register
+1. **Capture & Tokenize**
+   - User consents to biometric capture.
+   - Biometric data transforms into a homomorphic token on-device.
+2. **Backend Registration**
+   - Application sends the token to PrivateID.
+   - Service creates a user profile or merges tokens.
+3. **Confirmation**
+   - Success message returned with a unique user identifier (GUID)—no raw biometrics are stored.
 
-Videos are encrypted in-flight using ephemeral session keys.
-Stored in PrivateID’s secure cloud or your self-hosted solution if using PaaS.
-Playback & Verification
+### Passwordless Authentication
+1. **Request Token**
+   - User initiates sign-in, triggering a fresh biometric capture.
+2. **Match & Verify**
+   - Token submitted to PrivateID for matching.
+3. **Grant Access**
+   - If matched, user is authenticated.
 
-Authorized personnel can review footage in a controlled environment.
-Video-based workflows integrate seamlessly with the same token-based approach, preventing unauthorized leaks.
-Attended vs. Unattended Use
-Attended
+### Face Age Estimation
+1. **On-Device Model**
+   - AI model estimates age range.
+2. **Compliance**
+   - Useful for content gating (18+ or 21+ verification).
+3. **Integration**
+   - Age check result is passed to the server or UI.
 
-An operator or staff member assists or supervises the user’s registration/verification.
-Common in scenarios like bank branches, in-person support desks, or event check-ins.
-Unattended
+### Ultrapass MediaSafe Hosted Video Pipeline
+- **Video Recording**: Short videos for identity proof or liveness detection.
+- **Secure Upload & Storage**: Encrypted videos stored in PrivateID’s cloud or self-hosted solution.
+- **Playback & Verification**: Authorized personnel review footage in a controlled environment.
 
-The user interacts with the system alone via a mobile app, kiosk, or webpage.
-Suitable for around-the-clock identity checks, e-commerce logins, or large-scale user onboarding.
-Technical Explanation of PrivateID Homomorphic Tokenization
-Below is a detailed technical overview of PrivateID’s Homomorphic Tokenization (HT) Technology, adapted from our internal whitepaper and independent validation reports.
+## Attended vs. Unattended Use
+- **Attended**: Operator supervises the verification (e.g., bank branches, event check-ins).
+- **Unattended**: User verifies alone via app, kiosk, or webpage.
 
-1. Introduction
-Homomorphic tokenization (HT) underpins PrivateID’s secure approach to biometric data handling. This technique ensures data remains fully private by only allowing specific computations (like distance matching) on encrypted tokens.
+## Technical Explanation of PrivateID Homomorphic Tokenization
 
-2. Background and Motivation
-From 2014 to 2018, improved biometric algorithms spurred widespread adoption. However, concerns about data misuse escalated, leading to stricter privacy laws (GDPR, CCPA, BIPA). PrivateID’s R&D produced a neural network cryptography framework—nicknamed Cryptonets—to preserve privacy while retaining performance.
+### 1. Introduction
+- Ensures privacy by only allowing computations on encrypted tokens.
 
-3. Core Concept: Homomorphic Tokenization Technology
-3.1 Neural Network Cryptography in Cryptonets
-One-Way Transformation
+### 2. Background & Motivation
+- Developed in response to stricter privacy laws like GDPR, CCPA, and BIPA.
 
-The raw biometric image (face, fingerprint, voice, etc.) is irreversibly mapped to a high-entropy vector.
-No key pair is needed; the neural network itself performs a one-way function.
-Supports Encrypted Operations
+### 3. Core Concept: Homomorphic Tokenization Technology
+#### 3.1 Neural Network Cryptography (Cryptonets)
+- **One-Way Transformation**: Biometric data mapped to a high-entropy vector.
+- **Supports Encrypted Operations**: Matching occurs without exposing raw data.
+#### 3.2 PrivateID Edge Encryption Service
+- **Compiled C++ Library**: Runs securely on devices.
+- **Performance**: Transforms 5MB face images into 1–16KB tokens in ~20ms.
+#### 3.3 Token Properties
+- **Keyless**: No private/public key to manage.
+- **Multi-layered**: Additional obfuscation possible.
 
-Because tokens contain structured numerical embeddings, distance comparisons (for matching) or approximate nearest neighbor searches become possible without decrypting or exposing raw data.
-3.2 PrivateID Edge Encryption Service
-Compiled C++ Library
+### 4. Security Framework
+- **Immutable Code**: Prevents reverse engineering.
+- **TLS v1.3 + Hybrid PKI**: Ensures secure transmission.
+- **Quantum-Resistant Design**: Hard to invert neural embeddings.
 
-Runs as a secure, immutable module on user devices or kiosk hardware.
-Accessible via multiple language bindings (Swift, Kotlin, JavaScript/WebAssembly, Python).
-Performance
-
-Typical face image of ~5 MB transforms to a 1–16 KB token in ~20 ms, suitable for real-time use.
-Matching single tokens or performing “1:few” searches also takes just a few milliseconds.
-3.3 Token Properties: Keyless Anonymization
-Keyless
-
-There is no private/public key to lose or break; the mapping is effectively a function of the neural model.
-Multi-layered
-
-Homomorphic tokens can be combined or re-tokenized for additional obfuscation if needed.
-3.4 Detailed Privacy and Encryption Mechanisms
-Immutable Code
-
-The C++ library is compiled with code obfuscation to hinder reverse engineering.
-No raw biometric data is stored in memory after the token is generated.
-Hybrid PKI and Session Management
-
-Each session (for example, each verification attempt) uses ephemeral AES-256 keys.
-TLS v1.3 is layered on top to protect data in transit.
-4. Advantages Over Conventional Biometric Solutions
-One-Way Anonymization
-
-Eliminates the possibility of reconstructing a user’s face or fingerprint from stored data.
-No Raw Data Storage
-
-Dramatically reduces compliance and breach notification obligations.
-Minimizes legal liabilities associated with storing PII.
-High Performance
-
-Token generation in ~20 ms, matching in ~5 ms.
-Feasible for large-scale applications with millions of records.
-Regulatory Peace of Mind
-
-Tokens are recognized as anonymized data under IEEE 2410-2021.
-Reduces or removes obligations under GDPR, BIPA, and similar regulations.
-5. Security Framework and Cryptographic Layers
-Immutable Container
-
-All transformation logic is embedded in a compiled binary.
-No external calls to convert tokens or retrieve raw data.
-TLS v1.3 + Hybrid PKI
-
-Ensures end-to-end encryption for token transmissions.
-Ephemeral keys mitigate replay attacks or session hijacks.
-Quantum-Resistant Design
-
-The transformation does not rely on factorization-based cryptography.
-Even quantum computers will find it exceedingly difficult to invert these neural embeddings.
-6. Empirical Validation and Independent Testing
-Independent Lab Tests
-
-CITeR (Center for Identification Technology Research), Michigan State University, and other institutions have tested irreversibility claims.
-ISO/IEC 24745 Compliance
-
-Confirms that PrivateID tokens meet unlinkability and irreversibility requirements for biometric template protection.
-Ongoing Audits
-
-Routine penetration tests and security reviews underscore the system’s robustness.
-7. Alignment with International Standards
-IEEE 2410-2021
-
-Certifies anonymization and fosters compliance with global privacy mandates.
-ISO/IEC 24745
-
-Focuses on biometric information protection, validating irreversibility and renewability.
-NIST FIPS 140-3 and NIST SP 800-63
-
-Ensures cryptographic modules meet federal security standards, including identity-proofing.
-8. Technical Benefits
-Guaranteed Biometric Privacy
-
-A fundamental design principle: raw data never leaves the source in plain form.
-High Throughput
-
-Efficient “1:few” approach for large-scale identity checks or deduplication.
-Scalability & Integration
-
-Deploy across mobile devices, kiosks, servers, or web browsers using WebAssembly.
-Offline/Edge Support
-
-On-device models can handle age estimation and basic matching even without network access.
-9. Future Research and Extensions
-Encryption Doubling
-
-Incorporation of additional layers of neural or noise-based obfuscation for advanced threat models.
-Expanded Biometric Modalities
-
-Beyond face, voice, and fingerprint, exploring palm prints, iris, or gait recognition.
-Behavioral Signals
-
-Potential to tokenize usage patterns or keystroke dynamics while preserving privacy.
-Multi-Modal Authentication
-
-Combining face + voice or face + palm for robust multi-factor authentication flows.
-10. Conclusion
-PrivateID’s homomorphic tokenization technology powers the Ultrapass Authenticator for secure, privacy-preserving, large-scale biometric identity solutions. It addresses the critical need for high accuracy, minimal overhead, and complete anonymity of user data. Independent validation confirms the irreversibility of the tokens and alignment with top privacy standards, making it ideal for attended or unattended deployments worldwide.
-
-11. References
-Drozdowski, P., Buchmann, N., Rathgeb, C., et al. (2019). On the Application of Homomorphic Encryption...
-Mai, G., et al. (2019). On the Reconstruction of Face Images from Deep Face Templates...
-Engelsma, J. J., Jain, A. K., & Boddeti, V. N. (2022). HERS: Homomorphically Encrypted Representation Search...
-Additional references in the original PrivateID documentation.
-Architecture Diagram
-Below is a simplified architectural flow illustrating how the Ultrapass Authenticator integrates with PrivateID’s backend and vector database:
-
-scss
-Copy
-    [ User Device or Kiosk ]
- (Ultrapass Authenticator app 
-     or WebAssembly UI)
-                |
-                | (Captures Biometric, creates Homomorphic Token)
-                v
+## Architecture Diagram
+```scss
+[ User Device or Kiosk ]
+(Ultrapass Authenticator app or WebAssembly UI)
+    |
+    | (Captures Biometric, ID Photo, creates Homomorphic Token)
+    v
 [ Node.js / Express / K8s Microservice ]
-   (PrivateID SaaS or your PaaS)
-                |
-                | (Token-based verification, ephemeral encryption)
-                v
+(PrivateID SaaS or your PaaS)
+    |
+    | (Token-based verification, ephemeral encryption, IDV checks w/ IDEMIA)
+    v
 [ PrivateID Vector Database ]
-(Approximate Nearest Neighbor/ 
-   "1:few" matching engine)
-Front-End Layer
+(Approximate Nearest Neighbor / "1:few" matching engine)
+```
 
-iOS/Android apps, kiosk software, or webpage (WebAssembly).
-On-device or in-browser token generation.
-Middleware Layer
+## License / Further Information
+- **License**: Check the LICENSE file.
+- **Contribution Guidelines**: Pull requests and issue submissions are welcome.
+- **Support**: Contact PrivateID Support or open a GitHub Issue.
+- **Further Documentation**: Reach out to PrivateID’s developer relations team.
 
-Node.js microservices that manage session keys, route tokens, store partial states.
-Scales horizontally via Kubernetes or container orchestration.
-Backend Database
+Thank you for using the Ultrapass Authenticator by Private Identity!
 
-Advanced vector database for high-performance “1:few” or 1:N search.
-Stores only encrypted tokens, never raw biometrics.
-License / Further Information
-License: Check the LICENSE file for usage terms.
-Contribution Guidelines: We welcome pull requests and issue submissions to enhance the code examples or improve documentation.
-Support: Contact PrivateID Support or open a GitHub Issue for troubleshooting, feature requests, or deployment guidance.
-Further Documentation: For deeper integration tutorials, extended customization, or advanced reference architectures, please reach out to PrivateID’s developer relations team.
-Thank you for using the Ultrapass Authenticator by Private Identity! We strive to make biometric security private, fast, and scalable. If you have any questions or require assistance, visit our GitHub Issues page or contact PrivateID directly.
