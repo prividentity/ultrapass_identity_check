@@ -6,40 +6,40 @@ Welcome to the Ultrapass™ Verified Identity repository! This resource provides
 ### **Demo**:  [https://ultrapass.privateidentity.co/](https://ultrapass.privateidentity.co/)
 
 ## Table of Contents
-1. [Ultrapass Introduction](#ultrapass-introduction "Ultrapass Introduction")
-2. [Overview of Ultrapass Services](#overview-of-ultrapass-services "Overview of Ultrapass Services")
-	2a. [Ultrapass Online and SaaS Services](#2b-ultrapass-online-and-saas-services "2b. Ultrapass Online and SaaS Services") 
-	2b. [Ultrapass Downloadable Software Services](#2a-ultrapass-downloadable-software-services "2a. Ultrapass Downloadable Software Services")
-3. [Ultrapass Repo: Download Me!](#ultrapass-repo---download-me "Ultrapass Repo - Download me!")
-	3a. [Environment Variables](#3a-environment-variables "3a. Environment Variables")
-	3b. [Configuration](#3b-configuration "3b. Configuration")
-	3c. [Local Installation and Execution](#3c-local-installation-and-execution "3c. Local Installation and Execution")
-4. [Deployment Options](#deployment-options "Deployment Options")
-	4a. [Ultrapass Mobile Apps (Downloadable Software)](#4a-mobile-apps-downloadable-software "4a. Mobile Apps (Downloadable Software)")
-	4b. [Ultrapass Backend as SaaS (Hosted by PrivateID)](#4b-backend-as-saas-hosted-by-privateid "4b. Backend as SaaS (Hosted by PrivateID)")
-	4c. [Ultrapass Backend as PaaS (Self-Hosted)](#4c-backend-as-paas-self-hosted "4c. Backend as PaaS (Self-Hosted)")
-	4d. [Ultrapass WebAssembly Integration (Browser-Based)](#4d-webassembly-integration-browser-based "4d. WebAssembly Integration (Browser-Based)")
-	4e. [Your Brand Here: White Labeling and Customization](#4e-white-labeling-and-customization "4e. White Labeling and Customization")
-5. [Core Ultrapass Use Cases](#core-ultrapass-use-cases "Core Ultrapass Use Cases")
-	5a. [Registering New Users](#5a-registering-new-users "5a. Registering New Users")
-	5b. [Passwordless Authentication](#5b-passwordless-authentication "5b. Passwordless Authentication")
-	5c. [Face Age Estimation](#5c-face-age-estimation "5c. Face Age Estimation")
-	5d. [Ultrapass MediaSafe Hosted Video Pipeline](#5d-ultrapass-mediasafe-hosted-video-pipeline "5d. Ultrapass MediaSafe Hosted Video Pipeline")
-	5e. [Unattended Biometric Access Control](#5e-unattended-biometric-access-control "5e. Unattended Biometric Access Control")
-	5f. [Attended vs. Unattended Scenarios](#5f-attended-vs-unattended-scenarios "5f. Attended vs. Unattended Scenarios")
-6. [Technical Deep-Dive: PrivateID’s Homomorphic Tokenization](#technical-deep-dive-privateid-homomorphic-tokenization "Technical Deep-Dive: PrivateID Homomorphic Tokenization")
-	6.1 [Introduction](#61-introduction "6.1 Introduction")
-	6.2 [Background and Motivation](#62-background-and-motivation "6.2 Background and Motivation")
-	6.3 [Core Concept and Workflow](#63-core-concept-and-workflow "6.3 Core Concept and Workflow")
-	6.4 [Advantages over Conventional Biometrics](#64-advantages-over-conventional-biometrics "6.4 Advantages over Conventional Biometrics")
-	6.5 [Security and Cryptographic Layers](#65-security-and-cryptographic-layers "6.5 Security and Cryptographic Layers")
-	6.6 [Independent Testing and Validation](#66-independent-testing-and-validation "6.6 Independent Testing and Validation")
-	6.7 [Standards Alignment](#67-standards-alignment "6.7 Standards Alignment")
-	6.8 [Technical Benefits](#68-technical-benefits "6.8 Technical Benefits")
-	6.9 [Future Research](#69-future-research "6.9 Future Research")
-	6.10 [Conclusion](#610-conclusion "6.10 Conclusion")
-	6.11 [References](#611-references "6.11 References")
-7. [Ultrapass Licensing, Contributions, and Further Information](#licensing-contributions-and-further-information "Licensing, Contributions, and Further Information")
+1. [Ultrapass Introduction](#ultrapass-introduction "Ultrapass Introduction")\<br\>
+2. [Overview of Ultrapass Services](#overview-of-ultrapass-services "Overview of Ultrapass Services") \<br\>
+	2a. [Ultrapass Online and SaaS Services](#2b-ultrapass-online-and-saas-services "2b. Ultrapass Online and SaaS Services") \<br\>
+	2b. [Ultrapass Downloadable Software Services](#2a-ultrapass-downloadable-software-services "2a. Ultrapass Downloadable Software Services") \<br\>
+3. [Ultrapass Repo: Download Me!](#ultrapass-repo---download-me "Ultrapass Repo - Download me!") \<br\>
+	3a. [Environment Variables](#3a-environment-variables "3a. Environment Variables") \<br\>
+	3b. [Configuration](#3b-configuration "3b. Configuration") \<br\>
+	3c. [Local Installation and Execution](#3c-local-installation-and-execution "3c. Local Installation and Execution") \<br\>
+4. [Deployment Options](#deployment-options "Deployment Options") \<br\>
+	4a. [Ultrapass Mobile Apps (Downloadable Software)](#4a-mobile-apps-downloadable-software "4a. Mobile Apps (Downloadable Software)") \<br\>
+	4b. [Ultrapass Backend as SaaS (Hosted by PrivateID)](#4b-backend-as-saas-hosted-by-privateid "4b. Backend as SaaS (Hosted by PrivateID)") \<br\>
+	4c. [Ultrapass Backend as PaaS (Self-Hosted)](#4c-backend-as-paas-self-hosted "4c. Backend as PaaS (Self-Hosted)") \<br\>
+	4d. [Ultrapass WebAssembly Integration (Browser-Based)](#4d-webassembly-integration-browser-based "4d. WebAssembly Integration (Browser-Based)") \<br\>
+	4e. [Your Brand Here: White Labeling and Customization](#4e-white-labeling-and-customization "4e. White Labeling and Customization") \<br\>
+5. [Core Ultrapass Use Cases](#core-ultrapass-use-cases "Core Ultrapass Use Cases") \<br\>
+	5a. [Registering New Users](#5a-registering-new-users "5a. Registering New Users") \<br\>
+	5b. [Passwordless Authentication](#5b-passwordless-authentication "5b. Passwordless Authentication") \<br\>
+	5c. [Face Age Estimation](#5c-face-age-estimation "5c. Face Age Estimation") \<br\>
+	5d. [Ultrapass MediaSafe Hosted Video Pipeline](#5d-ultrapass-mediasafe-hosted-video-pipeline "5d. Ultrapass MediaSafe Hosted Video Pipeline") \<br\>
+	5e. [Unattended Biometric Access Control](#5e-unattended-biometric-access-control "5e. Unattended Biometric Access Control") \<br\>
+	5f. [Attended vs. Unattended Scenarios](#5f-attended-vs-unattended-scenarios "5f. Attended vs. Unattended Scenarios") \<br\>
+6. [Technical Deep-Dive: PrivateID’s Homomorphic Tokenization](#technical-deep-dive-privateid-homomorphic-tokenization "Technical Deep-Dive: PrivateID Homomorphic Tokenization") \<br\>
+	6.1 [Introduction](#61-introduction "6.1 Introduction") \<br\>
+	6.2 [Background and Motivation](#62-background-and-motivation "6.2 Background and Motivation") \<br\>
+	6.3 [Core Concept and Workflow](#63-core-concept-and-workflow "6.3 Core Concept and Workflow") \<br\>
+	6.4 [Advantages over Conventional Biometrics](#64-advantages-over-conventional-biometrics "6.4 Advantages over Conventional Biometrics") \<br\>
+	6.5 [Security and Cryptographic Layers](#65-security-and-cryptographic-layers "6.5 Security and Cryptographic Layers") \<br\>
+	6.6 [Independent Testing and Validation](#66-independent-testing-and-validation "6.6 Independent Testing and Validation") \<br\>
+	6.7 [Standards Alignment](#67-standards-alignment "6.7 Standards Alignment") \<br\>
+	6.8 [Technical Benefits](#68-technical-benefits "6.8 Technical Benefits") \<br\>
+	6.9 [Future Research](#69-future-research "6.9 Future Research") \<br\>
+	6.10 [Conclusion](#610-conclusion "6.10 Conclusion") \<br\>
+	6.11 [References](#611-references "6.11 References") \<br\>
+7. [Ultrapass Licensing, Contributions, and Further Information](#licensing-contributions-and-further-information "Licensing, Contributions, and Further Information") \<br\>
 ---
 ## What is Ultrapass™?
 PrivateID’s Ultrapass is a state-of-the-art identity platform that leverages homomorphic tokenization, an advanced cryptographic method that protects user data by converting sensitive information into encrypted tokens. Unlike many traditional biometric solutions, raw biometrics are never stored or transmitted in a recognizable form—minimizing the risk of data breaches and misuse.
@@ -573,3 +573,4 @@ By merging homomorphic tokenization with on-device data capture, Ultrapass Authe
 **Thank you **for exploring Ultrapass Authenticator and PrivateID’s Verified Identity solutions. We look forward to supporting your journey toward secure, private, and user-friendly biometric authentication.
 
 End of Document
+
