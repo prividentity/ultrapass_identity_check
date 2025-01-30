@@ -4,7 +4,7 @@
 Welcome to the Ultrapass™ Verified Identity repository! This resource provides downloadable sample front-end code—created with React.js, Material UI, and TypeScript—that demonstrates how to integrate PrivateID’s Ultrapass™ into a wide variety of SaaS (hosted) and PaaS (downloadable) applications. Each page has been carefully designed to showcase industry best practices, streamline your services and development efforts, and serve as a reliable reference when deploying and building secure and intuitive user verification solutions.
 
 ### TL;DR
-#### **Ultrapass Demo **:  [https://ultrapass.privateidentity.co/](https://ultrapass.privateidentity.co/)
+#### Ultrapass Demo:  [https://ultrapass.privateidentity.co/](https://ultrapass.privateidentity.co/)
 #### Download Ultrapass Platform as a Service using Github: [LINK](#to-download-and-install-the-private-identity-llc-privateid-sdk-from-github-please-follow-these-steps "To download and install the Private Identity LLC (PrivateID) SDK from GitHub, please follow these steps:")
 #### Download Ultrapass iOS and Android SDKs:  [LINK](#2a-ultrapass-downloadable-software-services "2a. Ultrapass Downloadable Software Services")
 #### Use Ultrapass as a Service (SaaS): [LINK](#installing-and-running-privateid-services-using-privateidultra-web-sdk-alpha "Installing and Running PrivateID Services using @privateid/ultra-web-sdk-alpha")  
