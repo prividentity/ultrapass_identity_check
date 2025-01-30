@@ -59,7 +59,7 @@ Both Material UI and TypeScript help maintain a stable codebase that can evolve 
 - **Version Upgrades**: Material UI and React have strong communities and frequent updates.
 - **Extensibility**: Adding new verification methods, such as voice or behavioral biometrics, is straightforward.
 ---
-We encourage you to clone or download this repository, explore its contents, and adapt the sample code to fit your exact needs. With React.js, Material UI, TypeScript, and Ultrapass Authenticator, you can deploy cutting-edge biometric verification that’s both intuitive and highly secure.
+#### We encourage you to clone or download this repository, explore its contents, and adapt the sample code to fit your exact needs. With React.js, Material UI, TypeScript, and Ultrapass Authenticator, you can deploy cutting-edge biometric verification that’s both intuitive and highly secure.
 ---
 ## Table of Contents
 1. [Introduction to the Ultrapass Authenticator](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#1-introduction-to-the-ultrapass-authenticator)<br>
