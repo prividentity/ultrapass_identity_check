@@ -63,40 +63,39 @@ We encourage you to clone or download this repository, explore its contents, and
 ---
 ## Table of Contents
 1. [Introduction to the Ultrapass Authenticator](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#1-introduction-to-the-ultrapass-authenticator)<br>
-3. [Overview of PrivateID Services](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#2-overview-of-privateid-services)<br>
-	2a. [PrivateID Downloadable Software Services](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#2a-privateid-downloadable-software-services)
-	2b. [PrivateID Online and SaaS Services](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#2b-privateid-online-and-saas-services)
-4. [Repository Explanation](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#3-repository-explanation)
-	3a. [Environment Variables](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#3a-environment-variables)
-	3b. [Configuration](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#3b-configuration)
-	3c. [Local Installation and Execution](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#3c-local-installation-and-execution)
-5. [Deployment Options](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#4-deployment-options)
-	4a. [Mobile Apps (Downloadable Software)](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#4a-mobile-apps-downloadable-software)
-	4b. [Backend as SaaS (Hosted by PrivateID)](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#4b-backend-as-saas-hosted-by-privateid)
-	4c. [Backend as PaaS (Self-Hosted)](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#4c-backend-as-paas-self-hosted)
-	4d. [WebAssembly Integration (Browser-Based)](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#4d-webassembly-integration-browser-based)
-	4e. [White Labeling and Customization](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#4e-white-labeling-and-customization)
-6. [Core Ultrapass Authenticator Use Cases](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#5-core-ultrapass-authenticator-use-cases)
-	5a. [Registering New Users](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#5a-registering-new-users)
-	5b. [Passwordless Authentication](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#5a-registering-new-users)
-	5c. Face Age Estimation
-	5d. Ultrapass MediaSafe Hosted Video Pipeline
-	5e. Unattended Biometric Access Control
-	5f. Attended vs. Unattended Scenarios
-7. Technical Deep-Dive: PrivateID Homomorphic Tokenization
-	6.1 Introduction
-	6.2 Background and Motivation
-	6.3 Core Concept and Workflow
-	6.4 Advantages over Conventional Biometrics
-	6.5 Security and Cryptographic Layers
-	6.6 Independent Testing and Validation
-	6.7 Standards Alignment
-	6.8 Technical Benefits
-	6.9 Future Research
-	6.10 Conclusion
-	6.11 References
-8. Architecture Diagram
-9. Licensing, Contributions, and Further Information
+2. [Overview of PrivateID Services](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#2-overview-of-privateid-services)<br>
+	2a. [PrivateID Downloadable Software Services](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#2a-privateid-downloadable-software-services)<br>
+	2b. [PrivateID Online and SaaS Services](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#2b-privateid-online-and-saas-services)<br>
+3. [Repository Explanation](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#3-repository-explanation)<br>
+	3a. [Environment Variables](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#3a-environment-variables)<br>
+	3b. [Configuration](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#3b-configuration)<br>
+	3c. [Local Installation and Execution](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#3c-local-installation-and-execution)<br>
+4. [Deployment Options](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#4-deployment-options)<br>
+	4a. [Mobile Apps (Downloadable Software)](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#4a-mobile-apps-downloadable-software)<br>
+	4b. [Backend as SaaS (Hosted by PrivateID)](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#4b-backend-as-saas-hosted-by-privateid)<br>
+	4c. [Backend as PaaS (Self-Hosted)](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#4c-backend-as-paas-self-hosted)<br>
+	4d. [WebAssembly Integration (Browser-Based)](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#4d-webassembly-integration-browser-based)<br>
+	4e. [White Labeling and Customization](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#4e-white-labeling-and-customization)<br>
+5. [Core Ultrapass Authenticator Use Cases](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#5-core-ultrapass-authenticator-use-cases)<br>
+	5a. [Registering New Users](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#5a-registering-new-users)<br>
+	5b. [Passwordless Authentication](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#5a-registering-new-users)<br>
+	5c. [Face Age Estimation](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#5c-face-age-estimation)<br>
+	5d. [Ultrapass MediaSafe Hosted Video Pipeline](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#5d-ultrapass-mediasafe-hosted-video-pipeline)<br>
+	5e. [Unattended Biometric Access Control](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#5e-unattended-biometric-access-control)<br>
+	5f. [Attended vs. Unattended Scenarios](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#5f-attended-vs-unattended-scenarios)<br>
+6. [Technical Deep-Dive: PrivateID Homomorphic Tokenization](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#6-technical-deep-dive-privateid-homomorphic-tokenization)<br>
+	6.1 [Introduction](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#61-introduction)<br>
+	6.2 [Background and Motivation](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#62-background-and-motivation)<br>
+	6.3 [Core Concept and Workflow](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#63-core-concept-and-workflow)<br>
+	6.4 [Advantages over Conventional Biometrics](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#64-advantages-over-conventional-biometrics)<br>
+	6.5 [Security and Cryptographic Layers](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#65-security-and-cryptographic-layers)<br>
+	6.6 [Independent Testing and Validation](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#66-independent-testing-and-validation)<br>
+	6.7 [Standards Alignment](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#67-standards-alignment)<br>
+	6.8 [Technical Benefits](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#68-technical-benefits)<br>
+	6.9 [Future Research](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#69-future-research)<br>
+	6.10 [Conclusion](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#610-conclusion)<br>
+	6.11 [References](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#611-references)<br>
+7. [Licensing, Contributions, and Further Information](https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#7-licensing-contributions-and-further-information)<br>
 
 ## 1. Introduction to the Ultrapass Authenticator
 The Ultrapass Authenticator is the cornerstone of PrivateID’s user verification strategy, employing homomorphic tokenization to radically improve both security and privacy. This approach ensures that users’ biometric data—such as facial images or voice recordings—remain encrypted at all times, making it mathematically infeasible to reconstruct original data from captured tokens.
