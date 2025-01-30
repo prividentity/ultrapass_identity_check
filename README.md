@@ -3,7 +3,11 @@
 ## Prebuilt Webpages with React.js, Material UI, and TypeScript
 Welcome to the Ultrapass™ Verified Identity repository! This resource provides downloadable sample front-end code—created with React.js, Material UI, and TypeScript—that demonstrates how to integrate PrivateID’s Ultrapass™ into a wide variety of SaaS (hosted) and PaaS (downloadable) applications. Each page has been carefully designed to showcase industry best practices, streamline your services and development efforts, and serve as a reliable reference when deploying and building secure and intuitive user verification solutions.
 
-### **Demo**:  [https://ultrapass.privateidentity.co/](https://ultrapass.privateidentity.co/)
+### TL;DR
+#### **Ultrapass Demo **:  [https://ultrapass.privateidentity.co/](https://ultrapass.privateidentity.co/)
+#### Download Ultrapass Platform as a Service using Github: [LINK](#to-download-and-install-the-private-identity-llc-privateid-sdk-from-github-please-follow-these-steps "To download and install the Private Identity LLC (PrivateID) SDK from GitHub, please follow these steps:")
+#### Download Ultrapass iOS and Android SDKs:  [LINK](#2a-ultrapass-downloadable-software-services "2a. Ultrapass Downloadable Software Services")
+#### Use Ultrapass as a Service (SaaS): [LINK](#installing-and-running-privateid-services-using-privateidultra-web-sdk-alpha "Installing and Running PrivateID Services using @privateid/ultra-web-sdk-alpha")  
 
 ## Table of Contents
 1. [Ultrapass Introduction](#ultrapass-introduction "Ultrapass Introduction")<br>
@@ -122,8 +126,8 @@ PrivateID aims to offer modular, scalable biometric verification solutions. Beyo
 ### 2a. Ultrapass Downloadable Software Services
 Ideal for scenarios needing on-device processing or offline capability:
 - **Native iOS/Android SDKs**: Integrate directly into apps, using device hardware (e.g., secure enclaves, camera, microphone).
-	To download and install the Private Identity LLC (PrivateID) SDK from GitHub, please follow these steps:
 
+	### To download and install the Private Identity LLC (PrivateID) SDK from GitHub, please follow these steps:** 
 	1. **Visit the Private Identity LLC GitHub Repository**:
 	   2. Navigate to the official GitHub page:
 		 - [Private Identity LLC GitHub](https://github.com/prividentity)
@@ -219,8 +223,7 @@ For organizations that prefer fully managed solutions:
 - **Cloud-Based API**: Here, PrivateID hosts the servers, manages updates, and ensures high availability.
 - **Auto-Scaling**: Accommodates unpredictable workloads without requiring your own DevOps overhead.
 - **Regulatory Compliance**: Hosted infrastructure often comes with certifications like SOC 2, ISO 27001, helping meet compliance obligations more quickly.
-**Installing and Running PrivateID Services using `@privateid/ultra-web-sdk-alpha`**
-
+#### Installing and Running PrivateID Services using `@privateid/ultra-web-sdk-alpha`** 
  1. **Install the SDK**
 	Ensure you have Node.js and npm installed on your system. Then, navigate to your project directory and run:
 ```bash
