@@ -62,7 +62,7 @@ Both Material UI and TypeScript help maintain a stable codebase that can evolve 
 We encourage you to clone or download this repository, explore its contents, and adapt the sample code to fit your exact needs. With React.js, Material UI, TypeScript, and Ultrapass Authenticator, you can deploy cutting-edge biometric verification that’s both intuitive and highly secure.
 ---
 ## Table of Contents
-1. Introduction to the Ultrapass Authenticator
+1. [Introduction to the Ultrapass Authenticator]<https://github.com/prividentity/ultrapass_identity_check/blob/main/README.md#1-introduction-to-the-ultrapass-authenticator>
 2. Overview of PrivateID Services
 	2a. PrivateID Downloadable Software Services
 	2b. PrivateID Online and SaaS Services
