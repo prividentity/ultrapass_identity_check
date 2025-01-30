@@ -3,7 +3,7 @@
 ## Prebuilt Webpages with React.js, Material UI, and TypeScript
 Welcome to the Ultrapass™ Verified Identity repository! This resource provides downloadable sample front-end code—created with React.js, Material UI, and TypeScript—that demonstrates how to integrate PrivateID’s Ultrapass™ into a wide variety of SaaS (hosted) and PaaS (downloadable) applications. Each page has been carefully designed to showcase industry best practices, streamline your services and development efforts, and serve as a reliable reference when deploying and building secure and intuitive user verification solutions.
 
-### **Demo**:  [https://ultrapass.privateidentity.co/](https://ultrapass.privateidentity.co/)
+### **Demo of fully hosted Ultrapass (Software as a Service)**:  [https://ultrapass.privateidentity.co/](https://ultrapass.privateidentity.co/)
 
 ## Table of Contents
 1. [Ultrapass Introduction](#ultrapass-introduction "Ultrapass Introduction")<br>
