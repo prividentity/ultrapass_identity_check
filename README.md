@@ -7,13 +7,16 @@ Built for **scalability and seamless integration**, Ultrapass supports **on-devi
 
 ### Key Features:
   
-- **Privacy-Preserving Biometrics**: Authenticate users without storing or exposing raw biometric data.  
-- **Homomorphic Tokenization**: Ensures that biometric information cannot be reconstructed, even in the event of a breach.  
-- **Flexible Deployment Options**: Available as a hosted SaaS solution, on-premises deployment, or edge computing model.  
-- **Regulatory Compliance**: Designed to meet GDPR, CCPA, HIPAA, and BIPA requirements.  
--** Cross-Platform Compatibility**: Integrates with web, mobile, kiosks, and enterprise systems.
+- **Passwordless Authentication** – Users can authenticate using **biometric face matching**, eliminating the need for passwords while ensuring high security and a frictionless experience.  
+- **Photo ID Verification** – Matches a user's **selfie** against a government-issued **Photo ID** to verify identity with industry-leading accuracy.  
+- **Age Verification** – Uses **AI-driven face analysis** to estimate user age in real-time, ensuring compliance with age-restricted services.  
+- **Fraud Prevention & Liveness Detection** – Prevents spoofing attacks using **anti-deepfake AI**, detecting fake photos, videos, or masks.  
+- **Homomorphic Tokenization** – Converts biometric data into an **irreversible, encrypted token**, ensuring privacy and regulatory compliance.  
+- **Flexible Deployment Options** – Available as a **hosted SaaS solution**, **on-premises deployment**, or **edge computing model**.  
+- **Regulatory Compliance** – Designed to meet **GDPR, CCPA, HIPAA, and BIPA** requirements.  
+- **Cross-Platform Compatibility** – Integrates with **web, mobile, kiosks, and enterprise systems**.  
 
-With Ultrapass™, businesses can deploy **frictionless, high-assurance identity verification** while maintaining user privacy and security at every step.
+With **Ultrapass™,** businesses can deploy **frictionless, high-assurance identity verification** while maintaining user privacy and security at every step.
 
 ### TL;DR
 - **Use the Ultrapass Demo**:  [https://ultrapass.privateidentity.co/](https://ultrapass.privateidentity.co/)
