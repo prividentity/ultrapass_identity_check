@@ -17,15 +17,15 @@ Click on the appropriate link to download and install the Ultrapass app for your
 - ![Python Logo](https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg) **Ultrapass Python SDK** ([Download](https://github.com/privateid/cryptonets-python-sdk))  
 	  *Provides an interface to CryptoNets™ 1:N fully homomorphically encrypted (FHE) face recognition, Ultrapass™ ID, and human age estimation.*
 
-- ![Photo Library Logo](https://upload.wikimedia.org/wikipedia/commons/3/3a/Apps_photos.svg) **Ultrapass Tango SDK** ([Download](https://github.com/privateid/tango-python-sdk))  
+-  **Ultrapass Tango SDK** ([Download](https://github.com/privateid/tango-python-sdk))  
 	  *Finds the perfect profile image in seconds using the user’s photo library stored on their phone.*
 
 ### Ultrapass Mobile Apps
 
-- ![Apple Logo](https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg) **Ultrapass iOS** ([Download](https://github.com/privateid/cryptonets-ios))  
+-  **Ultrapass iOS** ([Download](https://github.com/privateid/cryptonets-ios))  
 	  *Private iOS application for Ultrapass™ identity verification.*
 
-- ![Android Logo](https://upload.wikimedia.org/wikipedia/commons/d/d7/Android_robot.svg) **Ultrapass Android SDK** ([Download](https://github.com/privateid/cryptonets-android-sdk))  
+-  **Ultrapass Android SDK** ([Download](https://github.com/privateid/cryptonets-android-sdk))  
 	  *Ultrapass identity verification for Android devices.*
 
 ---
