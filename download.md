@@ -2,8 +2,7 @@
 # Ultrapass™ Verified Identity by Private Identity®
 ## The Ultrapass™ Download Page! 
 
-
-Ultrapass™ is a next-generation identity verification platform designed to provide **secure, privacy-preserving authentication** across a wide range of applications. By leveraging **homomorphic tokenization**, Ultrapass ensures that biometric data remains **anonymized, encrypted, and mathematically irreversible**, eliminating the risks associated with traditional biometric storage.
+![](https://cdn5.vectorstock.com/i/1000x1000/95/79/download-icon-vector-47509579.jpg) Ultrapass™ is a next-generation identity verification platform designed to provide **secure, privacy-preserving authentication** across a wide range of applications. By leveraging **homomorphic tokenization**, Ultrapass ensures that biometric data remains **anonymized, encrypted, and mathematically irreversible**, eliminating the risks associated with traditional biometric storage.
 
 Built for **scalability and seamless integration**, Ultrapass supports **on-device authentication, SaaS-based verification, and enterprise deployments**. Whether you're enabling **passwordless logins, age verification, biometric access control, or fraud prevention**, Ultrapass provides a **fast, secure, and compliant solution** that meets the demands of modern digital identity.
 
@@ -18,15 +17,15 @@ Click on the appropriate link to download and install the Ultrapass app for your
 - ![Python Logo](https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg) **Ultrapass Python SDK** ([Download](https://github.com/privateid/cryptonets-python-sdk))  
 	  *Provides an interface to CryptoNets™ 1:N fully homomorphically encrypted (FHE) face recognition, Ultrapass™ ID, and human age estimation.*
 
-- **Ultrapass Tango SDK** ([Download](https://github.com/privateid/tango-python-sdk))  
+- ![Photo Library Logo](https://upload.wikimedia.org/wikipedia/commons/3/3a/Apps_photos.svg) **Ultrapass Tango SDK** ([Download](https://github.com/privateid/tango-python-sdk))  
 	  *Finds the perfect profile image in seconds using the user’s photo library stored on their phone.*
 
 ### Ultrapass Mobile Apps
 
-- **Ultrapass iOS** ([Download](https://github.com/privateid/cryptonets-ios))  
+- ![Apple Logo](https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg) **Ultrapass iOS** ([Download](https://github.com/privateid/cryptonets-ios))  
 	  *Private iOS application for Ultrapass™ identity verification.*
 
-- **Ultrapass Android SDK** ([Download](https://github.com/privateid/cryptonets-android-sdk))  
+- ![Android Logo](https://upload.wikimedia.org/wikipedia/commons/d/d7/Android_robot.svg) **Ultrapass Android SDK** ([Download](https://github.com/privateid/cryptonets-android-sdk))  
 	  *Ultrapass identity verification for Android devices.*
 
 ---
