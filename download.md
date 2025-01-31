@@ -1,6 +1,6 @@
 ![](https://privateid-cms.s3.us-east-1.amazonaws.com/large_1_2_f8e1fee2ec.png)
 # Ultrapass™ Verified Identity by Private Identity®
-## Welcome to the Ultrapass™ Download Page 
+## The Ultrapass™ Download Page! 
 
 
 Ultrapass™ is a next-generation identity verification platform designed to provide **secure, privacy-preserving authentication** across a wide range of applications. By leveraging **homomorphic tokenization**, Ultrapass ensures that biometric data remains **anonymized, encrypted, and mathematically irreversible**, eliminating the risks associated with traditional biometric storage.
