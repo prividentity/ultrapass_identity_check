@@ -23,10 +23,10 @@ Click on the appropriate link to download and install the Ultrapass app for your
 
 ### Ultrapass Mobile Apps
 
-- ![Apple Logo](https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg) **Ultrapass iOS** ([Download](https://github.com/privateid/cryptonets-ios))  
+- **Ultrapass iOS** ([Download](https://github.com/privateid/cryptonets-ios))  
 	  *Private iOS application for Ultrapass™ identity verification.*
 
-- ![Android Logo](https://upload.wikimedia.org/wikipedia/commons/d/d7/Android_robot.svg) **Ultrapass Android SDK** ([Download](https://github.com/privateid/cryptonets-android-sdk))  
+- **Ultrapass Android SDK** ([Download](https://github.com/privateid/cryptonets-android-sdk))  
 	  *Ultrapass identity verification for Android devices.*
 
 ---
